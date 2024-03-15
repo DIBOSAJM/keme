@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>José Manuel Díez Botella</author>
+ <class>calcestado</class>
+ <widget class="QDialog" name="calcestado">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>844</width>
+    <height>605</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Cálculo de Estado Contable</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QLabel" name="titulolabel">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>TITULO</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <layout class="QVBoxLayout">
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>200</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>DIARIO</string>
+         </property>
+         <layout class="QVBoxLayout">
+          <item>
+           <widget class="QListWidget" name="diariolistWidget"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="desgloselabel">
+         <property name="text">
+          <string>SIN DETALLE</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="medioslabel">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>SALDOS NORMALES</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="importescheckBox">
+         <property name="text">
+          <string>Sólo líneas con importes</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="desglose_mes_checkBox">
+         <property name="text">
+          <string>Desglose mensual</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>CÁLCULO</string>
+         </property>
+         <layout class="QGridLayout">
+          <item row="0" column="0">
+           <layout class="QVBoxLayout">
+            <item>
+             <widget class="QLabel" name="textLabel1">
+              <property name="maximumSize">
+               <size>
+                <width>110</width>
+                <height>32767</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>EJERCICIO 1:</string>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="Ejercicio1comboBox"/>
+            </item>
+           </layout>
+          </item>
+          <item row="0" column="1">
+           <widget class="QGroupBox" name="fechas_ej1_groupBox">
+            <property name="title">
+             <string>Acotación de fechas ejercicio &amp;1</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <layout class="QHBoxLayout">
+             <item>
+              <widget class="QDateEdit" name="ini_ej1_dateEdit"/>
+             </item>
+             <item>
+              <widget class="QDateEdit" name="fin_ej1_dateEdit"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <layout class="QVBoxLayout">
+            <item>
+             <widget class="QLabel" name="ejercicio2textLabel">
+              <property name="maximumSize">
+               <size>
+                <width>110</width>
+                <height>32767</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>EJERCICIO2:</string>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="Ejercicio2comboBox"/>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="1">
+           <widget class="QGroupBox" name="fechas_ej2_groupBox">
+            <property name="title">
+             <string>Acotación de fechas ejercicio &amp;2</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <layout class="QHBoxLayout">
+             <item>
+              <widget class="QDateEdit" name="ini_ej2_dateEdit"/>
+             </item>
+             <item>
+              <widget class="QDateEdit" name="fin_ej2_dateEdit"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="textLabel2">
+           <property name="text">
+            <string>CALCULADO</string>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDateEdit" name="FechadateEdit">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="horalineEdit">
+           <property name="text">
+            <string>00:00:00</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="previsiones">
+           <property name="text">
+            <string>Previsiones ejercicio</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="analiticagroupBox">
+         <property name="title">
+          <string>Contabilidad analítica</string>
+         </property>
+         <layout class="QVBoxLayout">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
+           <number>9</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="cilabel">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="text">
+               <string>CÓDIGO IMPUTACIÓN:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="cilineEdit">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>250</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buscapushButton">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="keme.qrc">
+                <normaloff>:/iconos/graf/viewer.xpm</normaloff>:/iconos/graf/viewer.xpm</iconset>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="nivel1lineEdit">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>8</pointsize>
+             </font>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="nivel2lineEdit">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>8</pointsize>
+             </font>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="nivel3lineEdit">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>8</pointsize>
+             </font>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="textLabel1_3">
+       <property name="text">
+        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;NOMBRE INFORME:&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="texlineEdit"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QPushButton" name="CalcularpushButton">
+       <property name="text">
+        <string>&amp;Calcular</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/calculator.xpm</normaloff>:/iconos/graf/calculator.xpm</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Alt+C</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QProgressBar" name="progressBar">
+       <property name="value">
+        <number>0</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="referenciaspushButton">
+       <property name="text">
+        <string>&amp;Refs.</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/basket.png</normaloff>:/iconos/graf/basket.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="ConsultapushButton">
+       <property name="text">
+        <string>I&amp;nforme</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/Print-icon.png</normaloff>:/iconos/graf/Print-icon.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Alt+G</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="graficopushButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>&amp;Gráfico</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/graf.png</normaloff>:/iconos/graf/graf.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="xmlpushButton">
+       <property name="text">
+        <string>&amp;XML</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/XML.png</normaloff>:/iconos/graf/XML.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="ImprimirpushButton">
+       <property name="text">
+        <string>&amp;Inf. Tex</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/printer.png</normaloff>:/iconos/graf/printer.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Alt+I</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="latexpushButton">
+       <property name="text">
+        <string>Ed. &amp;Latex</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/tex.png</normaloff>:/iconos/graf/tex.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="copiarpushButton">
+       <property name="text">
+        <string>C&amp;opiar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/copiar.png</normaloff>:/iconos/graf/copiar.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Alt+O</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="SalirpushButton">
+       <property name="text">
+        <string>&amp;Salir</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/application-exit.png</normaloff>:/iconos/graf/application-exit.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Alt+S</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>Ejercicio1comboBox</tabstop>
+  <tabstop>Ejercicio2comboBox</tabstop>
+  <tabstop>fechas_ej1_groupBox</tabstop>
+  <tabstop>ini_ej1_dateEdit</tabstop>
+  <tabstop>fin_ej1_dateEdit</tabstop>
+  <tabstop>fechas_ej2_groupBox</tabstop>
+  <tabstop>ini_ej2_dateEdit</tabstop>
+  <tabstop>fin_ej2_dateEdit</tabstop>
+  <tabstop>FechadateEdit</tabstop>
+  <tabstop>horalineEdit</tabstop>
+  <tabstop>previsiones</tabstop>
+  <tabstop>cilineEdit</tabstop>
+  <tabstop>buscapushButton</tabstop>
+  <tabstop>nivel1lineEdit</tabstop>
+  <tabstop>nivel2lineEdit</tabstop>
+  <tabstop>nivel3lineEdit</tabstop>
+  <tabstop>diariolistWidget</tabstop>
+  <tabstop>importescheckBox</tabstop>
+  <tabstop>texlineEdit</tabstop>
+  <tabstop>CalcularpushButton</tabstop>
+  <tabstop>referenciaspushButton</tabstop>
+  <tabstop>ConsultapushButton</tabstop>
+  <tabstop>graficopushButton</tabstop>
+  <tabstop>xmlpushButton</tabstop>
+  <tabstop>ImprimirpushButton</tabstop>
+  <tabstop>latexpushButton</tabstop>
+  <tabstop>copiarpushButton</tabstop>
+  <tabstop>SalirpushButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="keme.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>SalirpushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>calcestado</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

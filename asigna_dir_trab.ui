@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>asigna_dir_trab</class>
+ <widget class="QDialog" name="asigna_dir_trab">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>647</width>
+    <height>299</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Rutas personalizadas para conexión</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTableWidget" name="conextableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="rowCount">
+      <number>0</number>
+     </property>
+     <column>
+      <property name="text">
+       <string>Base Datos</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Ruta trabajo</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Ruta documentos</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="nuevapushButton">
+       <property name="text">
+        <string>&amp;Nueva</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/Files-New-File-icon.png</normaloff>:/iconos/graf/Files-New-File-icon.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="conexionpushButton">
+       <property name="text">
+        <string>&amp;Editar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/connect_no.png</normaloff>:/iconos/graf/connect_no.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="borrarpushButton">
+       <property name="text">
+        <string>&amp;Borrar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/borrar.png</normaloff>:/iconos/graf/borrar.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelarpushButton">
+       <property name="text">
+        <string>&amp;Cancelar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/borraelem.png</normaloff>:/iconos/graf/borraelem.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="aceptarpushButton">
+       <property name="text">
+        <string>&amp;Aceptar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/application-exit.png</normaloff>:/iconos/graf/application-exit.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="keme.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>cancelarpushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>asigna_dir_trab</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>522</x>
+     <y>272</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>143</x>
+     <y>263</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -1,0 +1,842 @@
+1	FINANCIACIÓN BÁSICA
+10	CAPITAL
+100	Dotación fundacional.
+101	Fondo social
+102	Capital
+103	Fundadores/asociados por desembolsos no exigidos
+1030	Fundadores, por desembolsos no exigidos
+1034	Asociados, por desembolsos no exigidos
+104	Fundadores/asociados por aportaciones no dinerarias pendientes
+1040	Fundadores, por aportaciones no dinerarias pendientes
+1044	Asociados por aportaciones no dinerarias pendientes
+108	Acciones o participaciones propias en situaciones especiales
+109	Acciones o participaciones propias para reducción de capital
+11	RESERVAS
+110	Prima de emisión o asunción
+112	Reservas legal
+113	Reserva voluntaria
+114	Reservas especiales
+1140	Reservas para acciones o participaciones de la sociedad dominante
+1141	Reservas estatutarias
+1142	Reservas por capital amortizado
+1144	Reservas por acciones propias aceptadas en garantía
+118	Aportaciones de socios o propietarios
+119	Diferencias por ajuste del capital a euros
+12	EXCEDENTES PENDIENTES DE APLICACIÓN
+120	Remanente
+121	Excedentes negativos de ejercicios anteriores
+129	Excedente del ejercicio
+13	SUBVENCIONES, DONACIONES, LEGADOS Y OTROS AJUSTES POR CAMBIOS DE VALOR
+130	Subvenciones oficiales de capital
+1300	Subvenciones del Estado
+1301	Subvenciones de otras Administraciones Públicas
+131	Donaciones y legados de capital
+132	Otras subvenciones, donaciones y legados
+1320	Otras subvenciones
+1321	Otras donaciones y legados.
+137	Ingresos fiscales a distribuir en varios ejercicios
+1370	Ingresos fiscales por diferencias permanentes a distribuir en varios ejercicios
+1371	Ingresos fiscales por deducciones y bonificaciones a distribuir en varios ejercicios
+14	PROVISIONES
+141	Provisión para impuestos
+142	Provisión para otras responsabilidades
+143	Provisión por desmantelamiento, retiro o rehabilitación del inmovilizado.
+145	Provisión para actuaciones medioambientales
+15	DEUDAS A LARGO PLAZO CON CARACTERÍSTICAS ESPECIALES
+150	Acciones o participaciones a largo plazo contabilizadas como pasivo
+153	Desembolsos no exigidos por acciones o participaciones contabilizadas como pasivo
+1533	Desembolsos no exigidos, empresas del grupo
+1534	Desembolsos no exigidos, empresas asociadas
+1535	Desembolsos no exigidos, otras partes vinculadas
+1536	Otros desembolsos no exigidos
+154	Aportaciones no dinerarias pendientes por acciones o participaciones consideradas como pasivos financieros
+1543	Aportaciones no dinerarias pendientes, empresas del grupo
+1544	Aportaciones no dinerarias pendientes, empresas asociadas
+1545	Aportaciones no dinerarias pendientes, otras partes vinculadas
+1546	Otras aportaciones no dinerarias pendientes
+16	DEUDAS A LARGO PLAZO CON PARTES VINCULADAS
+160	Deudas a largo plazo con entidades de crédito vinculadas
+1603	Deudas a largo plazo con entidades de crédito, empresas del grupo
+1604	Deudas a largo plazo con entidades de crédito, empresas asociadas
+1605	Deudas a largo plazo con otras entidades de crédito vinculadas
+161	Proveedores de inmovilizado a largo plazo, partes vinculadas
+1613	Proveedores de inmovilizado a largo plazo, empresas del grupo
+1614	Proveedores de inmovilizado a largo plazo, empresas asociadas
+1615	Proveedores de inmovilizado a largo plazo, otras partes vinculadas
+162	Acreedores por arrendamiento financiero a largo plazo, partes vinculadas
+1623	Acreedores por arrendamiento financiero a largo plazo, empresas del grupo
+1624	Acreedores por arrendamiento financiero a largo plazo, empresas asociadas
+1625	Acreedores por arrendamiento financiero a largo plazo, otras partes vinculadas
+163	Otras deudas a largo plazo con partes vinculadas
+1633	Otras deudas a largo plazo, empresas del grupo
+1634	Otras deudas a largo plazo, empresas asociadas
+1635	Otras deudas a largo plazo, con otras partes vinculadas
+17	DEUDAS A LARGO PLAZO POR PRÉSTAMOS RECIBIDOS Y OTROS CONCEPTOS
+170	Deudas a largo plazo con entidades de crédito
+171	Deudas a largo plazo
+172	Deudas a largo plazo transformables en subvenciones
+173	Proveedores de inmovilizado a largo plazo
+174	Acreedores por arrendamiento financiero a largo plazo
+175	Efectos a pagar a largo plazo
+176	Pasivos por derivados financieros a largo plazo
+177	Obligaciones y bonos
+179	Deudas representadas en otros valores negociables
+18	PASIVOS POR FIANZAS Y GARANTÍAS A LARGO PLAZO
+180	Fianzas recibidas a largo plazo
+181	Anticipos recibidos por ventas o prestaciones de servicios a largo plazo
+185	Depósitos recibidos a largo plazo
+19	SITUACIONES TRANSITORIAS DE FINANCIACIÓN
+190	Acciones o participaciones emitidas
+192	Suscriptores de acciones
+194	Capital emitido pendiente de inscripción
+195	Acciones o participaciones emitidas consideradas como pasivos financieros
+197	Suscriptores de acciones consideradas como pasivos financieros
+199	Acciones o participaciones emitidas consideradas como pasivos financieros pendientes de inscripción
+2	ACTIVO NO CORRIENTE
+20	INMOVILIZACIONES INTANGIBLES
+200	Investigación
+201	Desarrollo
+202	Concesiones administrativas
+203	Propiedad Industrial
+205	Derechos de traspaso
+206	Aplicaciones informáticas
+207	Derechos sobre activos cedidos en uso.
+209	Anticipos para inmovilizaciones intangibles
+21	INMOVILIZACIONES MATERIALES
+210	Terrenos y bienes naturales
+211	Construcciones
+212	Instalaciones técnicas
+213	Maquinaria
+214	Utillaje
+215	Otras instalaciones
+216	Mobiliario
+217	Equipos para procesos de información
+218	Elementos de transporte
+219	Otro inmovilizado material
+22	INVERSIONES INMOBILIARIAS
+220	Terrenos y bienes naturales
+221	Construcciones
+23	INMOVILIZACIONES MATERIALES EN CURSO
+230	Adaptación de terrenos y bienes naturales
+231	Construcciones en curso
+232	Instalaciones técnicas en montaje
+233	Maquinaria en montaje
+237	Equipos para procesos de información en montaje
+239	Anticipos para inmovilizaciones materiales
+24	INVERSIONES FINANCIERAS A LARGO PLAZO EN PARTES VINCULADAS
+24.	BIENES DEL PATRIMONIO HISTÓRICO
+240	Bienes inmuebles
+2400	Monumentos
+2401	Jardines históricos
+2402	Conjuntos históricos
+2403	Sitios históricos
+2404	Zonas arqueológicas
+2405	Participaciones a largo plazo en otras partes vinculadas
+241	Archivos
+2413	Valores representativos de deuda a largo plazo de empresas del grupo
+2414	Valores representativos de deuda a largo plazo de empresas asociadas
+2415	Valores representativos de deuda a largo plazo de otras partes vinculadas
+242	Bibliotecas
+2423	Créditos a largo plazo a empresas del grupo
+2424	Créditos a largo plazo a empresas asociadas
+2425	Créditos a largo plazo a otras partes vinculadas
+243	Museos
+244	Bienes muebles
+249	Anticipos sobre bienes del Patrimonio Histórico
+2490	Anticipos sobre bienes inmuebles del Patrimonio Histórico
+2491	Anticipos sobre archivos del Patrimonio Histórico
+2492	Anticipos sobre bibliotecas del Patrimonio Histórico
+2493	Anticipos sobre museos del Patrimonio Histórico
+2494	Anticipos sobre bienes muebles del Patrimonio Histórico
+2495	Desembolsos pendientes sobre participaciones a largo plazo en otras partes vinculadas
+25	OTRAS INVERSIONES FINANCIERAS A LARGO PLAZO
+250	Inversiones financieras a largo plazo en instrumentos de patrimonio
+251	Valores representativos de deuda a largo plazo
+252	Créditos a largo plazo
+253	Créditos a largo plazo por enajenación de inmovilizado
+254	Créditos a largo plazo al personal
+255	Activos por derivados financieros a largo plazo
+258	Imposiciones a largo plazo
+259	Desembolsos pendientes sobre participaciones en el patrimonio neto a largo plazo
+26	FIANZAS Y DEPÓSITOS CONSTITUIDOS A LARGO PLAZO
+260	Fianzas constituidas a largo plazo
+265	Depósitos constituidos a largo plazo
+28	AMORTIZACIÓN ACUMULADA DEL INMOVILIZADO Y OTRAS CUENTAS CORRECTORAS
+280	Amortización acumulada del inmovilizado intangible
+2800	Amortización acumulada de investigación
+2801	Amortización acumulada de desarrollo
+2802	Amortización acumulada de concesiones administrativas
+2803	Amortización acumulada de propiedad industrial
+2805	Amortización acumulada de derechos de traspaso
+2806	Amortización acumulada de aplicaciones informáticas
+2807	Amortización acumulada de derechos sobre activos cedidos en uso
+281	Amortización acumulada del inmovilizado material
+2811	Amortización acumulada de construcciones
+2812	Amortización acumulada de instalaciones técnicas
+2813	Amortización acumulada de maquinaria
+2814	Amortización acumulada de utillaje
+2815	Amortización acumulada de otras instalaciones
+2816	Amortización acumulada de mobiliario
+2817	Amortización acumulada de equipos para procesos de información
+2818	Amortización acumulada de elementos de transporte
+2819	Amortización acumulada de otro inmovilizado material
+282	Amortización acumulada de las inversiones inmobiliarias
+283	Cesiones de uso sin contraprestación
+2830	Cesiones de uso del inmovilizado intangible
+2831	Cesiones de uso del inmovilizado material
+2832	Cesiones de uso de las inversiones inmobiliarias
+29	DETERIORO DE VALOR DE ACTIVOS NO CORRIENTES
+290	Deterioro de valor del inmovilizado intangible
+2900	Deterioro de valor de investigación
+2901	Deterioro de valor de desarrollo
+2902	Deterioro de valor de concesiones administrativas
+2903	Deterioro de valor de propiedad industrial
+2905	Deterioro de valor de derechos de traspaso
+2906	Deterioro de valor de aplicaciones informáticas
+2907	Deterioro de valor de derechos sobre activos cedidos en uso
+291	Deterioro de valor del inmovilizado material
+2910	Deterioro de valor de terrenos y bienes naturales
+2911	Deterioro de valor de construcciones
+2912	Deterioro de valor de instalaciones técnicas
+2913	Deterioro de valor de maquinaria
+2914	Deterioro de valor de utillaje
+2915	Deterioro de valor de otras instalaciones
+2916	Deterioro de valor de mobiliario
+2917	Deterioro de valor de equipos para procesos de información
+2918	Deterioro de valor de elementos de transporte
+2919	Deterioro de valor de otro inmovilizado material
+292	Deterioro de valor de las inversiones inmobiliarias
+2920	Deterioro de valor de los terrenos y bienes naturales
+2921	Deterioro de valor de construcciones
+293	Deterioro de valor de participaciones a largo plazo en partes vinculadas
+2933	Deterioro de valor de participaciones a largo plazo en empresas del grupo
+2934	Deterioro de valor de participaciones a largo plazo en empresas asociadas
+2935	Deterioro de valor de participaciones a largo plazo en otras partes vinculadas
+294	Deterioro de valores representativos de deuda a largo plazo de partes vinculadas
+2943	Deterioro de valor de valores representativos de deuda a largo plazo de empresas del grupo
+2944	Deterioro de valor de valores representativos de deuda a largo plazo de empresas asociadas
+2945	Deterioro de valor de valores representativos de deuda a largo plazo de otras partes vinculadas
+295	Deterioro de valor de créditos a largo plazo a partes vinculadas
+2953	Deterioro de valor de créditos a largo plazo a empresas del grupo
+2954	Deterioro de valor de créditos a largo plazo a empresas asociadas
+2955	Deterioro de valor de créditos a largo plazo a otras partes vinculadas
+296	Deterioro de valor de participaciones en el patrimonio neto a largo plazo
+297	Deterioro de valor de valores representativos de deuda a largo plazo
+298	Deterioro de valor de créditos a largo plazo
+299	Deterioro de valor de bienes del Patrimonio Histórico
+2990	Deterioro de valor de bienes inmuebles
+2991	Deterioro de valor de archivos
+2992	Deterioro de valor de bibliotecas
+2993	Deterioro de valor de Museos
+2994	Deterioro de valor de bienes muebles
+3	EXISTENCIAS
+30	BIENES DESTINADOS A LA ACTIVIDAD
+300	Mercaderías A
+301	Mercaderías B
+31	MATERIAS PRIMAS
+310	Materias primas A
+311	Materias primas B
+32	OTROS APROVISIONAMIENTOS
+320	Elementos y conjuntos incorporables
+321	Combustibles
+322	Repuestos
+325	Materiales diversos
+326	Embalajes
+327	Envases
+328	Material de oficina
+33	PRODUCTOS EN CURSO
+330	Productos en curso A
+331	Productos en curso B
+34	PRODUCTOS SEMITERMINADOS
+340	Productos semiterminados A
+341	Productos semiterminados B
+35	PRODUCTOS TERMINADOS
+350	Productos terminados A
+351	Productos terminados B
+36	SUBPRODUCTOS, RESIDUOS Y MATERIALES RECUPERADOS
+360	Subproductos A
+361	Subproductos B
+365	Residuos A
+366	Residuos B
+368	Materiales recuperados A
+369	Materiales recuperados B
+39	DETERIORO DE VALOR DE LAS EXISTENCIAS
+390	Deterioro de valor de  bienes destinados a la actividad
+391	Deterioro de valor de las materias primas
+392	Deterioro de valor de otros aprovisionamientos
+393	Deterioro de valor de los productos en curso
+394	Deterioro de valor de los productos semiterminados
+395	Deterioro de valor de los productos terminados
+396	Deterioro de valor de los subproductos, residuos y materiales recuperados
+4	ACREEDORES Y DEUDORES POR OPERACIONES DE LA ACTIVIDAD
+40	PROVEEDORES
+400	Proveedores
+4000	Proveedores (euros)
+4004	Proveedores (moneda extranjera)
+4009	Proveedores, facturas pendientes de recibir o de formalizar
+401	Proveedores, efectos comerciales a pagar
+403	Proveedores, empresas del grupo
+4030	Proveedores, empresas del grupo (euros)
+4031	Efectos comerciales a pagar, empresas del grupo
+4034	Proveedores, empresas del grupo (moneda extranjera)
+4036	Envases y embalajes a devolver a proveedores, empresas del grupo
+4039	Proveedores, empresas del grupo, facturas pendientes de recibir o de formalizar
+404	Proveedores, empresas asociadas
+405	Proveedores, otras partes vinculadas
+406	Envases y embalajes a devolver a proveedores
+407	Anticipos a proveedores
+41	BENEFICIARIOS Y ACREEDORES VARIOS
+410	Acreedores por prestaciones de servicios
+4100	Acreedores por prestaciones de servicios (euros)
+4104	Acreedores por prestaciones de servicios, (moneda extranjera)
+4109	Acreedores por prestaciones de servicios, facturas pendientes de recibir o de formalizar
+411	Acreedores, efectos comerciales a pagar
+412	Beneficiarios, acreedores
+419	Acreedores por operaciones en común
+43	CLIENTES
+430	Clientes
+4300	Clientes (euros)
+4304	Clientes, (moneda extranjera)
+4309	Clientes, facturas pendientes de formalizar
+431	Clientes, efectos comerciales a cobrar
+4310	Efectos comerciales en cartera
+4311	Efectos comerciales descontados
+4312	Efectos comerciales en gestión de cobro
+4315	Efectos comerciales impagados
+432	Clientes, operaciones de factoring
+433	Clientes, empresas del grupo
+4330	Clientes empresas del grupo (euros)
+4331	Efectos comerciales a cobrar, empresas del grupo
+4332	Clientes empresas del grupo, operaciones de factoring
+4334	Clientes empresas del grupo, (moneda extranjera)
+4336	Clientes empresas del grupo de dudoso cobro
+4337	Envases y embalajes a devolver a clientes, empresas del grupo
+4339	Clientes empresas del grupo, facturas pendientes de formalizar
+434	Clientes, empresas asociadas
+435	Clientes, otras partes vinculadas
+436	Clientes de dudoso cobro
+437	Envases y embalajes a devolver por clientes
+438	Anticipos de clientes
+44	USUARIOS Y DEUDORES VARIOS
+440	Deudores
+4400	Deudores (euros)
+4404	Deudores (moneda extranjera)
+4409	Deudores, facturas pendientes de formalizar
+441	Deudores, efectos comerciales a cobrar
+4410	Deudores, efectos comerciales en cartera
+4411	Deudores, efectos comerciales descontados
+4412	Deudores, efectos comerciales en gestión de cobro
+4415	Deudores, efectos comerciales impagados
+446	Deudores de dudoso cobro
+447	Usuarios, deudores
+448	Patrocinadores, afiliados y otros deudores
+4480	Patrocinadores
+4482	Afiliados
+4489	Otros deudores
+449	Deudores por operaciones en común
+46	PERSONAL
+460	Anticipos de remuneraciones
+464	Entregas para gastos a justificar
+465	Remuneraciones pendientes de pago
+47	ADMINISTRACIONES PÚBLICAS
+470	Hacienda Pública, deudora por diversos conceptos
+4700	Hacienda Pública, deudora por IVA
+4707	Hacienda Publica, deudora por colaboración en la  entrega  y distribución de subvenciones (art. 12 Ley de Subvenciones)
+4708	Hacienda Pública, deudora por subvenciones concedidas
+4709	Hacienda Pública, deudora por devolución de impuestos
+471	Organismos de la Seguridad Social, deudores
+472	Hacienda Pública, IVA soportado
+473	Hacienda Pública, retenciones y pagos a cuenta
+474	Activos por impuesto diferido
+4740	Diferencias temporarias deducibles
+4742	Derechos por deducciones y bonificaciones pendientes de aplicar
+4745	Crédito por pérdidas a compensar del ejercicio
+475	Hacienda Pública, acreedora por conceptos fiscales
+4750	Hacienda Pública, acreedora por IVA
+4751	Hacienda Pública, acreedora por retenciones practicadas
+4752	Hacienda Pública, acreedora por impuesto sobre sociedades
+4757	Hacienda  Pública,  acreedora  por  subvenciones  recibidas  en concepto de entidad colaboradora (art.12 Ley de Subvenciones))
+4758	Hacienda Pública, acreedora por subvenciones a reintegrar
+476	Organismos de la Seguridad Social, acreedores
+477	Hacienda Pública, IVA repercutido
+479	Pasivos por diferencias temporarias imponibles
+48	AJUSTES POR PERIODIFICACIÓN
+480	Gastos anticipados
+485	Ingresos anticipados
+49	DETERIORO DE VALOR DE CRÉDITOS POR OPERACIONES DE LA ACTIVIDAD Y PROVISIONES A CORTO PLAZO
+490	Deterioro de valor de créditos por operaciones de la actividad
+493	Deterioro  de  valor  de  créditos  por operaciones de la actividad con partes vinculadas
+4933	Deterioro de valor de créditos por operaciones comerciales con empresas del grupo
+4934	Deterioro de valor de créditos por operaciones comerciales con empresas asociadas
+4935	Deterioro de valor de créditos por operaciones comerciales con otras partes vinculadas
+495	Deterioro de valor de créditos  de usuarios, patrocinadores, afiliados y otros deudores
+499	Provisiones por operaciones de la actividad
+4994	Provisión por contratos onerosos
+4999	Provisión para otras operaciones comerciales
+5	CUENTAS FINANCIERAS
+50	EMPRÉSTITOS, DEUDAS CON CARÁCTERÍSTICAS ESPECIALES Y OTRAS EMISIONES ANÁLOGAS A CORTO PLAZO
+500	Obligaciones y bonos a corto plazo
+502	Acciones o participaciones a corto plazo consideradas como pasivos financieros
+505	Deudas representadas en otros valores negociables a corto plazo
+506	Intereses de empréstitos y otras emisiones análogas
+507	Dividendos de acciones o participaciones consideradas como pasivos financieros
+509	Valores negociables amortizados
+5090	Obligaciones y bonos amortizados
+5095	Otros valores negociables amortizados
+51	DEUDAS A CORTO PLAZO CON PARTES VINCULADAS
+510	Deudas a corto plazo con entidades de crédito vinculadas
+5103	Deudas a corto plazo con entidades de crédito, empresas del grupo
+5104	Deudas a corto plazo con entidades de crédito, empresas asociadas
+5105	Deudas a corto plazo con otras entidades de crédito vinculadas
+511	Proveedores de inmovilizado a corto plazo, partes vinculadas
+5113	Proveedores de inmovilizado a corto plazo, empresas del grupo
+5114	Proveedores de inmovilizado a corto plazo, empresas asociadas
+5115	Proveedores de inmovilizado a corto plazo, otras partes vinculadas
+512	Acreedores por arrendamiento financiero a corto plazo, partes vinculadas
+5123	Acreedores por arrendamiento financiero a corto plazo, empresas del grupo
+5124	Acreedores por arrendamiento financiero a corto plazo, empresas asociadas
+5125	Acreedores por arrendamiento financiero a corto plazo, empresas asociadas
+513	Otras deudas a corto plazo con empresas del grupo
+5133	Otras deudas a corto plazo con empresas del grupo
+5134	Otras deudas a corto plazo con empresas asociadas
+5135	Otras deudas a corto plazo con otras partes vinculadas
+514	Intereses a corto plazo de deudas con partes vinculadas
+5143	Intereses a corto plazo de deudas, empresas del grupo
+5144	Intereses a corto plazo de deudas, empresas asociadas
+5145	Intereses a corto plazo de deudas, otras partes vinculadas
+52	DEUDAS A CORTO PLAZO POR PRÉSTAMOS RECIBIDOS Y OTROS CONCEPTOS
+520	Deudas a corto plazo con entidades de crédito
+5200	Préstamos a corto plazo de entidades de crédito
+5201	Deudas a corto plazo por crédito dispuesto
+5208	Deudas por efectos descontados
+5209	Deudas por operaciones de factoring
+521	Deudas a corto plazo
+522	Deudas a corto plazo transformables en subvenciones, donaciones y legados
+523	Proveedores de inmovilizado a corto plazo
+524	Acreedores por arrendamiento financiero a corto plazo
+525	Efectos a pagar a corto plazo
+526	Dividendo activo a pagar
+527	Intereses a corto plazo de deudas con entidades de crédito
+528	Intereses a corto plazo de deudas
+529	Provisiones a corto plazo
+5291	Provisión a corto plazo para impuestos
+5292	Provisión a corto plazo para otras responsabilidades
+5293	Provisión a corto plazo por desmantelamiento, retiro o rehabilitación del inmovilizado
+5295	Provisión a corto plazo para actuaciones medioambientales
+53	INVERSIONES FINANCIERAS A CORTO PLAZO EN PARTES VINCULADAS
+530	Participaciones a corto plazo en partes vinculadas
+5303	Participaciones a corto plazo, en empresas del grupo
+5304	Participaciones a corto plazo, en empresas asociadas
+5305	Participaciones a corto plazo, en otras partes vinculadas
+531	Valores representativos de deuda a corto plazo de partes vinculadas
+5313	Valores representativos de deuda a corto plazo de empresas del grupo
+5314	Valores representativos de deuda a corto plazo de empresas asociadas
+5315	Valores representativos de deuda a corto plazo de otras partes vinculadas
+532	Créditos a corto plazo a partes vinculadas
+5323	Créditos a corto plazo a empresas del grupo
+5324	Créditos a corto plazo a empresas asociadas
+5325	Créditos a corto plazo a otras partes vinculadas
+533	Intereses a corto plazo de valores representativos de deuda de partes vinculadas
+5333	Intereses a corto plazo de valores representativos de deuda en empresas del grupo
+5334	Intereses a corto plazo de valores representativos de deuda en empresas asociadas
+5335	Intereses a corto plazo de valores representativos de deuda en otras partes vinculadas
+534	Intereses a corto plazo de créditos a partes vinculadas
+5343	Intereses a corto plazo de créditos a empresas del grupo
+5344	Intereses a corto plazo de créditos a empresas asociadas
+5345	Intereses a corto plazo de créditos a otras partes vinculadas
+535	Dividendo a cobrar de inversiones financieras en partes vinculadas
+5353	Dividendo a cobrar de empresas del grupo
+5354	Dividendo a cobrar de empresas asociadas
+5355	Dividendo a cobrar de otras partes vinculadas
+539	Desembolsos pendientes sobre participaciones a corto plazo en partes vinculadas
+5393	Desembolsos pendientes sobre participaciones a corto plazo en empresas del grupo
+5394	Desembolsos pendientes sobre participaciones a corto plazo en empresas asociadas
+5395	Desembolsos pendientes sobre participaciones a corto plazo en otras partes vinculadas
+54	OTRAS INVERSIONES FINANCIERAS TEMPORALES
+540	Inversiones financieras temporales en instrumentos de patrimonio
+541	Valores representativos de deuda a corto plazo
+542	Créditos a corto plazo
+543	Créditos a corto plazo por enajenación de inmovilizado
+544	Créditos a corto plazo al personal
+545	Dividendo a cobrar
+546	Intereses a corto plazo de valores representativos de deuda
+547	Intereses a corto plazo de créditos
+548	Imposiciones a corto plazo
+549	Desembolsos pendientes sobre participaciones en el patrimonio neto a corto plazo
+55	OTRAS CUENTAS NO BANCARIAS
+550	Titular de la explotación
+551	Cuenta corriente con patronos y otros
+552	Cuenta corriente con otras personas y entidades vinculadas
+5523	Cuenta corriente con empresas del grupo
+5524	Cuenta corriente con empresas asociadas
+5525	Cuenta corriente con otras partes vinculadas
+554	Cuenta corriente con uniones temporales de empresas y comunidades de bienes
+555	Partidas pendientes de aplicación
+556	Desembolsos exigidos sobre participaciones en el patrimonio neto
+5563	Desembolsos exigidos sobre participaciones, empresas del grupo
+5564	Desembolsos exigidos sobre participaciones, empresas asociadas
+5565	Desembolsos exigidos sobre participaciones, otras partes vinculadas
+5566	Desembolsos exigidos sobre participaciones de otras empresas
+557	Dividendo activo a cuenta
+558	Fundadores y asociados por desembolsos exigidos
+5580	Socios por desembolsos exigidos sobre acciones o participaciones ordinarias
+5585	Socios por desembolsos exigidos sobre acciones o participaciones consideradas como pasivos financieros
+559	Derivados financieros a corto plazo
+5590	Activos por derivados financieros a corto plazo
+5591	Pasivos por derivados financieros a corto plazo
+56	FIANZAS Y DEPÓSITOS RECIBIDOS Y CONSTITUIDOS A CORTO PLAZO, Y AJUSTES POR PERIODIFICACIÓN
+560	Fianzas recibidas a corto plazo
+561	Depósitos recibidos a corto plazo
+565	Fianzas constituidas a corto plazo
+566	Depósitos constituidos a corto plazo
+567	Intereses pagados por anticipado
+568	Intereses cobrados por anticipado
+57	TESORERÍA
+570	Caja, euros
+571	Caja, moneda extranjera
+572	Bancos e instituciones de crédito c/c vista, euros
+573	Bancos e instituciones de crédito c/c vista, moneda extranjera
+574	Bancos e instituciones de crédito, cuentas de ahorro, euros
+575	Bancos e instituciones de crédito, cuentas de ahorro, moneda extranjera
+576	Inversiones a corto plazo de gran liquidez
+59	DETERIORO DEL VALOR DE INVERSIONES FINANCIERAS A CORTO PLAZO
+593	Deterioro de valor de participaciones a corto plazo en partes vinculadas
+5933	Deterioro de valor de participaciones a corto plazo en empresas del grupo
+5934	Deterioro de valor de participaciones a corto plazo en empresas asociadas
+5935	Deterioro de valor de participaciones a corto en otras partes vinculadas
+594	Deterioro de valores representativos de deuda a corto de partes vinculadas
+5943	Deterioro de valores representativos de deuda a corto plazo de empresas del grupo
+5944	Deterioro de valores representativos de deuda a corto plazo de empresas asociadas
+5945	Deterioro de valores representativos de deuda a corto plazo de otras partes vinculadas
+595	Deterioro de valor de créditos a corto plazo a partes vinculadas
+5953	Deterioro de valor de créditos a corto plazo a empresas del grupo
+5954	Deterioro de valor de créditos a corto plazo a empresas asociadas
+5955	Deterioro de valor de créditos a corto plazo a otras partes vinculadas
+596	Deterioro de valor de participaciones a corto plazo
+597	Deterioro de valor de valores representativos de deuda a corto plazo
+598	Deterioro de valor de créditos a corto plazo
+6	COMPRAS Y GASTOS
+60	COMPRAS
+600	Compras de bienes destinados a la actividad
+601	Compras de materias primas
+602	Compras de otros aprovisionamientos
+606	Descuentos sobre ventas por pronto pago
+6060	Descuentos sobre compras por pronto pago de bienes destinados a la actividad
+6061	Descuentos sobre compras por pronto pago de materias primas
+6062	Descuentos sobre compras por pronto pago de otros aprovisionamientos
+607	Trabajos realizados por otras empresas
+608	Devoluciones de compras y operaciones similares
+6080	Devoluciones de compras de bienes destinados a la actividad
+6081	Devoluciones de compras de materias primas
+6082	Devoluciones de compras de otros aprovisionamientos
+609	"Rappels" por compras
+6090	"Rappels" por compras de bienes destinados a la actividad
+6091	"Rappels" por compras de materias primas
+6092	"Rappels" por compras de otros aprovisionamientos
+61	VARIACIÓN DE EXISTENCIAS
+610	Variación de existencias de bienes destinados a la actividad
+611	Variación de existencias de materias primas
+612	Variación de existencias de otros aprovisionamientos
+62	SERVICIOS EXTERIORES
+620	Gastos en investigación y desarrollo del ejercicio
+621	Arrendamientos y cánones
+622	Reparaciones y conservación
+623	Servicios de profesionales independientes
+624	Transportes
+625	Primas de seguros
+626	Servicios bancarios y similares
+627	Publicidad, propaganda y relaciones públicas
+628	Suministros
+629	Otros servicios
+63	TRIBUTOS
+630	Impuesto sobre beneficios
+6300	Impuesto corriente
+6301	Impuesto diferido
+631	Otros tributos
+633	Ajustes negativos en la imposición sobre beneficios
+634	Ajustes negativos en la imposición indirecta
+6341	Ajustes negativos en IVA de activo corriente
+6342	Ajustes negativos en IVA de inversiones
+636	Devolución de impuestos
+638	Ajustes positivos en la imposición sobre beneficios
+639	Ajustes positivos en la imposición indirecta
+6391	Ajustes positivos en IVA de activo corriente
+6392	Ajustes positivos en IVA de inversiones
+64	GASTOS DE PERSONAL
+640	Sueldos y salarios
+641	Indemnizaciones
+642	Seguridad Social a cargo de la empresa
+649	Otros gastos sociales
+65	AYUDAS MONETARIAS DE LA ENTIDAD Y OTROS GASTOS DE GESTIÓN
+650	Ayudas monetarias
+6501	Ayudas monetarias individuales
+6502	Ayudas monetarias a entidades
+6503	Ayudas monetarias realizadas a través de otras entidades o centros
+6504	Ayudas monetarias de cooperación internacional
+651	Ayudas no monetarias
+6510	Beneficio transferido (gestor)
+6511	Ayudas no monetarias individuales
+6512	Ayudas no monetarias a entidades
+6513	Ayudas no monetarias  realizadas a través de otras entidades o centros
+6514	Ayudas no monetarias de cooperación internacional
+653	Compensación de gastos por prestaciones de colaboración
+654	Reembolsos de gastos al órgano de gobierno
+655	Pérdidas de créditos incobrables derivados de la actividad
+656	Resultados de operaciones en común
+6560	Beneficio transferido (gestor)
+6561	Pérdida soportada (partícipe o asociado no gestor)
+658	Reintegro de subvenciones, donaciones y legados recibidos, afectos a la actividad propia de la entidad
+659	Otras pérdidas en gestión corriente
+66	GASTOS FINANCIEROS
+660	Gastos financieros por actualización de provisiones
+661	Intereses de obligaciones y bonos
+6610	Intereses de obligaciones y bonos a largo plazo, empresas del grupo
+6611	Intereses de obligaciones y bonos a largo plazo, empresas asociadas
+6612	Intereses de obligaciones y bonos a largo plazo, otras partes vinculadas
+6613	Intereses de obligaciones y bonos a largo plazo, otras empresas
+6615	Intereses de obligaciones y bonos a corto plazo, empresas del grupo
+6616	Intereses de obligaciones y bonos a corto plazo, empresas asociadas
+6617	Intereses de obligaciones y bonos a corto plazo, otras partes vinculadas
+6618	Intereses de obligaciones y bonos a corto plazo, otras empresas
+662	Intereses de deudas
+6620	Intereses de deudas, empresas del grupo
+6621	Intereses de deudas, empresas asociadas
+6622	Intereses de deudas, otras partes vinculadas
+6623	Intereses de deudas con entidades de crédito
+6624	Intereses de deudas, otras empresas
+663	Pérdidas por valoración de activos y pasivos financieros por su valor razonable
+664	Dividendos de acciones o participaciones consideradas como pasivos financieros
+6640	Dividendos de pasivos, empresas del grupo
+6641	Dividendos de pasivos, empresas asociadas
+6642	Dividendos de pasivos, otras partes vinculadas
+6643	Dividendos de pasivos, otras empresas
+665	Intereses por descuento de efectos y operaciones de factoring
+6650	Intereses por descuento de efectos en entidades de crédito del grupo
+6651	Intereses por descuento de efectos en entidades de crédito asociadas
+6652	Intereses por descuento de efectos en otras entidades de crédito vinculadas
+6653	Intereses por descuento de efectos en otras entidades de crédito
+6654	Intereses por operaciones de factoring con entidades de crédito del grupo
+6655	Intereses por operaciones de factoring con entidades de crédito asociadas
+6656	Intereses por operaciones de factoring con otras entidades de crédito vinculadas
+6657	Intereses por operaciones de factoring con otras entidades de crédito
+666	Pérdidas en participaciones y valores representativos de deuda
+6660	Pérdidas en participaciones y valores representativos de deuda a largo plazo, empresas del grupo
+6661	Pérdidas en participaciones y valores representativos de deuda a largo plazo, empresas asociadas
+6662	Pérdidas en participaciones y valores representativos de deuda a largo plazo, otras partes vinculadas
+6663	Pérdidas en participaciones y valores representativos de deuda a largo plazo, otras empresas
+6665	Pérdidas en participaciones y valores representativos de deuda a corto plazo, empresas del grupo
+6666	Pérdidas en participaciones y valores representativos de deuda a corto plazo, empresas asociadas
+6667	Pérdidas en participaciones y valores representativos de deuda a corto plazo, otras partes vinculadas
+6668	Pérdidas en participaciones y valores representativos de deuda a corto plazo, de otras empresas
+667	Pérdidas de créditos no comerciales
+6670	Pérdidas de créditos a largo plazo, empresas del grupo
+6671	Pérdidas de créditos a largo plazo, empresas asociadas
+6672	Pérdidas de créditos a largo plazo, otras partes vinculadas
+6673	Pérdidas de créditos a largo plazo, otras empresas
+6675	Pérdidas de créditos a corto plazo, empresas del grupo
+6676	Pérdidas de créditos a corto plazo, empresas asociadas
+6677	Pérdidas de créditos a corto plazo, otras partes vinculadas
+6678	Pérdidas de créditos a corto plazo, de otras empresas
+668	Diferencias negativas de cambio
+669	Otros gastos financieros
+67	PÉRDIDAS PROCEDENTES DE ACTIVOS NO CORRIENTES Y GASTOS EXCEPCIONALES
+670	Pérdidas procedentes del inmovilizado intangible
+671	Pérdidas procedentes del inmovilizado material y de bienes del Patrimonio Histórico
+672	Pérdidas procedentes de las inversiones inmobiliarias
+673	Pérdidas procedentes de participaciones a largo plazo en partes vinculadas
+6733	Pérdidas procedentes de participaciones a largo plazo, empresas del grupo
+6734	Pérdidas procedentes de participaciones a largo plazo, empresas asociadas
+6735	Pérdidas procedentes de participaciones a largo plazo, otras partes vinculadas
+675	Pérdidas por operaciones con obligaciones propias
+678	Gastos excepcionales
+68	DOTACIONES PARA AMORTIZACIONES
+680	Amortización del inmovilizado intangible
+681	Amortización del inmovilizado material
+682	Amortización de las inversiones inmobiliarias
+69	PÉRDIDAS POR DETERIORO Y OTRAS DOTACIONES La cuenta 691, 694 y 695 pasan a denominarse:
+690	Pérdidas por deterioro del inmovilizado intangible
+691	Pérdidas por deterioro del inmovilizado material y de bienes del Patrimonio Histórico
+6910	Pérdidas por deterioro del inmovilizado material
+6911	Pérdidas por deterioro de bienes del Patrimonio Histórico
+692	Pérdidas por deterioro de las inversiones inmobiliarias
+693	Pérdidas por deterioro de existencias
+6930	Pérdidas por deterioro de productos terminados y en curso de fabricación
+6931	Pérdidas por deterioro de mercaderías
+6932	Pérdidas por deterioro de materias primas
+6933	Pérdidas por deterioro de otros aprovisionamientos
+694	Pérdidas por deterioro de créditos por operaciones de la actividad
+695	Dotación a la provisión por operaciones de la actividad
+6954	Dotación a la provisión por contratos onerosos
+6959	Dotación a la provisión por otras operaciones comerciales
+696	Pérdidas por deterioro de participaciones y valores representativos de deuda a largo plazo
+6960	Pérdidas por deterioro de participaciones en instrumentos de patrimonio neto a largo plazo, empresas del grupo
+6961	Pérdidas por deterioro de participaciones en instrumentos de patrimonio neto a largo plazo, empresas asociadas
+6962	Pérdidas por deterioro de participaciones en instrumentos de patrimonio neto a largo plazo, otras partes vinculadas
+6963	Pérdidas por deterioro de participaciones en instrumentos de patrimonio neto a largo plazo, otras empresas
+6965	Pérdidas por deterioro en valores representativos de deuda a largo plazo, empresas del grupo
+6966	Pérdidas por deterioro en valores representativos de deuda a largo plazo, empresas asociadas
+6967	Pérdidas por deterioro en valores representativos de deuda a largo plazo, otras partes vinculadas
+6968	Pérdidas por deterioro en valores representativos de deuda a largo plazo, de otras empresas
+697	Pérdidas por deterioro de créditos a largo plazo
+6970	Pérdidas por deterioro de créditos a largo plazo, empresas del grupo
+6971	Pérdidas por deterioro de créditos a largo plazo, empresas asociadas
+6972	Pérdidas por deterioro de créditos a largo plazo, otras partes vinculadas
+6973	Pérdidas por deterioro de créditos a largo plazo, otras empresas
+698	Pérdidas deterioro de participaciones y valores representativos de deuda a corto plazo
+6980	Pérdidas por deterioro de participaciones en instrumentos de patrimonio neto a corto plazo, empresas del grupo
+6981	Pérdidas por deterioro de participaciones en instrumentos de patrimonio neto a corto plazo, empresas asociadas
+6985	Pérdidas por deterioro en valores representativos de deuda a corto plazo, empresas del grupo
+6986	Pérdidas por deterioro en valores representativos de deuda a corto plazo, empresas asociadas
+6987	Pérdidas por deterioro en valores representativos de deuda a corto plazo, otras partes vinculadas
+6988	Pérdidas por deterioro en valores representativos de deuda a corto plazo, de otras empresas
+699	Pérdidas por deterioro de créditos a corto plazo
+6990	Pérdidas por deterioro de créditos a corto plazo, empresas del grupo
+6991	Pérdidas por deterioro de créditos a corto plazo, empresas asociadas
+6992	Pérdidas por deterioro de créditos a corto plazo, otras partes vinculadas
+6993	Pérdidas por deterioro de créditos a corto plazo, otras empresas
+7	VENTAS E INGRESOS
+70	VENTAS DE MERCADERÍAS, DE PRODUCCIÓN PROPIA, DE SERVICIOS, ETC
+700	Ventas de mercaderías
+701	Ventas de productos terminados
+702	Ventas de productos semiterminados
+703	Ventas de subproductos y residuos
+704	Ventas de envases y embalajes
+705	Prestaciones de servicios
+706	Descuentos sobre ventas por pronto pago
+7060	Descuentos sobre ventas por pronto pago de mercaderias
+7061	Descuentos sobre ventas por pronto pago de productos terminados
+7062	Descuentos sobre ventas por pronto pago de productos semiterminados
+7063	Descuentos sobre ventas por pronto pago de subproductos y residuos
+708	Devoluciones de ventas y operaciones similares
+7080	Devoluciones de ventas de mercaderías
+7081	Devoluciones de ventas de productos terminados
+7082	Devoluciones de ventas de productos semiterminados
+7083	Devoluciones de ventas de subproductos y residuos
+7084	Devoluciones de ventas de envases y embalajes
+709	"Rappels" sobre ventas
+7090	"Rappels" sobre ventas de mercaderias
+7091	"Rappels" sobre ventas de productos terminados
+7092	"Rappels" sobre ventas de productos semiterminados
+7093	"Rappels" sobre ventas de subproductos y residuos
+7094	"Rappels" sobre ventas de envases y embalajes
+71	VARIACIÓN DE EXISTENCIAS
+710	Variación de existencias de productos en curso
+711	Variación de existencias de productos semiterminados
+712	Variación de existencias de productos terminados
+713	Variación de existencias de subproductos, residuos y materiales recuperados
+72	INGRESOS PROPIOS DE LA ENTIDAD
+720	Cuotas de asociados y afiliados
+721	Cuotas de usuarios
+722	Promociones para captación de recursos
+723	Ingresos de patrocinadores y colaboraciones
+7230	Patrocinio
+7231	Patrocinio publicitario
+7233	Colaboraciones empresariales
+728	Ingresos por reintegro de ayudas y asignaciones
+73	TRABAJOS REALIZADOS PARA LA EMPRESA
+730	Trabajos realizados para el inmovilizado intangible
+731	Trabajos realizados para el inmovilizado material
+732	Trabajos realizados en inversiones inmobiliarias
+733	Trabajos realizados para el inmovilizado material en curso
+74	SUBVENCIONES, DONACIONES Y LEGADOS
+740	Subvenciones a la actividad
+745	Subvenciones del capital transferidas al excedente del ejercicio
+746	Donaciones y legados de capital transferidas al excedente del ejercicio
+747	Donaciones y legados transferidos al excedente del ejercicio
+748	Otras subvenciones transferidas al excedente del ejercicio
+75	OTROS INGRESOS DE GESTIÓN
+751	Resultados de operaciones en común
+7510	Pérdida transferida (gestor)
+7511	Beneficio atribuido (partícipe o asociado no gestor)
+752	Ingresos por arrendamientos
+753	Ingresos de propiedad industrial cedida en explotación
+754	Ingresos por comisiones
+755	Ingresos por servicios al personal
+759	Ingresos por servicios diversos
+76	INGRESOS FINANCIEROS
+760	Ingresos de participaciones en instrumentos de patrimonio
+7600	Ingresos de participaciones en instrumentos de patrimonio, empresas del grupo
+7601	Ingresos de participaciones en instrumentos de patrimonio, empresas asociadas
+7602	Ingresos de participaciones en instrumentos de patrimonio, otras partes vinculadas
+7603	Ingresos de participaciones en instrumentos de patrimonio, de otras empresas
+761	Ingresos de valores representativos de deuda
+7610	Ingresos de valores representativos de deuda, empresas del grupo
+7611	Ingresos de valores representativos de deuda, empresas asociadas
+7612	Ingresos de valores representativos de deuda, otras partes vinculadas
+7613	Ingresos de valores representativos de deuda, otras empresas
+762	Ingresos de créditos
+7620	Ingresos de créditos a largo plazo
+76200	Ingresos de créditos a largo plazo, empresas del grupo
+76201	Ingresos de créditos a largo plazo, empresas asociadas
+76202	Ingresos de créditos a largo plazo, otras partes vinculadas
+76203	Ingresos de créditos a largo plazo, otras empresas
+7621	Ingresos de créditos a corto plazo
+76210	Ingresos de créditos a corto plazo, empresas del grupo
+76211	Ingresos de créditos a corto plazo, empresas asociadas
+76212	Ingresos de créditos a corto plazo, otras partes vinculadas
+76213	Ingresos de créditos a corto plazo, otras empresas
+763	Beneficios por la valoración de activos y pasivos financieros por su valor razonable
+766	Beneficios en participaciones y valores representativos de deuda
+7660	Beneficios en valores representativos de deuda a largo plazo, empresas del grupo
+7661	Beneficios en valores representativos de deuda a largo plazo, empresas asociadas
+7662	Beneficios en valores representativos de deuda a largo plazo, otras partes vinculadas
+7663	Beneficios en participaciones y valores representativos de deuda a largo plazo, otras empresas
+7665	Beneficios en participaciones y valores representativos de deuda a corto plazo, empresas del grupo
+7666	Beneficios en participaciones y valores representativos de deuda a corto plazo, empresas asociadas
+7667	Beneficios en valores representativos de deuda a corto plazo, otras partes vinculadas
+7668	Beneficios en valores representativos de deuda a corto plazo, de otras empresas
+768	Diferencias positivas de cambio
+769	Otros ingresos financieros
+77	BENEFICIOS  PROCEDENTES DE ACTIVOS NO CORRIENTES E INGRESOS EXCEPCIONALES
+770	Beneficios procedentes del inmovilizado intangible
+771	Beneficios procedentes del inmovilizado material y de bienes de Patrimonio Histórico
+772	Beneficios procedentes de las inversiones inmobiliarias
+773	Beneficios procedentes de participaciones a largo plazo en partes vinculadas
+7733	Beneficios procedentes de participaciones a largo plazo, empresas del grupo
+7734	Beneficios procedentes de participaciones a largo plazo, empresas asociadas
+7735	Beneficios procedentes de participaciones a largo plazo, otras partes vinculadas
+775	Beneficios por operaciones con obligaciones propias
+778	Ingresos excepcionales.
+79	EXCESOS Y APLICACIONES DE PROVISIONES Y DE PÉRDIDAS POR DETERIORO
+790	Reversión del deterioro del inmovilizado intangible
+791	Reversión del deterioro del inmovilizado material y de bienes del Patrimonio Histórico
+792	Reversión del deterioro de las inversiones inmobiliarias
+793	Reversión del deterioro de existencias
+7930	Reversión del deterioro de productos terminados y en curso de fabricación
+7931	Reversión del deterioro de mercaderias
+7932	Reversión del deterioro de materias primas
+7933	Reversión del deterioro de otros aprovisionamientos
+794	Reversión del deterioro de créditos por operaciones de la actividad
+795	Exceso de provisiones
+7951	Exceso de provisión para impuestos
+7952	Exceso de provisión para otras responsabilidades
+7954	Exceso de provisión pora operaciones comerciales
+79544	Exceso de provisión por contratos onerosos
+79549	Exceso de provisión por otras operaciones comerciales
+7955	Exceso de provisión para actuaciones medioambientales
+796	Reversión del deterioro de participaciones y valores representativos de deuda a largo plazo
+7960	Reversión del deterioro de participaciones en instrumentos de patrimonio neto a largo plazo, empresas del grupo
+7961	Reversión del deterioro de participaciones en instrumentos de patrimonio neto a largo plazo, empresas asociadas
+7962	Reversión del deterioro de participaciones en instrumentos de patrimonio neto a largo plazo, otras partes vinculadas
+7963	Reversión del deterioro de participaciones en instrumentos de patrimonio neto a largo plazo, otras empresas
+7965	Reversión del deterioro de valores representativos de deuda a largo plazo, empresas del grupo
+7966	Reversión del deterioro de valores representativos de deuda a largo plazo, empresas asociadas
+7967	Reversión del deterioro de valores representativos de deuda a largo plazo, otras partes vinculadas
+7968	Reversión del deterioro de valores representativos de deuda a largo plazo, otras empresas
+797	Reversión del deterioro de créditos a largo plazo
+7970	Reversión del deterioro de créditos a largo plazo, empresas del grupo
+7971	Reversión del deterioro de créditos a largo plazo, empresas asociadas
+7972	Reversión del deterioro de créditos a largo plazo, otras partes vinculadas
+7973	Reversión del deterioro de créditos a largo plazo, otras empresas
+798	Reversión del deterioro de participaciones y valores representativos de deuda a corto plazo
+7980	Reversión del deterioro de participaciones en instrumentos de patrimonio neto a corto plazo, empresas del grupo
+7981	Reversión del deterioro de participaciones en instrumentos de patrimonio neto a corto plazo, empresas asociadas
+7985	Reversión del deterioro en valores representativos de deuda a corto plazo, empresas del grupo
+7986	Reversión del deterioro en valores representativos de deuda a corto plazo, empresas asociadas
+7987	Reversión del deterioro en valores representativos de deuda a corto plazo, otras partes vinculadas
+7988	Reversión del deterioro en valores representativos de deuda a corto plazo, de otras empresas
+799	Reversión del deterioro de créditos a corto plazo
+7990	Reversión del deterioro de créditos a corto plazo, empresas del grupo
+7991	Reversión del deterioro de créditos a corto plazo, empresas asociadas
+7992	Reversión del deterioro de créditos a corto plazo, otras partes vinculadas
+7993	Reversión del deterioro de créditos a corto plazo, otras empresas

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>main_factur</class>
+ <widget class="QMainWindow" name="main_factur">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuRegistros">
+    <property name="title">
+     <string>&amp;Registros</string>
+    </property>
+    <addaction name="actionReferencias"/>
+    <addaction name="actionCuentas"/>
+    <addaction name="actionExternos"/>
+    <addaction name="actionCuentas_de_IVA"/>
+    <addaction name="actionIrpf"/>
+    <addaction name="actionFacturacion_predefinida"/>
+    <addaction name="actionLotes_facturas"/>
+    <addaction name="actionCuenta_anticipos"/>
+   </widget>
+   <widget class="QMenu" name="menuFacturaci_n">
+    <property name="title">
+     <string>&amp;Facturación</string>
+    </property>
+    <addaction name="actionSeries"/>
+    <addaction name="actionTipos_documento"/>
+    <addaction name="actionConexion"/>
+    <addaction name="actionSalir"/>
+   </widget>
+   <addaction name="menuFacturaci_n"/>
+   <addaction name="menuRegistros"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionSalir"/>
+   <addaction name="actionCuentas"/>
+   <addaction name="actionExternos"/>
+   <addaction name="actionReferencias"/>
+   <addaction name="actionLotes_facturas"/>
+  </widget>
+  <action name="actionFacturas">
+   <property name="text">
+    <string>Facturas</string>
+   </property>
+  </action>
+  <action name="actionSeries">
+   <property name="text">
+    <string>Series</string>
+   </property>
+  </action>
+  <action name="actionRecurrentes">
+   <property name="text">
+    <string>Recurrentes</string>
+   </property>
+  </action>
+  <action name="actionReferencias">
+   <property name="icon">
+    <iconset resource="../keme.qrc">
+     <normaloff>:/iconos/graf/view_choose.png</normaloff>:/iconos/graf/view_choose.png</iconset>
+   </property>
+   <property name="text">
+    <string>Referencias</string>
+   </property>
+  </action>
+  <action name="actionCuentas">
+   <property name="icon">
+    <iconset resource="../keme.qrc">
+     <normaloff>:/iconos/graf/subcuenta.png</normaloff>:/iconos/graf/subcuenta.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cuentas</string>
+   </property>
+  </action>
+  <action name="actionCuentas_de_IVA">
+   <property name="text">
+    <string>Cuentas de IVA</string>
+   </property>
+  </action>
+  <action name="actionLista">
+   <property name="text">
+    <string>Lista</string>
+   </property>
+  </action>
+  <action name="actionRemesas">
+   <property name="text">
+    <string>Remesas</string>
+   </property>
+  </action>
+  <action name="actionEstimaciones">
+   <property name="text">
+    <string>Estimaciones</string>
+   </property>
+  </action>
+  <action name="actionGesti_n_estimaciones">
+   <property name="text">
+    <string>Gestión estimaciones</string>
+   </property>
+  </action>
+  <action name="actionConexion">
+   <property name="icon">
+    <iconset resource="../keme.qrc">
+     <normaloff>:/iconos/graf/connect_no.png</normaloff>:/iconos/graf/connect_no.png</iconset>
+   </property>
+   <property name="text">
+    <string>Conexión base de datos</string>
+   </property>
+   <property name="toolTip">
+    <string>Conexión a la base de datos</string>
+   </property>
+  </action>
+  <action name="actionTipos_documento">
+   <property name="text">
+    <string>Tipos documento</string>
+   </property>
+  </action>
+  <action name="actionIrpf">
+   <property name="text">
+    <string>Retención IRPF</string>
+   </property>
+  </action>
+  <action name="actionSalir">
+   <property name="icon">
+    <iconset resource="../keme.qrc">
+     <normaloff>:/iconos/graf/application-exit.png</normaloff>:/iconos/graf/application-exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Salir</string>
+   </property>
+  </action>
+  <action name="actionFacturacion_predefinida">
+   <property name="text">
+    <string>Facturacion predefinida</string>
+   </property>
+  </action>
+  <action name="actionLotes_facturas">
+   <property name="icon">
+    <iconset resource="../keme.qrc">
+     <normaloff>:/iconos/graf/stock_addressbook.png</normaloff>:/iconos/graf/stock_addressbook.png</iconset>
+   </property>
+   <property name="text">
+    <string>Lotes facturas</string>
+   </property>
+  </action>
+  <action name="actionCuenta_anticipos">
+   <property name="text">
+    <string>Cuenta anticipos / provisión de fondos</string>
+   </property>
+  </action>
+  <action name="actionExternos">
+   <property name="icon">
+    <iconset resource="../keme.qrc">
+     <normaloff>:/iconos/graf/externo.png</normaloff>:/iconos/graf/externo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Externos</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../keme.qrc"/>
+ </resources>
+ <connections/>
+</ui>

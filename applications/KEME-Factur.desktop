@@ -1,0 +1,22 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Categories=Application;Office;
+Comment[es]=Aplicación de facturación para KEME
+Comment=Aplicación de facturación para KEME
+Encoding=UTF-8
+Exec='factur'
+GenericName[es]=KEME-Factur
+GenericName=KEME-Factur
+Icon=factur
+MimeType=
+Name[es]=KEME-Factur
+Name=KEME-Factur
+Path=
+StartupNotify=true
+Terminal=false
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-DCOP-ServiceType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=

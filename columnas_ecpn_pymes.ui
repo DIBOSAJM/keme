@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>columnas_ecpn_pymes</class>
+ <widget class="QDialog" name="columnas_ecpn_pymes">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>635</width>
+    <height>374</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Columnas Estado de Cambios en el Patrimonio Neto PYMES</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Columna</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Cuentas</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="columnalineEdit"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="contenidolineEdit"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLineEdit" name="columnalineEdit_2"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="contenidolineEdit_2"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLineEdit" name="columnalineEdit_3"/>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="contenidolineEdit_3"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLineEdit" name="columnalineEdit_4"/>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="contenidolineEdit_4"/>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLineEdit" name="columnalineEdit_5"/>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="contenidolineEdit_5"/>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLineEdit" name="columnalineEdit_6"/>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLineEdit" name="contenidolineEdit_6"/>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLineEdit" name="columnalineEdit_7"/>
+     </item>
+     <item row="7" column="1">
+      <widget class="QLineEdit" name="contenidolineEdit_7"/>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLineEdit" name="columnalineEdit_8"/>
+     </item>
+     <item row="8" column="1">
+      <widget class="QLineEdit" name="contenidolineEdit_8"/>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLineEdit" name="columnalineEdit_9"/>
+     </item>
+     <item row="9" column="1">
+      <widget class="QLineEdit" name="contenidolineEdit_9"/>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLineEdit" name="columnalineEdit_10"/>
+     </item>
+     <item row="10" column="1">
+      <widget class="QLineEdit" name="contenidolineEdit_10"/>
+     </item>
+     <item row="11" column="0">
+      <widget class="QLineEdit" name="columnalineEdit_11"/>
+     </item>
+     <item row="11" column="1">
+      <widget class="QLineEdit" name="contenidolineEdit_11"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>&amp;Cancelar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="aceptarpushButton">
+       <property name="text">
+        <string>&amp;Aceptar</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>columnalineEdit</tabstop>
+  <tabstop>contenidolineEdit</tabstop>
+  <tabstop>columnalineEdit_2</tabstop>
+  <tabstop>contenidolineEdit_2</tabstop>
+  <tabstop>columnalineEdit_3</tabstop>
+  <tabstop>contenidolineEdit_3</tabstop>
+  <tabstop>columnalineEdit_4</tabstop>
+  <tabstop>contenidolineEdit_4</tabstop>
+  <tabstop>columnalineEdit_5</tabstop>
+  <tabstop>contenidolineEdit_5</tabstop>
+  <tabstop>columnalineEdit_6</tabstop>
+  <tabstop>contenidolineEdit_6</tabstop>
+  <tabstop>columnalineEdit_7</tabstop>
+  <tabstop>contenidolineEdit_7</tabstop>
+  <tabstop>columnalineEdit_8</tabstop>
+  <tabstop>contenidolineEdit_8</tabstop>
+  <tabstop>columnalineEdit_9</tabstop>
+  <tabstop>contenidolineEdit_9</tabstop>
+  <tabstop>columnalineEdit_10</tabstop>
+  <tabstop>contenidolineEdit_10</tabstop>
+  <tabstop>columnalineEdit_11</tabstop>
+  <tabstop>contenidolineEdit_11</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>aceptarpushButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>columnas_ecpn_pymes</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>469</x>
+     <y>328</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>428</x>
+     <y>316</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

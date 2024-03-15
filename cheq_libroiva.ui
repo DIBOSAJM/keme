@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>cheq_libroiva</class>
+ <widget class="QDialog" name="cheq_libroiva">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>861</width>
+    <height>551</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Chequeo libro de facturas</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>841</width>
+        <height>499</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Apuntes con cuentas de factura no correctas</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="apuntestableWidget">
+         <column>
+          <property name="text">
+           <string>Apunte</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Fecha</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Cuenta</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Descripción</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Importe</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Cuenta diario</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="ed_asientopushButton">
+           <property name="text">
+            <string>&amp;Editar asiento</string>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/boligrafo_editar.png</normaloff>:/iconos/graf/boligrafo_editar.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Incidencias en cuentas de factura</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="cuentastableWidget">
+         <column>
+          <property name="text">
+           <string>Cuenta</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Descripción</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Razón</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>NIF</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Incidencia</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Externo</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="datospushButton">
+           <property name="text">
+            <string>&amp;Datos</string>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/resource-group.png</normaloff>:/iconos/graf/resource-group.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="refrescarpushButton">
+       <property name="text">
+        <string>&amp;Refrescar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/refresh.xpm</normaloff>:/iconos/graf/refresh.xpm</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="informepushButton">
+       <property name="text">
+        <string>&amp;Informe</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/printing.xpm</normaloff>:/iconos/graf/printing.xpm</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="aceptarpushButton">
+       <property name="text">
+        <string>&amp;Salir</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/application-exit.png</normaloff>:/iconos/graf/application-exit.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>apuntestableWidget</tabstop>
+  <tabstop>ed_asientopushButton</tabstop>
+  <tabstop>cuentastableWidget</tabstop>
+  <tabstop>datospushButton</tabstop>
+  <tabstop>refrescarpushButton</tabstop>
+  <tabstop>informepushButton</tabstop>
+  <tabstop>aceptarpushButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="keme.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>aceptarpushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>cheq_libroiva</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>597</x>
+     <y>517</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>462</x>
+     <y>501</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

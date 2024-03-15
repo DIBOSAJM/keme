@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tabla_iva_sop</class>
+ <widget class="QDialog" name="tabla_iva_sop">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>811</width>
+    <height>558</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Registros del libro de facturas recibidas</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QTableWidget" name="tableWidget">
+       <column>
+        <property name="text">
+         <string>Apunte</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Fecha cont</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Fecha fra.</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Documento</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Cuenta</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Descrip</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>NIF/CIF</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Asiento</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>B.I.</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Tipo</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Cuota</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>TOTAL</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Prorrata</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Afectación</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Cuota efectiva</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Cuot.liquidada</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Recepción</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="edasientopushButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/lapiz.xpm</normaloff>:/iconos/graf/lapiz.xpm</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="consasientopushButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/xmag.png</normaloff>:/iconos/graf/xmag.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="borra_asientoButton">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/borraelem.png</normaloff>:/iconos/graf/borraelem.png</iconset>
+         </property>
+         <property name="shortcut">
+          <string>Alt+L</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="refreshpushButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/refresh.xpm</normaloff>:/iconos/graf/refresh.xpm</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="ordenarpushButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/sort_ascend.png</normaloff>:/iconos/graf/sort_ascend.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buscarpushButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/edit-find-mail.png</normaloff>:/iconos/graf/edit-find-mail.png</iconset>
+         </property>
+         <property name="shortcut">
+          <string>Ctrl+F</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="solocajacheckBox">
+       <property name="text">
+        <string>Exclusivamente registros con criterio de caja</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="ptes_cajacheckBox">
+       <property name="text">
+        <string>Restringir a partidas con IVA pendiente criterio de caja</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="desglosepushButton">
+       <property name="text">
+        <string>&amp;Desglose caja</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/money.png</normaloff>:/iconos/graf/money.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="aceptarpushButton">
+       <property name="text">
+        <string>&amp;Aceptar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/application-exit.png</normaloff>:/iconos/graf/application-exit.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>tableWidget</tabstop>
+  <tabstop>edasientopushButton</tabstop>
+  <tabstop>consasientopushButton</tabstop>
+  <tabstop>borra_asientoButton</tabstop>
+  <tabstop>refreshpushButton</tabstop>
+  <tabstop>ordenarpushButton</tabstop>
+  <tabstop>aceptarpushButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="keme.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>aceptarpushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tabla_iva_sop</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>637</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>576</x>
+     <y>460</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

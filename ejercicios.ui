@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>José Manuel Díez Botella</author>
+ <class>ejercicios</class>
+ <widget class="QDialog" name="ejercicios">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>912</width>
+    <height>234</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Ejercicios</string>
+  </property>
+  <layout class="QVBoxLayout">
+   <item>
+    <widget class="QTableView" name="ejerciciostableView"/>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <widget class="QPushButton" name="nuevopushButton">
+       <property name="text">
+        <string>&amp;Nuevo</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/File.png</normaloff>:/iconos/graf/File.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Alt+N</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="periodospushButton">
+       <property name="text">
+        <string>&amp;Periodos</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/pad.png</normaloff>:/iconos/graf/pad.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="fcierrepushButton">
+       <property name="text">
+        <string>&amp;Fecha cierre</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/pago.png</normaloff>:/iconos/graf/pago.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Alt+E</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="numeracionpushButton">
+       <property name="text">
+        <string>&amp;Numeración</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/view_choose.png</normaloff>:/iconos/graf/view_choose.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="recepcionpushButton">
+       <property name="text">
+        <string>N.&amp;Recepción</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/facturas_recibidas.png</normaloff>:/iconos/graf/facturas_recibidas.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="bloquea_pushButton">
+       <property name="text">
+        <string>&amp;Bloquear/Desbloquear</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/system-shutdown.png</normaloff>:/iconos/graf/system-shutdown.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="eliminarpushButton">
+       <property name="text">
+        <string>&amp;Eliminar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/borrar.png</normaloff>:/iconos/graf/borrar.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Alt+L</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="salirpushButto">
+       <property name="text">
+        <string>&amp;Salir</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/application-exit.png</normaloff>:/iconos/graf/application-exit.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Alt+S</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <tabstops>
+  <tabstop>ejerciciostableView</tabstop>
+  <tabstop>nuevopushButton</tabstop>
+  <tabstop>periodospushButton</tabstop>
+  <tabstop>fcierrepushButton</tabstop>
+  <tabstop>numeracionpushButton</tabstop>
+  <tabstop>eliminarpushButton</tabstop>
+  <tabstop>salirpushButto</tabstop>
+ </tabstops>
+ <resources>
+  <include location="keme.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>salirpushButto</sender>
+   <signal>clicked()</signal>
+   <receiver>ejercicios</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

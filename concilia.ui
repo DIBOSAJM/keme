@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>concilia</class>
+ <widget class="QDialog" name="concilia">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1191</width>
+    <height>728</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Conciliación de cuentas</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QLabel" name="titulolabel">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Cuenta y descripción</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Fecha inicial:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateEdit" name="inicialdateEdit"/>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Fecha final:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateEdit" name="finaldateEdit"/>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Contabilidad</string>
+      </attribute>
+      <layout class="QVBoxLayout">
+       <item>
+        <widget class="QTableWidget" name="contabtableWidget">
+         <property name="columnCount">
+          <number>12</number>
+         </property>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <item>
+          <widget class="QCheckBox" name="noconcicheckBox">
+           <property name="text">
+            <string>No conciliadas</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QPushButton" name="conciliapushButton">
+             <property name="text">
+              <string>&amp;Concilia</string>
+             </property>
+             <property name="icon">
+              <iconset resource="keme.qrc">
+               <normaloff>:/iconos/graf/check2.png</normaloff>:/iconos/graf/check2.png</iconset>
+             </property>
+             <property name="default">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cambia_cuenta_pushButton">
+             <property name="text">
+              <string>Cambia cuenta</string>
+             </property>
+             <property name="icon">
+              <iconset resource="keme.qrc">
+               <normaloff>:/iconos/graf/mayor2.png</normaloff>:/iconos/graf/mayor2.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="conc_doc_pushButton">
+             <property name="text">
+              <string>Concepto/Doc</string>
+             </property>
+             <property name="icon">
+              <iconset resource="keme.qrc">
+               <normaloff>:/iconos/graf/concepto.png</normaloff>:/iconos/graf/concepto.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="fechapushButton">
+             <property name="text">
+              <string>&amp;Fecha</string>
+             </property>
+             <property name="icon">
+              <iconset resource="keme.qrc">
+               <normaloff>:/iconos/graf/calendario_venci.png</normaloff>:/iconos/graf/calendario_venci.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="borrapushButton">
+             <property name="text">
+              <string>&amp;Borrar</string>
+             </property>
+             <property name="icon">
+              <iconset resource="keme.qrc">
+               <normaloff>:/iconos/graf/borrar.png</normaloff>:/iconos/graf/borrar.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="consultapushButton">
+             <property name="text">
+              <string>C&amp;onsulta</string>
+             </property>
+             <property name="icon">
+              <iconset resource="keme.qrc">
+               <normaloff>:/iconos/graf/xmag.png</normaloff>:/iconos/graf/xmag.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="nuevopushButton">
+             <property name="text">
+              <string>&amp;Nuevo</string>
+             </property>
+             <property name="icon">
+              <iconset resource="keme.qrc">
+               <normaloff>:/iconos/graf/Files-New-File-icon.png</normaloff>:/iconos/graf/Files-New-File-icon.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="vencipushButton">
+             <property name="text">
+              <string>&amp;Vencimientos</string>
+             </property>
+             <property name="icon">
+              <iconset resource="keme.qrc">
+               <normaloff>:/iconos/graf/COINS-icon.png</normaloff>:/iconos/graf/COINS-icon.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="editapushButton">
+             <property name="text">
+              <string>&amp;Editar</string>
+             </property>
+             <property name="icon">
+              <iconset resource="keme.qrc">
+               <normaloff>:/iconos/graf/boligrafo_editar.png</normaloff>:/iconos/graf/boligrafo_editar.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="imprimecontpushButton">
+             <property name="text">
+              <string>&amp;Imprimir</string>
+             </property>
+             <property name="icon">
+              <iconset resource="keme.qrc">
+               <normaloff>:/iconos/graf/printer.png</normaloff>:/iconos/graf/printer.png</iconset>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Cuenta externa</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QTableWidget" name="externatableWidget">
+         <property name="columnCount">
+          <number>10</number>
+         </property>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QCheckBox" name="noconciextcheckBox">
+             <property name="text">
+              <string>No conciliadas</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QLabel" name="margenlabel">
+               <property name="text">
+                <string>Margen días</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="margenspinBox">
+               <property name="maximum">
+                <number>10</number>
+               </property>
+               <property name="value">
+                <number>2</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox">
+           <property name="title">
+            <string>FILTRO</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QLabel" name="filtrar_label">
+                <property name="text">
+                 <string>Concepto:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="criterio_comboBox">
+                <item>
+                 <property name="text">
+                  <string>Comienze por</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Contenga</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="filtro_lineEdit"/>
+              </item>
+              <item>
+               <widget class="QPushButton" name="quitaFiltro_pushButton">
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="keme.qrc">
+                  <normaloff>:/iconos/graf/borrar.png</normaloff>:/iconos/graf/borrar.png</iconset>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>Fecha:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="fecha_sel_comboBox">
+                <item>
+                 <property name="text">
+                  <string>- -</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Igual a</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Mayor que</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Menor que</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDateEdit" name="fecha_filtro_dateEdit"/>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>Importe</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="tipo_importe_comboBox">
+                <item>
+                 <property name="text">
+                  <string>Debe</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Haber</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>Intervalo:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="valor1_lineEdit"/>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_6">
+                <property name="text">
+                 <string>a</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="valor2_lineEdit"/>
+              </item>
+              <item>
+               <widget class="QPushButton" name="ActuFiltro_pushButton">
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="keme.qrc">
+                  <normaloff>:/iconos/graf/rayo.png</normaloff>:/iconos/graf/rayo.png</iconset>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <item>
+          <layout class="QHBoxLayout"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="mayor_pushButton">
+           <property name="maximumSize">
+            <size>
+             <width>90</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>&amp;Mayor</string>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/mayor3.png</normaloff>:/iconos/graf/mayor3.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="venci_c2_pushButton">
+           <property name="maximumSize">
+            <size>
+             <width>120</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>&amp;Vencimientos</string>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/COINS-icon.png</normaloff>:/iconos/graf/COINS-icon.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="contabilizar_pushButton">
+           <property name="whatsThis">
+            <string extracomment="Contabilizar información mostrada"/>
+           </property>
+           <property name="text">
+            <string>Co&amp;ntabilizar</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cont_linea_pushButton">
+           <property name="text">
+            <string>Contabili&amp;za Línea</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="oculta_pushButton">
+           <property name="text">
+            <string>&amp;Oculta línea</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="conciliaextpushButton">
+           <property name="text">
+            <string>&amp;Concilia línea</string>
+           </property>
+           <property name="default">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="adpartidapushButton">
+           <property name="text">
+            <string>&amp;Añadir línea</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="editalineapushButton">
+           <property name="text">
+            <string>&amp;Editar línea</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="borrarpushButton">
+           <property name="text">
+            <string>&amp;Borrar línea</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="imprimeexpushButton">
+           <property name="text">
+            <string>&amp;Imprime</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>261</width>
+         <height>25</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="refrescarpushButton">
+       <property name="text">
+        <string>&amp;Refrescar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="eliminapushButton">
+       <property name="text">
+        <string>&amp;Elimina marcas</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="automatpushButton">
+       <property name="text">
+        <string>C&amp;onciliación automática</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="imprimeinfpushButton">
+       <property name="text">
+        <string>Imprime &amp;Informe</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="consultainfpushButton">
+       <property name="text">
+        <string>Co&amp;nsulta Informe</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="latexpushButton">
+       <property name="text">
+        <string>Editar &amp;Latex</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelarpushButton">
+       <property name="text">
+        <string>&amp;Cancelar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="aceptarpushButton">
+       <property name="text">
+        <string>&amp;Aceptar</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>inicialdateEdit</tabstop>
+  <tabstop>finaldateEdit</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>contabtableWidget</tabstop>
+  <tabstop>noconcicheckBox</tabstop>
+  <tabstop>conciliapushButton</tabstop>
+  <tabstop>cambia_cuenta_pushButton</tabstop>
+  <tabstop>conc_doc_pushButton</tabstop>
+  <tabstop>fechapushButton</tabstop>
+  <tabstop>borrapushButton</tabstop>
+  <tabstop>consultapushButton</tabstop>
+  <tabstop>nuevopushButton</tabstop>
+  <tabstop>vencipushButton</tabstop>
+  <tabstop>editapushButton</tabstop>
+  <tabstop>imprimecontpushButton</tabstop>
+  <tabstop>externatableWidget</tabstop>
+  <tabstop>noconciextcheckBox</tabstop>
+  <tabstop>margenspinBox</tabstop>
+  <tabstop>criterio_comboBox</tabstop>
+  <tabstop>filtro_lineEdit</tabstop>
+  <tabstop>quitaFiltro_pushButton</tabstop>
+  <tabstop>fecha_sel_comboBox</tabstop>
+  <tabstop>fecha_filtro_dateEdit</tabstop>
+  <tabstop>tipo_importe_comboBox</tabstop>
+  <tabstop>valor1_lineEdit</tabstop>
+  <tabstop>valor2_lineEdit</tabstop>
+  <tabstop>ActuFiltro_pushButton</tabstop>
+  <tabstop>mayor_pushButton</tabstop>
+  <tabstop>venci_c2_pushButton</tabstop>
+  <tabstop>contabilizar_pushButton</tabstop>
+  <tabstop>cont_linea_pushButton</tabstop>
+  <tabstop>oculta_pushButton</tabstop>
+  <tabstop>conciliaextpushButton</tabstop>
+  <tabstop>adpartidapushButton</tabstop>
+  <tabstop>editalineapushButton</tabstop>
+  <tabstop>borrarpushButton</tabstop>
+  <tabstop>imprimeexpushButton</tabstop>
+  <tabstop>refrescarpushButton</tabstop>
+  <tabstop>eliminapushButton</tabstop>
+  <tabstop>automatpushButton</tabstop>
+  <tabstop>imprimeinfpushButton</tabstop>
+  <tabstop>consultainfpushButton</tabstop>
+  <tabstop>latexpushButton</tabstop>
+  <tabstop>cancelarpushButton</tabstop>
+  <tabstop>aceptarpushButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="keme.qrc"/>
+ </resources>
+ <connections/>
+</ui>

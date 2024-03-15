@@ -1,0 +1,22 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Categories=Application;Office;
+Comment[es]=Aplicación contable
+Comment=Aplicación contable
+Encoding=UTF-8
+Exec='keme5'
+GenericName[es]=KEME-Contabilidad
+GenericName=KEME-Contabilidad
+Icon=keme
+MimeType=
+Name[es]=KEME-Contabilidad
+Name=KEME-Contabilidad
+Path=
+StartupNotify=true
+Terminal=false
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-DCOP-ServiceType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=

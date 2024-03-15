@@ -1,0 +1,163 @@
+<ui version="4.0" >
+ <class>desviaciones</class>
+ <widget class="QDialog" name="desviaciones" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>760</width>
+    <height>460</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Desviaciones</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <item>
+    <widget class="QLabel" name="titulolabel" >
+     <property name="font" >
+      <font>
+       <pointsize>22</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text" >
+      <string>DESVIACIONES</string>
+     </property>
+     <property name="alignment" >
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <widget class="QLabel" name="label" >
+       <property name="text" >
+        <string>SELECCIÓN:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="seleclineEdit" />
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tableWidget" >
+     <property name="editTriggers" >
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="alternatingRowColors" >
+      <bool>true</bool>
+     </property>
+     <property name="columnCount" >
+      <number>6</number>
+     </property>
+     <column>
+      <property name="text" >
+       <string>CUENTA</string>
+      </property>
+     </column>
+     <column>
+      <property name="text" >
+       <string>DESCRIPCIÓN</string>
+      </property>
+     </column>
+     <column>
+      <property name="text" >
+       <string>PREVISIÓN</string>
+      </property>
+     </column>
+     <column>
+      <property name="text" >
+       <string>REALIZACIÓN</string>
+      </property>
+     </column>
+     <column>
+      <property name="text" >
+       <string>DESVIACIÓN</string>
+      </property>
+     </column>
+     <column>
+      <property name="text" >
+       <string>PORCENTAJE</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>301</width>
+         <height>25</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="refrescarpushButton" >
+       <property name="text" >
+        <string>&amp;Refrescar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="detallepushButton" >
+       <property name="text" >
+        <string>&amp;Detalle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="copiarpushButton" >
+       <property name="text" >
+        <string>&amp;Copiar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="imprimirpushButton" >
+       <property name="text" >
+        <string>&amp;Imprimir</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="aceptarpushButton" >
+       <property name="text" >
+        <string>&amp;Aceptar</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>aceptarpushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>desviaciones</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>659</x>
+     <y>364</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>701</x>
+     <y>392</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

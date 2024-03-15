@@ -1,0 +1,172 @@
+<ui version="4.0" >
+ <class>editapaseconci</class>
+ <widget class="QDialog" name="editapaseconci" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>473</width>
+    <height>223</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Editar pase cuenta</string>
+  </property>
+  <widget class="QDateEdit" name="fechadateEdit" >
+   <property name="geometry" >
+    <rect>
+     <x>40</x>
+     <y>50</y>
+     <width>110</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label" >
+   <property name="geometry" >
+    <rect>
+     <x>40</x>
+     <y>30</y>
+     <width>46</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>FECHA:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="descripcionlineEdit" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>50</y>
+     <width>261</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>30</y>
+     <width>181</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Descripción</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="debelineEdit" >
+   <property name="geometry" >
+    <rect>
+     <x>70</x>
+     <y>130</y>
+     <width>113</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="haberlineEdit" >
+   <property name="geometry" >
+    <rect>
+     <x>220</x>
+     <y>130</y>
+     <width>113</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3" >
+   <property name="geometry" >
+    <rect>
+     <x>70</x>
+     <y>100</y>
+     <width>46</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>DEBE:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4" >
+   <property name="geometry" >
+    <rect>
+     <x>220</x>
+     <y>100</y>
+     <width>46</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>HABER:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="cancelarpushButton" >
+   <property name="geometry" >
+    <rect>
+     <x>290</x>
+     <y>180</y>
+     <width>75</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>&amp;Cancelar</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="aceptarpushButton" >
+   <property name="geometry" >
+    <rect>
+     <x>380</x>
+     <y>180</y>
+     <width>75</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>&amp;Aceptar</string>
+   </property>
+   <property name="default" >
+    <bool>true</bool>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>cancelarpushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>editapaseconci</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>343</x>
+     <y>193</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>384</x>
+     <y>129</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>aceptarpushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>editapaseconci</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>422</x>
+     <y>193</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>443</x>
+     <y>156</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

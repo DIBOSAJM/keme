@@ -1,0 +1,1467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>edita_doc</class>
+ <widget class="QDialog" name="edita_doc">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>844</width>
+    <height>883</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Editar tipo de documento</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_7">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>PARÁMETROS</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>CÓDIGO:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="codigolineEdit">
+             <property name="maximumSize">
+              <size>
+               <width>200</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>SERIE:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="seriecomboBox">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Código moneda:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="codcomboBox">
+             <item>
+              <property name="text">
+               <string>EUR</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>USD</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>GBP</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Símbolo monetario:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="simcomboBox">
+             <item>
+              <property name="text">
+               <string>€</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>$</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>£</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>DESCRIPCIÓN:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="descriplineEdit"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_41">
+           <property name="text">
+            <string>Plantilla informe:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="pljasper_lineEdit">
+           <property name="maximumSize">
+            <size>
+             <width>150</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="fichpushButton">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../keme.qrc">
+             <normaloff>:/iconos/graf/fileimport.png</normaloff>:/iconos/graf/fileimport.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_32">
+           <property name="text">
+            <string>LÍNEAS</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="lineasspinBox">
+           <property name="minimum">
+            <number>5</number>
+           </property>
+           <property name="maximum">
+            <number>25</number>
+           </property>
+           <property name="value">
+            <number>10</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_11">
+         <item>
+          <widget class="QCheckBox" name="contabilizablecheckBox">
+           <property name="text">
+            <string>Contabilizable</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="rectificativocheckBox">
+           <property name="text">
+            <string>Rectificativo</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <widget class="QLabel" name="label_24">
+             <property name="text">
+              <string>Tipo de operación:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="operacioncomboBox">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <item>
+              <property name="text">
+               <string>01 - Operación convencional</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>02 - Entregas interiores de bienes o servicios exentos</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>03 - Entregas interiores de bienes o servicios no sujetos</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>04 - Entrega intracomunitaria de bienes</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>05 - Entrega intracomunitaria de servicios</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>06 - Exportación de bienes o servicios</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>07 - Operación exenta que no da derecho a deducción</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>08 - Donación</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_23">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_17">
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>PIE 1</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="pie1lineEdit"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_22">
+             <item>
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>PIE 2</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="pie2lineEdit"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_20">
+             <item>
+              <widget class="QLabel" name="label_43">
+               <property name="text">
+                <string>Concepto SII</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="conceptoSII_lineEdit"/>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="donacion_groupBox">
+           <property name="title">
+            <string/>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <layout class="QGridLayout" name="gridLayout_3">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_53">
+                <property name="text">
+                 <string>Clave:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="clave_donacion_comboBox">
+                <property name="minimumSize">
+                 <size>
+                  <width>280</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>280</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>A - DONATIVOS NO INCLUIDOS ACTIVIDADES MECENAZGO</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>B - DONATIVOS INCLUIDOS ACTIVIDADES MECENAZGO</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>C - APORTACIÓN AL PATRIMONIO DE DISCAPACITADOS</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>D - DISPOSICIÓN DEL PATRIMONIO DE DISCAPACITADOS</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>E - APORTACIONES PATRIMONIO PROTEGIDO</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>F - CUOTAS DE AFILIACIÓN/APORTACIONES PARTIDOS POLÍTICOS</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QCheckBox" name="donacion_especie_checkBox">
+                <property name="text">
+                 <string>En especie</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_54">
+                <property name="text">
+                 <string>C.A.</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QComboBox" name="ca_comboBox">
+                <property name="minimumSize">
+                 <size>
+                  <width>280</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>280</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>--  SIN ASIGNAR</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>01 - ANDALUCÍA</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>02 - ARAGÓN</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>03 - PRINCIPADO DE ASTURIAS</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>04 - ILLES BALEARS</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>05 - CANARIAS</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>06 - CANTABRIA</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>07 - CASTILLA-LA MANCHA</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>08 - CASTILLA Y LEÓN</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>09 - CATALUÑA</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>10 - EXTREMADURA</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>11 - GALICIA</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>12 - MADRID</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>13 - REGIÓN DE MURCIA</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>16 - LA RIOJA</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>17 - COMUNIDAD VALENCIANA</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>99 - NO RESIDENTES</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QCheckBox" name="recurrente_checkBox">
+                <property name="text">
+                 <string>Recurrente</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_21">
+              <item>
+               <widget class="QLabel" name="label_55">
+                <property name="text">
+                 <string>Porcentaje deducción Comunidad Autónoma:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="porcentaje_deduccion_ca_lineEdit"/>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Etiquetas en documento</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="7" column="0">
+           <widget class="QLabel" name="label_42">
+            <property name="text">
+             <string>Suplidos</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLineEdit" name="descripreflineEdit">
+            <property name="text">
+             <string>Descripción</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Descripción</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="6">
+           <widget class="QLineEdit" name="cif_empresalineEdit">
+            <property name="text">
+             <string>NIF</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Documento</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="5">
+           <widget class="QLabel" name="label_28">
+            <property name="text">
+             <string>Fecha</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="6">
+           <widget class="QLineEdit" name="fechalineEdit">
+            <property name="text">
+             <string>Fecha</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLineEdit" name="documentolineEdit">
+            <property name="text">
+             <string>FACTURA</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLabel" name="label_13">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Total línea</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QLineEdit" name="totallineEdit">
+            <property name="text">
+             <string>Total</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <widget class="QLabel" name="label_18">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Cuota RE</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="6">
+           <widget class="QLineEdit" name="cuotarelineEdit">
+            <property name="text">
+             <string>Cuota RE</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Cantidad</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="cantidadlineEdit">
+            <property name="text">
+             <string>Cantidad</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QLabel" name="label_14">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Base Imponible</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QLineEdit" name="bilineEdit">
+            <property name="text">
+             <string>Base Imponible</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Referencia</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLineEdit" name="referencialineEdit">
+            <property name="text">
+             <string>Referencia</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QLabel" name="label_15">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Tipo IVA</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="4">
+           <widget class="QLineEdit" name="tipoivalineEdit">
+            <property name="text">
+             <string>Tipo IVA</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="6">
+           <widget class="QLineEdit" name="notaslineEdit">
+            <property name="text">
+             <string>Notas</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="5">
+           <widget class="QLabel" name="label_20">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Notas</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QLabel" name="label_16">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Tipo RE</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="4">
+           <widget class="QLineEdit" name="tiporelineEdit">
+            <property name="text">
+             <string>Tipo RE</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="5">
+           <widget class="QLabel" name="label_21">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Vencimientos</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="6">
+           <widget class="QLineEdit" name="vencilineEdit">
+            <property name="text">
+             <string>Vencimientos</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Precio</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QLineEdit" name="preciolineEdit">
+            <property name="text">
+             <string>Precio</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3">
+           <widget class="QLabel" name="label_17">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Cuota</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="4">
+           <widget class="QLineEdit" name="cuotalineEdit">
+            <property name="text">
+             <string>Cuota IVA</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="5">
+           <widget class="QLabel" name="label_25">
+            <property name="text">
+             <string>CIF Empresa</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QLineEdit" name="cif_clientelineEdit">
+            <property name="text">
+             <string>NIF</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_26">
+            <property name="text">
+             <string>NIF Cliente</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="4">
+           <widget class="QLineEdit" name="clientelineEdit">
+            <property name="text">
+             <string>Cliente</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3">
+           <widget class="QLabel" name="label_27">
+            <property name="text">
+             <string>Cliente</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_29">
+            <property name="text">
+             <string>Núm. fact.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="3">
+           <widget class="QLabel" name="label_30">
+            <property name="text">
+             <string>Descuento</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2">
+           <widget class="QLineEdit" name="numerolineEdit">
+            <property name="text">
+             <string>Factura</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="5">
+           <widget class="QLabel" name="label_19">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Total Factura</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="6">
+           <widget class="QLineEdit" name="totalfaclineEdit">
+            <property name="text">
+             <string>TOTAL FACTURA</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="4">
+           <widget class="QLineEdit" name="descuentolineEdit">
+            <property name="text">
+             <string>DTO.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QLabel" name="label_31">
+            <property name="text">
+             <string>Total líneas</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6">
+           <widget class="QLineEdit" name="totallineaslineEdit">
+            <property name="text">
+             <string>Total</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QLineEdit" name="suplidoslineEdit">
+            <property name="text">
+             <string>SUPLIDOS</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="3">
+           <widget class="QLabel" name="label_52">
+            <property name="text">
+             <string>Retención</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="4">
+           <widget class="QLineEdit" name="retencion_lineEdit">
+            <property name="text">
+             <string>Ret. irpf (%)</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QLabel" name="label_22">
+             <property name="text">
+              <string>Notas:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTextEdit" name="notastextEdit"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QLabel" name="label_23">
+             <property name="text">
+              <string>Logo:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <widget class="QLabel" name="logo_label">
+               <property name="minimumSize">
+                <size>
+                 <width>240</width>
+                 <height>100</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>240</width>
+                 <height>100</height>
+                </size>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::WinPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Sunken</enum>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_8">
+               <item>
+                <spacer name="horizontalSpacer_2">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Preferred</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="fotopushButton">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>66</width>
+                   <height>21</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>7</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Importar...</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="borrafotopushButton">
+                 <property name="maximumSize">
+                  <size>
+                   <width>18</width>
+                   <height>18</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../keme.qrc">
+                   <normaloff>:/iconos/graf/borraelem.png</normaloff>:/iconos/graf/borraelem.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>12</width>
+                   <height>12</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>DATOS EMISOR</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_11">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_19">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_8">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_12">
+             <item>
+              <widget class="QLabel" name="label_33">
+               <property name="text">
+                <string>NOMBRE/RAZÓN SOCIAL:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="nombre_emisorlineEdit"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_13">
+             <item>
+              <widget class="QLabel" name="label_34">
+               <property name="text">
+                <string>DOMICILIO:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="domicilio_emisorlineEdit"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_14">
+             <item>
+              <widget class="QLabel" name="label_35">
+               <property name="text">
+                <string>C.P.</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="cp_emisorlineEdit"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_36">
+               <property name="text">
+                <string>POBLACIÓN:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="poblacion_emisorlineEdit"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_37">
+               <property name="text">
+                <string>PROVINCIA:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="provincia_emisorlineEdit"/>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="img_fondo_label">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>190</width>
+             <height>268</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>190</width>
+             <height>268</height>
+            </size>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Box</enum>
+           </property>
+           <property name="text">
+            <string>IMG FONDO</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_15">
+         <item>
+          <widget class="QLabel" name="label_38">
+           <property name="text">
+            <string>PAÍS:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="pais_emisorlineEdit"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_39">
+           <property name="text">
+            <string>CIF:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="cif_emisorlineEdit">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_44">
+           <property name="text">
+            <string>Código idioma FACTURAe:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="idioma_fe_lineEdit">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_16">
+         <item>
+          <widget class="QLabel" name="label_40">
+           <property name="text">
+            <string>IDENTIDAD REGISTRAL:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="id_registrallineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>170</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>DATOS REGISTRO MERCANTIL FACTURAe</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_45">
+              <property name="text">
+               <string>Libro:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="libro_lineEdit"/>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="label_47">
+              <property name="text">
+               <string>Hoja:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QLineEdit" name="hoja_lineEdit"/>
+            </item>
+            <item row="0" column="4">
+             <widget class="QLabel" name="label_50">
+              <property name="text">
+               <string>Sección:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="5">
+             <widget class="QLineEdit" name="seccion_lineEdit"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_46">
+              <property name="text">
+               <string>Registro:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="registro_lineEdit"/>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel" name="label_49">
+              <property name="text">
+               <string>Folio:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QLineEdit" name="folio_lineEdit"/>
+            </item>
+            <item row="1" column="4">
+             <widget class="QLabel" name="label_51">
+              <property name="text">
+               <string>Tomo:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="5">
+             <widget class="QLineEdit" name="volumen_lineEdit"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_18">
+            <item>
+             <widget class="QLabel" name="label_48">
+              <property name="text">
+               <string>Datos adicionales:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="datos_adicionales_lineEdit"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelarpushButton">
+       <property name="text">
+        <string>&amp;Cancelar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="aceptarpushButton">
+       <property name="text">
+        <string>&amp;Aceptar</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>codigolineEdit</tabstop>
+  <tabstop>seriecomboBox</tabstop>
+  <tabstop>codcomboBox</tabstop>
+  <tabstop>simcomboBox</tabstop>
+  <tabstop>descriplineEdit</tabstop>
+  <tabstop>pljasper_lineEdit</tabstop>
+  <tabstop>fichpushButton</tabstop>
+  <tabstop>lineasspinBox</tabstop>
+  <tabstop>contabilizablecheckBox</tabstop>
+  <tabstop>rectificativocheckBox</tabstop>
+  <tabstop>operacioncomboBox</tabstop>
+  <tabstop>pie1lineEdit</tabstop>
+  <tabstop>pie2lineEdit</tabstop>
+  <tabstop>conceptoSII_lineEdit</tabstop>
+  <tabstop>documentolineEdit</tabstop>
+  <tabstop>totallineEdit</tabstop>
+  <tabstop>cuotarelineEdit</tabstop>
+  <tabstop>cantidadlineEdit</tabstop>
+  <tabstop>bilineEdit</tabstop>
+  <tabstop>totallineaslineEdit</tabstop>
+  <tabstop>referencialineEdit</tabstop>
+  <tabstop>tipoivalineEdit</tabstop>
+  <tabstop>notaslineEdit</tabstop>
+  <tabstop>descripreflineEdit</tabstop>
+  <tabstop>tiporelineEdit</tabstop>
+  <tabstop>vencilineEdit</tabstop>
+  <tabstop>preciolineEdit</tabstop>
+  <tabstop>cuotalineEdit</tabstop>
+  <tabstop>cif_empresalineEdit</tabstop>
+  <tabstop>cif_clientelineEdit</tabstop>
+  <tabstop>clientelineEdit</tabstop>
+  <tabstop>fechalineEdit</tabstop>
+  <tabstop>numerolineEdit</tabstop>
+  <tabstop>descuentolineEdit</tabstop>
+  <tabstop>totalfaclineEdit</tabstop>
+  <tabstop>suplidoslineEdit</tabstop>
+  <tabstop>retencion_lineEdit</tabstop>
+  <tabstop>notastextEdit</tabstop>
+  <tabstop>fotopushButton</tabstop>
+  <tabstop>borrafotopushButton</tabstop>
+  <tabstop>nombre_emisorlineEdit</tabstop>
+  <tabstop>domicilio_emisorlineEdit</tabstop>
+  <tabstop>cp_emisorlineEdit</tabstop>
+  <tabstop>poblacion_emisorlineEdit</tabstop>
+  <tabstop>provincia_emisorlineEdit</tabstop>
+  <tabstop>pais_emisorlineEdit</tabstop>
+  <tabstop>cif_emisorlineEdit</tabstop>
+  <tabstop>idioma_fe_lineEdit</tabstop>
+  <tabstop>id_registrallineEdit</tabstop>
+  <tabstop>libro_lineEdit</tabstop>
+  <tabstop>hoja_lineEdit</tabstop>
+  <tabstop>seccion_lineEdit</tabstop>
+  <tabstop>registro_lineEdit</tabstop>
+  <tabstop>folio_lineEdit</tabstop>
+  <tabstop>volumen_lineEdit</tabstop>
+  <tabstop>datos_adicionales_lineEdit</tabstop>
+  <tabstop>cancelarpushButton</tabstop>
+  <tabstop>aceptarpushButton</tabstop>
+  <tabstop>tabWidget</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../keme.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>cancelarpushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>edita_doc</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>747</x>
+     <y>770</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

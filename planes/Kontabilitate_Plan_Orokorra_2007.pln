@@ -1,0 +1,778 @@
+1	OINARRIZKO FINANTZAKETA
+10	KAPITALA
+100	Kapital soziala
+101	Fondo soziala
+102	Kapitala
+103	Bazkideak, galdatu gabeko ordainketak
+1030	Bazkideak, galdatu gabeko ordainketak, kapital soziala
+1034	Bazkideak, galdatu gabeko ordainketak, inskribatzeko kapitala
+104	Bazkideak, diruaz bestelako ekarpen egin gabeak
+1040	Bazkideak, diruaz bestelako ekarpen egin gabeak, kapital soziala
+1044	Bazkideak, diruaz bestelako ekarpen egin gabeak, inskribatzeko kapitala
+108	Egoera bereziko akzio edo partaidetza propioak
+109	Kapital murrizteko akzio edo partaidetza propioak
+11	ERRESERBAK
+110	Jaulkipen- edo asumitze-prima
+112	Legezko erreserba
+113	Borondatezko erreserbak
+114	Erreserba bereziak
+1140	Sozietate nagusiaren akzio edo partaidetzagatiko erreserbak
+1141	Estatutu-erreserbak
+1142	Kapital amortizatuaren erreserbak
+1144	Bermean onartutako akzio propioengatiko erreserbak
+118	Bazkide edo jabeen ekarpenak
+119	Kapitala eurotara doitzearen diferentziak
+12	APLIKATU GABEKO EMAITZAK
+120	Gaineratikoa
+121	Aurreko ekitaldietako emaitza negatiboak
+129	Ekitaldiko emaitza
+13	DIRU-LAGUNTZAK; DOHAINTZAK, LEGATUAK ETA ONDARE GARBIKO BESTELAKO DOIKUNTZAK
+130	Kapitaleko diru-laguntza ofizialak
+131	Kapital-dohaintzak eta legatuak
+132	Bestelako diru-laguntzak, dohaintzak eta legatuak
+137	Hainbat ekitalditan banatzeko zerga-sarrerak
+1370	Hainbat ekitalditan banatzeko alde iraunkorrengatiko zerga-sarrerak
+1371	Hainbat ekitalditan banatzeko dedukzio eta hobariengatiko zerga-sarrerak
+14	HORNIDURAK
+141	Zergetarako hornidura
+142	Bestelako erantzukizunetarako hornidura
+143	Ibilgetua eraisteko, erretiratzeko edo birgaitzeko hornidura
+145	Ingurumen-jardueretarako hornidura
+15	EZAUGARRI BEREZIKO EPE LUZEKO ZORRAK
+150	Pasibo finantzario moduan kontabilizatutako epe luzeko akzio edo partaidetzak
+153	Pasibo finantzario moduan kontabilizatutako akzio edo partaidetzak, galdatu gabeko ordainketak
+1533	Galdatu gabeko ordainketak, taldeko enpresak
+1534	Galdatu gabeko ordainketak, asoziatutako enpresak
+1535	Galdatu gabeko ordainketak, loturadun alderdiak
+1536	Bestelako galdatu gabeko ordainketak
+154	Pasibo finantzario moduan kontabilizatutako akzio edo partaidetzak, diruaz bestelako ekarpen egin gabeak
+1543	Diruaz bestelako ekarpen egin gabeak, taldeko enpresak
+1544	Diruaz bestelako ekarpen egin gabeak, asoziatutako enpresak
+1545	Diruaz bestelako ekarpen egin gabeak, loturadun alderdiak
+1546	Bestelako diruaz bestelako ekarpen egin gabeak
+16	LOTURADUN ALDERDIEKIKO EPE LUZEKO ZORRAK
+160	Loturadun kreditu-erakundeekiko epe luzeko zorrak
+1603	Loturadun kreditu-erakundeekiko epe luzeko zorrak, taldeko enpresak
+1604	Loturadun kreditu-erakundeekiko epe luzeko zorrak, asoziatutako enpresak
+1605	Loturadun beste kreditu-erakundeekiko epe luzeko zorrak.
+161	Epe luzeko ibilgetu-hornitzaileak, loturadun alderdiak
+1613	Epe luzeko ibilgetu-hornitzaileak, taldeko enpresak
+1614	Epe luzeko ibilgetu-hornitzaileak, asoziatutako enpresak
+1615	Epe luzeko ibilgetu-hornitzaileak, beste loturadun alderdiak
+162	Finantza-errentamenduengatiko epe luzeko hartzekodunak,loturadun alderdiak
+1623	Finantza-errentamenduengatiko epe luzeko hartzekodunak, taldeko enpresak
+1624	Finantza-errentamenduengatiko epe luzeko hartzekodunak, asoziatutako enpresak
+1625	Finantza-errentamenduengatiko epe luzeko hartzekodunak, beste loturadun alderdiak
+163	Loturadun alderdiekiko epe luzeko bestelako zorrak
+1633	Epe luzeko bestelako zorrak, taldeko enpresak
+1634	Epe luzeko bestelako zorrak, asoziatutako enpresak
+1635	Epe luzeko bestelako zorrak, beste loturadun alderdiak
+17	HARTUTAKO MAILEGU, JESAPEN ETA ANTZEKO KONTZEPTUENGATIKO EPE LUZEKO ZORRAK 
+170	Kreditu-erakundeekiko epe luzeko zorrak
+171	Epe luzeko zorrak
+172	Diru-laguntza, dohaintza eta legatu bihur daitezkeen epe luzeko zorrak
+173	Epe luzeko ibilgetu-hornitzaileak
+174	Finantza errentamenduengatiko epe luzeko hartzekodunak
+175	Epe luzera ordaintzeko efektuak
+176	Epe luzeko deribatu finantzarioen pasiboak
+177	Obligazio eta bonuak
+179	Bestelako balore negoziagarrietan adierazitako zorrak
+18	EPE LUZEKO FIDANTZEN, BERMEEN ETA ANTZEKOEN PASIBOAK 
+180	Epe luzerako hartutako fidantzak
+181	Epe luzeko salmentengatik edo zerbitzu-emateengatik hartutako aurrerakinak
+185	Epe luzerako hartutako gordailuak
+19	FINANTZAKETA-EGOERA IRAGANKORRAK
+190	Jaulkitako akzio edo partaidetzak
+192	Akzio-harpidedunak
+194	Jaulkitako kapitala inskribatu gabea
+195	Pasibo finantzario moduan kontabilizatutako jaukitako akzio edo partaidetzak
+197	Pasibo finantzario moduan kontabilizatutako akzioen harpidedunak
+199	Pasibo finantzario moduan kontabilizatutako jaukitako akzio edo partaidetza, inskribatu gabeak
+2	AKTIBO EZ-KORRONTEA
+20	IBILGETU UKIEZINAK
+200	Ikerketa		
+201	Garapena	
+202	Kontzesio administratiboak
+203	Jabetza industriala
+205	Traspasatze-eskubideak
+206	Aplikazio informatikoak
+209	Ibilgetu ukiezinetarako aurrerakinak
+21	IBILGETU MATERIALAK
+210	Lurrak eta ondasun naturalak
+211	Eraikuntzak
+212	Instalazio teknikoak
+213	Makineria
+214	Tresneria
+215	Bestelako instalazioak
+216	Altzariak
+217	Informazioa prozesatzeko ekipamenduak
+218	Garraio-elementuak
+219	Bestelako ibilgetu materiala
+22	ONDASUN HIGIEZINETAKO INBERTSIOAK
+220	Lur eta ondasun naturaletako inbertsioak
+221	Eraikuntzetako inbertsioak
+23	BIDEAN DIREN IBILGETZE MATERIALAK
+230	Lur eta ondasun naturalen egokitzapena
+231	Egite-bideko eraikuntzak
+232	Muntatze-bideko instalazio teknikoak
+233	Muntatze-bideko makineria
+237	Muntatze-bideko informazioa prozesatzeko ekipamenduak
+239	Ibilgetu materialetarako aurrerakinak
+24	LOTURAKO ALDERDIETAN EGINDAKO EPE LUZEKO FINANTZA INBERTSIOAK
+240	Loturadun alderdietako epe luzeko partaidetzak
+2403	Epe luzeko partaidetzak taldeko enpresetan
+2404	Epe luzeko partaidetzak asoziatutako enpresetan
+2405	Epe luzeko partaidetzak beste loturadun alderdietan
+241	Loturadun alderdien epe luzeko zorra adierazten duten baloreak
+2413	Epe luzeko zorra adierazten duten baloreak taldeko enpresetan
+2414	Epe luzeko zorra adierazten duten baloreak asoziatutako enpresetan
+2415	Epe luzeko zorra adierazten duten baloreak beste loturadun alderdietan
+242	Loturadun alderdiekiko epe luzeko hartzekoak
+2423	Epe luzeko hartzekoak taldeko enpresetan
+2424	Epe luzeko hartzekoak asoziatutako enpresetan
+2425	Epe luzeko hartzekoak beste loturadun alderdietan
+249	Loturadun alderdietako epe luzeko partaidetzetatik egin gabeko ordainketak
+2493	Epe luzeko partaidetzetatik egin gabeko ordainketak taldeko enpresetan
+2494	Epe luzeko partaidetzetatik egin gabeko ordainketak asoziatutako enpresetan
+2495	Epe luzeko partaidetzetatik egin gabeko ordainketak beste loturadun alderdietan
+25	EPE LUZEKO BESTELAKO FINANTZA-INBERTSIOAK
+250	Ondare-tresnetan egindako epe luzeko finantza-inbertsioak
+251	Epe luzeko zorra adierazten duten baloreak
+252	Epe luzeko hartzekoak
+253	Ibilgetua besterentzegatiko epe luzeko hartzekoak
+254	Pertsonalari emandako epe luzeko kredituak
+255	Epe luzeko deribatu finantzarioen aktiboak
+258	Epe luzeko ezarpenak
+259	Epe luzeko ondare-partaidetzetatik egin gabeko ordainketak
+26	EPE LUZERAKO ERATUTAKO FIDANTZA ETA GORDAILUAK
+260	Epe luzerako eratutako fidantzak
+265	Epe luzerako eratutako gordailuak
+28	IBILGETUAREN AMORTIZAZIO METATUA
+280	Ibilgetu ukiezinaren amortizazio metatua
+2800	Ikerketa gastuen amortizazio metatua
+2801	Garapen gastuen amortizazio metatua
+2802	Emakida administratiboen amortizazio metatua 
+2803	Jabetza industrialaren amortizazio metatua
+2805	Eskualdatze eskubideen amortizazio metatua
+2806	Aplikazio informatikoen amortizazio metatua
+281	Ibilgetu materialaren amortizazio metatua
+2811	Eraikinen amortizazio metatua
+2812	Instalakuntza teknikoen amortizazio metatua
+2813	Makineriaren amortizazio metatua
+2814	Lanabesen amortizazio metatua
+2815	Bestelako instalakuntzen amortizazio metatua
+2816	Altzarien amortizazio metatua
+2817	Informazioaren prozesamendurako ekipoen amortizazio metatua
+2818	Garraio elementuen amortizazio metatua
+2819	Bestelako ibilgetu materialaren amortizazio metatua
+282	Ondasun higiezinetako inbertsioen amortizazio metatua
+29	AKTIBO EZKORRONTEEN BALIO-NARRIADURA
+290	Ibilgetu ukiezinaren balio-narriadura
+2900	Ikerketa gastuen balio-narriadura
+2901	Garapen gastuen balio-narriadura
+2902	Emakida administratiboen balio-narriadura
+2903	Jabetza industrialaren balio-narriadura
+2905	Eskualdatze eskubideen balio-narriadura
+2906	Aplikazio informatikoen balio-narriadura
+291	Ibilgetu materialaren balio-narriadura
+2910	Lur eta ondasun naturalen balio-narriadura
+2911	Eraikinen balio-narriadura
+2912	Instalakuntza teknikoen balio-narriadura
+2913	Makineriaren balio-narriadura
+2914	Lanabesen balio-narriadura
+2915	Bestelako instalakuntzen balio-narriadura
+2916	Altzarien balio-narriadura
+2917	Informazioaren prozesamendurako ekipoen balio-narriadura
+2918	Garraio elementuen balio-narriadura
+2919	Bestelako ibilgetu materialaren balio-narriadura
+292	Ondasun higiezinetako inbertsioen balio-narriadura
+2920	Lur eta natur-ondasunen balio-narriadura
+2921	Eraikuntzen balio-narriadura
+293	Loturadun alderdietako epe luzeko partaidetzen balio-narriadura
+2933	Taldeko enpresetako epe luzeko partaidetzen balio-narriadura
+2934	Asoziatutako enpresetako epe luzeko partaidetzen balio-narriadura
+294	Loturadun alderdien epe luzeko zorra adierazten duten baloreen balio-narriadura
+2943	Taldeko enpresetako epe luzeko zorra adierazten duten baloreen balio-narriadura
+2944	Asoziatutako enpresetako epe luzeko zorra adierazten duten baloreen balio-narriadura
+2945	Bestelako loturadun alderdietako epe luzeko zorra adierazten duten baloreen balio-narriadura
+295	Loturadun alderdiekiko epe luzeko hartzekoen balio-narriadura
+2953	Taldeko enpresekiko epe luzeko hartzekoen balio-narriadura
+2954	Asoziatutako enpresekiko epe luzeko hartzekoen balio-narriadura
+2955	Bestelako loturadun alderdiekiko epe luzeko hartzekoen balio-narriadura
+296	Epe luzeko ondare-partaidetzen balio-narriadura
+297	Epe luzeko zorra adierazten duten baloreen balio-narriadura
+298	Epe luzeko hartzekoen balio-narriadura
+3	IZAKINAK
+30	MERKATARITZAKOAK
+300	A Salgaiak
+301	B Salgaiak
+31	LEHENGAIAK
+310	A Lehengaiak
+311	B Lehengaiak
+32	BESTELAKO HORNIKUNTZAK
+320	Elementu eta multzo txertagarriak 
+321	Erregaiak
+322	Ordezko piezak
+325	Hainbat material
+326	Enbalajeak
+327	Ontzikiak
+328	Bulegoko materiala
+33	FABRIKAZIO-BIDEKO PRODUKTUAK
+330	Fabrikazio-bideko A produktuak
+331	Fabrikazio-bideko B produktuak
+34	PRODUKTU ERDIBUKATUAK
+340	A Produktu erdibukatuak
+341	B Produktu erdibukatuak
+35	PRODUTU BUKATUAK
+350	A Produktu bukatuak
+351	B Produktu bukatuak
+36	AZPIPRODUKTUAK, HONDARRAK ETA MATERIAL BERESKURATUAK
+360	A Azpiproduktuak
+361	B Azpiproduktuak
+365	A Hondarrak
+366	B Hondarrak
+368	A Material berreskuratuak
+369	B Material berreskuratuak
+39	IZAKINEN BALIO NARRIADURA
+390	Salgaien balio-narriadura
+391	Lehengaien balio-narriadura
+392	Bestelako hornikuntzen balio-narriadura
+393	Fabrikazio-bideko produktuen balio-narriadura
+394	Produktu erdibukatuen balio-narriadura
+395	Produktu bukatuen balio-narriadura
+396	Azpiproduktu, hondar eta material berreskuratuen balio-narriadura
+4	ERAGIKETA KOMERTZIALETAKO HATZEKODUN ETA ZORDUNAK
+40	HORNITZAILEAK
+400	Hornitzaileak
+4000	Hornitzaileak (euroak)
+4004	Hornitzaileak (atzerriko moneta)
+4009	Hornitzaileak, ordaintzeko edo formalizatzeko fakturak
+401	Hornitzaileak, ordaintzeko merkataritza-efektuak
+403	Hornitzaileak, taldeko enpresak
+4030	Hornitzaileak, taldeko enpresak (euroak)
+4031	Ordaintzeko merkataritza-efektuak, taldeko enpresak
+4034	Hornitzaileak, taldeko enpresak (atzerriko moneta)
+4036	Hornitzaileei itzultzeko ontziki eta enbalajeak, taldeko enpresak
+4039	Hornitzaileak, taldeko enpresak, ordaintzeko edo formalizatzeko fakturak 
+404	Hornitzaileak, enpresa elkartuak
+405	Hornitzaileak, bestelako loturadun alderdiak
+406	Hornitzaileei itzultzeko ontzikiak eta enbalajeak
+407	Hornitzaileei emandako aurrerakinak
+41	HAINBAT HARTZEKODUN
+410	Zerbitzu-emateagatiko hartzekodunak
+4100	Zerbitzu-ematcagatiko hartzekodunak (euroak)
+4104	Zerbitzu-ematcagatiko hartzekodunak (atzerri-moneta)
+4109	Zerbitzu-emateagatiko hartzekodunak, ordaintzeko edo formalizatzeko fakturak 
+411	Hartzekodunak ordaintzeko merkataritza-efektuak
+419	Batelako eragiketengatiko hartzekodunak
+43	BEZEROAK
+430	Bezeroak
+4300	Bezeroak (euroak)
+4304	Bezeroak (atzerri-moneta)
+4309	Bezeroak, formalizatzeko fakturak
+431	Bezeroak, kobratzek merkataritza-efektuak
+4310	Bezeroak, zorroko merkataritza-efektuak
+4311	Bezeroak, merkataritza-efektu deskontatuak
+4312	Bezeroak, kobrantza-gestioko merkataritza-efektuak 
+4315	Bezeroak, merkataritza-efektu ordaindugabeak 
+432	Bezeroak, "factoring"eko eragiketak
+433	Bezeroak, taldeko enpresak
+4330	Bezeroak, taldeko enpresak (euro) 
+4331	Kobratzeko merkataritza-efektuak, taldeko enpresak 
+4332	Bezeroak, taldeko enpresak, "faktoring"eko eragiketak 
+4334	Bezeroak, taldeko enpresak (atzerriko moneta)
+4336	Bezeroak, taldeko enpresak, kobrantza zalantzagarriko taldea 
+4337	Bezeroei itzultzeko ontziki eta enbalajeak, taldeko enpresak 
+4339	Bezeroak, taldeko enpresak, formalizatzeko fakturak
+434	Bezeroak, enpresak elkartuak
+435	Bezeroak, beste loturadun alderdiak 
+436	Kobrantza zalantzagarriko bezeroak 
+437	Bezeroak itzultzeko ontzikiak eta enbalajeak
+438	Bezeroek emandako aurrerakinak
+44	HAINBAT ZORDUN
+440	Zordunak
+4400	Zordunak (euroak)
+4404	Zordunak (atzerri-moneta)
+4409	Zordunak, formalizatzeko fakturak
+441	Zordunak, kobratzeko merkataritza-efektuak
+4410	Zordunak, zorroko merkataritza-efektuak
+4411	Zordunak, merkataritza-efektu deskontatuak
+4412	Zordunak, kobrantza-gestioko merkataritza-efektuak
+4415	Zordunak, merkataritza-efektu ordaindugabeak 
+446	Kobrantza zalantzagarriko zordunak 
+449	Baterako erakitengatiko zordunak 
+46	PERTSONALA
+460	Lansarien aurrerakinak
+465	Ordaintzeko dauden lansariak
+47	ADMINISTRAZIO DOIKUNTZAK
+470	Ogasun Publikoa, hainbat kontzeptuengatik zordun 
+4700	Ogasun Publikoa, BEZagatik zordun 
+4708	Ogasun Publikoa, emandako diru-laguntzengatik zordun 
+4709	Ogasun Publikoa, zerga-itzulketagatik zordun 
+471	Gizarte Segurantzako organismoak, zordun
+472	Ogasun Publikoa, jasandako BEZa
+473	Ogasun Publikoa, atxikipenak eta konturako ordainketak
+474	Zerga geroratuen aktiboak   
+4740	Denborazko diferentzia kengarrien aktiboak
+4742	Oraindik aplikatu gabeko kenkari eta hobarien eskubideak
+4745	Ekitaldiko galerak konpentsatzeko hartzekoa
+475	Ogasun Publikoa, kontzeptu fiskalengatik hartzekodun
+4750	Ogasun Publikoa, BEZagatik hartzekodun 
+4751	Ogasun Publikoa, egindako atxikipenengatik hartzekodun
+4752	Ogasun Publikoa, sozietateen gaineko zergagatik hartzekodun 
+4758	Ogasun Publikoa, itzuli beharreko diru-laguntzengatik hartzekodun
+476	Gizarte Segurantzako organismoak, hartzekodun
+477	Ogasun Publikoa, jasanarazitako BEZ
+479	Zergapeko denborazko diferentzien pasiboak
+48	PERIODIFIKATZEKO DOIKUNTZAK
+480	Gastu aurreratuak
+485	Sarrera aurreratuak
+49	HARTZEKO KOMERTZIALEN BALIO-NARRIADURA ETA EPE LABURREKO HORNIDURAK
+490	Eragiketa komertzialetako hartzekoen balio-narriadura
+493	Loturadun alderdiekin egindako eragiketa komertzialetako hartzekoen balio-narriadura
+4933	Taldeko enpresekin egindako eragiketa komertzialetako hartzekoen balio-narriadura
+4934	Asoziatutako enpresekin egindako eragiketa komertzialetako hartzekoen balio-narriadura 
+4935	Beste loturadun alderdiekin egindako eragiketa komertzialetako hartzekoen balio-narriadura 
+499	Eragiketa komertzialetarako hornidurak 
+4994	Kostubidezko kontratuetarako hornidurak
+4999	Bestelako merkataritza-eragiketetarako hornidurak 
+5	FINANTZA-KONTUAK
+50	EPE LABURREKO JESAPENAK, EZAUGARRI BEREZIKO ZORRAK ETA
+ANTZEKO JAULKIPENAK
+500	Epe laburreko obligazioak eta bonuak
+502	Pasibo finantzario moduan kontabilizatutako epe laburreko akzio edo partaidetzak 
+505	Bestelako balore negoziagarrietan adierazitako epe laburreko zorrak
+506	Jesapenen eta antzeko jaulkipenen epe laburreko interesak
+507	Pasibo finantzario moduan kontabilizatutako akzio edo partaidetzen dibidenduak
+509	Balore negoziagarri amortizatuak
+5090	Obligazio eta bonu amortizatuak
+5095	Beste balore negoziagarri amortizatuak 
+51	LOTURADUN ALDERDIEKIKO EPE LABURREKO ZORRAK 
+510	Loturadun kreditu-erakundeekiko epe laburreko zorrak
+5103	Kreditu erakundeekiko epe laburreko zorrak, taldeko enpresak 
+5104	Kreditu erakundeekiko epe laburreko zorrak, asoziatutako enpresak
+5105	Beste loturadun kreditu-erakundeekiko epe laburreko zorrak 
+511	Epe laburreko ibilgetu-hornitzaileak, loturadun alderdiak
+5113	Epe laburreko ibilgetu-hornitzaileak, taldeko enpresak 
+5114	Epe laburreko ibilgetu-hornitzaileak, asoziatutako enpresak
+5115	Epe laburreko ibilgetu-hornitzaileak, beste loturadun enpresak
+512	Finantza-errentamenduengatiko epe laburreko hartzekodunak, loturadun alderdiak 
+5123	Finantza-errentamenduengatiko epe laburreko hartzekodunak, taldeko enpresak 
+5124	Finantza-errentamenduengatiko epe laburreko hartzekodunak, asoziatutako enpresak 
+5125	Finantza-errentamenduengatiko epe laburreko hartzekodunak, beste loturadun enpresak 
+513	Loturadun alderdiekiko epe laburreko bestelako zorrak 
+5133	Taldeko enpresekiko epe laburreko bestelako zorrak
+5134	Asoziatutako enpresekiko epe laburreko bestelako zorrak
+5135	Beste loturadun enpresekiko epe laburreko bestelako zorrak
+514	Loturadun alderdiekiko epe laburreko zorren interesak
+5143	Epe laburreko zorren interesak, taldeko enpresak 
+5144	Epe laburreko zorren interesak, asoziatutako enpresak 
+5145	Epe laburreko zorren interesak, beste loturadun enpresak 
+52	HARTUTAKO MAILEGU ETA ANTZEKO KONTZEPTUENGATIKO EPE LABURREKO ZORRAK
+520	Kreditu-erakundeekiko einpe laburreko zorrak
+5200	Kreditu-erakundeen epe laburreko maileguak 
+5201	Kreditu-erabiliagatiko epe laburreko zorrak 
+5208	Deskontatutako efetuengatiko zorrak 
+5209	"Factoring"eko eragiketen zorrak 
+521	Epe laburrek zorrak 
+522	Diru-laguntza, dohaintza eta legatu bihur daitezkeen epe laburreko zorrak 
+523	Epe laburreko ibilgetu-hornitzaileak 
+524	Finantza-errentamenduengatiko epe laburreko hartzekodunak
+525	Epe laburrera ordaintzeko efektuak 
+526	Ordaintzeko dibidendu aktiboa 
+527	Kreditu-erakundeekiko zorren epe laburreko interesak 
+528	Zorren epe laburreko interesak
+529	Epe laburreko hornidurak 
+5291	Zergetarako epe laburreko hornidurak 
+5292	Beste erantzukizunetarako epe laburreko hornidurak 
+5293	Ibilgetuaren eraispen, erretiratze edo birgaitzerako epe laburreko hornidurak 
+5295	Ingurumen-jarduetarako epe laburreko hornidurak 
+53	LOTURADUN ALDERDIETAN EGINDAKO EPE LABURREKO FINANTZA-INBERTSIOAK
+530	Loturadun alderdietako epe laburreko partaidetzak
+5303	Epe laburreko partaidetzak taldeko enpresetan 
+5304	Epe laburreko partaidetzak asoziatutako enpresetan 
+5305	Epe laburreko partaidetzak beste loturadun enpresetan 
+531	Loturadun alderdien epe laburreko zorra adierazten duten baloreak
+5313	Taldeko enpresetako epe laburreko zorra adierazten duten baloreak 
+5314	Asoziatutako enpresetako epe laburreko zorra adierazten duten baloreak 
+5315	Beste loturadun enpresetako epe laburrek zorra adierazten duten baloreak 
+532	Loturadun alderdiekiko epe laburreko hartzekoak
+5323	Taldeko enpresekiko epe laburreko hartzekoak 
+5324	Asoziatutako enpresekiko epe laburreko hatzekoak 
+5325	Beste loturadun enpresekiko epe laburreko hartzekoak 
+533	Loturadun alderdien zorra adierazten duten baloreen epe laburreko interesak
+5333	Taldeko enpresen zorra adierazten duten baloreen epe laburreko interesak
+5334	Asoziatutako enpresen zorra adierazten duten baloreen epe laburreko interesak
+5335	Beste loturadun enpresen zorra adierazten duten baloreen epe laburreko interesak
+534	Loturadun alderdiekiko hartzekoen epe laburreko interesak
+5343	Taldeko enpresekiko hartzekoen epe laburreko interesak
+5344	Asoziatutako enpresekiko hartzekoen epe laburreko interesak 
+5345	Beste loturadun enpresekiko hatzekoen epe laburreko interesak 
+535	Loturadun alderdietan egindako finantza-inbertsioetatik kobratzeko dibidendua
+5353	Taldeko enpresetatik kobratzeko dibidendua 
+5354	Asoziatutako enpresetatik kobratzeko dibidendua 
+5355	Beste loturadun enpresetatik kobratzeko dibidendua 
+539	Loturadun alderdietako epe laburreko partaidetzetatik egin gabeko ordainketak
+5393	Taldeko enpresetako epe laburreko partaidetzetatik egin gabeko ordainketak
+5394	Asoziatutako enpresetako epe laburreko partaidetzetatik egin gabeko ordainketak
+5395	Beste loturadun enpresetako epe laburreko partaidetzetatik egin gabeko ordainketak
+54	EPE LABURREKO BESTELAKO FINANTZA-INBERTSIOAK
+540	Ondare-tresnetan egindako epe laburreko finantza-inbertsioak
+541	Epe laburreko zorra adierazten duten baloreak
+542	Epe laburreko hartzekoak
+543	Ibilgetua besterentzeagatiko epe laburreko hartzekoak
+544	Pertsonalari emandako epe laburreko kredituak
+545	Kobratzeko dibidendua
+546	Zorra adierazten duten baloreen epe laburreko interesak
+547	Hartzekoen epe laburreko interesak
+548	Epe laburreko ezarpenak
+549	Epe laburreko ondare-partaidetzetatik egin gabeko ordainketak
+55	BESTELAKO KONTU EZ BANKARIOAK
+550	Ustiapenaren titularra
+551	Bazkide eta administratzaileekiko kontu korrontea
+552	Bestelako loturadun pertsona eta erakundeekiko kontu korrontea
+5523	Taldeko enpresekiko kontu korrontea 
+5524	Asoziatutako enpresekiko kontu korrontea 
+5525	Beste loturadun enpresekiko kontu korrontea 
+554	Aldi baterako enpresa-elkarteekiko eta ondasun-erkidegoekiko kontu korrontea
+555	Oraindik aplikatu gabeko partidak
+556	Ondare-partaidetzei buruz galdatutako ordainketak
+5563	Ondare-partaidetzei buruz galdatutako ordainketak, taldeko enpresak
+5564	Ondare-partaidetzei buruz galdatutako ordainketak, asoziatutako enpresak
+5565	Ondare-partaidetzei buruz galdatutako ordainketak, beste loturadun enpresak
+5566	Ondare-partaidetzei buruz galdatutako ordainketak, beste enpresak
+557	Konturako dibidendu aktiboa
+558	Bazkideak, galdatutako ordainketak
+5580	Bazkideak, akzio eta ohiko partaidetzetatik galdatutako ordainketak 
+5585	Bazkideak, finantza-pasibotzat hartutako akzio edo partaidetzetatik galdatutako ordainketak
+559	Epe laburreko deribatu finantzarioak
+5590	Epe laburreko deribatu finantzarioen aktiboak, negoziazio-zorroa 
+5595	Epe laburreko deribatu finantzarioen pasiboak, negoziazio-zorroa 
+56	EPE LABURRERAKO HARTUTAKO ETA ERATUTAKO FIDANTZA ETA GORDAILUAK ETA PERIODIFIKATZEKO NARRIADURA
+560	Epe laburrerako hartutako fidantzak
+561	Epe laburrerako hartutako gordailuak 
+565	Epe laburrerako eratutako fidantzak 
+566	Epe laburrerako eratutako gordailuak 
+567	Aurrez ordaindutako interesak 
+568	Aurrez kobratutako interesak 
+57	DIRUZAINTZA
+570	Kutxa, euroak
+571	Kutxa, atzerri-moneta
+572	Bankuak eta kreditu erakundeak, ageriko k/k, euroak 
+573	Bankuak eta kreditu erakundeak, ageriko k/k, atzerri-moneta 
+574	Bankuak eta kreditu erakundeak, aurrezki-kontuak, euroak
+575	Bankuak eta kreditu erakundeak, aurrezki-kontuak, atzerri-moneta
+576	Likidezi handiko epe laburreko inbertsioak 
+59	EPE LABURREKO FINANTZA-INBERTSIOEN NARRIADURA 
+593	Loturadun alderdietako epe laburreko partaidetzen balio-narriadura
+5933	Taldeko enpresetako epe laburreko partaidetzen balio-narriadura 
+5934	Asoziatutako enpresetako epe laburreko partaidetzen balio-narriadura 
+594	Loturadun alderdien epe laburreko zorra adierazten duten baloreen balio-narriadura 
+5943	Taldeko enpresen epe laburreko zorra adierazten duten baloreen balio-narriadura
+5944	Asoziatutako enpresen epe laburreko zorra adierazten duten baloreen balio-narriadura
+5945	Beste loturadun enpresen epe laburreko zorra adierazten duten baloreen balio-narriadura
+595	Loturadun alderdiekiko epe laburreko hartzekoen balio-narriadura
+5953	Taldeko enpresekiko epe laburreko hartzekoen balio-narriadura
+5954	Asoziatutako enpresekiko epe laburreko hartzekoen balio-narriadura
+5955	Beste loturadun enpresekiko epe laburreko hartzekoen balio-narriadura
+596	Epe laburreko partaidetzen ba1io-narriadura
+597	Epe laburreko zorra adierazten duten baloreen balio-narriadura 
+598	Epe laburreko hartzekoen balio-narriadura 
+6	EROSKETAK ETA GASTUAK
+60	EROSKETAK 
+600	Salgai-erosketak
+601	Lehengai-erosketak
+602	Bestelako hornikuntzen erosketak
+606	Erosketen gaineko deskontuak, goiz ordaintzeagatik
+6060	Erosketen gaineko deskontuak, salgaiak goiz ordaintzeagatik 
+6061	Erosketen gaineko deskontuak, lehengaiak goiz ordaintzeagatik
+6062	Erosketen gaineko deskontuak, beste hornikuntzak goiz ordaintzeagatik
+607	Beste enpresa batzuek egindako lanak
+608	Erosketen itzulketak eta antzeko eragiketak
+6080	Salgaien erosketen itzulketak 
+6081	Lehengaien erosketen itzulketak 
+6082	Bestelako hornikuntzen erosketen itzulketak 
+609	Erosketen gaineko "rappel"ak
+6090	Salgaien erosketen gaineko "rappel"ak
+6091	Lehengaien erosketen gaineko "rappel"ak
+6092	Bestelako hornikuntzen erosketen gaineko "rappel"ak
+61	IZAKINEN ALDAKUNTZAK 
+610	Salgai-izakinen aldakuntzak 
+611	Lehengai-izakinen aldakuntzak 
+612	Bestelako hornikuntza-izakinen aldakuntzak 
+62	KANPOKO ZERBITZUAK
+620	Ekitaldiko ikerketa- eta garapen-gastuak
+621	Errentamenduak eta kanonak
+622	Konponketak eta kontserbazioa
+623	Profesional independenteen zerbitzuak
+624	Garraioak
+625	Aseguru-primak
+626	Banku-zerbitzuak eta antzekoak
+627	Publizitatea, propaganda eta harreman publikoak
+628	Hornigaiak
+629	Bestelako zerbitzuak
+63	TRIBUTUAK	
+630	Mozkinen gaineko zerga
+6300	Zerga korrontea
+6301	Zerga geroratua
+631	Bestelako tributuak
+633	Mozkinen gaineko zergaren doikuntza negatiboak 
+634	Zeharkako zergen doikuntza negatiboak 
+6341	Aktibo korronteen BEZaren doikuntza negatiboak 
+6342	Inbertsioen BEZaren doikuntza negatiboak 
+636	Zergen itzulketa 
+638	Mozkinen gaineko zergaren doikuntza positiboak
+639	Zeharkako zergen doikuntza positiboak 
+6391	Aktibo korronteen BEZaren doikuntza positiboak 
+6392	Inbertsioen BEZaren doikuntza positiboak 
+64	PERTSONAL-GASTUAK	
+640	Soldatak
+641	Kalte-ordainak
+642	Enpresaren kargurako Gizarte Segurantza 
+649	Bestelako gastu sozialak
+65	BESTELAKO KUDEAKETA-GASTUAK
+650	Hartzeko komertzial kobraezinen galerak 
+651	Baterako eragiketen emaitzak
+6510	Mozkin transferitua (kudeatzailea) 
+6511	Jasandako galera (kudeatzailea ez den parte-hartzaile edo asoziatua) 
+659	Kudeaketa arrunteko bestelako galerak
+66	GASTU FINANTZARIOAK
+660	Hornidurak eguneratzeagatiko gastu finantzarioak 
+661	Obligazio eta bonoen interesak 
+6610	Epe luzeko obligazio eta bonoen interesak, taldeko enpresak 
+6611	Epe luzeko obligazio eta bonoen interesak, asoziatutako enpresak
+6612	Epe luzeko obligazio eta bonoen interesak, beste loturadun alderdiak 
+6613	Epe luzeko obligazio eta bonoen interesak, beste enpresak
+6615	Epe laburreko obligazio eta bonoen interesak, taldeko enpresak 
+6616	Epe laburreko obligazio eta bonoen interesak, asoziatutako enpresak
+6617	Epe laburreko obligazio eta bonoen interesak, beste loturadun alderdiak
+6618	Epe laburreko obligazio eta bonoen interesak, beste enpresak
+662	Zorren interesak
+6620	Zorren interesak, taldeko enpresak
+6621	Zorren interesak, asoziatutako enpresak
+6622	Zorren interesak, beste loturadun alderdiak
+6623	Zorren interesak, kreditu erakundeak 
+6624	Zorren interesak, bestelako enpresak
+663	Aktibo eta pasibo finantzarioak arrazoizko balioan baloratzeagatik izandako galerak 
+664	Pasibo finantzario moduan kontabilizatutako akzio edo partaidetzen dibidenduak
+6640	Pasiboen dibidenduak, taldeko enpresak
+6641	Pasiboen dibidenduak, asoziatutako enpresak
+6642	Pasiboen dibidenduak, beste loturadun alderdiak
+6643	Pasiboen dibidenduak, bestelako enpresak
+665	Efektu-deskontuaren eta "faktoring"eko eragiketen interesak 
+6650	Taldeko kreditu erakundeekiko efektu-deskontuen interesak 
+6651	Asoziatutako kreditu erakundeekiko efektu-deskontuen interesak 
+6652	Beste loturadun kreditu erakundeekiko efektu-deskontuen interesak 
+6653	Beste kreditu erakundeekiko efektu-deskontuen interesak 
+6654	Taldeko kreditu erakundekiko "factoring" eragiketen interesak 
+6655	Asoziatutako kreditu erakundeekiko "factoring" eragiketen interesak
+6656	Beste loturadun kreditu erakundeekiko "factoring" eragiketen interesak
+6657	Beste kreditu erakundeekiko "factoring" eragiketen interesak
+666	Partaidetzetako eta zorra adierazten duten baloreetako galerak
+6660	Partaidetzetako eta epe luzeko zorra adierazten duten baloreetako galerak, taldeko enpresak 
+6661	Partaidetzetako eta epe luzeko zorra adierazten duten baloreetako galerak, asoziatutako enpresak
+6662	Partaidetzetako eta epe luzeko zorra adierazten duten baloreetako galerak, beste loturadun alderdiak
+6663	Partaidetzetako eta epe luzeko zorra adierazten duten baloreetako galerak, bestelako enpresak
+6665	Partaidetzetako eta epe laburreko zorra adierazten duten baloreetako galerak, taldeko enpresak
+6666	Partaidetzetako eta epe laburreko zorra adierazten duten baloreetako galerak, asoziatutako enpresak
+6667	Partaidetzetako eta epe laburreko zorra adierazten duten baloreetako galerak, beste loturadun alderdiak
+6668	Partaidetzetako eta epe laburreko zorra adierazten duten baloreetako galerak, bestelako enpresak
+667	Hartzeko ez-komertzialen galerak
+6670	Epe luzeko hartzekoen galerak, taldeko enpresak 
+6671	Epe luzeko hartzekoen galerak, asoziatutako enpresak
+6672	Epe luzeko hartzekoen galerak, beste loturadun alderdiak
+6673	Epe luzeko hartzekoen galerak, bestelako enpresak
+6675	Epe laburreko hartzekoen galerak, taldeko enpresak 
+6676	Epe laburreko hartzekoen galerak, asoziatutako enpresak
+6677	Epe laburreko hartzekoen galerak, beste loturadun alderdiak
+6678	Epe laburreko hartzekoen galerak, bestelako enpresak
+668	Kanbio-diferentzia negatiboak
+669	Bestelako gastu finantzarioak
+67	AKTBO EZ-KORRONTEETATIK SORTUTAKO GALERAK ETA EZOHIKO GASTUAK
+670	Ibilgetu ukiezinetik sortutako galerak
+671	Ibilgetu materialetik sortutako galerak 
+672	Ondasun higiezinetako inbertsioetatik sortutako galerak 
+673	Loturadun alderdietako epe luzeko partaidetzetatik sortutako galerak
+6733	Epe luzeko partaidetzetatik sortutako galerak, taldeko enpresak 
+6734	Epe luzeko partaidetzetatik sortutako galerak, asoziatutako enpresak
+6735	Epe luzeko partaidetzetatik sortutako galerak, beste loturadun alderdiak
+675	Obligazio propioekin egindako eragiketetako galerak 
+678	Ezohiko gastuak
+68	AMORTIZAZIOETARAKO ZUZKIDURAK
+680	Ibilgetu ukiezinaren amortizazioa
+681	Ibilgetu materialaren amortizazioa
+682	Ondasun higiezinetako inbertsioen amortizazioa
+69	NARRIADURATIK SORTUTAKO GALERAK ETA BESTELAKO ZUZKIDURAK
+690	Ibilgetu ukiezinaren narriaduratik sortutako galerak
+691	Ibilgetu materialaren narriaduratik sortutako galerak
+692	Ondasun higiezinetako inbertsioen narriaduratik sortutako galerak
+693	Izakinen narriaduratik sortutako galerak
+6930	Produktu bukatuen eta fabrikazio-bideko produktuen narriaduratik sortutako galerak 
+6931	Salgaien narriaduratik sortutako galerak 
+6932	Lehengaien narriaduratik sortutako galerak 
+6933	Bestelako hornikuntzen narriaduratik sortutako galerak 
+694	Eragiketa komertzialetako hartzekoen narriaduratik sortutako galerak 
+695	Eragiketa komertzialetarako horniduraren zuzkidura
+6954	Kostubidezko kontratuetarako horniduraren zuzkidura
+6959	Bestelako merkataritza-eragiketarako horniduraren zuzkidura 
+696	Epe luzeko partaidetzen eta zorra adierazten duten baloreen narriaduratik sortutako galerak 
+6960	Epe luzeko ondare netoko instrumentuen partaidetzen narriaduratik sortutako galerak, taldeko enpresak  
+6961	Epe luzeko ondare netoko instrumentuen partaidetzen narriaduratik sortutako galerak, asoziatutako enpresak
+6962	Epe luzeko ondare netoko instrumentuen partaidetzen narriaduratik sortutako galerak, beste loturadun alderdiak
+6963	Epe luzeko ondare netoko instrumentuen partaidetzen narriaduratik sortutako galerak, bestelako enpresak
+6965	Epe luzeko zorra adierazten duten baloreen narriaduratik sortutako galerak, taldeko enpresak 
+6966	Epe luzeko zorra adierazten duten baloreen narriaduratik sortutako galerak, asoziatutako enpresak
+6967	Epe luzeko zorra adierazten duten baloreen narriaduratik sortutako galerak, beste loturadun alderdiak
+6968	Epe luzeko zorra adierazten duten baloreen narriduratik sortutako galerak, bestelako enpresak 
+697	Epe luzeko hartzekoen narriaduratik sortutako galerak 
+6970	Epe luzeko hartzekoen narriaduratik sortutako galerak, taldeko enpresak
+6971	Epe luzeko hartzekoen narriaduratik sortutako galerak, asoziatutako enpresak
+6972	Epe luzeko hartzekoen narriaduratik sortutako galerak, beste loturadun alderdiak
+6973	Epe luzeko hartzekoen narriaduratik sortutako galerak, bestelako enpresak
+698	Epe laburreko partaidetzen eta zorra adierazten duten baloreen narriaduratik sortutako galerak 
+6980	Epe laburreko ondare netoko instrumentuen partaidetzen narriaduratik sortutako galerak, taldeko enpresak 
+6981	Epe laburreko ondare netoko instrumentuen partaidetzen narriaduratik sortutako galerak, asoziatutako enpresak
+6985	Epe laburreko zorra adierazten duten baloreen narriduratik sortutako galerak, taldeko enpresak 
+6986	Epe laburreko zorra adierazten duten baloreen narriaduratik sortutako galerak, asoziatutako enpresak
+6987	Epe laburreko zorra adierazten duten baloreen narriaduratik sortutako galerak, beste loturadun alderdiak
+6988	Epe laburreko zorra adierazten duten baloreen narriaduratik sortutako galerak, bestelako enpresak
+699	Epe laburreko hartzekoen narriaduratik sotutako galerak
+6990	Epe laburreko hartzekoen narriaduratik sotutako galerak, taldeko enpresak
+6991	Epe laburreko hartzekoen narriaduratik sotutako galerak, asoziatutako enpresak
+6992	Epe laburreko hartzekoen narriaduratik sotutako galerak, beste loturadun alderdiak
+6993	Epe laburreko hartzekoen narriaduratik sotutako galerak, bestelako enpresak
+7	SALMENTAK ETA SARRERAK
+70	SALGAIEN, EKOIZPEN PROPIOEN, ZERBITZUEN ETA ANTZEKOEN SALMENTAK
+700	Salgai-salmentak
+701	Produktu bukatuen salmentak
+702	Produktu erdibukatuen salmentak
+703	Azpiproduktu eta hondarren salmentak
+704	Ontziki eta enbalajeen salmentak
+705	Zerbitzu-emateak
+706	Salmenten gaineko deskontuak, goiz ordaintzeagatik
+7060	Salgaien salmenten gaineko deskontuak, goiz ordaintzeagatik
+7061	Produktu bukatuen salmenten gaineko deskontuak, goiz ordaintzeagatik
+7062	Produktu erdibukatuen salmenten gaineko deskontuak, goiz ordaintzeagatik
+7063	Azpiproduktu eta hondarren salmenten gaineko deskontuak, goiz ordaintzeagatik
+708	Salmenten itzulketa eta antzeko eragiketak
+7080	Salgaien salmenten itzulketa eta antzeko eragiketak
+7081	Produktu bukatuen salmenten itzulketa eta antzeko eragiketak
+7082	Produktu erdibukatuen salmenten itzulketa eta antzeko eragiketak
+7083	Azpiproduktu eta hondarren salmenten itzulketa eta antzeko eragiketak
+7084	Ontziki eta enbalejeen salmenten itzulketa eta antzeko eragiketak
+709	Salmenten gaineko "rappelak"
+7090	Salgaien salmenten gaineko "rappelak"
+7091	Produktu bukatuen salmenten gaineko "rappelak"
+7092	Produktu erdibukatuen salmenten gaineko "rappelak"
+7093	Azpiproduktu eta hondarren salmenten gaineko "rappelak"
+7094	Ontziki eta hondarren salmenten gaineko "rappelak"
+71	IZAKINEN ALDAKUNTZA
+710	Fabrikazio-bideko produktuen izakinen aldakuntza
+711	Produktu erdibukatuen izakinen aldakuntza
+712	Produktu bukatuen izakinen aldakuntza
+713	Azpiproduktuen, hondarren eta material berreskuratuen izakinen aldakuntza
+73	ENPRESARENTZAT EGINDAKO LANAK
+730	Ibilgetu ukiezinerako egindako lanak
+731	Ibilgetu materialerako egindako lanak
+732	Ondasun higiezinetako inbertsioetan egindako lanak
+733	Egite-bideko ibilgetu materialerako egindako lanak
+74	DIRU-LAGUNTZAK, DOHAINTZAK ETA LEGATUAK
+740	Ustiapenerako diru-laguntzak, dohaintzak eta legatuak
+746	Ekitaldiko emaitzara transferitutako kapitaleko diru-laguntzak, dohaintzak eta legatuak
+747	Ekitaldiko emaitzara transferitutako bestelako diru-laguntzak, dohaintzak eta legatuak
+75	KUDEAKETAKO BESTELAKO SARRERAK
+751	Baterako eragiketen emaitzak
+7510	Galera transferitua (kudeatzailea)
+7511	Esleitutako mozkina (kudeatzailea ez den parte-hartzaile edo asoziatua)
+752	Errentamenduen sarrerak
+753	Ustiatzeko lagatako jabetza industrialaren sarrerak
+754	Komisioen sarrerak
+755	Pertsonalari emandako zerbitzuen sarrerak
+759	Hainbat zerbitzuren sarrerak
+76	SARRERA FINANTZARIOAK
+760	Ondare-tresnetako partaidetzen sarrerak
+7600	Ondare-tresnetako partaidetzen sarrerak, taldeko enpresak
+7601	Ondare-tresnetako partaidetzen sarrerak, asoziatutako enpresak
+7602	Ondare-tresnetako partaidetzen sarrerak, beste loturadun alderdiak
+7603	Ondare-tresnetako partaidetzen sarrerak, bestelako enpresak
+761	Zorra adierazten duten baloreen sarrerak
+7610	Zorra adierazten duten baloreen sarrerak, taldeko enpresak
+7611	Zorra adierazten duten baloreen sarrerak, asoziatutako enpresak
+7612	Zorra adierazten duten baloreen sarrerak, beste loturadun alderdiak
+7613	Zorra adierazten duten baloreen sarrerak, bestelako enpresak
+762	Hartzekoen sarrerak
+7620	Epe luzeko hartzekoen sarrerak 
+76200	Epe luzeko hartzekoen sarrerak, taldeko enpresak
+76201	Epe luzeko hartzekoen sarrerak, asoziatutako enpresak
+76202	Epe luzeko hartzekoen sarrerak, beste loturadun alderdiak
+76203	Epe luzeko hartzekoen sarrerak, bestelako enpresak
+7621	Epe laburreko hartzekoen sarrerak
+76210	Epe laburreko hartzekoen sarrerak, taldeko enpresak
+76211	Epe laburreko hartzekoen sarrerak, asoziatutako enpresak
+76212	Epe laburreko hartzekoen sarrerak, beste loturadun alderdiak
+76213	Epe laburreko hartzekoen sarrerak, bestelako enpresak
+763	Aktibo eta pasibo finantzarioak arrazoizko balioan baloratzeagatik izandako mozkinak
+766	Partaidetzetako eta zorra adierazten duten baloreetako mozkinak
+7660	Epe luzeko partaidetzetako eta zorra adierazten duten baloreetako mozkinak, taldeko enpresak 
+7661	Epe luzeko partaidetzetako eta zorra adierazten duten baloreetako mozkinak, asoziatutako enpresak
+7662	Epe luzeko partaidetzetako eta zorra adierazten duten baloreetako mozkinak, beste loturadun alderdiak
+7663	Epe luzeko partaidetzetako eta zorra adierazten duten baloreetako mozkinak, bestelako enpresak
+7665	Epe laburreko partaidetzetako eta zorra adierazten duten baloreetako mozkinak, taldeko enpresak 
+7666	Epe laburreko partaidetzetako eta zorra adierazten duten baloreetako mozkinak, asoziatutako enpresak
+7667	Epe laburreko partaidetzetako eta zorra adierazten duten baloreetako mozkinak, beste loturadun alderdiak
+7668	Epe luzeko zorra adierazten duten baloreetako mozkinak, bestelako enpresak
+768	Kanbio-diferentzia positiboak
+769	Bestelako sarrera finantzarioak
+77	AKTIBO EZKORRONTEETATIK SORTUTAKO MOZKINAK ETA EZOHIKO SARRERAK
+770	Ibilgetu ukiezinetik sortutako mozkinak
+771	Ibilgetu materialetik sortutako mozkinak
+772	Ondasun higiezinetako inbertsioetatik sortutako mozkinak
+773	Loturadun alderdietako epe luzeko partaidetzetatik sortutako mozkinak
+7733	Epe luzeko partaidetzetatik sortutako mozkinak, taldeko enpresak
+7734	Epe luzeko partaidetzetatik sortutako mozkinak, asoziatutako enpresak
+7735	Epe luzeko partaidetzetatik sortutako mozkinak, beste loturadun alderdiak
+775	Obligazio propioekin egindako eragiketetako mozkinak
+778	Ezohiko sarrerak
+79	HORNIDUREN ETA NARRIADURATIK SORTUTAKO GALEREN SOBERAKINA ETA APLIKAZIOA
+790	Ibilgetu ukiezinaren balio-narriaduraren itzultzea
+791	Ibilgetu materialaren balio-narriaduraren itzultzea
+792	Ondasun higiezinetako inbertsioen balio-narriaduraren itzultzea
+793	Izakinen balio-narriaduraren itzultzea
+7930	Produktu bukatuen eta fabrikazio-bideko produktuen balio-narriaduraren itzultzea 
+7931	Salgaien balio-narriaduraren itzultzea 
+7932	Lehengaien balio-narriaduraren itzultzea 
+7933	Beste hornikuntzen balio-narriaduraren itzultzea 
+794	Eragiketa komertzialetako hartzekoen balio-narriaduraren itzultzea 
+795	Hornidura-soberakinak
+7951	Zergetarako hornidura-soberakinak 
+7952	Beste erantzukizunetarako hornidura-soberakinak 
+7954	Merkataritza-eragiketetarako hornidura-soberakinak
+79544	Kostubidezko kontratuetarako hornidura-soberakinak
+79549	Bestelako merkataritza-eragiketetarako hornidura-soberakinak
+7955	Ingurumen-jarduetarako hornidura-soberakinak 
+796	Epe luzeko partaidetzen eta zorra adierazten duten baloreen balio-narriaduraren itzultzea 
+7960	Epe luzeko ondare netoko instrumentuen partaidetzen narriaduraren itzultzea, taldeko enpresak 
+7961	Epe luzeko ondare netoko instrumentuen partaidetzen narriaduraren itzultzea, asoziatutako enpresak
+7962	Epe luzeko ondare netoko instrumentuen partaidetzen narriaduraren itzultzea, beste loturadun alderdiak
+7963	Epe luzeko ondare netoko instrumentuen partaidetzen narriaduraren itzultzea, bestelako enpresak
+7965	Epe luzeko zorra adierazten duten baloreen narriaduraren itzultzea, taldeko enpresak 
+7966	Epe luzeko zorra adierazten duten baloreen narriaduraren itzultzea, asoziatutako enpresak
+7967	Epe luzeko zorra adierazten duten baloreen narriaduraren itzultzea, beste loturadun alderdiak
+7968	Epe luzeko zorra adierazten duten baloreen narriaduraren itzultzea, bestelako enpresak
+797	Epe luzeko hartzekoen balio-narriaduraren itzultzea
+7970	Epe luzeko hartzekoen balio-narriaduraren itzultzea, taldeko enpresak
+7971	Epe luzeko hartzekoen balio-narriaduraren itzultzea, asoziatutako enpresak
+7972	Epe luzeko hartzekoen balio-narriaduraren itzultzea, beste loturadun alderdiak
+7973	Epe luzeko hartzekoen balio-narriaduraren itzultzea, bestelako enpresak
+798	Epe laburreko ondare netoko instrumentuen partaidetzen narriaduraren itzultzea, taldeko enpresak
+7980	Epe laburreko ondare netoko instrumentuen partaidetzen narriaduraren itzultzea, beste loturadun alderdiak
+7981	Epe laburreko ondare netoko instrumentuen partaidetzen narriaduraren itzultzea, beste loturadun alderdiak
+7985	Epe laburreko ondare netoko instrumentuen partaidetzen narriaduraren itzultzea, bestelako enpresak
+7986	Epe laburreko zorra adierazten duten baloreen balio-narriaduraren itzultzea, taldeko enpresak
+7987	Epe laburreko zorra adierazten duten baloreen balio-narriaduraren itzultzea, asoziatutako enpresak
+7988	Epe laburreko zorra adierazten duten baloreen balio-narriaduraren itzultzea, bestelako enpresak
+799	Epe laburreko hartzekoen balio-narriaduraren itzultzea
+7990	Epe laburreko hartzekoen balio-narriaduraren itzultzea, taldeko enpresak
+7991	Epe laburreko hartzekoen balio-narriaduraren itzultzea, asoziatutako enpresak
+7992	Epe laburreko hartzekoen balio-narriaduraren itzultzea, beste loturadun alderdiak
+7993	Epe laburreko hartzekoen balio-narriaduraren itzultzea, bestelako enpresak

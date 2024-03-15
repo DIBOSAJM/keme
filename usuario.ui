@@ -1,0 +1,1169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>usuario</class>
+ <widget class="QDialog" name="usuario">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>730</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Edición de usuario</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_5">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Datos personales</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Código:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="codigolineEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Nombre:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="nombrelineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_15">
+           <property name="text">
+            <string>Clave:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="clave1lineEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Repetir clave:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="clave2lineEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>ID:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="niflineEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Email:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="emaillineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Domicilio:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="domiciliolineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QLabel" name="label_13">
+           <property name="text">
+            <string>Observaciones:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="observacioneslineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_11">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QLabel" name="label_8">
+               <property name="text">
+                <string>Población:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="poblacionlineEdit"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_8">
+             <item>
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>CP:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="cplineEdit">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>Provincia:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="provincialineEdit"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_9">
+             <item>
+              <widget class="QLabel" name="label_12">
+               <property name="text">
+                <string>País:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="paislineEdit"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_11">
+               <property name="text">
+                <string>Teléfono:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="tfnolineEdit"/>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLabel" name="fotolabel">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>90</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::WinPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Sunken</enum>
+             </property>
+             <property name="lineWidth">
+              <number>0</number>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <item>
+              <widget class="QPushButton" name="fotopushButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>66</width>
+                 <height>21</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>7</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Importar...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="borrafotopushButton">
+               <property name="maximumSize">
+                <size>
+                 <width>18</width>
+                 <height>18</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="keme.qrc">
+                 <normaloff>:/iconos/graf/borraelem.png</normaloff>:/iconos/graf/borraelem.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>12</width>
+                 <height>12</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Permisos</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="6" column="2">
+          <widget class="QCheckBox" name="checkBox27">
+           <property name="text">
+            <string>Edición conceptos contables</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QCheckBox" name="checkBox30">
+           <property name="text">
+            <string>Exportar automáticos</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="2">
+          <widget class="QCheckBox" name="checkBox47">
+           <property name="text">
+            <string>Vencimientos anulados</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="3">
+          <widget class="QCheckBox" name="checkBox20">
+           <property name="text">
+            <string>Marcar revisado asiento</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="2">
+          <widget class="QCheckBox" name="checkBox31">
+           <property name="text">
+            <string>Fin ejercicio</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QCheckBox" name="checkBox33">
+           <property name="text">
+            <string>Ejecutar regularizaciones</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="3">
+          <widget class="QCheckBox" name="checkBox48">
+           <property name="text">
+            <string>IVA soportado</string>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="1">
+          <widget class="QCheckBox" name="checkBox54">
+           <property name="text">
+            <string>Chequear libros de facturas (IVA)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="1">
+          <widget class="QCheckBox" name="checkBox58">
+           <property name="text">
+            <string>Imputaciones cuenta</string>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="0">
+          <widget class="QCheckBox" name="checkBox61">
+           <property name="text">
+            <string>Reasignar imputaciones</string>
+           </property>
+          </widget>
+         </item>
+         <item row="18" column="0">
+          <widget class="QCheckBox" name="checkBox73">
+           <property name="text">
+            <string>Preferencias puesto</string>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="2">
+          <widget class="QCheckBox" name="checkBox59">
+           <property name="text">
+            <string>Ver inputaciones diario</string>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="3">
+          <widget class="QCheckBox" name="checkBox60">
+           <property name="text">
+            <string>Intercambia CI diario</string>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="0">
+          <widget class="QCheckBox" name="checkBox57">
+           <property name="text">
+            <string>Edición CI</string>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="2">
+          <widget class="QCheckBox" name="checkBox55">
+           <property name="text">
+            <string>Libro facturas recibidas</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="1">
+          <widget class="QCheckBox" name="checkBox42">
+           <property name="text">
+            <string>Asignar vencimientos</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QCheckBox" name="checkBox29">
+           <property name="text">
+            <string>Ejecutar automáticos</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="3">
+          <widget class="QCheckBox" name="checkBox28">
+           <property name="text">
+            <string>Edición asientos automáticos</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="QCheckBox" name="checkBox19">
+           <property name="text">
+            <string>Edición asientos</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="3">
+          <widget class="QCheckBox" name="checkBox36">
+           <property name="text">
+            <string>Balance de sumas y saldo</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QCheckBox" name="checkBox22">
+           <property name="text">
+            <string>Borrar asiento</string>
+           </property>
+          </widget>
+         </item>
+         <item row="19" column="2">
+          <widget class="QCheckBox" name="checkBox79">
+           <property name="text">
+            <string>Agrupar TEX en libro</string>
+           </property>
+          </widget>
+         </item>
+         <item row="19" column="1">
+          <widget class="QCheckBox" name="checkBox78">
+           <property name="text">
+            <string>Asignar diario</string>
+           </property>
+          </widget>
+         </item>
+         <item row="17" column="2">
+          <widget class="QCheckBox" name="checkBox71">
+           <property name="text">
+            <string>Asiento amortizaciones</string>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="3">
+          <widget class="QCheckBox" name="checkBox56">
+           <property name="text">
+            <string>Libro facturas emitidas</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QCheckBox" name="checkBox17">
+           <property name="text">
+            <string>Importar plan</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="checkBox2">
+           <property name="text">
+            <string>Edición ejercicios contables</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="checkBox3">
+           <property name="text">
+            <string>Habilitar/Deshabilitar períodos</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="checkBox1">
+           <property name="text">
+            <string>Configuración empresa</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="checkBox5">
+           <property name="text">
+            <string>Consultar notas</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QCheckBox" name="checkBox4">
+           <property name="text">
+            <string>Editar notas</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QCheckBox" name="checkBox6">
+           <property name="text">
+            <string>Conexión base de datos</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QCheckBox" name="checkBox7">
+           <property name="text">
+            <string>Gestión de usuarios</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QCheckBox" name="checkBox8">
+           <property name="text">
+            <string>Crear/borrar base datos</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="checkBox9">
+           <property name="text">
+            <string>Copiar empresa</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QCheckBox" name="checkBox10">
+           <property name="text">
+            <string>Tablas AEAT/Mercantiles</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QCheckBox" name="checkBox11">
+           <property name="text">
+            <string>Plan</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QCheckBox" name="checkBox12">
+           <property name="text">
+            <string>Cuentas auxiliares/Externos</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QCheckBox" name="checkBox13">
+           <property name="text">
+            <string>Datos accesorios cuenta auxiliar</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QCheckBox" name="checkBox14">
+           <property name="text">
+            <string>Asignar IVA/Retención a cuentas</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QCheckBox" name="checkBox15">
+           <property name="text">
+            <string>Bloquear cuentas</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <widget class="QCheckBox" name="checkBox16">
+           <property name="text">
+            <string>Exportar plan</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="QCheckBox" name="checkBox34">
+           <property name="text">
+            <string>Edición de regularizaciones</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="QCheckBox" name="checkBox38">
+           <property name="text">
+            <string>Conciliación de cuentas</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="0">
+          <widget class="QCheckBox" name="checkBox49">
+           <property name="text">
+            <string>IVA repercutido</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="1">
+          <widget class="QCheckBox" name="checkBox46">
+           <property name="text">
+            <string>Editar tipos vencimiento/formas pago</string>
+           </property>
+          </widget>
+         </item>
+         <item row="18" column="1">
+          <widget class="QCheckBox" name="checkBox74">
+           <property name="text">
+            <string>Importar asientos</string>
+           </property>
+          </widget>
+         </item>
+         <item row="18" column="2">
+          <widget class="QCheckBox" name="checkBox75">
+           <property name="text">
+            <string>Importar Contaplús</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="2">
+          <widget class="QCheckBox" name="checkBox35">
+           <property name="text">
+            <string>Importar regularizaciones</string>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="1">
+          <widget class="QCheckBox" name="checkBox62">
+           <property name="text">
+            <string>Cambiar imputaciones a cuenta</string>
+           </property>
+          </widget>
+         </item>
+         <item row="20" column="2">
+          <widget class="QCheckBox" name="checkBox83">
+           <property name="text">
+            <string>Activar visor local</string>
+           </property>
+          </widget>
+         </item>
+         <item row="18" column="3">
+          <widget class="QCheckBox" name="checkBox76">
+           <property name="text">
+            <string>Procesar fichero importación</string>
+           </property>
+          </widget>
+         </item>
+         <item row="19" column="3">
+          <widget class="QCheckBox" name="checkBox80">
+           <property name="text">
+            <string>Consolidación</string>
+           </property>
+          </widget>
+         </item>
+         <item row="20" column="0">
+          <widget class="QCheckBox" name="checkBox81">
+           <property name="text">
+            <string>Copia seguridad</string>
+           </property>
+          </widget>
+         </item>
+         <item row="19" column="0">
+          <widget class="QCheckBox" name="checkBox77">
+           <property name="text">
+            <string>Marcar como cerrado ejercicio</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="3">
+          <widget class="QCheckBox" name="checkBox32">
+           <property name="text">
+            <string>Tipos de diario</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QCheckBox" name="checkBox18">
+           <property name="text">
+            <string>Nuevo asiento</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="0">
+          <widget class="QCheckBox" name="checkBox45">
+           <property name="text">
+            <string>Asignar tipos vencim. a cuentas</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QCheckBox" name="checkBox21">
+           <property name="text">
+            <string>Asigna fichero documento</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0">
+          <widget class="QCheckBox" name="checkBox41">
+           <property name="text">
+            <string>Consultar retenciones</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="2">
+          <widget class="QCheckBox" name="checkBox23">
+           <property name="text">
+            <string>Filtrar diario</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="3">
+          <widget class="QCheckBox" name="checkBox24">
+           <property name="text">
+            <string>Acceso portapales</string>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="0">
+          <widget class="QCheckBox" name="checkBox53">
+           <property name="text">
+            <string>Asignar cuentas a tipos de IVA</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QCheckBox" name="checkBox25">
+           <property name="text">
+            <string>Cargar espera</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QCheckBox" name="checkBox26">
+           <property name="text">
+            <string>Imprimir diario</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="0">
+          <widget class="QCheckBox" name="checkBox37">
+           <property name="text">
+            <string>Modelos operaciones, 347/340</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="3">
+          <widget class="QCheckBox" name="checkBox44">
+           <property name="text">
+            <string>Domiciliaciones bancarias</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="2">
+          <widget class="QCheckBox" name="checkBox51">
+           <property name="text">
+            <string>IVA EIB</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="3">
+          <widget class="QCheckBox" name="checkBox52">
+           <property name="text">
+            <string>TIPOS DE IVA</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="2">
+          <widget class="QCheckBox" name="checkBox39">
+           <property name="text">
+            <string>Importar cuaderno 43</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="3">
+          <widget class="QCheckBox" name="checkBox40">
+           <property name="text">
+            <string>Conceptos de conciliación</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="1">
+          <widget class="QCheckBox" name="checkBox50">
+           <property name="text">
+            <string>IVA AIB</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="2">
+          <widget class="QCheckBox" name="checkBox43">
+           <property name="text">
+            <string>Procesar vencimientos</string>
+           </property>
+          </widget>
+         </item>
+         <item row="17" column="3">
+          <widget class="QCheckBox" name="checkBox72">
+           <property name="text">
+            <string>Plan de amortizaciones</string>
+           </property>
+          </widget>
+         </item>
+         <item row="16" column="0">
+          <widget class="QCheckBox" name="checkBox65">
+           <property name="text">
+            <string>ECPN Pymes</string>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="2">
+          <widget class="QCheckBox" name="checkBox63">
+           <property name="text">
+            <string>Ejecutar Estados Contables</string>
+           </property>
+          </widget>
+         </item>
+         <item row="16" column="3">
+          <widget class="QCheckBox" name="checkBox68">
+           <property name="text">
+            <string>Procesar memoria</string>
+           </property>
+          </widget>
+         </item>
+         <item row="16" column="1">
+          <widget class="QCheckBox" name="checkBox66">
+           <property name="text">
+            <string>XML Cuentas</string>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="3">
+          <widget class="QCheckBox" name="checkBox64">
+           <property name="text">
+            <string>Edición estados</string>
+           </property>
+          </widget>
+         </item>
+         <item row="16" column="2">
+          <widget class="QCheckBox" name="checkBox67">
+           <property name="text">
+            <string>XML IS</string>
+           </property>
+          </widget>
+         </item>
+         <item row="17" column="0">
+          <widget class="QCheckBox" name="checkBox69">
+           <property name="text">
+            <string>Edición presupuestos</string>
+           </property>
+          </widget>
+         </item>
+         <item row="17" column="1">
+          <widget class="QCheckBox" name="checkBox70">
+           <property name="text">
+            <string>Previsiones-realizaciones</string>
+           </property>
+          </widget>
+         </item>
+         <item row="20" column="1">
+          <widget class="QCheckBox" name="checkBox82">
+           <property name="text">
+            <string>Utilidades contabilidad</string>
+           </property>
+          </widget>
+         </item>
+         <item row="20" column="3">
+          <widget class="QCheckBox" name="checkBox84">
+           <property name="text">
+            <string>SII</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="todopushButton">
+           <property name="text">
+            <string>Chequear &amp;todo</string>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/reload2.png</normaloff>:/iconos/graf/reload2.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="nadapushButton">
+           <property name="text">
+            <string>Chequear &amp;nada</string>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/borraelem.png</normaloff>:/iconos/graf/borraelem.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_12">
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelarpushButton">
+       <property name="text">
+        <string>&amp;Cancelar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/borrar.png</normaloff>:/iconos/graf/borrar.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="aceptarpushButton">
+       <property name="text">
+        <string>&amp;Aceptar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/check2.png</normaloff>:/iconos/graf/check2.png</iconset>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>codigolineEdit</tabstop>
+  <tabstop>nombrelineEdit</tabstop>
+  <tabstop>clave1lineEdit</tabstop>
+  <tabstop>clave2lineEdit</tabstop>
+  <tabstop>niflineEdit</tabstop>
+  <tabstop>emaillineEdit</tabstop>
+  <tabstop>domiciliolineEdit</tabstop>
+  <tabstop>observacioneslineEdit</tabstop>
+  <tabstop>poblacionlineEdit</tabstop>
+  <tabstop>cplineEdit</tabstop>
+  <tabstop>provincialineEdit</tabstop>
+  <tabstop>paislineEdit</tabstop>
+  <tabstop>tfnolineEdit</tabstop>
+  <tabstop>fotopushButton</tabstop>
+  <tabstop>borrafotopushButton</tabstop>
+  <tabstop>checkBox1</tabstop>
+  <tabstop>checkBox2</tabstop>
+  <tabstop>checkBox3</tabstop>
+  <tabstop>checkBox4</tabstop>
+  <tabstop>checkBox5</tabstop>
+  <tabstop>checkBox6</tabstop>
+  <tabstop>checkBox7</tabstop>
+  <tabstop>checkBox8</tabstop>
+  <tabstop>checkBox9</tabstop>
+  <tabstop>checkBox10</tabstop>
+  <tabstop>checkBox11</tabstop>
+  <tabstop>checkBox12</tabstop>
+  <tabstop>checkBox13</tabstop>
+  <tabstop>checkBox14</tabstop>
+  <tabstop>checkBox15</tabstop>
+  <tabstop>checkBox16</tabstop>
+  <tabstop>checkBox17</tabstop>
+  <tabstop>checkBox18</tabstop>
+  <tabstop>checkBox19</tabstop>
+  <tabstop>checkBox20</tabstop>
+  <tabstop>checkBox21</tabstop>
+  <tabstop>checkBox22</tabstop>
+  <tabstop>checkBox23</tabstop>
+  <tabstop>checkBox24</tabstop>
+  <tabstop>checkBox25</tabstop>
+  <tabstop>checkBox26</tabstop>
+  <tabstop>checkBox27</tabstop>
+  <tabstop>checkBox28</tabstop>
+  <tabstop>checkBox29</tabstop>
+  <tabstop>checkBox30</tabstop>
+  <tabstop>checkBox31</tabstop>
+  <tabstop>checkBox32</tabstop>
+  <tabstop>checkBox33</tabstop>
+  <tabstop>checkBox34</tabstop>
+  <tabstop>checkBox35</tabstop>
+  <tabstop>checkBox36</tabstop>
+  <tabstop>checkBox37</tabstop>
+  <tabstop>checkBox38</tabstop>
+  <tabstop>checkBox39</tabstop>
+  <tabstop>checkBox40</tabstop>
+  <tabstop>checkBox41</tabstop>
+  <tabstop>checkBox42</tabstop>
+  <tabstop>checkBox43</tabstop>
+  <tabstop>checkBox44</tabstop>
+  <tabstop>checkBox45</tabstop>
+  <tabstop>checkBox46</tabstop>
+  <tabstop>checkBox47</tabstop>
+  <tabstop>checkBox48</tabstop>
+  <tabstop>checkBox49</tabstop>
+  <tabstop>checkBox50</tabstop>
+  <tabstop>checkBox51</tabstop>
+  <tabstop>checkBox52</tabstop>
+  <tabstop>checkBox53</tabstop>
+  <tabstop>checkBox54</tabstop>
+  <tabstop>checkBox55</tabstop>
+  <tabstop>checkBox56</tabstop>
+  <tabstop>checkBox57</tabstop>
+  <tabstop>checkBox58</tabstop>
+  <tabstop>checkBox59</tabstop>
+  <tabstop>checkBox60</tabstop>
+  <tabstop>checkBox61</tabstop>
+  <tabstop>checkBox62</tabstop>
+  <tabstop>checkBox63</tabstop>
+  <tabstop>checkBox64</tabstop>
+  <tabstop>checkBox65</tabstop>
+  <tabstop>checkBox66</tabstop>
+  <tabstop>checkBox67</tabstop>
+  <tabstop>checkBox68</tabstop>
+  <tabstop>checkBox69</tabstop>
+  <tabstop>checkBox70</tabstop>
+  <tabstop>checkBox71</tabstop>
+  <tabstop>checkBox72</tabstop>
+  <tabstop>checkBox84</tabstop>
+  <tabstop>checkBox73</tabstop>
+  <tabstop>checkBox74</tabstop>
+  <tabstop>checkBox75</tabstop>
+  <tabstop>checkBox76</tabstop>
+  <tabstop>checkBox77</tabstop>
+  <tabstop>checkBox78</tabstop>
+  <tabstop>checkBox79</tabstop>
+  <tabstop>checkBox80</tabstop>
+  <tabstop>checkBox81</tabstop>
+  <tabstop>checkBox82</tabstop>
+  <tabstop>checkBox83</tabstop>
+  <tabstop>todopushButton</tabstop>
+  <tabstop>nadapushButton</tabstop>
+  <tabstop>aceptarpushButton</tabstop>
+  <tabstop>cancelarpushButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="keme.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>cancelarpushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>usuario</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>861</x>
+     <y>722</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>681</x>
+     <y>454</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>consret</class>
+ <widget class="QDialog" name="consret">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>882</width>
+    <height>571</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Consultas retenciones</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>EJERCICIO:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="ejerciciocomboBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Período:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="periodocomboBox">
+       <item>
+        <property name="text">
+         <string>1T Primer trimestre</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2T Segundo trimestre</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>3T Tercer trimestre</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>4T Cuarto trimestre</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>0A Periodicidad anual</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>01 Enero</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>02 Febrero</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>03 Marzo</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>04 Abril</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>05 Mayo</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>06 Junio</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>07 Julio</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>08 Agosto</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>09 Septiembre</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>10 Octubre</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>11 Noviembre</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>12 Diciembre</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>FECHA INICIAL:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateEdit" name="inicialdateEdit"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>FECHA FINAL:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateEdit" name="finaldateEdit"/>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QCheckBox" name="arrendamientoscheckBox">
+       <property name="text">
+        <string>Sólo arrendamientos</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="excluir_arrcheckBox">
+       <property name="text">
+        <string>Excluir arrendamientos</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="agruparcheckBox">
+       <property name="text">
+        <string>Agrupar por retenido</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="resumentableWidget">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>200</height>
+      </size>
+     </property>
+     <column>
+      <property name="text">
+       <string>Cuenta Ret.</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Arrend.</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Clave</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>R.especie</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Base</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Retención</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Ing.Cta.</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Ing.Cta.Rep.</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="copiarespushButton">
+         <property name="text">
+          <string>&amp;Copiar</string>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/copiar.png</normaloff>:/iconos/graf/copiar.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>RTOS.DINERARIOS:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="dinerarioslineEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>RETENCIONES:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLineEdit" name="totalretlineEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>RTOS.ESPECIE:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="especielineEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>PAGOS A CUENTA:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QLineEdit" name="total_a_ctalineEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QTableWidget" name="detalletableWidget">
+       <column>
+        <property name="text">
+         <string>Apunte</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Cuenta ret.</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Cta.retenido</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Arrend.</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Especie</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Clave</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Base</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Retención</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Ing.Cta</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Ing.Cta. rep.</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Nombre</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>CIF</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Provincia</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Tipo Ret.</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QPushButton" name="edasientopushButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/boligrafo_editar.png</normaloff>:/iconos/graf/boligrafo_editar.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="consasientopushButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/xmag.png</normaloff>:/iconos/graf/xmag.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="borra_asientolineEdit">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/borrar.png</normaloff>:/iconos/graf/borrar.png</iconset>
+         </property>
+         <property name="shortcut">
+          <string>Alt+L</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="edret_pushButton">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Editar registro retención</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/AEAT_RET.png</normaloff>:/iconos/graf/AEAT_RET.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="cta_pushButton">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Cambiar cuenta retención</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/mayor2.png</normaloff>:/iconos/graf/mayor2.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QPushButton" name="copialistapushButton">
+       <property name="text">
+        <string>&amp;Copiar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/copiar.png</normaloff>:/iconos/graf/copiar.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="informepushButton">
+       <property name="text">
+        <string>&amp;Informe</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/printer.png</normaloff>:/iconos/graf/printer.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="edtexpushButton">
+       <property name="text">
+        <string>&amp;Editar TEX</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/tex.png</normaloff>:/iconos/graf/tex.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="refrescarpushButton">
+       <property name="text">
+        <string>&amp;Refrescar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/rayo.png</normaloff>:/iconos/graf/rayo.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>&amp;Aceptar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/application-exit.png</normaloff>:/iconos/graf/application-exit.png</iconset>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>inicialdateEdit</tabstop>
+  <tabstop>finaldateEdit</tabstop>
+  <tabstop>arrendamientoscheckBox</tabstop>
+  <tabstop>excluir_arrcheckBox</tabstop>
+  <tabstop>agruparcheckBox</tabstop>
+  <tabstop>resumentableWidget</tabstop>
+  <tabstop>copiarespushButton</tabstop>
+  <tabstop>dinerarioslineEdit</tabstop>
+  <tabstop>totalretlineEdit</tabstop>
+  <tabstop>especielineEdit</tabstop>
+  <tabstop>total_a_ctalineEdit</tabstop>
+  <tabstop>detalletableWidget</tabstop>
+  <tabstop>edasientopushButton</tabstop>
+  <tabstop>consasientopushButton</tabstop>
+  <tabstop>borra_asientolineEdit</tabstop>
+  <tabstop>edret_pushButton</tabstop>
+  <tabstop>copialistapushButton</tabstop>
+  <tabstop>informepushButton</tabstop>
+  <tabstop>edtexpushButton</tabstop>
+  <tabstop>refrescarpushButton</tabstop>
+  <tabstop>pushButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="keme.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>consret</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>649</x>
+     <y>532</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>712</x>
+     <y>516</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

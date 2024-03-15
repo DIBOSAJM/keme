@@ -1,0 +1,981 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="estado2html.xslt"?><!DOCTYPE EstadoContable>
+<EstadoContable>
+ <Heading>
+  <Titulo>BALANCE PLAN 2007</Titulo>
+  <Cabecera>BALANCE AL CIERRE DEL EJERCICIO</Cabecera>
+  <Parte1>ACTIVO</Parte1>
+  <Parte2>PATRIMONIO NETO Y PASIVO</Parte2>
+  <Observaciones></Observaciones>
+  <FormulaBase></FormulaBase>
+  <Ejercicio1></Ejercicio1>
+  <Ejercicio2></Ejercicio2>
+  <Diarios>APERTURA SIN_ASIGNAR REGULARIZACION</Diarios>
+  <EstadosMedios>false</EstadosMedios>
+  <valorbasepor1>0</valorbasepor1>
+  <valorbasepor2>0</valorbasepor2>
+  <analitica>false</analitica>
+  <haycolref>true</haycolref>
+  <colref></colref>
+  <ci></ci>
+  <grafico>false</grafico>
+  <desglose>false</desglose>
+  <desglose_ctas>false</desglose_ctas>
+  <descabecera></descabecera>
+  <despie></despie>
+ </Heading>
+ <Cuerpo>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>A) PATRIMONIO NETO</apartado>
+   <parte1>false</parte1>
+   <clave>A</clave>
+   <nodo>A</nodo>
+   <formula>{A.1(2)}+{A.2(2)} +{A.3(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>A) ACTIVO NO CORRIENTE</apartado>
+   <parte1>true</parte1>
+   <clave>A</clave>
+   <nodo>A</nodo>
+   <formula>{A.1(1)}+{A.2(1)}+{A.3(1)}+{A.4(1)}+{A.5(1)}+{A.6(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>A-1) Fondos propios</apartado>
+   <parte1>false</parte1>
+   <clave>1</clave>
+   <nodo>A.1</nodo>
+   <formula>{A.1.1(2)}+{A.1.2(2)}+{A.1.3(2)}+{A.1.4(2)}+{A.1.5(2)}+{A.1.6(2)}+{A.1.7(2)}+{A.1.8(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>I. Inmovilizado intangible</apartado>
+   <parte1>true</parte1>
+   <clave>1</clave>
+   <nodo>A.1</nodo>
+   <formula>{A.1.1(1)} + {A.1.2(1)} + {A.1.3(1)} + {A.1.4(1)} + {A.1.5(1)} + {A.1.6(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>I. Capital</apartado>
+   <parte1>false</parte1>
+   <clave>1</clave>
+   <nodo>A.1.1</nodo>
+   <formula>{A.1.1.1(2)}+{A.1.1.2(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Desarrollo</apartado>
+   <parte1>true</parte1>
+   <clave>1</clave>
+   <nodo>A.1.1</nodo>
+   <formula>[201]+[2801]+ [2901]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Capital escriturado</apartado>
+   <parte1>false</parte1>
+   <clave>1</clave>
+   <nodo>A.1.1.1</nodo>
+   <formula>-[100]-[101]-[102]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Capital no exigido</apartado>
+   <parte1>false</parte1>
+   <clave>2</clave>
+   <nodo>A.1.1.2</nodo>
+   <formula>-[1030]-[1040]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>II. Prima de emisión</apartado>
+   <parte1>false</parte1>
+   <clave>2</clave>
+   <nodo>A.1.2</nodo>
+   <formula>-[110]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Concesiones</apartado>
+   <parte1>true</parte1>
+   <clave>2</clave>
+   <nodo>A.1.2</nodo>
+   <formula>[202]+ [2802]+[2902]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>III. Reservas</apartado>
+   <parte1>false</parte1>
+   <clave>3</clave>
+   <nodo>A.1.3</nodo>
+   <formula>{A.1.3.1(2)}+{A.1.3.2(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>3. Patentes, licencias, marcas y similares</apartado>
+   <parte1>true</parte1>
+   <clave>3</clave>
+   <nodo>A.1.3</nodo>
+   <formula>[203]+ [2803]+[2903]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Legal y estatutarias</apartado>
+   <parte1>false</parte1>
+   <clave>1</clave>
+   <nodo>A.1.3.1</nodo>
+   <formula>-[112] - [1141]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Otras reservas</apartado>
+   <parte1>false</parte1>
+   <clave>2</clave>
+   <nodo>A.1.3.2</nodo>
+   <formula>-[113] - [1140] - [1142] - [1143] - [1144] - [115] - [119]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>IV. Acciones y participaciones en patrimonio propias</apartado>
+   <parte1>false</parte1>
+   <clave>4</clave>
+   <nodo>A.1.4</nodo>
+   <formula>-[108]-[109]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>4. Fondo de comercio</apartado>
+   <parte1>true</parte1>
+   <clave>4</clave>
+   <nodo>A.1.4</nodo>
+   <formula>[204]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>V. Resultados de ejercicios anteriores</apartado>
+   <parte1>false</parte1>
+   <clave>5</clave>
+   <nodo>A.1.5</nodo>
+   <formula>{A.1.5.1(2)}+{A.1.5.2(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>5. Aplicaciones informáticas</apartado>
+   <parte1>true</parte1>
+   <clave>5</clave>
+   <nodo>A.1.5</nodo>
+   <formula>[206]+[2806]+[2906]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Remanente</apartado>
+   <parte1>false</parte1>
+   <clave>1</clave>
+   <nodo>A.1.5.1</nodo>
+   <formula>-[120]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. (Resultados negativos de ejercicios anteriores)</apartado>
+   <parte1>false</parte1>
+   <clave>2</clave>
+   <nodo>A.1.5.2</nodo>
+   <formula>-[121]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>VI. Otras aportaciones de socios</apartado>
+   <parte1>false</parte1>
+   <clave>6</clave>
+   <nodo>A.1.6</nodo>
+   <formula>-[118]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>6. Otro inmovilizado intangible</apartado>
+   <parte1>true</parte1>
+   <clave>6</clave>
+   <nodo>A.1.6</nodo>
+   <formula>[205]+[209]+[2805]+[2905]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>VII. Resultado del ejercicio</apartado>
+   <parte1>false</parte1>
+   <clave>7</clave>
+   <nodo>A.1.7</nodo>
+   <formula>-[129]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>VIII. (Dividendo a cuenta)</apartado>
+   <parte1>false</parte1>
+   <clave>8</clave>
+   <nodo>A.1.8</nodo>
+   <formula>-[557]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>IX. Otros instrumentos de patrimonio neto</apartado>
+   <parte1>false</parte1>
+   <clave>9</clave>
+   <nodo>A.1.9</nodo>
+   <formula>-[111]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>A-2) Ajustes por cambio de valor</apartado>
+   <parte1>false</parte1>
+   <clave>2</clave>
+   <nodo>A.2</nodo>
+   <formula>{A.2.1(2)}+{A.2.2(2)}+{A.2.3(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>II. Inmovilizado material</apartado>
+   <parte1>true</parte1>
+   <clave>2</clave>
+   <nodo>A.2</nodo>
+   <formula>{A.2.1(1)}+{A.2.2(1)}+{A.2.3(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>I. Activos financieros disponibles para la venta</apartado>
+   <parte1>false</parte1>
+   <clave>1</clave>
+   <nodo>A.2.1</nodo>
+   <formula>-[133]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Terrenos y construcciones</apartado>
+   <parte1>true</parte1>
+   <clave>1</clave>
+   <nodo>A.2.1</nodo>
+   <formula>[210]+[211]+[2811]+[2910]+[2911]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>II. Operaciones de cobertura</apartado>
+   <parte1>false</parte1>
+   <clave>2</clave>
+   <nodo>A.2.2</nodo>
+   <formula>-[1340]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Instalaciones técnicas y otro inmovilizado material</apartado>
+   <parte1>true</parte1>
+   <clave>2</clave>
+   <nodo>A.2.2</nodo>
+   <formula>[212]+ [213]+ [214]+ [215]+ [216]+ [217]+ [218]+ [219]+ [2812]+ [2813]+ [2814]+ [2815]+ [2816]+ [2817]+ [2818]+ [2819]+ [2912]+ [2913]+ [2914]+ [2915]+ [2916]+ [2917]+ [2918]+ [2919]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>III. Otros</apartado>
+   <parte1>false</parte1>
+   <clave>3</clave>
+   <nodo>A.2.3</nodo>
+   <formula>-[137]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>3. Inmovilizado en curso y anticipos</apartado>
+   <parte1>true</parte1>
+   <clave>3</clave>
+   <nodo>A.2.3</nodo>
+   <formula>[23]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>A-3) Subvenciones, donaciones y legados recibidos</apartado>
+   <parte1>false</parte1>
+   <clave>3</clave>
+   <nodo>A.3</nodo>
+   <formula>-[130]-[131]-[132]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>III. Inversiones inmobiliarias</apartado>
+   <parte1>true</parte1>
+   <clave>3</clave>
+   <nodo>A.3</nodo>
+   <formula>{A.3.1(1)} + {A.3.2(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Terrenos</apartado>
+   <parte1>true</parte1>
+   <clave>1</clave>
+   <nodo>A.3.1</nodo>
+   <formula>[220]+ [2920]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Construcciones</apartado>
+   <parte1>true</parte1>
+   <clave>2</clave>
+   <nodo>A.3.2</nodo>
+   <formula>[221]+ [282]+ [2921]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>IV. Inversiones en empresas del grupo y asociadas a largo plazo</apartado>
+   <parte1>true</parte1>
+   <clave>4</clave>
+   <nodo>A.4</nodo>
+   <formula>{A.4.1(1)}+ {A.4.2(1)}+ {A.4.3(1)}+ {A.4.4(1)}+ {A.4.5(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Instrumentos de patrimonio</apartado>
+   <parte1>true</parte1>
+   <clave>1</clave>
+   <nodo>A.4.1</nodo>
+   <formula>[2403]+ [2404]+ [2493]+ [2494]+ [293]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Créditos a empresas</apartado>
+   <parte1>true</parte1>
+   <clave>2</clave>
+   <nodo>A.4.2</nodo>
+   <formula>[2423]+ [2424]+ [2953]+ [2954]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>3. Valores representativos de deuda</apartado>
+   <parte1>true</parte1>
+   <clave>3</clave>
+   <nodo>A.4.3</nodo>
+   <formula>[2413]+ [2414]+ [2943]+ [2944]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>4. Derivados</apartado>
+   <parte1>true</parte1>
+   <clave>4</clave>
+   <nodo>A.4.4</nodo>
+   <formula></formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>5. Otros activos financieros</apartado>
+   <parte1>true</parte1>
+   <clave>5</clave>
+   <nodo>A.4.5</nodo>
+   <formula></formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>V. Inversiones financieras a largo plazo</apartado>
+   <parte1>true</parte1>
+   <clave>5</clave>
+   <nodo>A.5</nodo>
+   <formula>{A.5.1(1)}+ {A.5.2(1)}+ {A.5.3(1)}+ {A.5.4(1)}+ {A.5.5(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Instrumentos de patrimonio</apartado>
+   <parte1>true</parte1>
+   <clave>1</clave>
+   <nodo>A.5.1</nodo>
+   <formula>[2405]+ [2495]+ [250]+ [259]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Créditos a terceros</apartado>
+   <parte1>true</parte1>
+   <clave>2</clave>
+   <nodo>A.5.2</nodo>
+   <formula>[2425]+ [252]+ [253]+ [254]+ [2955]+ [298]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>3. Valores representativos de deuda</apartado>
+   <parte1>true</parte1>
+   <clave>3</clave>
+   <nodo>A.5.3</nodo>
+   <formula>[2415]+ [251]+ [2945]+ [297]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>4. Derivados</apartado>
+   <parte1>true</parte1>
+   <clave>4</clave>
+   <nodo>A.5.4</nodo>
+   <formula>[255]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>5. Otros activos financieros</apartado>
+   <parte1>true</parte1>
+   <clave>5</clave>
+   <nodo>A.5.5</nodo>
+   <formula>[258]+ [26]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>VI. Activos por impuesto diferido</apartado>
+   <parte1>true</parte1>
+   <clave>6</clave>
+   <nodo>A.6</nodo>
+   <formula>[474]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>B) PASIVO NO CORRIENTE</apartado>
+   <parte1>false</parte1>
+   <clave>B</clave>
+   <nodo>B</nodo>
+   <formula>{B.1(2)}+{B.2(2)}+{B.3(2)}+{B.4(2)}+{B.5(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>B) ACTIVO CORRIENTE</apartado>
+   <parte1>true</parte1>
+   <clave>B</clave>
+   <nodo>B</nodo>
+   <formula>{B.1(1)}+{B.2(1)}+{B.3(1)}+{B.4(1)}+{B.5(1)}+{B.6(1)} + {B.7(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>I. Provisiones a largo plazo</apartado>
+   <parte1>false</parte1>
+   <clave>1</clave>
+   <nodo>B.1</nodo>
+   <formula>{B.1.1(2)}+{B.1.2(2)}+{B.1.3(2)}+{B.1.4(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>I. Activos no corrientes mantenidos para la venta</apartado>
+   <parte1>true</parte1>
+   <clave>1</clave>
+   <nodo>B.1</nodo>
+   <formula>[580]+[581]+[582]+[583]+[584]+[599]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Obligaciones por prestaciones a largo plazo al personal</apartado>
+   <parte1>false</parte1>
+   <clave>1</clave>
+   <nodo>B.1.1</nodo>
+   <formula>-[140]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Actuaciones medioambientales</apartado>
+   <parte1>false</parte1>
+   <clave>2</clave>
+   <nodo>B.1.2</nodo>
+   <formula>-[145]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>3. Provisiones por reestructuración</apartado>
+   <parte1>false</parte1>
+   <clave>3</clave>
+   <nodo>B.1.3</nodo>
+   <formula>-[146]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>4. Otras provisiones</apartado>
+   <parte1>false</parte1>
+   <clave>4</clave>
+   <nodo>B.1.4</nodo>
+   <formula>-[141] -[142] -[143] -[147]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>II. Deudas a largo plazo</apartado>
+   <parte1>false</parte1>
+   <clave>2</clave>
+   <nodo>B.2</nodo>
+   <formula>{B.2.1(2)}+ {B.2.2(2)}+ {B.2.3(2)}+ {B.2.4(2)}+ {B.2.5(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>II. Existencias</apartado>
+   <parte1>true</parte1>
+   <clave>2</clave>
+   <nodo>B.2</nodo>
+   <formula>{B.2.1(1)} + {B.2.2(1)} +{B.2.3(1)} +{B.2.4(1)} +{B.2.5(1)} +{B.2.6(1)} </formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Obligaciones y otros valores negociables</apartado>
+   <parte1>false</parte1>
+   <clave>1</clave>
+   <nodo>B.2.1</nodo>
+   <formula>-[177] -[178] - [179]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Comerciales</apartado>
+   <parte1>true</parte1>
+   <clave>1</clave>
+   <nodo>B.2.1</nodo>
+   <formula>[30]+ [390]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Deudas con entidades de crédito</apartado>
+   <parte1>false</parte1>
+   <clave>2</clave>
+   <nodo>B.2.2</nodo>
+   <formula>-[1605] - [170]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Materias primas y otros aprovisionamientos</apartado>
+   <parte1>true</parte1>
+   <clave>2</clave>
+   <nodo>B.2.2</nodo>
+   <formula>[31] + [32] + [391] + [392]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>3. Acreedores por arrendamiento financiero</apartado>
+   <parte1>false</parte1>
+   <clave>3</clave>
+   <nodo>B.2.3</nodo>
+   <formula>-[1625] - [174]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>3. Productos en curso</apartado>
+   <parte1>true</parte1>
+   <clave>3</clave>
+   <nodo>B.2.3</nodo>
+   <formula>[33] + [34] + [393] + [394]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>4. Derivados</apartado>
+   <parte1>false</parte1>
+   <clave>4</clave>
+   <nodo>B.2.4</nodo>
+   <formula>-[176]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>4. Productos terminados</apartado>
+   <parte1>true</parte1>
+   <clave>4</clave>
+   <nodo>B.2.4</nodo>
+   <formula>[35] + [395]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>5. Otros pasivos financieros</apartado>
+   <parte1>false</parte1>
+   <clave>5</clave>
+   <nodo>B.2.5</nodo>
+   <formula>-[1615] -[1635]- [171]- [172] -[173] -[175]- [180] -[185] - [189]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>5. Subproductos, residuos y materiales recuperados</apartado>
+   <parte1>true</parte1>
+   <clave>5</clave>
+   <nodo>B.2.5</nodo>
+   <formula>[36] + [396]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>6. Anticipos a proveedores</apartado>
+   <parte1>true</parte1>
+   <clave>6</clave>
+   <nodo>B.2.6</nodo>
+   <formula>[407]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>III. Deudas con empresas del grupo y asociadas a largo plazo</apartado>
+   <parte1>false</parte1>
+   <clave>3</clave>
+   <nodo>B.3</nodo>
+   <formula>-[1603]-[1604]-[1613]-[1614]-[1623]-[1624]-[1633]-[1634]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>III. Deudores comerciales y otras cuentas a cobrar</apartado>
+   <parte1>true</parte1>
+   <clave>3</clave>
+   <nodo>B.3</nodo>
+   <formula>{B.3.1(1)} + {B.3.2(1)} +{B.3.3(1)} +{B.3.4(1)} +{B.3.5(1)} +{B.3.6(1)}  + {B.3.7(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Clientes por ventas y prestaciones de servicios</apartado>
+   <parte1>true</parte1>
+   <clave>1</clave>
+   <nodo>B.3.1</nodo>
+   <formula>[430] + [431] + [432] + [435] + [436] + [437] + [490] + [4935]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Clientes, empresas del grupo y asociadas</apartado>
+   <parte1>true</parte1>
+   <clave>2</clave>
+   <nodo>B.3.2</nodo>
+   <formula>[433] + [434] + [4933] + [4934]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>3. Deudores varios</apartado>
+   <parte1>true</parte1>
+   <clave>3</clave>
+   <nodo>B.3.3</nodo>
+   <formula>[44] + [5531] + [5533]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>4. Personal</apartado>
+   <parte1>true</parte1>
+   <clave>4</clave>
+   <nodo>B.3.4</nodo>
+   <formula>[460] + [544]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>5. Activos por impuesto corriente</apartado>
+   <parte1>true</parte1>
+   <clave>5</clave>
+   <nodo>B.3.5</nodo>
+   <formula>[4709]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>6. Otros créditos con las Administraciones Públicas</apartado>
+   <parte1>true</parte1>
+   <clave>6</clave>
+   <nodo>B.3.6</nodo>
+   <formula>[4700] + [4708] + [471] + [472]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>7. Accionistas (socios) por desembolsos exigidos</apartado>
+   <parte1>true</parte1>
+   <clave>7</clave>
+   <nodo>B.3.7</nodo>
+   <formula>[5580]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>IV. Pasivos por impuesto diferido</apartado>
+   <parte1>false</parte1>
+   <clave>4</clave>
+   <nodo>B.4</nodo>
+   <formula>-[479]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>IV. Inversiones en empresas del grupo y asociadas a corto  plazo</apartado>
+   <parte1>true</parte1>
+   <clave>4</clave>
+   <nodo>B.4</nodo>
+   <formula>{B.4.1(1)} + {B.4.2(1)} +{B.4.3(1)} +{B.4.4(1)} +{B.4.5(1)} </formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Instrumentos de patrimonio</apartado>
+   <parte1>true</parte1>
+   <clave>1</clave>
+   <nodo>B.4.1</nodo>
+   <formula>[5303] + [5304] + [5393] + [5394] + [593]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Créditos a empresas</apartado>
+   <parte1>true</parte1>
+   <clave>2</clave>
+   <nodo>B.4.2</nodo>
+   <formula>[5323] + [5324] + [5343] + [5344] + [5953] + [5954]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>3. Valores representativos de deuda</apartado>
+   <parte1>true</parte1>
+   <clave>3</clave>
+   <nodo>B.4.3</nodo>
+   <formula>[5313] + [5314] + [5333] + [5334] + [5943] + [5944]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>4. Derivados</apartado>
+   <parte1>true</parte1>
+   <clave>4</clave>
+   <nodo>B.4.4</nodo>
+   <formula></formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>5. Otros activos financieros</apartado>
+   <parte1>true</parte1>
+   <clave>5</clave>
+   <nodo>B.4.5</nodo>
+   <formula>[5353] + [5354] + [5523] + [5524]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>V. Periodificaciones a largo plazo</apartado>
+   <parte1>false</parte1>
+   <clave>5</clave>
+   <nodo>B.5</nodo>
+   <formula>-[181]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>V. Inversiones financieras a corto plazo</apartado>
+   <parte1>true</parte1>
+   <clave>5</clave>
+   <nodo>B.5</nodo>
+   <formula>{B.5.1(1)} + {B.5.2(1)} +{B.5.3(1)} +{B.5.4(1)} +{B.5.5(1)} </formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Instrumentos de patrimonio</apartado>
+   <parte1>true</parte1>
+   <clave>1</clave>
+   <nodo>B.5.1</nodo>
+   <formula>[5305] + [540] + [5395] + [549]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Créditos a empresas</apartado>
+   <parte1>true</parte1>
+   <clave>2</clave>
+   <nodo>B.5.2</nodo>
+   <formula>[5325] + [5345] + [542] + [543] + [547] + [5955] + [598]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>3. Valores representativos de deuda</apartado>
+   <parte1>true</parte1>
+   <clave>3</clave>
+   <nodo>B.5.3</nodo>
+   <formula>[5315] + [ 5335] + [541] + [546] + [5945] + [597]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>4. Derivados</apartado>
+   <parte1>true</parte1>
+   <clave>4</clave>
+   <nodo>B.5.4</nodo>
+   <formula>[5590] + [5593]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>5. Otros activos financieros</apartado>
+   <parte1>true</parte1>
+   <clave>5</clave>
+   <nodo>B.5.5</nodo>
+   <formula>[5355] + [545] + [548] + [551] + [5525] + [565] + [566]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>VI. Periodificaciones a corto plazo</apartado>
+   <parte1>true</parte1>
+   <clave>6</clave>
+   <nodo>B.6</nodo>
+   <formula>[480]+[567]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>VII. Efectivo y otros activos líquidos equivalentes</apartado>
+   <parte1>true</parte1>
+   <clave>7</clave>
+   <nodo>B.7</nodo>
+   <formula>{B.7.1(1)} + {B.7.2(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Tesorería</apartado>
+   <parte1>true</parte1>
+   <clave>1</clave>
+   <nodo>B.7.1</nodo>
+   <formula>[570] + [571] + [572] + [573] + [574] + [575]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Otros activos líquidos equivalentes</apartado>
+   <parte1>true</parte1>
+   <clave>2</clave>
+   <nodo>B.7.2</nodo>
+   <formula>[576]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>C) PASIVO CORRIENTE</apartado>
+   <parte1>false</parte1>
+   <clave>C</clave>
+   <nodo>C</nodo>
+   <formula>{C.1(2)}+{C.2(2)}+{C.3(2)}+{C.4(2)}+{C.5(2)} +{C.6(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>I. Pasivos vinculados con activos no corrientes mantenidos para la venta</apartado>
+   <parte1>false</parte1>
+   <clave>1</clave>
+   <nodo>C.1</nodo>
+   <formula>-[585]-[586]-[587]-[588]-[589]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>II. Provisiones a corto plazo</apartado>
+   <parte1>false</parte1>
+   <clave>2</clave>
+   <nodo>C.2</nodo>
+   <formula>-[499]-[529]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>III. Deudas a corto plazo</apartado>
+   <parte1>false</parte1>
+   <clave>3</clave>
+   <nodo>C.3</nodo>
+   <formula>{C.2.1(2)}+{C.2.2(2)}+{C.2.3(2)}+{C.2.4(2)}+{C.2.5(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Obligaciones y otros valores negociables</apartado>
+   <parte1>false</parte1>
+   <clave>1</clave>
+   <nodo>C.3.1</nodo>
+   <formula>-[500] - [501] -[505] - [506]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Deudas con entidades de crédito</apartado>
+   <parte1>false</parte1>
+   <clave>2</clave>
+   <nodo>C.3.2</nodo>
+   <formula>-[5105] -[520] -[527]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>3. Acreedores por arrendamiento financiero</apartado>
+   <parte1>false</parte1>
+   <clave>3</clave>
+   <nodo>C.3.3</nodo>
+   <formula>-[5125] - [524]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>4. Derivados</apartado>
+   <parte1>false</parte1>
+   <clave>4</clave>
+   <nodo>C.3.4</nodo>
+   <formula>-[5595] -[5598]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>5. Otros pasivos financieros</apartado>
+   <parte1>false</parte1>
+   <clave>5</clave>
+   <nodo>C.3.5</nodo>
+   <formula>-[1034]- [1044]- [190]- [192]- [194]- [509]- [5115]- [5135]- [5145]- [521]- [522]- [523]- [525]- [526]- [528]- [551]- [5525]- [5530]- [5532]- [555]- [5565]- [5566]- [560]- [561]- [569]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>IV. Deudas con empresas del grupo y asociadas a corto plazo</apartado>
+   <parte1>false</parte1>
+   <clave>4</clave>
+   <nodo>C.4</nodo>
+   <formula>-[5103]-[5104]-[5113]-[5114]-[5123]-[5124]-[5133]-[5134]-[5143]-[5144]-[5523]-[5524]-[5563]-[5564]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>V. Acreedores comerciales y otras cuentas a pagar</apartado>
+   <parte1>false</parte1>
+   <clave>5</clave>
+   <nodo>C.5</nodo>
+   <formula>{C.5.1(2)}+{C.5.2(2)}+{C.5.3(2)}+{C.5.4(2)}+{C.5.5(2)}+{C.5.6(2)}+{C.5.7(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>1. Proveedores</apartado>
+   <parte1>false</parte1>
+   <clave>1</clave>
+   <nodo>C.5.1</nodo>
+   <formula>-[400]-[401]-[405]-[406]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>2. Proveedores, empresas del grupo y asociadas</apartado>
+   <parte1>false</parte1>
+   <clave>2</clave>
+   <nodo>C.5.2</nodo>
+   <formula>-[403]- [404]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>3. Acreedores varios</apartado>
+   <parte1>false</parte1>
+   <clave>3</clave>
+   <nodo>C.5.3</nodo>
+   <formula>-[41]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>4. Personal (remuneraciones pendientes de pago)</apartado>
+   <parte1>false</parte1>
+   <clave>4</clave>
+   <nodo>C.5.4</nodo>
+   <formula>-[465] -[466]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>5. Pasivos por impuesto corriente</apartado>
+   <parte1>false</parte1>
+   <clave>5</clave>
+   <nodo>C.5.5</nodo>
+   <formula>-[4752]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>6. Otras deudas con las Administraciones Públicas</apartado>
+   <parte1>false</parte1>
+   <clave>6</clave>
+   <nodo>C.5.6</nodo>
+   <formula>-[4750]- [4751]- [4758]- [476]- [477]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>7. Anticipos de clientes</apartado>
+   <parte1>false</parte1>
+   <clave>7</clave>
+   <nodo>C.5.7</nodo>
+   <formula>-[438]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>VI. Periodificaciones a corto plazo</apartado>
+   <parte1>false</parte1>
+   <clave>6</clave>
+   <nodo>C.6</nodo>
+   <formula>-[485]-[568]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>TOTAL PATRIMONIO NETO Y PASIVO (A + B + C)</apartado>
+   <parte1>false</parte1>
+   <clave>TOTAL</clave>
+   <nodo>TOTAL</nodo>
+   <formula>{A(2)}+{B(2)}+{C(2)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>BALANCE PLAN 2007</titulocod>
+   <apartado>TOTAL ACTIVO (A+B)</apartado>
+   <parte1>true</parte1>
+   <clave>TOTAL</clave>
+   <nodo>TOTAL</nodo>
+   <formula>{A(1)}+{B(1)}</formula>
+  </Registro>
+ </Cuerpo>
+</EstadoContable>

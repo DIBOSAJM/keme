@@ -1,0 +1,142 @@
+<ui version="4.0" >
+ <class>desviacion_cta</class>
+ <widget class="QDialog" name="desviacion_cta" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>536</width>
+    <height>451</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Desviaciones en cuenta</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <item>
+    <widget class="QLabel" name="label" >
+     <property name="font" >
+      <font>
+       <pointsize>20</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text" >
+      <string>DESVIACIÓN</string>
+     </property>
+     <property name="alignment" >
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label2" >
+     <property name="font" >
+      <font>
+       <pointsize>20</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text" >
+      <string>cuenta descripción</string>
+     </property>
+     <property name="alignment" >
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tableWidget" >
+     <column>
+      <property name="text" >
+       <string>Previsión</string>
+      </property>
+     </column>
+     <column>
+      <property name="text" >
+       <string>Realización</string>
+      </property>
+     </column>
+     <column>
+      <property name="text" >
+       <string>Desviación</string>
+      </property>
+     </column>
+     <column>
+      <property name="text" >
+       <string>Porcentaje</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="copiarpushButton" >
+       <property name="text" >
+        <string>&amp;Copiar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="imprimirpushButton" >
+       <property name="text" >
+        <string>&amp;Imprimir</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="aceptarpushButton" >
+       <property name="text" >
+        <string>&amp;Aceptar</string>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>tableWidget</tabstop>
+  <tabstop>copiarpushButton</tabstop>
+  <tabstop>imprimirpushButton</tabstop>
+  <tabstop>aceptarpushButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>aceptarpushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>desviacion_cta</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>523</x>
+     <y>386</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>551</x>
+     <y>356</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

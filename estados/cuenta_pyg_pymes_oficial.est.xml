@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="estado2html.xslt"?><!DOCTYPE EstadoContable>
+<EstadoContable>
+ <Heading>
+  <Titulo>CUENTA PYG PYMES OFICIAL</Titulo>
+  <Cabecera>CUENTA DE PÉRDIDAS Y GANANCIAS PYMES</Cabecera>
+  <Parte1></Parte1>
+  <Parte2></Parte2>
+  <Observaciones></Observaciones>
+  <FormulaBase></FormulaBase>
+  <Ejercicio1>2012</Ejercicio1>
+  <Ejercicio2>2011</Ejercicio2>
+  <Diarios>APERTURA SIN_ASIGNAR</Diarios>
+  <EstadosMedios>false</EstadosMedios>
+  <valorbasepor1>0</valorbasepor1>
+  <valorbasepor2>0</valorbasepor2>
+  <analitica>false</analitica>
+  <haycolref>true</haycolref>
+  <colref>Nota</colref>
+  <ci></ci>
+  <grafico>false</grafico>
+  <desglose>false</desglose>
+  <desglose_ctas>false</desglose_ctas>
+  <descabecera></descabecera>
+  <despie></despie>
+ </Heading>
+ <Cuerpo>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>C) RESULTADO ANTES DE IMPUESTOS (A+B)</apartado>
+   <parte1>true</parte1>
+   <clave>17C</clave>
+   <nodo>17C</nodo>
+   <formula>{12A(1)}+{17B(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>18. Impuesto sobre beneficios</apartado>
+   <parte1>true</parte1>
+   <clave>18</clave>
+   <nodo>18</nodo>
+   <formula>-[6300]-[6301]-[633]-[638]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>1. Importe neto de la cifra de negocios</apartado>
+   <parte1>true</parte1>
+   <clave>01</clave>
+   <nodo>01</nodo>
+   <formula>-[700]-[701]-[702]-[703]-[704]-[705]-[706]-[708]-[709]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>2. Variación de existencias de productos terminados y en curso de fabricación</apartado>
+   <parte1>true</parte1>
+   <clave>02</clave>
+   <nodo>02</nodo>
+   <formula>-[71]-[6930]-[7930]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>3. Trabajos realizados por la empresa para su activo</apartado>
+   <parte1>true</parte1>
+   <clave>03</clave>
+   <nodo>03</nodo>
+   <formula>-[73]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>4. Aprovisionamientos</apartado>
+   <parte1>true</parte1>
+   <clave>04</clave>
+   <nodo>04</nodo>
+   <formula>-[600]-[601]-[602]-[606]-[607]-[608]-[609]-[61]-[6931]-[6932]-[6933]-[7931]-[7932]-[7933]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>5. Otros ingresos de explotación</apartado>
+   <parte1>true</parte1>
+   <clave>05</clave>
+   <nodo>05</nodo>
+   <formula>-[740]-[747]-[75]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>6. Gastos de personal</apartado>
+   <parte1>true</parte1>
+   <clave>06</clave>
+   <nodo>06</nodo>
+   <formula>-[64]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>7. Otros gastos de explotación</apartado>
+   <parte1>true</parte1>
+   <clave>07</clave>
+   <nodo>07</nodo>
+   <formula>-[62]-[631]-[634]-[636]-[639]-[65]-[694]-[695]-[794]-[7954]-[678]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>8. Amortización del inmovilizado</apartado>
+   <parte1>true</parte1>
+   <clave>08</clave>
+   <nodo>08</nodo>
+   <formula>-[68]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>9. Imputación de subvenciones de inmovilizado no financiero y otras</apartado>
+   <parte1>true</parte1>
+   <clave>09</clave>
+   <nodo>09</nodo>
+   <formula>-[746]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>10. Excesos de provisiones</apartado>
+   <parte1>true</parte1>
+   <clave>10</clave>
+   <nodo>10</nodo>
+   <formula>-[7951]-[7952]-[7955]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>11. Deterioro y resultado por enajenaciones del inmovilizado</apartado>
+   <parte1>true</parte1>
+   <clave>11</clave>
+   <nodo>11</nodo>
+   <formula>-[670]-[671]-[672]-[690]-[691]-[692]-[770]-[771]-[772]-[790]-[791]-[792]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>12. Otros resultados</apartado>
+   <parte1>true</parte1>
+   <clave>12</clave>
+   <nodo>12</nodo>
+   <formula></formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>A) RESULTADO DE EXPLOTACIÓN (1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12 )</apartado>
+   <parte1>true</parte1>
+   <clave>12A</clave>
+   <nodo>12A</nodo>
+   <formula>{01(1)}+{02(1)}+{03(1)}+{04(1)}+ {05(1)}+{06(1)}+{07(1)}+ {08(1)}+{09(1)}+{10(1)}+{11(1)} + {12(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>13. Ingresos financieros</apartado>
+   <parte1>true</parte1>
+   <clave>13</clave>
+   <nodo>13</nodo>
+   <formula>{13.a(1)}+{13.b(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>a) Imputación de subvenciones, donaciones y legados de carácter financiero</apartado>
+   <parte1>true</parte1>
+   <clave>a</clave>
+   <nodo>13.a</nodo>
+   <formula></formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>b) Otros ingresos financieros</apartado>
+   <parte1>true</parte1>
+   <clave>b</clave>
+   <nodo>13.b</nodo>
+   <formula>-[760]-[761]-[762]-[769]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>14. Gastos financieros</apartado>
+   <parte1>true</parte1>
+   <clave>14</clave>
+   <nodo>14</nodo>
+   <formula>-[660]-[661]-[662]-[664]-[665]-[669]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>15. Variación del valor razonable en instrumentos financieros</apartado>
+   <parte1>true</parte1>
+   <clave>15</clave>
+   <nodo>15</nodo>
+   <formula>-[663]-[763]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>16. Diferencias de cambio</apartado>
+   <parte1>true</parte1>
+   <clave>16</clave>
+   <nodo>16</nodo>
+   <formula>-[668]-[768]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>17. Deterioro y resultado por enajenaciones de instrumentos financieros</apartado>
+   <parte1>true</parte1>
+   <clave>17</clave>
+   <nodo>17</nodo>
+   <formula>-[666]-[667]-[673]-[675]-[696]-[697]-[698]-[699]-[766]-[773]-[775]-[796]-[797]-[798]-[799]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>B) RESULTADO FINANCIERO (13+14+15+16+17)</apartado>
+   <parte1>true</parte1>
+   <clave>17B</clave>
+   <nodo>17B</nodo>
+   <formula>{13(1)}+{14(1)}+{15(1)}+{16(1)} +{17(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PYG PYMES OFICIAL</titulocod>
+   <apartado>D) RESULTADO DEL EJERCICIO (C+17)</apartado>
+   <parte1>true</parte1>
+   <clave>18D</clave>
+   <nodo>18D</nodo>
+   <formula>{17C(1)}+{18(1)}</formula>
+  </Registro>
+ </Cuerpo>
+</EstadoContable>

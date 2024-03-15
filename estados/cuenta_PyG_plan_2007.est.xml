@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="estado2html.xslt"?><!DOCTYPE EstadoContable>
+<EstadoContable>
+ <Heading>
+  <Titulo>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</Titulo>
+  <Cabecera>CUENTA DE PÉRDIDAS Y GANANCIAS</Cabecera>
+  <Parte1></Parte1>
+  <Parte2></Parte2>
+  <Observaciones></Observaciones>
+  <FormulaBase></FormulaBase>
+  <Ejercicio1></Ejercicio1>
+  <Ejercicio2></Ejercicio2>
+  <Diarios>APERTURA SIN_ASIGNAR</Diarios>
+  <EstadosMedios>false</EstadosMedios>
+  <valorbasepor1>0</valorbasepor1>
+  <valorbasepor2>0</valorbasepor2>
+  <analitica>false</analitica>
+  <haycolref>true</haycolref>
+  <colref>Nota</colref>
+  <ci></ci>
+  <grafico>false</grafico>
+  <desglose>false</desglose>
+  <desglose_ctas>false</desglose_ctas>
+  <descabecera></descabecera>
+  <despie></despie>
+ </Heading>
+ <Cuerpo>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>A) OPERACIONES CONTINUADAS</apartado>
+   <parte1>true</parte1>
+   <clave>A</clave>
+   <nodo>A</nodo>
+   <formula></formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>1. Importe neto de la cifra de negocios</apartado>
+   <parte1>true</parte1>
+   <clave>1</clave>
+   <nodo>A.1</nodo>
+   <formula>{A.1.a(1)} + {A.1.b(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>a) Ventas</apartado>
+   <parte1>true</parte1>
+   <clave>a</clave>
+   <nodo>A.1.a</nodo>
+   <formula>-[700]-[701]-[702]-[703]-[704]-[706]-[708]-[709]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>b) Prestaciones de servicios</apartado>
+   <parte1>true</parte1>
+   <clave>b</clave>
+   <nodo>A.1.b</nodo>
+   <formula>-[705]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>2. Variación de existencias de productos terminados y en curso de fabricación</apartado>
+   <parte1>true</parte1>
+   <clave>2</clave>
+   <nodo>A.2</nodo>
+   <formula>-[71]-[6930]-[7930]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>3. Trabajos realizados por la empresa para su activo</apartado>
+   <parte1>true</parte1>
+   <clave>3</clave>
+   <nodo>A.3</nodo>
+   <formula>-[73]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>4. Aprovisionamientos</apartado>
+   <parte1>true</parte1>
+   <clave>4</clave>
+   <nodo>A.4</nodo>
+   <formula>{A.4.a(1)} + {A.4.b(1)} + {A.4.c(1)} + {A.4.d(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>a) Consumo de mercaderías</apartado>
+   <parte1>true</parte1>
+   <clave>a</clave>
+   <nodo>A.4.a</nodo>
+   <formula>-[600] - [6060] - [6080] - [6090] - [610]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>b) Consumo de materias primas y otras materias consumibles</apartado>
+   <parte1>true</parte1>
+   <clave>b</clave>
+   <nodo>A.4.b</nodo>
+   <formula>-[601] - [602] - [6061] - [6062] - [6081] - [6082] - [6091] - [6092] - [611] - [612]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>c) Trabajos realizados por otras empresas</apartado>
+   <parte1>true</parte1>
+   <clave>c</clave>
+   <nodo>A.4.c</nodo>
+   <formula>-[607]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>d) Deterioro de mercaderías, materias primas y otros aprovisionamientos</apartado>
+   <parte1>true</parte1>
+   <clave>d</clave>
+   <nodo>A.4.d</nodo>
+   <formula>-[6931] - [6932] - [6933] -[7931] - [7932] - [7933]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>5. Otros ingresos de explotación</apartado>
+   <parte1>true</parte1>
+   <clave>5</clave>
+   <nodo>A.5</nodo>
+   <formula>{A.5.a(1)} + {A.5.b(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>a) Ingresos accesorios y otros de gestión corriente</apartado>
+   <parte1>true</parte1>
+   <clave>a</clave>
+   <nodo>A.5.a</nodo>
+   <formula>-[75]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>b) Subvenciones de explotación incorporadas al resultado del ejercicio</apartado>
+   <parte1>true</parte1>
+   <clave>b</clave>
+   <nodo>A.5.b</nodo>
+   <formula>-[740] - [747]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>6. Gastos de personal</apartado>
+   <parte1>true</parte1>
+   <clave>6</clave>
+   <nodo>A.6</nodo>
+   <formula>{A.6.a(1)} + {A.6.b(1)} + {A.6.c(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>a) Sueldos, salarios y asimilados</apartado>
+   <parte1>true</parte1>
+   <clave>a</clave>
+   <nodo>A.6.a</nodo>
+   <formula>-[640] - [641] - [6450]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>b) Cargas sociales</apartado>
+   <parte1>true</parte1>
+   <clave>b</clave>
+   <nodo>A.6.b</nodo>
+   <formula>-[642] - [643] - [649]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>c) Provisiones</apartado>
+   <parte1>true</parte1>
+   <clave>c</clave>
+   <nodo>A.6.c</nodo>
+   <formula>-[644] - [6457] - [7950] - [7957]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>7. Otros gastos de explotación</apartado>
+   <parte1>true</parte1>
+   <clave>7</clave>
+   <nodo>A.7</nodo>
+   <formula>{A.7.a(1)} + {A.7.b(1)} + {A.7.c(1)} + {A.7.d(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>a) Servicios exteriores</apartado>
+   <parte1>true</parte1>
+   <clave>a</clave>
+   <nodo>A.7.a</nodo>
+   <formula>-[62]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>b) Tributos</apartado>
+   <parte1>true</parte1>
+   <clave>b</clave>
+   <nodo>A.7.b</nodo>
+   <formula>-[631] - [634] - [636] - [639]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>c) Pérdidas, deterioro y variación de provisiones por operaciones comerciales</apartado>
+   <parte1>true</parte1>
+   <clave>c</clave>
+   <nodo>A.7.c</nodo>
+   <formula>-[650] - [694] - [695] - [794] - [7954]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>d) Otros gastos de gestión corriente</apartado>
+   <parte1>true</parte1>
+   <clave>d</clave>
+   <nodo>A.7.d</nodo>
+   <formula>[651] - [659]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>8. Amortización del inmovilizado</apartado>
+   <parte1>true</parte1>
+   <clave>8</clave>
+   <nodo>A.8</nodo>
+   <formula>-[68]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>9. Imputación de subvenciones de inmovilizado no financiero y otras.</apartado>
+   <parte1>true</parte1>
+   <clave>9</clave>
+   <nodo>A.9</nodo>
+   <formula>-[746]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>10. Excesos de provisiones.</apartado>
+   <parte1>true</parte1>
+   <clave>9A</clave>
+   <nodo>A.9A</nodo>
+   <formula>-[7951] -[7952] - [7955] - [7956]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>11. Deterioro y resultado por enajenaciones del inmovilizado</apartado>
+   <parte1>true</parte1>
+   <clave>9B</clave>
+   <nodo>A.9B</nodo>
+   <formula>{A.9B.a(1)} + {A.9B.b(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>a) Deterioros y pérdidas</apartado>
+   <parte1>true</parte1>
+   <clave>a</clave>
+   <nodo>A.9B.a</nodo>
+   <formula>-[690] - [691] - [692] - [790] - [791] - [792]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>b) Resultados por enajenaciones y otras</apartado>
+   <parte1>true</parte1>
+   <clave>b</clave>
+   <nodo>A.9B.b</nodo>
+   <formula>-[670] - [671] - [672] - [770] - [771] - [772]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>A-1) RESULTADO DE EXPLOTACIÓN</apartado>
+   <parte1>true</parte1>
+   <clave>9BB</clave>
+   <nodo>A.9BB</nodo>
+   <formula>{A.1(1)} +{A.2(1)} +{A.3(1)} +{A.4(1)} +{A.5(1)} +{A.6(1)} +{A.7(1)} +{A.8(1)} +{A.9(1)} +{A.9A(1)} +{A.9B(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>12. Ingresos financieros</apartado>
+   <parte1>true</parte1>
+   <clave>9C</clave>
+   <nodo>A.9C</nodo>
+   <formula>{A.9C.a.a1(1)} + {A.9C.a.a2(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>a) De participaciones en instrumentos de patrimonio</apartado>
+   <parte1>true</parte1>
+   <clave>a</clave>
+   <nodo>A.9C.a</nodo>
+   <formula>{A.9C.a.a1(1)} + {A.9C.a.a2(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>a1) En empresas del grupo y asociadas</apartado>
+   <parte1>true</parte1>
+   <clave>a1</clave>
+   <nodo>A.9C.a.a1</nodo>
+   <formula>-[7600] -[7601]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>a2) En terceros</apartado>
+   <parte1>true</parte1>
+   <clave>a2</clave>
+   <nodo>A.9C.a.a2</nodo>
+   <formula>-[7602] -[7603]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>b) De valores negociables y de créditos del activo inmovilizado</apartado>
+   <parte1>true</parte1>
+   <clave>b</clave>
+   <nodo>A.9C.b</nodo>
+   <formula>{A.9C.b.b1(1)} + {A.9C.b.b2(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>b1) De empresas del grupo y asociadas</apartado>
+   <parte1>true</parte1>
+   <clave>b1</clave>
+   <nodo>A.9C.b.b1</nodo>
+   <formula>-[7610] -[7611] -[76200] -[76210] -[76211]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>b2) De terceros</apartado>
+   <parte1>true</parte1>
+   <clave>b2</clave>
+   <nodo>A.9C.b.b2</nodo>
+   <formula>-[7612] -[7613] -[76202] -[76203] -[76212] -[76213] -[767] -[769]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>13. Gastos financieros</apartado>
+   <parte1>true</parte1>
+   <clave>9D</clave>
+   <nodo>A.9D</nodo>
+   <formula>{A.9D.a(1)} + {A.9D.b(1)} + {A.9D.c(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>a) Por deudas con empresas del grupo y asociadas</apartado>
+   <parte1>true</parte1>
+   <clave>a</clave>
+   <nodo>A.9D.a</nodo>
+   <formula>-[6610] -[6611] -[6615] -[6616] -[6620] -[6621] -[6640] -[6641] -[6650] -[6651] -[6654] -[6655]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>b) Por deudas con terceros</apartado>
+   <parte1>true</parte1>
+   <clave>b</clave>
+   <nodo>A.9D.b</nodo>
+   <formula>-[6612] -[6613] -[6617] -[6618] -[6622] -[6623] -[6624] -[6642] -[6643] -[6652] -[6653] -[6656] -[6657] -[669]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>c) Por actualizacion de provisiones</apartado>
+   <parte1>true</parte1>
+   <clave>c</clave>
+   <nodo>A.9D.c</nodo>
+   <formula>-[660]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>14. Variación de valor razonable en instrumentos financieros</apartado>
+   <parte1>true</parte1>
+   <clave>9E</clave>
+   <nodo>A.9E</nodo>
+   <formula>{A.9E.a(1)} + {A.9E.b(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>a) Cartera de negociación y otros</apartado>
+   <parte1>true</parte1>
+   <clave>a</clave>
+   <nodo>A.9E.a</nodo>
+   <formula>-[6630] -[6631] - [6633] - [7630] - [7631] - [7633]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>b) Imputación al resultado del ejercicio por activos financieros disponibles para la venta</apartado>
+   <parte1>true</parte1>
+   <clave>b</clave>
+   <nodo>A.9E.b</nodo>
+   <formula>-[6632] -[7632]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>15. Diferencias de cambio</apartado>
+   <parte1>true</parte1>
+   <clave>9F</clave>
+   <nodo>A.9F</nodo>
+   <formula>-[668] -[768]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>16. Deterioro y resultado por enajenaciones de instrumentos financieros</apartado>
+   <parte1>true</parte1>
+   <clave>9G</clave>
+   <nodo>A.9G</nodo>
+   <formula>{A.9G.a(1)}+{A.9G.b(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>a) Deterioros y pérdidas</apartado>
+   <parte1>true</parte1>
+   <clave>a</clave>
+   <nodo>A.9G.a</nodo>
+   <formula>-[696] -[697] - [698] - [699] - [796] - [797] - [798] - [799]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>b) Resultados por enajenaciones y otras</apartado>
+   <parte1>true</parte1>
+   <clave>b</clave>
+   <nodo>A.9G.b</nodo>
+   <formula>-[666] - [667] - [673] - [675] - [766] - [773] - [775]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>A.2) RESULTADO FINANCIERO (12+13+14+15+16)</apartado>
+   <parte1>true</parte1>
+   <clave>9GG</clave>
+   <nodo>A.9GG</nodo>
+   <formula>{A.9C(1)} + {A.9D(1)} + {A.9E(1)} + {A.9F(1)} + {A.9G(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>A.3) RESULTADO ANTES DE IMPUESTOS (A.1+A.2)</apartado>
+   <parte1>true</parte1>
+   <clave>9GGG</clave>
+   <nodo>A.9GGG</nodo>
+   <formula>{A.9BB(1)} + {A.9GG(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>17 Impuestos sobre beneficios</apartado>
+   <parte1>true</parte1>
+   <clave>9H</clave>
+   <nodo>A.9H</nodo>
+   <formula>-[6300] - [6301] - [633] - [638]</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>A.4) RESULTADO DEL EJERCICIO PROCEDENTE DE OPERACIONES CONTINUADAS (A.3+18)</apartado>
+   <parte1>true</parte1>
+   <clave>9HH</clave>
+   <nodo>A.9HH</nodo>
+   <formula>{A.9GGG(1)} + {A.9H(1)}</formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>B) OPERACIONES INTERRUMPIDAS</apartado>
+   <parte1>true</parte1>
+   <clave>B</clave>
+   <nodo>B</nodo>
+   <formula></formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>18. Resultado del ejercicio procedente de operaciones interrumpidas neto de impuestos</apartado>
+   <parte1>true</parte1>
+   <clave>18</clave>
+   <nodo>B.18</nodo>
+   <formula></formula>
+  </Registro>
+  <Registro>
+   <titulocod>CUENTA PÉRDIDAS Y GANANCIAS PLAN 2007</titulocod>
+   <apartado>A.5) RESULTADO DEL EJERCICIO (A.4+19)</apartado>
+   <parte1>true</parte1>
+   <clave>C</clave>
+   <nodo>C</nodo>
+   <formula>{9HH(1)} + {B.18(1)}</formula>
+  </Registro>
+ </Cuerpo>
+</EstadoContable>

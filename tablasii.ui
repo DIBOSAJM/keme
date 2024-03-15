@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tablaSII</class>
+ <widget class="QDialog" name="tablaSII">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1011</width>
+    <height>590</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>SII FACTURAS RECIBIDAS</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>EJERCICIO:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="ejerciciocomboBox"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Período</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="periodocomboBox">
+       <item>
+        <property name="text">
+         <string>01 Enero</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>02 Febrero</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>03 Marzo</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>04 Abril</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>05 Mayo</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>06 Junio</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>07 Julio</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>08 Agosto</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>09 Septiembre</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>10 Octubre</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>11 Noviembre</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>12 Diciembre</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>Doc.Inic:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="doc_ini_lineEdit"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>Doc.Final:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="doc_fin_lineEdit"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>INICIAL:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateEdit" name="inicialdateEdit"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>FINAL:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateEdit" name="finaldateEdit"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QTableWidget" name="tableWidget">
+       <column>
+        <property name="text">
+         <string>Apunte</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Fecha cont</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Fecha fra.</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Documento</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Cuenta</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Descrip</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>NIF/CIF</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Asiento</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>B.I.</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Tipo</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Cuota</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Tipo RE</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>RE</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>TOTAL</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Prorrata</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Afectación</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Cuota efectiva</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Cuot.liquidada</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Enviada</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Enviadabd</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>No Envío</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Concepto SII</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="edasientopushButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/lapiz.xpm</normaloff>:/iconos/graf/lapiz.xpm</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="consasientopushButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/xmag.png</normaloff>:/iconos/graf/xmag.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="borra_asientoButton">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/borraelem.png</normaloff>:/iconos/graf/borraelem.png</iconset>
+         </property>
+         <property name="shortcut">
+          <string>Alt+L</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QPushButton" name="refrescar_pushButton">
+       <property name="text">
+        <string>Re&amp;frescar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/rayo.png</normaloff>:/iconos/graf/rayo.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="insegurocheckBox">
+       <property name="text">
+        <string>Envío inseguro</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Base Imponible:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="base_lineEdit">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Cuota:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="cuota_lineEdit">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>RE:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="RE_lineEdit">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Total:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="total_lineEdit">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Cuota Efectiva:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="cuota_efectiva_lineEdit">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="envioPruebas_pushButton">
+       <property name="text">
+        <string>Envío &amp;Pruebas</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/aeat.png</normaloff>:/iconos/graf/aeat.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="envioReal_pushButton">
+       <property name="text">
+        <string>Envío &amp;Real</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/aeat.png</normaloff>:/iconos/graf/aeat.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="consulta_real_pushButton">
+       <property name="text">
+        <string>Consulta Real</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/aeat.png</normaloff>:/iconos/graf/aeat.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="6">
+      <widget class="QPushButton" name="aceptar_pushButton">
+       <property name="text">
+        <string>&amp;Aceptar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/application-exit.png</normaloff>:/iconos/graf/application-exit.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="5">
+      <widget class="QPushButton" name="cancelar_pushButton">
+       <property name="text">
+        <string>&amp;Cancelar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/borrar.png</normaloff>:/iconos/graf/borrar.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
+      <widget class="QPushButton" name="copiar_pushButton">
+       <property name="text">
+        <string>C&amp;opiar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/Copy.png</normaloff>:/iconos/graf/Copy.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="noenvio_pushButton">
+       <property name="text">
+        <string>Marcar &amp;NO Envío</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/delete_128.png</normaloff>:/iconos/graf/delete_128.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="desmarca_enviada_pushButton">
+       <property name="text">
+        <string>&amp;Desmarcar Enviada</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/cruz.png</normaloff>:/iconos/graf/cruz.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="marca_enviada_pushButton">
+       <property name="text">
+        <string>&amp;Marcar Enviada</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/check2.png</normaloff>:/iconos/graf/check2.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="xml_pushButton">
+       <property name="text">
+        <string>Genera &amp;XML</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/XML.png</normaloff>:/iconos/graf/XML.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="rectif_real_pushButton">
+       <property name="text">
+        <string>R&amp;ectifica Real</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/reload.png</normaloff>:/iconos/graf/reload.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="rectif_pruebas_pushButton">
+       <property name="text">
+        <string>Re&amp;ctifica Pruebas</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/reload.png</normaloff>:/iconos/graf/reload.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="comprueba_nifs_pushButton">
+       <property name="text">
+        <string>Comprueba N&amp;IFs</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/aeat.png</normaloff>:/iconos/graf/aeat.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="consulta_pruebas_pushButton">
+       <property name="text">
+        <string>Consulta Pruebas</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/aeat.png</normaloff>:/iconos/graf/aeat.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>ejerciciocomboBox</tabstop>
+  <tabstop>periodocomboBox</tabstop>
+  <tabstop>doc_ini_lineEdit</tabstop>
+  <tabstop>doc_fin_lineEdit</tabstop>
+  <tabstop>inicialdateEdit</tabstop>
+  <tabstop>finaldateEdit</tabstop>
+  <tabstop>tableWidget</tabstop>
+  <tabstop>edasientopushButton</tabstop>
+  <tabstop>consasientopushButton</tabstop>
+  <tabstop>borra_asientoButton</tabstop>
+  <tabstop>refrescar_pushButton</tabstop>
+  <tabstop>insegurocheckBox</tabstop>
+  <tabstop>base_lineEdit</tabstop>
+  <tabstop>cuota_lineEdit</tabstop>
+  <tabstop>RE_lineEdit</tabstop>
+  <tabstop>total_lineEdit</tabstop>
+  <tabstop>cuota_efectiva_lineEdit</tabstop>
+  <tabstop>envioPruebas_pushButton</tabstop>
+  <tabstop>envioReal_pushButton</tabstop>
+  <tabstop>rectif_real_pushButton</tabstop>
+  <tabstop>rectif_pruebas_pushButton</tabstop>
+  <tabstop>comprueba_nifs_pushButton</tabstop>
+  <tabstop>consulta_pruebas_pushButton</tabstop>
+  <tabstop>consulta_real_pushButton</tabstop>
+  <tabstop>xml_pushButton</tabstop>
+  <tabstop>marca_enviada_pushButton</tabstop>
+  <tabstop>desmarca_enviada_pushButton</tabstop>
+  <tabstop>noenvio_pushButton</tabstop>
+  <tabstop>copiar_pushButton</tabstop>
+  <tabstop>cancelar_pushButton</tabstop>
+  <tabstop>aceptar_pushButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="keme.qrc"/>
+ </resources>
+ <connections/>
+</ui>
