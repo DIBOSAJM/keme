@@ -17,13 +17,15 @@ RC_FILE = keme.rc
 TARGET = keme6
 TEMPLATE = app
 
-
 include(./QtRptProject/QtRPT/QtRPT.pri)
 include(./QtRptProject/3rdparty/QtXlsx/qtxlsx.pri)
 include(./QtRptProject/3rdparty/zint-2.4.4/backend_qt4/Zint.pri)
 
 
 RESOURCES += keme.qrc
+
+ICON = keme.icns
+
 
 TRANSLATIONS = keme4_eng.ts \
     keme4_gl.ts \
