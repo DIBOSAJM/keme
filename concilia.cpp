@@ -396,7 +396,6 @@ void concilia::cargadatos()
 {
    QProgressDialog progreso(tr("Cargando información ..."), 0, 0, 2);
     progreso.setMinimumDuration(0);
-    progreso.setWindowModality(Qt::WindowModal);
     progreso.setValue(1);
     progreso.show();
     QCoreApplication::processEvents();
@@ -508,7 +507,6 @@ void concilia::actucuenta()
 {
     QProgressDialog progreso(tr("Actualizando información ..."), 0, 0, ui.contabtableWidget->rowCount()-1);
      progreso.setMinimumDuration(100);
-     progreso.setWindowModality(Qt::WindowModal);
      progreso.setValue(1);
      progreso.show();
      QCoreApplication::processEvents();
@@ -611,7 +609,6 @@ void concilia::refrescar()
 
   QProgressDialog progreso(tr("Cargando cuenta externa ..."), 0, 0, 0);
   progreso.setMinimumDuration(0);
-  //progreso.setWindowModality(Qt::WindowModal);
   progreso.show();
 
   QCoreApplication::processEvents();
@@ -914,7 +911,6 @@ void concilia::grabadifsext()
 
     QProgressDialog progreso(tr("Actualizando información ..."), 0, 0, ui.externatableWidget->rowCount());
     progreso.setMinimumDuration(0);
-    progreso.setWindowModality(Qt::WindowModal);
     progreso.show();
 
     QString fecha, dif;
@@ -1118,7 +1114,6 @@ void concilia::grabactaext()
 
     QProgressDialog progreso(tr("Actualizando información ..."), 0, 0, ui.externatableWidget->rowCount());
     progreso.setMinimumDuration(0);
-    progreso.setWindowModality(Qt::WindowModal);
     progreso.show();
 
     bool conciliado;
@@ -1151,7 +1146,6 @@ void concilia::concilia_automat()
  int tope=ui.externatableWidget->rowCount();
  if (ui.margenspinBox->value()>0) tope=tope*2;
  QProgressDialog progreso(tr("Conciliando cuenta ..."), 0, 0, tope);
- // progreso.setWindowModality(Qt::WindowModal);
 
   // primera pasada; buscamos equivalencia perfecta entre fechas e importes
   for (int veces=0;veces<ui.externatableWidget->rowCount();veces++)
@@ -1980,7 +1974,6 @@ void concilia::contabiliza_externa_linea()
 
   QProgressDialog progreso(tr("Contabilizando ..."), 0, 0, 0);
   progreso.setMinimumDuration(0);
-  progreso.setWindowModality(Qt::WindowModal);
   progreso.show();
 
   int linea_actual=ui.externatableWidget->currentRow();
@@ -2110,7 +2103,6 @@ void concilia::contabiliza_externa()
 
   QProgressDialog progreso(tr("Contabilizando ..."), 0, 0, 0);
   progreso.setMinimumDuration(0);
-  progreso.setWindowModality(Qt::WindowModal);
   progreso.show();
 
 
@@ -2236,7 +2228,6 @@ void concilia::actualiza_tras_edicion()
 {
    QProgressDialog progreso(tr("Cargando información ..."), 0, 0, 2);
     progreso.setMinimumDuration(0);
-    progreso.setWindowModality(Qt::WindowModal);
     progreso.setValue(1);
     progreso.show();
     QCoreApplication::processEvents();

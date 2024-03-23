@@ -144,17 +144,18 @@ consmayor::consmayor(bool concomadecimal, bool condecimales, QString qusuario) :
 
  QString privileg=basedatos::instancia()->privilegios(qusuario);
 
- if (privileg[datos_accesorios_cta]=='0') ui.datospushButton->setEnabled(false);
- if (privileg[edi_asiento]=='0') ui.editarpushButton->setEnabled(false);
- if (privileg[borrar_asiento]=='0') ui.borrarpushButton->setEnabled(false);
- if (privileg[vencimientos_asignar]=='0') ui.vtospushButton->setEnabled(false);
+ if (!privileg.isEmpty()) {
+   if (privileg[datos_accesorios_cta]=='0') ui.datospushButton->setEnabled(false);
+   if (privileg[edi_asiento]=='0') ui.editarpushButton->setEnabled(false);
+   if (privileg[borrar_asiento]=='0') ui.borrarpushButton->setEnabled(false);
+   if (privileg[vencimientos_asignar]=='0') ui.vtospushButton->setEnabled(false);
 
- if (privileg[vencimientos_procesar]=='0') ui.procvtopushButton->setEnabled(false);
+   if (privileg[vencimientos_procesar]=='0') ui.procvtopushButton->setEnabled(false);
 
- if (privileg[nuev_asiento]=='0') ui.nuevopushButton->setEnabled(false);
+   if (privileg[nuev_asiento]=='0') ui.nuevopushButton->setEnabled(false);
 
- if (privileg[asigna_fichero]=='0') ui.asignafichdocpushButton->setEnabled(false);
-
+   if (privileg[asigna_fichero]=='0') ui.asignafichdocpushButton->setEnabled(false);
+ }
 
  ui.fotolabel->setFixedHeight(0);
  ui.fotolabel->setFixedWidth(0);

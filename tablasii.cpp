@@ -217,7 +217,6 @@ void tablaSII::carga_recibidas()
 
 
     QProgressDialog progreso("Cargando registros ...",  0, 0, 100);
-    progreso.setWindowModality(Qt::WindowModal);
     progreso.setMaximum(registros);
     progreso.setMinimumDuration ( 0 );
     progreso.setWindowTitle(tr("PROCESANDO..."));
@@ -389,6 +388,7 @@ void tablaSII::carga_recibidas()
 
 
           numorden++;
+          QApplication::processEvents();
          }
         }
 
@@ -397,6 +397,7 @@ void tablaSII::carga_recibidas()
     ui->cuota_lineEdit->setText(formatea_redondeado_sep(totalcuota,comadecimal, decimales));
     ui->total_lineEdit->setText(formatea_redondeado_sep(totaltotal,comadecimal, decimales));
     ui->cuota_efectiva_lineEdit->setText(formatea_redondeado_sep(totalcuotaefectiva,comadecimal, decimales));
+    progreso.close();
 }
 
 
@@ -420,7 +421,6 @@ void tablaSII::carga_emitidas()
 
 
     QProgressDialog progreso("Cargando registros ...",  0, 0, 100);
-    progreso.setWindowModality(Qt::WindowModal);
     progreso.setMaximum(registros);
     progreso.setMinimumDuration ( 0 );
     progreso.setWindowTitle(tr("PROCESANDO..."));

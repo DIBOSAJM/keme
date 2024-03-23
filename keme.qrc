@@ -147,7 +147,7 @@
         <file>graf/oss-community-leader-white.svg</file>
     </qresource>
     <qresource prefix="/splash">
-        <file>graf/splash.png</file>
+        <file>graf/splash.jpg</file>
     </qresource>
     <qresource prefix="/translate">
         <file>keme4_cat.qm</file>

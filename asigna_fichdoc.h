@@ -31,6 +31,7 @@ class asigna_fichdoc : public QDialog {
     Q_OBJECT
       public:
                 asigna_fichdoc(QString elasiento, QString eldocumento,QString ejercicio);
+                ~asigna_fichdoc();
                 void pasafichdoc(QString cadena);
                 QString ruta_docs();
       private:
@@ -39,6 +40,7 @@ class asigna_fichdoc : public QDialog {
                 QString documento;
                 QString directorio_doc;
                 CustomQLabel *etiqueta;
+                void guarda_doc();
       private slots:
                 void visdocdef();
                 void suprimedocdef();
@@ -46,6 +48,7 @@ class asigna_fichdoc : public QDialog {
                 void visdoc();
                 void borraasignaciondoc();
                 void botonaceptar();
+                void terminar_droped();
 };
 
 

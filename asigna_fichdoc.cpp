@@ -51,12 +51,17 @@ connect(ui.visdocpushButton ,SIGNAL(clicked()),SLOT(visdoc()));
 connect(ui.borraasdocpushButton ,SIGNAL(clicked()),SLOT(borraasignaciondoc()));
 connect(ui.aceptarpushButton ,SIGNAL(clicked()),SLOT(botonaceptar()));
 
-connect(etiqueta, SIGNAL(filedroped()),SLOT(botonaceptar()));
+//connect(etiqueta, SIGNAL(filedroped()),SLOT(terminar_droped()));
 
 documento=qdocumento;
 setWindowTitle(tr("Documento en asiento: ")+elasiento+" - "+documento);
 asiento=elasiento;
 ui.ejerciciolineEdit->setText(ejercicio);
+}
+
+asigna_fichdoc::~asigna_fichdoc()
+{
+ delete(etiqueta);
 }
 
 
@@ -242,7 +247,19 @@ QString asigna_fichdoc::ruta_docs()
   return directorio_doc;
 }
 
-void asigna_fichdoc::botonaceptar()
+void asigna_fichdoc::botonaceptar() {
+  guarda_doc();
+  accept();
+}
+
+
+void asigna_fichdoc::terminar_droped() {
+  guarda_doc();
+  accept();
+}
+
+
+void asigna_fichdoc::guarda_doc()
 {
     bool gestor_bd=basedatos::instancia()->gestor_doc_bd();
 
@@ -300,7 +317,6 @@ void asigna_fichdoc::botonaceptar()
         // primero borramos documento antiguo si hay
         QProgressDialog progreso(tr("Cargando información del documento... "),0, 0, 0);
         progreso.setWindowTitle(tr("Cargando información ..."));
-        progreso.setWindowModality(Qt::WindowModal);
         progreso.setMinimumDuration ( 0 );
         progreso.show();
         progreso.update();
@@ -421,6 +437,7 @@ void asigna_fichdoc::botonaceptar()
         basedatos::instancia()->updateConfiguracionprox_documento(cadnumdoc);
         basedatos::instancia()->updatecopia_docdiario(asiento, copiadocfich,
                                                       ui.ejerciciolineEdit->text());
+        progreso.close();
        }
   accept();
 }

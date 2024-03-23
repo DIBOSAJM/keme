@@ -139,7 +139,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     //QSplashScreen *splash=NULL;
-      QPixmap pixmap( ":/splash/graf/splash.png" );
+      QPixmap pixmap( ":/splash/graf/splash.jpg" );
     //  if (!es_os_x())
     //    {
     splash = new QSplashScreen( pixmap );
@@ -5188,7 +5188,6 @@ void MainWindow::contabiliza_venci_c43()
 
     // recorremos vencimientos de inicio a fin
     QProgressDialog progreso("Procesando cuenta ...", 0, 0, numvenci.count());
-    progreso.setWindowModality(Qt::WindowModal);
     progreso.setMinimumDuration ( 0 );
     progreso.show();
     // progreso.setWindowTitle(tr("PROCESANDO..."));
@@ -6160,7 +6159,6 @@ void MainWindow::generarpdf()
   if (dir->exec() == QDialog::Accepted)
     {
       QProgressDialog progreso("Generando PDF ...", 0, 0, 0);
-      progreso.setWindowModality(Qt::WindowModal);
       progreso.setMinimumDuration ( 0 );
       progreso.show();
       QApplication::processEvents();
@@ -6285,7 +6283,6 @@ void MainWindow::renumera()
 
   QProgressDialog progreso("Borrando papelera ...", 0, 0, 0);
   progreso.setWindowTitle(tr("PROCESANDO..."));
-  progreso.setWindowModality(Qt::WindowModal);
   progreso.setMaximum(0);
   // progreso.setValue(30);
   progreso.setMinimumDuration ( 0 );
