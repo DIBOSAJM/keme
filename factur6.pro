@@ -7,6 +7,8 @@ QT += xml
 QT += charts
 QT += network
 
+CONFIG += c++17
+
 CODECFORTR = UTF-8
 CONFIG += qt
 RC_FILE = factur.rc

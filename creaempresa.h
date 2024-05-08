@@ -38,10 +38,12 @@ class creaempresa : public QDialog {
                 void actufichconex(QString archivo);
                 void preparacopia();
                 void importacion();
+                void pasa_usuario(QString qusuario);
         private:
                 Ui::creaempresa ui;
                 bool errores_import, nocontinuar;
                 QList<int> apuntes_origen, apuntes_conta;
+                QString usuario;
                 QString import_plancontable(QTextStream *stream);
                 QString import_ejercicios(QTextStream *stream);
                 QString import_diario(QTextStream *stream);

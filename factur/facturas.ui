@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>936</width>
-    <height>450</height>
+    <width>899</width>
+    <height>537</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -119,6 +119,12 @@
      </item>
      <item>
       <widget class="QGroupBox" name="groupBox_4">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="title">
         <string>CUENTAS</string>
        </property>
@@ -131,7 +137,25 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="cuentainilineEdit"/>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLineEdit" name="cuentainilineEdit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cuenta_inicial_pushButton_2">
+            <property name="toolTip">
+             <string>Buscar externo</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../keme.qrc">
+              <normaloff>:/iconos/graf/xmag.png</normaloff>:/iconos/graf/xmag.png</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <widget class="QLabel" name="label_8">
@@ -141,7 +165,25 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="cuentafinlineEdit"/>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QLineEdit" name="cuentafinlineEdit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cuenta_final_pushButton">
+            <property name="toolTip">
+             <string>Buscar externo</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../keme.qrc">
+              <normaloff>:/iconos/graf/xmag.png</normaloff>:/iconos/graf/xmag.png</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -165,14 +207,47 @@
         <item>
          <widget class="QRadioButton" name="nocontaradioButton">
           <property name="text">
-           <string>&amp;No contabilizadas</string>
+           <string>No contabilizadas</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QRadioButton" name="contaradioButton">
           <property name="text">
-           <string>Contabili&amp;zadas</string>
+           <string>Contabilizadas</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="estado_groupBox">
+       <property name="title">
+        <string>ESTADO</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="QRadioButton" name="estado_todas_radioButton">
+          <property name="text">
+           <string>Todas</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="no_cerradas_radioButton">
+          <property name="text">
+           <string>No cerradas</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="cerradas_radioButton">
+          <property name="text">
+           <string>Cerradas</string>
           </property>
          </widget>
         </item>
@@ -182,25 +257,53 @@
     </layout>
    </item>
    <item>
-    <widget class="QTableView" name="facstableView"/>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QPushButton" name="refrescarpushButton">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="label_9">
        <property name="text">
-        <string>&amp;Refrescar</string>
+        <string>Filtrar por externo:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="busca_externo_pushButton">
+       <property name="toolTip">
+        <string>Buscar externo</string>
+       </property>
+       <property name="text">
+        <string/>
        </property>
        <property name="icon">
         <iconset resource="../keme.qrc">
-         <normaloff>:/iconos/graf/refresh.xpm</normaloff>:/iconos/graf/refresh.xpm</iconset>
+         <normaloff>:/iconos/graf/xmag.png</normaloff>:/iconos/graf/xmag.png</iconset>
        </property>
-       <property name="default">
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="externo_lineEdit">
+       <property name="maximumSize">
+        <size>
+         <width>160</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="descrip_externo_lineEdit">
+       <property name="readOnly">
         <bool>true</bool>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+    </layout>
+   </item>
+   <item>
+    <widget class="QTableView" name="facstableView"/>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="2">
       <widget class="QPushButton" name="informepushButton">
        <property name="text">
         <string>&amp;Informe</string>
@@ -211,18 +314,40 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="consultapushButton">
+     <item row="1" column="4">
+      <widget class="QPushButton" name="transferirpushButton">
        <property name="text">
-        <string>&amp;Consulta</string>
+        <string>&amp;Transferir</string>
        </property>
        <property name="icon">
         <iconset resource="../keme.qrc">
-         <normaloff>:/iconos/graf/xmag.png</normaloff>:/iconos/graf/xmag.png</iconset>
+         <normaloff>:/iconos/graf/despues.png</normaloff>:/iconos/graf/despues.png</iconset>
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
+     <item row="0" column="8">
+      <widget class="QPushButton" name="borra_asientopushButton">
+       <property name="text">
+        <string>Sup.&amp;asiento</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../keme.qrc">
+         <normaloff>:/iconos/graf/borraelem.png</normaloff>:/iconos/graf/borraelem.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="9">
+      <widget class="QPushButton" name="imp_documento_pushButton">
+       <property name="text">
+        <string>Gen- Doc.</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../keme.qrc">
+         <normaloff>:/iconos/graf/printer.png</normaloff>:/iconos/graf/printer.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
       <widget class="QPushButton" name="verasientopushButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -239,7 +364,18 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
+     <item row="1" column="7">
+      <widget class="QPushButton" name="edtexpushButton">
+       <property name="text">
+        <string>Editar &amp;TEX</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../keme.qrc">
+         <normaloff>:/iconos/graf/tex.png</normaloff>:/iconos/graf/tex.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
       <widget class="QPushButton" name="contabilizarpushButton">
        <property name="text">
         <string>C&amp;ontabilizar</string>
@@ -250,40 +386,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="conttodopushButton">
-       <property name="text">
-        <string>Contab.to&amp;do</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../keme.qrc">
-         <normaloff>:/iconos/graf/run-build.png</normaloff>:/iconos/graf/run-build.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="6">
-      <widget class="QPushButton" name="borra_asientopushButton">
-       <property name="text">
-        <string>Sup.&amp;asiento</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../keme.qrc">
-         <normaloff>:/iconos/graf/borraelem.png</normaloff>:/iconos/graf/borraelem.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="7">
-      <widget class="QPushButton" name="borrarpushButton">
-       <property name="text">
-        <string>&amp;Borrar Factura</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../keme.qrc">
-         <normaloff>:/iconos/graf/borrar.png</normaloff>:/iconos/graf/borrar.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
+     <item row="0" column="3">
       <widget class="QPushButton" name="facturae_pushButton">
        <property name="text">
         <string>FACTURAe</string>
@@ -294,7 +397,98 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item row="1" column="5">
+      <widget class="QPushButton" name="editarpushButton">
+       <property name="text">
+        <string>&amp;Editar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../keme.qrc">
+         <normaloff>:/iconos/graf/lapiz.xpm</normaloff>:/iconos/graf/lapiz.xpm</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="9">
+      <widget class="QPushButton" name="borrarpushButton">
+       <property name="text">
+        <string>&amp;Borrar Factura</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../keme.qrc">
+         <normaloff>:/iconos/graf/borrar.png</normaloff>:/iconos/graf/borrar.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="8">
+      <widget class="QPushButton" name="imprimirpushButton">
+       <property name="text">
+        <string>Ver &amp;PDF (TEX)</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../keme.qrc">
+         <normaloff>:/iconos/graf/pdf-icon.png</normaloff>:/iconos/graf/pdf-icon.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="consultapushButton">
+       <property name="text">
+        <string>&amp;Consulta</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../keme.qrc">
+         <normaloff>:/iconos/graf/xmag.png</normaloff>:/iconos/graf/xmag.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="6">
+      <widget class="QPushButton" name="nuevapushButton">
+       <property name="text">
+        <string>&amp;Nueva</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../keme.qrc">
+         <normaloff>:/iconos/graf/Files-New-File-icon.png</normaloff>:/iconos/graf/Files-New-File-icon.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="habilitar_doc_pushButton">
+       <property name="text">
+        <string>&amp;Habilitar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../keme.qrc">
+         <normaloff>:/iconos/graf/fileopen.png</normaloff>:/iconos/graf/fileopen.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="refrescarpushButton">
+       <property name="text">
+        <string>&amp;Refrescar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../keme.qrc">
+         <normaloff>:/iconos/graf/refresh.xpm</normaloff>:/iconos/graf/refresh.xpm</iconset>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="7">
+      <widget class="QPushButton" name="conttodopushButton">
+       <property name="text">
+        <string>Contab.to&amp;do</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../keme.qrc">
+         <normaloff>:/iconos/graf/run-build.png</normaloff>:/iconos/graf/run-build.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
       <widget class="QPushButton" name="xmlpushButton">
        <property name="text">
         <string>&amp;XML</string>
@@ -306,68 +500,13 @@
       </widget>
      </item>
      <item row="1" column="2">
-      <widget class="QPushButton" name="transferirpushButton">
+      <widget class="QPushButton" name="copia_informe_pushButton">
        <property name="text">
-        <string>&amp;Transferir</string>
+        <string>Copiar</string>
        </property>
        <property name="icon">
         <iconset resource="../keme.qrc">
-         <normaloff>:/iconos/graf/despues.png</normaloff>:/iconos/graf/despues.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="editarpushButton">
-       <property name="text">
-        <string>&amp;Editar</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../keme.qrc">
-         <normaloff>:/iconos/graf/lapiz.xpm</normaloff>:/iconos/graf/lapiz.xpm</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="4">
-      <widget class="QPushButton" name="nuevapushButton">
-       <property name="text">
-        <string>&amp;Nueva</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../keme.qrc">
-         <normaloff>:/iconos/graf/Files-New-File-icon.png</normaloff>:/iconos/graf/Files-New-File-icon.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="5">
-      <widget class="QPushButton" name="edtexpushButton">
-       <property name="text">
-        <string>Editar &amp;TEX</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../keme.qrc">
-         <normaloff>:/iconos/graf/tex.png</normaloff>:/iconos/graf/tex.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="6">
-      <widget class="QPushButton" name="imprimirpushButton">
-       <property name="text">
-        <string>Ver &amp;PDF (TEX)</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../keme.qrc">
-         <normaloff>:/iconos/graf/pdf-icon.png</normaloff>:/iconos/graf/pdf-icon.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="7">
-      <widget class="QPushButton" name="imp_documento_pushButton">
-       <property name="text">
-        <string>Gen- Doc.</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../keme.qrc">
-         <normaloff>:/iconos/graf/printer.png</normaloff>:/iconos/graf/printer.png</iconset>
+         <normaloff>:/iconos/graf/copiar.png</normaloff>:/iconos/graf/copiar.png</iconset>
        </property>
       </widget>
      </item>
@@ -388,7 +527,6 @@
   <tabstop>todasradioButton</tabstop>
   <tabstop>nocontaradioButton</tabstop>
   <tabstop>contaradioButton</tabstop>
-  <tabstop>refrescarpushButton</tabstop>
   <tabstop>informepushButton</tabstop>
   <tabstop>consultapushButton</tabstop>
   <tabstop>verasientopushButton</tabstop>
@@ -396,8 +534,6 @@
   <tabstop>conttodopushButton</tabstop>
   <tabstop>borra_asientopushButton</tabstop>
   <tabstop>borrarpushButton</tabstop>
-  <tabstop>facturae_pushButton</tabstop>
-  <tabstop>xmlpushButton</tabstop>
   <tabstop>transferirpushButton</tabstop>
   <tabstop>editarpushButton</tabstop>
   <tabstop>nuevapushButton</tabstop>

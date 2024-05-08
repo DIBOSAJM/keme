@@ -420,6 +420,11 @@ void creaempresa::importacion()
 #endif
 }
 
+void creaempresa::pasa_usuario(QString qusuario)
+{
+      usuario=qusuario;
+}
+
 bool creaempresa::noejercicio(QTextStream *stream)
 {
     stream->setEncoding(QStringConverter::Utf8);
@@ -991,7 +996,7 @@ QString creaempresa::import_diario(QTextStream *stream)
         QString documento=linea.mid(244,80).trimmed();  //linea.right(80).trimmed();
         QString codfactura=linea.right(80).trimmed();
         basedatos::instancia()->insertDiario_imp(cadnumasiento, apunte, cadfecha, cuenta, debe,
-                                             haber, concepto, documento, diario, "", "",
+                                             haber, concepto, documento, diario, "", usuario,
                                              "", ejercicio, codfactura);
         basedatos::instancia()->updateSaldossubcuentasaldomenosmascodigo(cuenta,convapunto(cadhaber),convapunto(caddebe));
         chequea_error();
@@ -1084,7 +1089,13 @@ QString creaempresa::import_diario_pg(QTextStream *stream)
         cadq += "','";
         cadq += diario.left(-1).replace("'","''");
         cadq += "',";
-        cadq += "CURRENT_USER";
+        if (usuario.isEmpty())
+            cadq += "CURRENT_USER";
+        else {
+            cadq +="'";
+            cadq += usuario;
+            cadq +="'";
+        }
         cadq += ",'',";
         cadq += "0";
         cadq += ",'";

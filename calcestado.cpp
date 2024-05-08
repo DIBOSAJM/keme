@@ -1758,6 +1758,7 @@ void calcestado::generalatex()
                 }
            }
     stream << "\\hline" << "\n";
+    stream << "\\rowcolor{gray!30}\n";
    stream << "\\multicolumn{";
    if (ejercicio2.length()>0) 
       { 
@@ -1790,7 +1791,7 @@ void calcestado::generalatex()
     stream << cabecera <<  "}} \\\\";
     stream << "\\hline" << "\n";
     // ---------------------------------------------------------------------------------------
-
+    stream << "\\rowcolor{gray!30}\n";
     stream << "{\\textbf{" << parte1 << "}} & ";
     if (haycolref)
         stream << "{\\scriptsize{ " << colref << "}} & ";
@@ -1808,6 +1809,7 @@ void calcestado::generalatex()
     stream << "\\endfirsthead";
     // -------------------------------------------------------------------------------------------------------
     stream << "\\hline" << "\n";
+    stream << "\\rowcolor{gray!30}\n";
     stream << "{\\textbf{ " << filtracad(parte1) << "}} & ";
     if (haycolref)
         stream << "{\\scriptsize{ " << filtracad(colref) << "}} & ";
@@ -1942,6 +1944,7 @@ void calcestado::generalatex()
 
 // -------------------------------------------------------------------------------------------------------    
    stream << "\\hline" << "\n";
+   stream << "\\rowcolor{gray!30}\n";
    stream << "\\multicolumn{";
    if (ejercicio2.length()>0) 
       { 
@@ -1974,6 +1977,7 @@ void calcestado::generalatex()
     stream << "}{|c|} {\\textbf{";
     stream << cabecera <<  "}} \\\\";
     stream << "\\hline" << "\n";
+    stream << "\\rowcolor{gray!30}\n";
     // -----------------------------------------------------------------------------------------------------
     stream << "{\\textbf{" << parte2 << "}} & ";
     if (haycolref)
@@ -2942,10 +2946,12 @@ void calcestado::generalatex2()
 
     stream << "\\begin{longtable}{|p{10cm}|r|r|r|}" << "\n";
     stream << "\\hline" << "\n";
+    stream << "\\rowcolor{gray!30}\n";
     stream << "\\multicolumn{4";
     stream << "}{|c|} {\\textbf{ ";
     stream << cabecera <<  "}} \\\\";
     stream << "\\hline" << "\n";
+    stream << "\\rowcolor{gray!30}\n";
     // ---------------------------------------------------------------------------------------
 
     stream << "{\\textbf {" << parte1 << "}} & ";
@@ -2957,7 +2963,7 @@ void calcestado::generalatex2()
     stream << "\\endfirsthead";
     // -------------------------------------------------------------------------------------------------------
     stream << "\\hline" << "\n";
-
+    stream << "\\rowcolor{gray!30}\n";
     stream << "{\\textbf{" << parte1 << "}} & ";
     stream << "{\\scriptsize {" << tr("DETALLE") <<"}} &";
     stream << "{\\scriptsize {" << tr("CUENTAS") <<"}} &";
@@ -3097,10 +3103,12 @@ void calcestado::generalatex2()
 
     stream << "\\begin{longtable}{|p{10cm}|r|r|r|}" << "\n";
     stream << "\\hline" << "\n";
+    stream << "\\rowcolor{gray!30}\n";
     stream << "\\multicolumn{4";
     stream << "}{|c|} {\\textbf{ ";
     stream << cabecera <<  "}} \\\\";
     stream << "\\hline" << "\n";
+    stream << "\\rowcolor{gray!30}\n";
     // ---------------------------------------------------------------------------------------
 
     stream << "{\\textbf{" << parte2 << "}} & ";
@@ -3112,7 +3120,7 @@ void calcestado::generalatex2()
     stream << "\\endfirsthead";
     // -------------------------------------------------------------------------------------------------------
     stream << "\\hline" << "\n";
-
+    stream << "\\rowcolor{gray!30}\n";
     stream << "{\\textbf{" << parte2 << "}} & ";
     stream << "{\\scriptsize {" << tr("DETALLE") << "}} &";
     stream << "{\\scriptsize {" << tr("CUENTAS") << "}} &";

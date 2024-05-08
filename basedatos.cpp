@@ -23,7 +23,7 @@
 
 #include "funciones.h"
 
-#define VERSION "3.2.2.5"
+#define VERSION "3.2.2.6"
 
 #include <QMessageBox>
 #include <QApplication>
@@ -1906,6 +1906,8 @@ void basedatos::solotablas(bool segunda, QString qbase)
          }
     cadena+="tipo_ret  numeric(5,2),"
             "retencion numeric(14,2), "
+            "suplidos numeric(14,2) default 0, "
+            "total_factura numeric(14,2) default 0, "
             "tipo_doc varchar(80), "
             "notas text, "
             "pie1 varchar(254),"
@@ -12231,7 +12233,7 @@ QSqlQuery basedatos::registros_recibidas(QString ejercicio, bool fechacontable,
     QString cadena ="select d.documento,d.fecha,l.cuenta_fra,p.descripcion,d.asiento,"
             "l.base_iva,l.tipo_iva,l.cuota_iva,l.base_iva+l.cuota_iva,l.fecha_fra,l.autofactura, "
             "l.autofactura_no_ue, l.cta_base_iva, l.nombre, l.cif, d.nrecepcion, "
-            "l.isp_op_interiores, l.importacion, l.caja_iva, l.pase, d.externo, d.copia_doc, l.aib "
+            "l.isp_op_interiores, l.importacion, l.caja_iva, l.pase, d.externo, d.copia_doc, l.aib, d.concepto "
 	    "from diario d, libroiva l, plancontable p "
             "where d.pase=l.pase and ";
 
@@ -21921,6 +21923,16 @@ void basedatos::actualizade3224() {
    ejecutar("update configuracion set version='3.2.2.5'");
 }
 
+void basedatos::actualizade3225() {
+
+
+   ejecutar("alter table facturas add column suplidos numeric(14,2) default 0");
+   ejecutar("alter table facturas add column total_factura numeric(14,2) default 0");
+
+   ejecutar("update configuracion set version='3.2.2.6'");
+}
+
+
 
 void basedatos::actualizade2977()
 {
@@ -22060,13 +22072,14 @@ int basedatos::nuevacabecerafactura(QString serie,
                                     QString pase_diario_cta,
                                     QString cta_anticipos,
                                     QString externo,
-                                    QString concepto_sii
-                                    , QString c_a_rol1, QString c_a_rol2, QString c_a_rol3)
+                                    QString concepto_sii,
+                                    QString c_a_rol1, QString c_a_rol2, QString c_a_rol3,
+                                    QString suplidos, QString total_factura)
 {
     QString cad1="INSERT into facturas (serie,numero,cuenta, fecha,fecha_fac,fecha_op,"
         "contabilizado,contabilizable, con_ret, con_re, tipo_ret, retencion, "
         "tipo_doc, notas, pie1, pie2, cta_anticipos, externo, concepto_sii, "
-        "c_a_rol1, c_a_rol2, c_a_rol3, pase_diario_cta ) VALUES(";
+        "c_a_rol1, c_a_rol2, c_a_rol3, suplidos, total_factura, pase_diario_cta ) VALUES(";
     cad1 += "'"+serie.left(-1).replace("'","''") +"', ";
     cad1 += numero + ", '";
     cad1 += cuenta + "', '";
@@ -22127,6 +22140,10 @@ cad1+=", ";
     cad1+="', '";
     cad1+=c_a_rol3.left(-1).replace("'","''");
     cad1+="', ";
+    cad1+=suplidos.left(-1).replace("'","''");
+    cad1+=", ";
+    cad1+=total_factura.left(-1).replace("'","''");
+    cad1+=", ";
     cad1+=pase_diario_cta.left(-1).replace("'","''");
     cad1 += ")";
     ejecutar(cad1);
@@ -22183,8 +22200,9 @@ int basedatos::modificacabecerafactura(QString serie,
                                     QString pase_diario_cta,
                                     QString cta_anticipos,
                                     QString externo,
-                                     QString concepto_sii
-                                    , QString c_a_rol1, QString c_a_rol2, QString c_a_rol3)
+                                    QString concepto_sii,
+                                    QString c_a_rol1, QString c_a_rol2, QString c_a_rol3,
+                                    QString suplidos, QString total_factura   )
 {
    // (serie,numero,cuenta, fecha,fecha_fac,fecha_op,"
    //         "contabilizado,contabilizable, con_ret, re, tipo_ret, retencion, "
@@ -22228,6 +22246,10 @@ int basedatos::modificacabecerafactura(QString serie,
     cad1+=", ";
     if (retencion.isEmpty() || !con_ret) retencion="0";
     cad1+="retencion=" + retencion.left(-1).replace("'","''");
+    cad1+=", ";
+    cad1+="suplidos=" + suplidos.left(-1).replace("'","''");
+    cad1+=", ";
+    cad1+="total_factura=" + total_factura.left(-1).replace("'","''");
     cad1+=", ";
     cad1+="tipo_doc='" + tipo_doc.left(-1).replace("'","''");
     cad1+="', ";
@@ -22612,7 +22634,7 @@ return QString();
 QSqlQuery basedatos::select_cab_facturas (QString filtro) {
     QString cadena="SELECT f.serie,f.numero,f.cuenta, p.descripcion, f.fecha_fac,"
                       "f.contabilizado, f.cerrado, "
-                      "f.pase_diario_cta, f.tipo_doc, f.externo"
+                      "f.pase_diario_cta, f.tipo_doc, f.externo, f.total_factura, f.retencion, f.suplidos"
                       " from facturas f, plancontable p ";
     if (filtro.length()>0)
        {
@@ -23813,7 +23835,8 @@ bool basedatos::comprobarVersion () {
                 && laversion !="3.2.1.7" && laversion !="3.2.1.8"
                 && laversion !="3.2.1.9" && laversion !="3.2.2.0"
                 && laversion !="3.2.2.1" && laversion !="3.2.2.2"
-                && laversion !="3.2.2.3" && laversion !="3.2.2.4") {
+                && laversion !="3.2.2.3" && laversion !="3.2.2.4"
+                && laversion !="3.2.2.5") {
             if (!(splash==NULL))
              {
               splash->finish( 0 );
@@ -23923,7 +23946,8 @@ bool basedatos::comprobarVersion () {
                 if (versionbd()=="3.2.2.1") actualizade3221();
                 if (versionbd()=="3.2.2.2") actualizade3222();
                 if (versionbd()=="3.2.2.3") actualizade3223();
-                actualizade3224();
+                if (versionbd()=="3.2.2.4") actualizade3224();
+                actualizade3225();
 
               }
             else {

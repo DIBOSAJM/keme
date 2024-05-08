@@ -10,7 +10,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>439</width>
+    <width>526</width>
     <height>702</height>
    </rect>
   </property>
@@ -112,6 +112,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="CtabaselineEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="maxLength">
             <number>40</number>
            </property>
@@ -154,7 +160,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="baselineEdit"/>
+        <widget class="QLineEdit" name="baselineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -235,18 +248,21 @@
        <item>
         <widget class="QComboBox" name="ClaveivacomboBox">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>175</width>
+           <height>16777215</height>
+          </size>
          </property>
          <property name="font">
           <font>
            <pointsize>11</pointsize>
           </font>
-         </property>
-         <property name="sizeAdjustPolicy">
-          <enum>QComboBox::AdjustToMinimumContentsLength</enum>
          </property>
         </widget>
        </item>
@@ -298,6 +314,12 @@
        </item>
        <item>
         <widget class="QLineEdit" name="TipolineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
            <width>90</width>
@@ -354,6 +376,12 @@
        </item>
        <item>
         <widget class="QLineEdit" name="CuotalineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
            <width>140</width>
@@ -445,6 +473,12 @@
      </item>
      <item>
       <widget class="QLineEdit" name="CtaivalineEdit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="maxLength">
         <number>40</number>
        </property>
@@ -455,7 +489,7 @@
    <item>
     <widget class="QLabel" name="ivatextLabel">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -544,6 +578,12 @@
      </item>
      <item>
       <widget class="QLineEdit" name="cuentareperlineEdit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="maxLength">
         <number>40</number>
        </property>
@@ -554,7 +594,7 @@
    <item>
     <widget class="QLabel" name="reptextLabel">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -622,14 +662,21 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="externo_lineEdit"/>
+      <widget class="QLineEdit" name="externo_lineEdit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
    <item>
     <widget class="QLabel" name="descrip_externo_label">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -738,6 +785,12 @@
          </item>
          <item>
           <widget class="QLineEdit" name="CtafralineEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="maxLength">
             <number>40</number>
            </property>
@@ -891,7 +944,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="bicostelineEdit"/>
+      <widget class="QLineEdit" name="bicostelineEdit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_3">
@@ -950,6 +1010,12 @@
       <widget class="QLineEdit" name="prorratalineEdit">
        <property name="enabled">
         <bool>false</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="maximumSize">
         <size>

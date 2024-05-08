@@ -31,6 +31,7 @@
 #include <QMessageBox>
 #include "busca_externo.h"
 #include "externos.h"
+#include <QString>
 
 factura::factura() : QDialog() {
     ui.setupUi(this);
@@ -535,6 +536,7 @@ void factura::actualizatotales()
         // si no encontramos, suponemos IVA exento
         if (!encontrado) base+=convapunto(ui.tableWidget->item(veces,6)->text()).toDouble();
        }
+    gsuplidos=suplidos;
     ui.bilineEdit->setText(formateanumerosep(redond(base,2),coma,decimales));
     ui.cuotaIVAlineEdit->setText(formateanumerosep(redond(cuotaIVA,2),coma,decimales));
     ui.cuotaRElineEdit->setText(formateanumerosep(redond(cuotaRE,2),coma,decimales));
@@ -543,7 +545,7 @@ void factura::actualizatotales()
     if (ui.ret_checkBox->isChecked())
       {
        ui.ret_lineEdit->setText(formateanumero(redond(tipo*base/100,2),coma,decimales));
-       ui.totallineEdit->setText(formateanumerosep(redond(base+cuotaIVA+cuotaRE-tipo*base/100,2),coma,decimales));
+       ui.totallineEdit->setText(formateanumerosep(redond(suplidos+base+cuotaIVA+cuotaRE-tipo*base/100,2),coma,decimales));
       }
 }
 
@@ -769,6 +771,8 @@ void factura::terminar(bool impri)
 
    // comprobamos si existe cabecera de factura
     long clave_cabecera;
+    QString cadsuplidos;
+    cadsuplidos.setNum(gsuplidos,'f',2);
     if (basedatos::instancia()->existe_fact(ui.serielineEdit->text(), ui.facturalineEdit->text()))
        {
         // actualizamos
@@ -795,7 +799,9 @@ void factura::terminar(bool impri)
                                             ui.concepto_sii_lineEdit->text(),
                                             ui.rol1_lineEdit->text(),
                                             ui.rol2_lineEdit->text(),
-                                            ui.rol3_lineEdit->text()
+                                            ui.rol3_lineEdit->text(),
+                                            cadsuplidos,
+                                            convapunto(ui.totallineEdit->text())
                                             );
         // borramos registros de detalle
         basedatos::instancia()->borralineas_doc(clave_cabecera);
@@ -826,7 +832,9 @@ void factura::terminar(bool impri)
                   ui.concepto_sii_lineEdit->text(),
                       ui.rol1_lineEdit->text(),
                       ui.rol2_lineEdit->text(),
-                      ui.rol3_lineEdit->text()
+                      ui.rol3_lineEdit->text(),
+                      cadsuplidos,
+                      convapunto(ui.totallineEdit->text())
                      );
 
          }

@@ -105,7 +105,7 @@ void copiaseg::procesar()
           return;
          }
        QString cadexec="pg_dump";
-       if (host.length()>0)
+      /* if (host.length()>0)
           {
            cadexec+=" -h ";
            cadexec+=host;
@@ -118,13 +118,13 @@ void copiaseg::procesar()
        cadexec+=" ";
        cadexec+=nombre;
        cadexec+=" -f ";
-       cadexec.append(adapta(ruta));
+       cadexec.append(adapta(ruta));*/
      #endif
 
      QObject *parent=NULL;
 
      QProcess *myProcess = new QProcess(parent);
-/*
+
      QStringList arguments;
      QString cadarg;
      if (host.length()>0)
@@ -134,12 +134,11 @@ void copiaseg::procesar()
         }
      if (usuario.length()>0)
        {
-         cadarg="-U ";
-         cadarg+=usuario;
-         arguments << cadarg;
+         arguments << "-U";
+         arguments << usuario;
        }
 
-     cadarg=nombre;
+
      arguments << nombre;
      arguments << "-f";
      cadarg=dirtrabajo();
@@ -147,13 +146,15 @@ void copiaseg::procesar()
      cadarg+=nombrefichero;
      arguments << cadarg;
      // arguments << "&";
-*/
+
      //progreso.forceShow();
      QApplication::processEvents();
 
      myProcess-> setWorkingDirectory(dirtrabajo());
 
-     myProcess->start(cadexec);
+     myProcess->start(cadexec,arguments);
+
+    // QMessageBox::warning( this, tr("COPIA DE SEGURIDAD"),cadexec);
 
      if (!myProcess->waitForStarted ())
        {

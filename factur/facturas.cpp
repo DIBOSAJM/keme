@@ -77,9 +77,15 @@ QVariant FacSqlModel::data(const QModelIndex &index, int role) const
                 // número de apunte en diario
                 if (value.toInt()==0) return QString();
                }
+            if (index.column() >= 10)
+            {
+                // número de apunte en diario
+                if (value.toDouble()<0.0001 && value.toDouble()>-0.0001) return QString();
+                else return formateanumero(value.toDouble(),comadecimal,decimales);
+            }
         }
         if (role == Qt::TextAlignmentRole &&
-             (index.column() == 1 || index.column() == 7))
+             (index.column() == 1 || index.column() == 7 || index.column() == 10 || index.column() == 11 || index.column() == 12))
                return QVariant::fromValue(int(Qt::AlignVCenter | Qt::AlignRight));
         if (role == Qt::TextAlignmentRole && index.column()>=4 && index.column()<=6)
                return QVariant::fromValue(int(Qt::AlignCenter));
@@ -188,17 +194,27 @@ void facturas::activaconfiltro()
         model->setHeaderData(3, Qt::Horizontal, tr("descripción"));
 
         model->setHeaderData(4, Qt::Horizontal, tr("fecha fact."));
-        model->setHeaderData(5, Qt::Horizontal, tr("Contabilizado"));
+        model->setHeaderData(5, Qt::Horizontal, tr("Contab."));
         model->setHeaderData(6, Qt::Horizontal, tr("Cerrado"));
-        model->setHeaderData(7, Qt::Horizontal, tr("Apunte diario"));
+        model->setHeaderData(7, Qt::Horizontal, tr("Apunte"));
         model->setHeaderData(8, Qt::Horizontal, tr("TIPO DOC."));
+        model->setHeaderData(9, Qt::Horizontal, tr("Externo"));
+        model->setHeaderData(10, Qt::Horizontal, tr("Total Fra."));
+        model->setHeaderData(11, Qt::Horizontal, tr("Retención"));
+        model->setHeaderData(12, Qt::Horizontal, tr("Suplidos"));
 
         ui.facstableView->setModel(model);
         ui.facstableView->setAlternatingRowColors ( true);
 
         ui.facstableView->setColumnWidth(0,60);
-        ui.facstableView->setColumnWidth(3,130);
-        ui.facstableView->setColumnWidth(6,80);
+        ui.facstableView->setColumnWidth(1,80);
+        ui.facstableView->setColumnWidth(3,150);
+        ui.facstableView->setColumnWidth(5,60);
+        ui.facstableView->setColumnWidth(6,60);
+        ui.facstableView->setColumnWidth(7,80);
+        ui.facstableView->setColumnWidth(10,80);
+        ui.facstableView->setColumnWidth(11,80);
+        ui.facstableView->setColumnWidth(12,80);
 
 }
 
@@ -1172,6 +1188,7 @@ void facturas::latexinforme()
     stream << "\\begin{center}" << "\n";
     stream << "\\begin{longtable}{|l|l|c|p{5cm}|c|r|}" << "\n";
     stream << "\\hline" << "\n";
+    stream << "\\rowcolor{gray!30}" << "\n";
 
    stream << "\\multicolumn{6}{|c|} {\\textbf{";
    QString cadena;
@@ -1180,20 +1197,23 @@ void facturas::latexinforme()
    // --------------------------------------------------------------------------------------
    stream << cadena;
    stream <<  "}} \\\\";
-    stream << "\\hline" << "\n";
+   stream << "\\hline" << "\n";
+   stream << "\\rowcolor{gray!30}" << "\n";
+
     // -------------------------------------------------------------------------------------------------------
-    stream << "{\\tiny{" << tr("Serie") << "}} & ";
-    stream << "{\\tiny{" << tr("Número") << "}} & ";
-    stream << "{\\tiny{" << tr("Cuenta") << "}} & ";
-    stream << "{\\tiny{" << tr("Descripción cuenta") << "}} & ";
-    stream << "{\\tiny{" << tr("Fecha") << "}} & ";
-    stream << "{\\tiny{" << tr("Importe") << "}}";
+    stream << "{\\textbf{" << tr("Serie") << "}} & ";
+    stream << "{\\textbf{" << tr("Número") << "}} & ";
+    stream << "{\\textbf{" << tr("Cuenta") << "}} & ";
+    stream << "{\\textbf{" << tr("Descripción cuenta") << "}} & ";
+    stream << "{\\textbf{" << tr("Fecha") << "}} & ";
+    stream << "{\\textbf{" << tr("Importe") << "}}";
     stream << " \\\\" << "\n";
     stream << "\\hline" << "\n";
     stream << "\\endfirsthead";
     // --------------------------------------------------------------------------------------------------------
     stream << "\\hline" << "\n";
    // stream << tr(" \\\\") << "\n";
+    stream << "\\rowcolor{gray!30}" << "\n";
    stream << "\\multicolumn{6}{|c|} {\\textbf{";
    cadena=tr("LISTADO DE DOCUMENTOS");
 
@@ -1201,12 +1221,13 @@ void facturas::latexinforme()
    stream << cadena;
    stream <<  "}} \\\\";
     stream << "\\hline" << "\n";
-    stream << "{\\tiny{" << tr("Serie") << "}} & ";
-    stream << "{\\tiny{" << tr("Número") << "}} & ";
-    stream << "{\\tiny{" << tr("Cuenta") << "}} & ";
-    stream << "{\\tiny{" << tr("Descripción cuenta") << "}} & ";
-    stream << "{\\tiny{" << tr("Fecha") << "}} & ";
-    stream << "{\\tiny{" << tr("Importe") << "}}";
+    stream << "\\rowcolor{gray!30}" << "\n";
+    stream << "{\\textbf{" << tr("Serie") << "}} & ";
+    stream << "{\\textbf{" << tr("Número") << "}} & ";
+    stream << "{\\textbf{" << tr("Cuenta") << "}} & ";
+    stream << "{\\textbf{" << tr("Descripción cuenta") << "}} & ";
+    stream << "{\\textbf{" << tr("Fecha") << "}} & ";
+    stream << "{\\textbf{" << tr("Importe") << "}}";
     stream << " \\\\" << "\n";
     stream << "\\hline" << "\n";
     stream << "\\endhead" << "\n";
@@ -1217,13 +1238,13 @@ void facturas::latexinforme()
                 double importe_factura=total_documento(
                          model->data(model->index(veces,0),Qt::DisplayRole).toString(),
                          model->data(model->index(veces,1),Qt::DisplayRole).toString());
-                stream << "{\\tiny " <<
+                stream << "{\\small { " <<
                         filtracad(model->data(model->index(veces,0),Qt::DisplayRole).toString())
-                     << "} & {\\tiny ";
+                     << "}} & {\\small {";
                 stream << filtracad(model->data(model->index(veces,1),Qt::DisplayRole).toString())
-                        << "} & {\\tiny ";
+                        << "}} & {\\small {";
                 stream << filtracad(model->data(model->index(veces,2),Qt::DisplayRole).toString())
-                        << "} & {\\tiny ";
+                        << "}} & {\\small {";
                 QString cad;
                 if (model->data(model->index(veces,9),Qt::DisplayRole).toString().isEmpty())
                   {
@@ -1234,11 +1255,11 @@ void facturas::latexinforme()
                       cad=filtracad(basedatos::instancia()->razon_externo(model->data(model->index(veces,9),Qt::DisplayRole).toString()));
                     }
                 stream << cad;
-                stream << "} & {\\tiny ";
+                stream << "}} & {\\small {";
                 stream << filtracad(model->data(model->index(veces,4),Qt::DisplayRole).toString())
-                        << "} & {\\tiny ";
+                        << "}} & {\\small {";
                 stream << formateanumerosep(importe_factura,coma,decimales);
-                stream << "} \\\\ \n  " << "\\hline\n";
+                stream << "}} \\\\ \n  " << "\\hline\n";
                 veces++;
               }
 

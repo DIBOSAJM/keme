@@ -1614,22 +1614,24 @@ void bss::generalatex()
              stream << "\\begin{tabular}{|l|p{7.2cm}|r|r|r|r|}\n";
             else stream << "\\begin{tabular}{|l|p{6cm}|r|r|r|r|r|r|r|r|}\n";
            stream << "\\hline\n";
+           stream << "\\rowcolor{gray!30}\n";
+
            if (!compa)
             {
-             stream << "{\\scriptsize " << tr("CUENTA") << "} & {\\scriptsize " << tr("TITULO") <<
-              "} & {\\scriptsize " << tr("Sumas Debe") << "} & {\\scriptsize " << tr("Sumas Haber") <<
-              "} & {\\scriptsize " << tr("Saldo Deudor") << "} & {\\scriptsize " << tr("Saldo Acreedor");
+             stream << "{\\textbf {\\scriptsize " << tr("CUENTA") << "}} & {\\textbf {\\scriptsize " << tr("TITULO") <<
+              "}} & {\\textbf{\\scriptsize " << tr("Sumas Debe") << "}} & {\\textbf {\\scriptsize " << tr("Sumas Haber") <<
+              "}} & {\\textbf {\\scriptsize " << tr("Saldo Deudor") << "}} & {\\textbf{\\scriptsize " << tr("Saldo Acreedor");
              }
            if (compa)
              {
-               stream << "{\\scriptsize " << tr("CUENTA") << "} & {\\scriptsize " << tr("TITULO") <<
-                "} & {\\scriptsize " << tr("Sum. Debe") << "} & {\\scriptsize " << tr("Sum. Haber") <<
-                "} & {\\scriptsize " << tr("S. Deudor") << "} & {\\scriptsize " << tr("S. Acreedor");
+               stream << "{\\textbf {\\scriptsize " << tr("CUENTA") << "}} & {\\textbf {\\scriptsize " << tr("TITULO") <<
+                "}} & {\\textbf {\\scriptsize " << tr("Sum. Debe") << "}} & {\\textbf {\\scriptsize " << tr("Sum. Haber") <<
+                "}} & {\\textbf {\\scriptsize " << tr("S. Deudor") << "}} & {\\textbf {\\scriptsize " << tr("S. Acreedor");
                stream <<
-               "} & {\\scriptsize " << tr("Sum. Debe2") << "} & {\\scriptsize " << tr("Sum. Haber2") <<
-               "} & {\\scriptsize " << tr("S. Deudor2") << "} & {\\scriptsize " << tr("S. Acreedor2");
+               "}} & {\\textbf {\\scriptsize " << tr("Sum. Debe2") << "}} & {\\textbf {\\scriptsize " << tr("Sum. Haber2") <<
+               "}} & {\\textbf {\\scriptsize " << tr("S. Deudor2") << "}} & {\\textbf {\\scriptsize " << tr("S. Acreedor2");
              }
-           stream << "} \\\\\n";
+           stream << "}} \\\\\n";
            stream << "\\hline\n";
           }
         if (pos==ui.table->rowCount()) break;

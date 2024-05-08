@@ -94,6 +94,7 @@ class factura : public QDialog {
                 bool contabilizable;
                 bool coma,decimales;
                 bool predefinida;
+                double gsuplidos=0;
                 QString codigopredef;
                 void actualizatotales();
                 int ultimafila();

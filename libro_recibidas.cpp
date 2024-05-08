@@ -2446,6 +2446,7 @@ void libro_recibidas::copiahorizontal_bi()
                    global+=formatea_redondeado_sep(query.value(5).toDouble(),comadecimal,decimales)+"\t"; // total
                  else
                     global+=formatea_redondeado_sep(query.value(8).toDouble(),comadecimal,decimales)+"\t"; // total
+                 global+=query.value(23).toString();
 
                 global+="\n";
                 numprog++;

@@ -6053,6 +6053,8 @@ void MainWindow::marcarcerrado()
 void MainWindow::importafich()
 {
     creaempresa *c = new creaempresa;
+    if (basedatos::instancia()->gestiondeusuarios())
+       c->pasa_usuario(usuario);
     c->importacion();
     delete(c);
     refrescardiario();

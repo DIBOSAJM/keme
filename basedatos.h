@@ -2370,6 +2370,8 @@ class basedatos {
 
         void actualizade3224();
 
+        void actualizade3225();
+
         void introclave_op_retenciones();
 
         void intro_provincias();
@@ -3056,7 +3058,7 @@ class basedatos {
                                             QString pie2,
                                             QString pase_diario_cta,
                                             QString cta_anticipos, QString externo="", QString concepto_sii="",
-                                            QString c_a_rol1="", QString c_a_rol2="", QString c_a_rol3="");
+                                            QString c_a_rol1="", QString c_a_rol2="", QString c_a_rol3="", QString suplidos="", QString total_factura="");
 
         int modificacabecerafactura(QString serie,
                                             QString numero,
@@ -3075,7 +3077,8 @@ class basedatos {
                                             QString pie2,
                                             QString pase_diario_cta,
                                             QString cta_anticipos, QString externo="", QString concepto_sii="",
-                                            QString c_a_rol1="", QString c_a_rol2="", QString c_a_rol3="");
+                                            QString c_a_rol1="", QString c_a_rol2="", QString c_a_rol3="",
+                                            QString suplidos="", QString total_factura="");
 
 
         void modificacabecerafactura_predef(QString codigo,

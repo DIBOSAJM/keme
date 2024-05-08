@@ -291,6 +291,7 @@ bool cuadimprimayor::generalatexmayor( QString qsubcuentaini, QString qsubcuenta
            stream << "\\begin{center}\n";
            stream << "\\begin{tabular}{|l|r|p{8cm}|r|r|r|}\n";
            stream << "\\hline\n";
+           stream << "\\rowcolor{gray!30}\n";
            stream << "{\\textbf {\\scriptsize " << tr("FECHA") << "}} & {\\textbf {\\scriptsize "
                    << tr("ASTO.") << "}} & {\\textbf {\\scriptsize " <<
              tr("CONCEPTO") << "}} & {\\textbf {\\scriptsize " << tr("DEBE")
@@ -421,6 +422,7 @@ bool cuadimprimayor::generalatexmayor( QString qsubcuentaini, QString qsubcuenta
                        stream << "\\begin{center}\n";
                        stream << "\\begin{tabular}{|l|r|p{8cm}|r|r|r|}\n";
                        stream << "\\hline\n";
+                       stream << "\\rowcolor{gray!30}\n";
                        stream << "{\\textbf {\\scriptsize " << tr("FECHA")
                                << "}} & {\\textbf {\\scriptsize " << tr("ASTO.") <<
                         "}} & {\\textbf {\\scriptsize " << tr("CONCEPTO") <<

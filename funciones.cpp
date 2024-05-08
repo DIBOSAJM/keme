@@ -3337,7 +3337,6 @@ int consultalatex2fichabs(QString qfichero)
 {
     QProgressDialog progreso(QObject::tr("Generando informe ... ")
                              , 0, 0, 0);
-    progreso.setWindowModality(Qt::WindowModal);
     progreso.setMinimumDuration ( 0 );
     progreso.setWindowTitle(QObject::tr("Generando  ... "));;
     progreso.show();
@@ -4866,7 +4865,9 @@ QString cabeceralatex()
  if (es_os_x()) cadena=soporte_xelatex();
  
     cadena+="\\documentclass[11pt,a4paper]{article}\n";
-    
+    cadena+="\\usepackage{tgtermes}\n";
+    cadena+="\\usepackage[table]{xcolor}\n";
+
  if (es_os_x()) cadena+=config_font_xelatex();
     else cadena+=
            "\\usepackage{ucs}\n"
@@ -4888,6 +4889,8 @@ QString cabeceralatex_graficos()
  if (es_os_x()) cadena=soporte_xelatex();
 
  cadena="\\documentclass[11pt,a4paper]{article}\n";
+ cadena+="\\usepackage{utopia}\n"
+         "\\usepackage[table]{xcolor}\n";
  
  if (es_os_x()) cadena+=config_font_xelatex();
     else cadena+=
@@ -7231,22 +7234,18 @@ QString latex_doc(QString serie, QString numero)
 
     if (!imagen.isEmpty())
       {
-       cabecera_factura="\\begin{figure}[t]\n";
-       cabecera_factura+="\\includegraphics[width=150pt]{";
+       cabecera_factura="\\begin{flushright}\n";
+       cabecera_factura+="\\includegraphics[width=80pt]{";
        if (WINDOWS) rutagraf=rutagraf.replace("\\","/");
        cabecera_factura+= rutagraf  +"}\n";
-       cabecera_factura+="\\end{figure}\n";
+       cabecera_factura+="\\end{flushright}\n";
       }
 
-    cabecera_factura+="\\begin{flushright}\n";
-    // cabecera_factura+="\\begin{tabular}{|c|}\n";
-    // cabecera_factura+="\\hline\n";
-    cabecera_factura+="{\\huge \\textbf {";
+    cabecera_factura+="\\begin{center}\n";
+    cabecera_factura+="{\\LARGE \\textbf {";
     cabecera_factura+=filtracad(documento);
-    cabecera_factura+="}} \\\\ \n";
-    // cabecera_factura+="\\hline\n";
-    // cabecera_factura+="\\end{tabular}\n";
-    cabecera_factura+="\\end{flushright}\n\n";
+    cabecera_factura+=" \\newline \\newline}} \\\\ \n";
+    cabecera_factura+="\\end{center}\n\n";
 
     cabecera_factura+="\\begin{flushleft}\n";
     if (!nombre_empresa.isEmpty())
@@ -7283,6 +7282,7 @@ QString latex_doc(QString serie, QString numero)
     cabecera_factura+="\\begin{flushright}\n";
     cabecera_factura+="\\begin{tabular}{|l|r|l|r|}\n";
     cabecera_factura+="\\hline\n";
+    cabecera_factura+="\\rowcolor{gray!30}\n";
     cabecera_factura+="\\scriptsize ";
     cabecera_factura+=filtracad(msfecha)+" & \\scriptsize " +
                       fecha_fac.toString("dd-MM-yyyy") + " & \\scriptsize " ;
@@ -7296,6 +7296,7 @@ QString latex_doc(QString serie, QString numero)
     cabecera_factura+="\\begin{tabular}{|l|p{7cm}|r|r|r|r|}\n";
     cabecera_factura+="\\hline\n";
     // cantidad, referencia, descripref, precio, totallin
+    cabecera_factura+="\\rowcolor{gray!30}\n";
     cabecera_factura+="\\scriptsize "+ filtracad(referencia)+ "&"+
                       "\\scriptsize "+ filtracad(descripref) + "&" +
                       "\\scriptsize " + filtracad(cantidad) + "&" +
@@ -7336,6 +7337,8 @@ QString latex_doc(QString serie, QString numero)
         if (con_re) pie_factura += "\\begin{tabular}{|r|r|r|r|r|}\n";
            else pie_factura += "\\begin{tabular}{|r|r|r|}\n";
         pie_factura += "\\hline\n";
+        pie_factura+="\\rowcolor{gray!30}\n";
+
         // cantidad, referencia, descripref, precio, totallin
         if (con_re)
           pie_factura += "\\footnotesize " + filtracad(msbi) + "&"+
@@ -7393,7 +7396,7 @@ QString latex_doc(QString serie, QString numero)
       {
         pie_factura += "\\footnotesize " + mretencion; // QObject::tr("Retención IRPF (");
         pie_factura += " ("+tipo_ret;
-        pie_factura += "\\%)";
+        pie_factura += ")";
         pie_factura += " & ";
         pie_factura += "\\footnotesize " + formateanumerosep(redond(retencion.toDouble(),2),coma,decimales);
         pie_factura += "\\\\\\hline\n";
@@ -7404,6 +7407,7 @@ QString latex_doc(QString serie, QString numero)
         pie_factura += "\\footnotesize "+msuplidos+ " & \\footnotesize " +formateanumerosep(suplidos,coma,decimales);
         pie_factura += moneda + "\\\\\\hline\n";
        }
+    pie_factura+="\\rowcolor{gray!30}\n";
     pie_factura += "\\footnotesize " + totalfac;
     pie_factura += " & ";
     pie_factura += "\\footnotesize " + formateanumerosep(totalfactura,coma,decimales);
