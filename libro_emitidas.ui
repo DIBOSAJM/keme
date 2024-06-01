@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>727</width>
-    <height>647</height>
+    <height>653</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,6 @@
      <property name="font">
       <font>
        <pointsize>18</pointsize>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -212,35 +211,25 @@
              <property name="checked">
               <bool>false</bool>
              </property>
-             <widget class="QRadioButton" name="ordendocradioButton">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>30</y>
-                <width>100</width>
-                <height>21</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Docu&amp;mento</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-             <widget class="QRadioButton" name="ordenfechafacradioButton">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>60</y>
-                <width>100</width>
-                <height>21</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Fecha factura</string>
-              </property>
-             </widget>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <item>
+               <widget class="QRadioButton" name="ordendocradioButton">
+                <property name="text">
+                 <string>Docu&amp;mento</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="ordenfechafacradioButton">
+                <property name="text">
+                 <string>Fecha factura</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>

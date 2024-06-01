@@ -86,6 +86,13 @@ class facturas : public QDialog {
                 void edita_tex();
                 void informe_documento();
 
+                void on_busca_externo_pushButton_clicked();
+                void on_externo_lineEdit_textChanged(const QString &arg1);
+                void on_cuenta_inicial_pushButton_2_clicked();
+                void on_cuenta_final_pushButton_clicked();
+                void on_quita_externo_pushButton_clicked();
+                void on_copia_informe_pushButton_clicked();
+                void on_habilitar_doc_pushButton_clicked();
 };
 
 

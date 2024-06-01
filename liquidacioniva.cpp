@@ -425,7 +425,7 @@ void liquidacioniva::calcular()
  if (consulta.next() && !(consulta.value(0).toDouble()<0.0001 && consulta.value(0).toDouble()>-0.0001))
   {
     ui.soportadotable->insertRow(fila);
-    ui.soportadotable->setItem(fila,0,new QTableWidgetItem(tr("B.I. al tipo 0")));
+    ui.soportadotable->setItem(fila,0,new QTableWidgetItem(tr("Op.exentas")));
     QTableWidgetItem *newItem1 = new QTableWidgetItem(
                    formatea_redondeado(consulta.value(0).toDouble(),comadecimal,decimales));
     newItem1->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
@@ -462,7 +462,7 @@ void liquidacioniva::calcular()
  if (consulta.next() && !(consulta.value(0).toDouble()<0.0001 && consulta.value(0).toDouble()>-0.0001))
   {
     ui.soportadotable->insertRow(fila);
-    ui.soportadotable->setItem(fila,0,new QTableWidgetItem(tr("B.I. al tipo 0")));
+    ui.soportadotable->setItem(fila,0,new QTableWidgetItem(tr("Op. exentas")));
     QTableWidgetItem *newItem1 = new QTableWidgetItem(
                    formatea_redondeado(consulta.value(0).toDouble(),comadecimal,decimales));
     newItem1->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
@@ -598,7 +598,7 @@ void liquidacioniva::calcular()
   progress.setValue(9);
   QApplication::processEvents();
 
-  // calculamos ahora IVA soportado al tipo 0 (exento) e insertamos fila
+  // calculamos ahora IVA soportado (exento) e insertamos fila
 
     consulta = basedatos::instancia()->baserecibidasexentas_corrientes_importacion(
           ui.inicialdateEdit->date() , ui.finaldateEdit->date() );
@@ -606,7 +606,7 @@ void liquidacioniva::calcular()
  if (consulta.next() && !(consulta.value(0).toDouble()<0.0001 && consulta.value(0).toDouble()>-0.0001))
   {
     ui.imp_soportadotable->insertRow(fila);
-    ui.imp_soportadotable->setItem(fila,0,new QTableWidgetItem(tr("B.I. al tipo 0")));
+    ui.imp_soportadotable->setItem(fila,0,new QTableWidgetItem(tr("Op.exentas")));
     QTableWidgetItem *newItem1 = new QTableWidgetItem(
                    formatea_redondeado(consulta.value(0).toDouble(),comadecimal,decimales));
     newItem1->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
@@ -631,7 +631,7 @@ void liquidacioniva::calcular()
  progress.setValue(10);
  QApplication::processEvents();
 
-  // calculamos ahora IVA soportado al tipo 0 (exento) de INVERSIONES e insertamos fila
+  // calculamos ahora IVA soportado (exento) de INVERSIONES e insertamos fila
 
     consulta = basedatos::instancia()->baserecibidasexentas_inversion_importacion(
           ui.inicialdateEdit->date() , ui.finaldateEdit->date() );
@@ -639,7 +639,7 @@ void liquidacioniva::calcular()
  if (consulta.next() && !(consulta.value(0).toDouble()<0.0001 && consulta.value(0).toDouble()>-0.0001))
   {
     ui.imp_soportadotable->insertRow(fila);
-    ui.imp_soportadotable->setItem(fila,0,new QTableWidgetItem(tr("B.I. al tipo 0")));
+    ui.imp_soportadotable->setItem(fila,0,new QTableWidgetItem(tr("Op.exentas")));
     QTableWidgetItem *newItem1 = new QTableWidgetItem(
                    formatea_redondeado(consulta.value(0).toDouble(),comadecimal,decimales));
     newItem1->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);

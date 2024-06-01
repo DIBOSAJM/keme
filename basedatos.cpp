@@ -655,6 +655,7 @@ void basedatos::solotablas(bool segunda, QString qbase)
     cadena+="nombre      varchar(255) default '',";
     cadena+="apellidos   varchar(255) default '',";
     cadena+="url_actu   varchar(255) default '',";
+    cadena+="moneda varchar(20) default '',";
     if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
         cadena += "curl bool default 0,";
           else cadena += "curl bool default false,";
@@ -755,6 +756,17 @@ void basedatos::solotablas(bool segunda, QString qbase)
 
     progreso.setValue(progreso.value()+1);
     QApplication::processEvents();
+
+
+    // monedas
+    cadena = "CREATE TABLE monedas ("
+             "codigo         varchar(40),"
+             "descripcion    varchar(254),"
+             "tipo_cambio    numeric(20,6) defualt 0,"
+             "PRIMARY KEY (codigo) )";
+    if (segunda) cadena = anadirMotor(cadena,qbase); else cadena = anadirMotor(cadena);
+    if (segunda) ejecutar(cadena,qbase); else ejecutar(cadena);
+
 
     // codigopais
     cadena = "CREATE TABLE codigopais ("
@@ -13175,7 +13187,7 @@ QSqlQuery basedatos::libroivafechas_sop_corrientes (QDate inicial, QDate final, 
     QString cadena = "select d.cuenta,l.tipo_iva,sum(l.base_iva),sum(l.cuota_iva),"
         "sum(l.base_iva+l.cuota_iva),sum(l.cuota_iva*l.prorrata*l.afecto), sum(debe-haber) "
         "from diario d, libroiva l "
-        "where d.pase=l.pase and l.soportado and not l.aib and not l.eib and l.cuota_iva != 0";
+        "where d.pase=l.pase and l.soportado and not l.aib and not l.eib and l.clave_iva != ''";
     cadena += " and not l.agrario";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
@@ -13192,7 +13204,7 @@ QSqlQuery basedatos::libroivafechas_sop_inversion (QDate inicial, QDate final, b
     QString cadena = "select d.cuenta,l.tipo_iva,sum(l.base_iva),sum(l.cuota_iva),"
         "sum(l.base_iva+l.cuota_iva),sum(l.cuota_iva*l.prorrata*l.afecto), sum(debe-haber) "
         "from diario d, libroiva l "
-        "where d.pase=l.pase and l.soportado and not l.aib and not l.eib and l.cuota_iva != 0";
+        "where d.pase=l.pase and l.soportado and not l.aib and not l.eib and l.clave_iva != ''";
     cadena += " and not l.agrario";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
@@ -13211,7 +13223,7 @@ QSqlQuery basedatos::libroivafechas_sop_corrientes_importacion (QDate inicial, Q
     QString cadena = "select d.cuenta,l.tipo_iva,sum(l.base_iva),sum(l.cuota_iva),"
         "sum(l.base_iva+l.cuota_iva),sum(l.cuota_iva*l.prorrata*l.afecto), sum(debe-haber) "
         "from diario d, libroiva l "
-        "where d.pase=l.pase and l.soportado and not l.aib and not l.eib and l.cuota_iva != 0";
+        "where d.pase=l.pase and l.soportado and not l.aib and not l.eib and l.clave_iva != ''";
     cadena += " and not l.agrario";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
@@ -13227,7 +13239,7 @@ QSqlQuery basedatos::libroivafechas_sop_inversion_importacion (QDate inicial, QD
     QString cadena = "select d.cuenta,l.tipo_iva,sum(l.base_iva),sum(l.cuota_iva),"
         "sum(l.base_iva+l.cuota_iva),sum(l.cuota_iva*l.prorrata*l.afecto), sum(debe-haber) "
         "from diario d, libroiva l "
-        "where d.pase=l.pase and l.soportado and not l.aib and not l.eib and l.cuota_iva != 0";
+        "where d.pase=l.pase and l.soportado and not l.aib and not l.eib and l.clave_iva != ''";
     cadena += " and not l.agrario";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
@@ -13267,7 +13279,7 @@ QSqlQuery basedatos::libroivafechas_sop_agrario (QDate inicial, QDate final) {
 QSqlQuery basedatos::baserecibidasexentas_corrientes (QDate inicial, QDate final) {
     QString cadena = "select sum(l.base_iva) "
         "from libroiva l, diario d "
-        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and not l.aib"
+        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and l.clave_iva='' and not l.aib"
         " and not l.autofactura and not l.autofactura_no_ue and not l.isp_op_interiores";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
@@ -13280,7 +13292,7 @@ QSqlQuery basedatos::baserecibidasexentas_corrientes (QDate inicial, QDate final
 QSqlQuery basedatos::baserecibidasexentas_corrientes_importacion (QDate inicial, QDate final) {
     QString cadena = "select sum(l.base_iva) "
         "from libroiva l, diario d "
-        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and not l.aib"
+        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and l.clave_iva=''  and not l.aib"
         " and not l.autofactura and not l.autofactura_no_ue and not l.isp_op_interiores";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
@@ -13294,7 +13306,7 @@ QSqlQuery basedatos::baserecibidasexentas_corrientes_importacion (QDate inicial,
 QSqlQuery basedatos::baserecibidasexentas_inversion (QDate inicial, QDate final) {
     QString cadena = "select sum(l.base_iva) "
         "from libroiva l, diario d "
-        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and not l.aib"
+        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and l.clave_iva='' and not l.aib"
         " and not l.autofactura and not l.autofactura_no_ue and not l.isp_op_interiores";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
@@ -13307,7 +13319,7 @@ QSqlQuery basedatos::baserecibidasexentas_inversion (QDate inicial, QDate final)
 QSqlQuery basedatos::baserecibidasexentas_inversion_importacion (QDate inicial, QDate final) {
     QString cadena = "select sum(l.base_iva) "
         "from libroiva l, diario d "
-        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and not l.aib"
+        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and l.clave_iva='' and not l.aib"
         " and not l.autofactura and not l.autofactura_no_ue and not l.isp_op_interiores";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
@@ -13321,7 +13333,7 @@ QSqlQuery basedatos::baserecibidasexentas_inversion_importacion (QDate inicial, 
 QSqlQuery basedatos::baseautofacturasrecibidasexentas (QDate inicial, QDate final) {
     QString cadena = "select sum(l.base_iva) "
         "from libroiva l, diario d "
-        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and l.autofactura";
+        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and l.clave_iva='' and l.autofactura";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
@@ -13333,7 +13345,7 @@ QSqlQuery basedatos::baseautofacturasrecibidasexentas (QDate inicial, QDate fina
 QSqlQuery basedatos::baseautofacturasnouerecibidasexentas (QDate inicial, QDate final) {
     QString cadena = "select sum(l.base_iva) "
         "from libroiva l, diario d "
-        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and l.autofactura_no_ue";
+        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and l.clave_iva='' and l.autofactura_no_ue";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
@@ -13345,7 +13357,7 @@ QSqlQuery basedatos::baseautofacturasnouerecibidasexentas (QDate inicial, QDate 
 QSqlQuery basedatos::base_isp_interiores_recibidasexentas (QDate inicial, QDate final) {
     QString cadena = "select sum(l.base_iva) "
         "from libroiva l, diario d "
-        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and l.isp_op_interiores";
+        "where d.pase=l.pase and l.soportado and l.cuota_iva = 0 and l.clave_iva='' and l.isp_op_interiores";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
@@ -13360,7 +13372,7 @@ QSqlQuery basedatos::baseemitidasexentasnoeib (QDate inicial, QDate final) {
         "where d.pase=l.pase and not l.soportado and not l.eib "
         "and not l.autofactura and not l.autofactura_no_ue and not l.aib "
         "and not l.pr_servicios_ue "
-        "and l.cuota_iva = 0";
+        "and l.clave_iva = ''";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
@@ -13377,7 +13389,7 @@ QSqlQuery basedatos::baseemitidasexentas_noeib_noexport (QDate inicial, QDate fi
         "where d.pase=l.pase and not l.soportado and not l.eib "
         "and not l.autofactura and not l.autofactura_no_ue and not l.aib "
         "and not l.pr_servicios_ue and not l.exportacion and not l.ventas_fuera_tac "
-        "and l.cuota_iva = 0";
+        "and l.clave_iva = ''";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
@@ -13393,7 +13405,7 @@ QSqlQuery basedatos::baseemitidasexentas_noeib_noexport_nodeduc (QDate inicial, 
         "where d.pase=l.pase and not l.soportado and not l.eib "
         "and not l.autofactura and not l.autofactura_no_ue and not l.aib "
         "and not l.pr_servicios_ue and not l.exportacion and not l.ventas_fuera_tac and not l.exento_dcho_ded "
-        "and l.cuota_iva = 0";
+        "and l.clave_iva = ''";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
@@ -13427,7 +13439,7 @@ QSqlQuery basedatos::select7DiarioLibroivafechasgroupcuentatipo_ivatipo_re (QDat
         "where d.pase=l.pase and not l.soportado and not l.aib and not l.eib "
         "and not l.autofactura and not l.autofactura_no_ue "
         "and not l.isp_op_interiores and not l.importacion "
-        "and l.cuota_iva !=0";
+        "and l.clave_iva !=''";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
@@ -13447,7 +13459,7 @@ QSqlQuery basedatos::libroiva_aib_corrientes (QDate inicial, QDate final) {
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
     cadena += final.toString("yyyy-MM-dd");
-    cadena += "' and (l.cuota_iva>0.0001 or l.cuota_iva<-0.0001) and not bien_inversion group by d.cuenta,l.tipo_iva";
+    cadena += "' and l.clave_iva!='' and not bien_inversion group by d.cuenta,l.tipo_iva";
     return ejecutar(cadena);
 }
 
@@ -13461,7 +13473,7 @@ QSqlQuery basedatos::libroiva_aib_inversion (QDate inicial, QDate final) {
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
     cadena += final.toString("yyyy-MM-dd");
-    cadena += "' and (l.cuota_iva>0.0001 or l.cuota_iva<-0.0001) and bien_inversion group by d.cuenta,l.tipo_iva";
+    cadena += "' and l.clave_iva!='' and bien_inversion group by d.cuenta,l.tipo_iva";
     return ejecutar(cadena);
 }
 
@@ -13470,7 +13482,7 @@ QSqlQuery basedatos::baseemitidasexentasaib_corrientes (QDate inicial, QDate fin
 
     QString cadena = "select sum(l.base_iva) "
         "from diario d, libroiva l "
-        "where d.pase=l.pase and l.soportado and  l.aib and not l.eib and l.cuota_iva = 0";
+        "where d.pase=l.pase and l.soportado and  l.aib and not l.eib and l.clave_iva = ''";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
@@ -13484,7 +13496,7 @@ QSqlQuery basedatos::baseemitidasexentasaib_inversion (QDate inicial, QDate fina
 
     QString cadena = "select sum(l.base_iva) "
         "from diario d, libroiva l "
-        "where d.pase=l.pase and l.soportado and  l.aib and not l.eib and l.cuota_iva = 0";
+        "where d.pase=l.pase and l.soportado and  l.aib and not l.eib and l.clave_iva = ''";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
@@ -13503,7 +13515,7 @@ QSqlQuery basedatos::select4DiarioLibroivafechasgroupcuentatipo_ivasinprorrata (
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
     cadena += final.toString("yyyy-MM-dd");
-    cadena += "' and (l.cuota_iva>0.0001 or l.cuota_iva<-0.0001) group by d.cuenta,l.tipo_iva";
+    cadena += "' and l.clave_iva!='' group by d.cuenta,l.tipo_iva";
     return ejecutar(cadena);
 }
 
@@ -13587,7 +13599,7 @@ QSqlQuery basedatos::libroiva_autofacturas_ue (QDate inicial, QDate final) {
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
     cadena += final.toString("yyyy-MM-dd");
-    cadena += "' and (l.cuota_iva>0.0001 or l.cuota_iva<-0.0001) group by d.cuenta,l.tipo_iva";
+    cadena += "' and l.clave_iva!='' group by d.cuenta,l.tipo_iva";
     return ejecutar(cadena);
 }
 
@@ -13601,7 +13613,7 @@ QSqlQuery basedatos::libroiva_autofacturas_ue_emitidas (QDate inicial, QDate fin
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
     cadena += final.toString("yyyy-MM-dd");
-    cadena += "' and (l.cuota_iva>0.0001 or l.cuota_iva<-0.0001) group by d.cuenta,l.tipo_iva";
+    cadena += "' and l.clave_iva!='' group by d.cuenta,l.tipo_iva";
     return ejecutar(cadena);
 }
 
@@ -13616,7 +13628,7 @@ QSqlQuery basedatos::libroiva_autofacturas_no_ue (QDate inicial, QDate final) {
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
     cadena += final.toString("yyyy-MM-dd");
-    cadena += "' and (l.cuota_iva>0 or l.cuota_iva<-0.0001) group by d.cuenta,l.tipo_iva";
+    cadena += "' and l.clave_iva!='' group by d.cuenta,l.tipo_iva";
     return ejecutar(cadena);
 }
 
@@ -13630,7 +13642,7 @@ QSqlQuery basedatos::libroiva_autofacturas_no_ue_emitidas (QDate inicial, QDate 
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
     cadena += final.toString("yyyy-MM-dd");
-    cadena += "'  and (l.cuota_iva>0 or l.cuota_iva<-0.0001) group by d.cuenta,l.tipo_iva";
+    cadena += "'  and l.clave_iva!='' group by d.cuenta,l.tipo_iva";
     return ejecutar(cadena);
 }
 
@@ -13644,7 +13656,7 @@ QSqlQuery basedatos::libroiva_isp_interiores_recibidas (QDate inicial, QDate fin
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
     cadena += final.toString("yyyy-MM-dd");
-    cadena += "' and (l.cuota_iva>0 or l.cuota_iva<-0.0001) group by d.cuenta,l.tipo_iva";
+    cadena += "' and l.clave_iva!='' group by d.cuenta,l.tipo_iva";
     return ejecutar(cadena);
 }
 
@@ -13658,7 +13670,7 @@ QSqlQuery basedatos::libroiva_isp_interiores_emitidas (QDate inicial, QDate fina
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and d.fecha<='";
     cadena += final.toString("yyyy-MM-dd");
-    cadena += "'  and (l.cuota_iva>0 or l.cuota_iva<-0.0001) group by d.cuenta,l.tipo_iva";
+    cadena += "'  and l.clave_iva!='' group by d.cuenta,l.tipo_iva";
     return ejecutar(cadena);
 }
 
@@ -21933,6 +21945,25 @@ void basedatos::actualizade3225() {
 }
 
 
+void basedatos::actualizade3226() {
+
+
+   ejecutar("alter table configuracion add column moneda varchar(20) default ''");
+
+
+   // monedas
+   QString cadena = "CREATE TABLE monedas ("
+            "codigo         varchar(40),"
+            "descripcion    varchar(254),"
+            "tipo_cambio    numeric(20,6) defualt 0,"
+            "PRIMARY KEY (codigo) )";
+   cadena = anadirMotor(cadena);
+   ejecutar(cadena);
+
+
+   ejecutar("update configuracion set version='4.0.0.0'");
+}
+
 
 void basedatos::actualizade2977()
 {
@@ -22595,10 +22626,31 @@ void basedatos::cierra_doc(QString serie,
     ejecutar(cad1);
 
     // averiguamos campo clave del registro recién modificado
-    ejecutar(cad1);
+    // ejecutar(cad1);
 
 }
 
+
+void basedatos::abre_doc(QString serie,
+                           QString numero)
+{
+    // (serie,numero,cuenta, fecha,fecha_fac,fecha_op,"
+    //         "contabilizado,contabilizable, con_ret, re, tipo_ret, retencion, "
+    //         "tipo_doc, notas, pie1, pie2, pase_diario_cta)
+
+    QString cad1="update facturas set cerrado=";
+    if ( cualControlador() == SQLITE ) cad1+=" 0";
+    else cad1+="false";
+    cad1 += " where serie='";
+    cad1 += serie.left(-1).replace("'","''");
+    cad1 += "' and numero=";
+    cad1 += numero;
+    ejecutar(cad1);
+
+    // averiguamos campo clave del registro recién modificado
+    // ejecutar(cad1);
+
+}
 
 
 QString basedatos::doc_cliente(QString serie,

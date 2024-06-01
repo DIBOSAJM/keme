@@ -34,6 +34,13 @@
     <widget class="QTableWidget" name="tabla"/>
    </item>
    <item>
+    <widget class="QCheckBox" name="valor_neto_checkBox">
+     <property name="text">
+      <string>Restringir a valor neto positivo</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout">
      <property name="spacing">
       <number>6</number>
@@ -137,6 +144,7 @@
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>tabla</tabstop>
+  <tabstop>valor_neto_checkBox</tabstop>
   <tabstop>imprimirpushButton</tabstop>
   <tabstop>informe_latex_pushButton</tabstop>
   <tabstop>copiarpushButton</tabstop>

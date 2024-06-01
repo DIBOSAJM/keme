@@ -43,7 +43,24 @@ comadecimal=haycomadecimal();
 
  ui.tabla->setHorizontalHeaderLabels(columnas);
 
- ui.tabla->setRowCount( basedatos::instancia()->selectCountcuenta_activoplanamortizaciones() );
+ cargar_datos();
+
+     connect(ui.imprimirpushButton,SIGNAL(clicked()),SLOT(imprimir()));
+     connect(ui.informe_latex_pushButton,SIGNAL(clicked(bool)),SLOT(informe_latex()));
+     connect(ui.latexpushButton,SIGNAL(clicked()),SLOT(latex()));
+     connect(ui.copiarpushButton,SIGNAL(clicked()),SLOT(copiar()));
+
+#ifdef NOEDITTEX
+  ui.latexpushButton->hide();
+#endif
+
+}
+
+void inmovneto::cargar_datos()
+{
+  ui.tabla->clearContents();
+  ui.tabla->setRowCount(0);
+  // ui.tabla->setRowCount( basedatos::instancia()->selectCountcuenta_activoplanamortizaciones() );
 
   QSqlQuery query = basedatos::instancia()->selectCuenta_activocuenta_am_acumplanamortizacionesordercuenta_activo();
   /*
@@ -55,75 +72,87 @@ comadecimal=haycomadecimal();
 
   int fila=0;
   if ( query.isActive() ) {
-          while ( query.next() )
-              {
-                QTableWidgetItem *newItem0 = new QTableWidgetItem(query.value(0).toString());
-                QTableWidgetItem *newItem1 = new QTableWidgetItem(descripcioncuenta(query.value(0).toString()));
-                QTableWidgetItem *newItem2 = new QTableWidgetItem(query.value(1).toString());
+      while ( query.next() )
+      {
+          double saldo=saldocuentaendiario(query.value(0).toString());
+          double aa=saldocuentaendiario(query.value(1).toString());
+          double valneto=saldo+aa;
+          if (ui.valor_neto_checkBox->isChecked())
+             if (valneto<0.001 && valneto>-0.001) continue;
 
-                ui.tabla->setItem(fila,0,newItem0);
-                ui.tabla->setItem(fila,1,newItem1);
-                ui.tabla->setItem(fila,2,newItem2);
+          aa=aa*-1;
+          ui.tabla->insertRow(fila);
+          QTableWidgetItem *newItem0 = new QTableWidgetItem(query.value(0).toString());
+          QTableWidgetItem *newItem1 = new QTableWidgetItem(descripcioncuenta(query.value(0).toString()));
+          QTableWidgetItem *newItem2 = new QTableWidgetItem(query.value(1).toString());
 
-                double years=100/(query.value(3).toDouble()*100);
-                QString cadtiempo; cadtiempo.setNum(years,'f',2);
-                if (comadecimal) cadtiempo=convacoma(cadtiempo);
-                bool baja=query.value(4).toBool();
-                QTableWidgetItem *newItem6 = new QTableWidgetItem(query.value(2).toString()); // proveedor
-                QTableWidgetItem *newItem7 = new QTableWidgetItem(descripcioncuenta(query.value(2).toString()));
-                if (!query.value(7).toString().isEmpty()) {
-                    newItem6->setText(query.value(7).toString());
-                    newItem7->setText(basedatos::instancia()->razon_externo(query.value(7).toString()));
-                }
-                QTableWidgetItem *newItem8 = new QTableWidgetItem(cadtiempo);
-                newItem8->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
-                QTableWidgetItem *newItem9 = new QTableWidgetItem(baja ? query.value(5).toDate().toString("dd-MM-yyyy"):"");
-                QTableWidgetItem *newItem10 = new QTableWidgetItem(baja ? query.value(6).toString():"");
+          ui.tabla->setItem(fila,0,newItem0);
+          ui.tabla->setItem(fila,1,newItem1);
+          ui.tabla->setItem(fila,2,newItem2);
 
-                ui.tabla->setItem(fila,6,newItem6);
-                ui.tabla->setItem(fila,7,newItem7);
-                ui.tabla->setItem(fila,8,newItem8);
-                ui.tabla->setItem(fila,9,newItem9);
-                ui.tabla->setItem(fila,10,newItem10);
+          QTableWidgetItem *newItem3 = new QTableWidgetItem(formateanumerosep(saldo,comadecimal,decimales));
+          newItem3->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+          ui.tabla->setItem(fila,3,newItem3);
 
-	        fila++;
-           }
-        }
+          QTableWidgetItem *newItem4 = new QTableWidgetItem(formateanumerosep(aa,comadecimal,decimales));
+          newItem4->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+          ui.tabla->setItem(fila,4,newItem4);
 
-  fila=0;
+          QTableWidgetItem *newItem5 = new QTableWidgetItem(formateanumerosep(valneto,comadecimal,decimales));
+          newItem5->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+          ui.tabla->setItem(fila,5,newItem5);
+
+
+          double years=100/(query.value(3).toDouble()*100);
+          QString cadtiempo; cadtiempo.setNum(years,'f',2);
+          if (comadecimal) cadtiempo=convacoma(cadtiempo);
+          bool baja=query.value(4).toBool();
+          QTableWidgetItem *newItem6 = new QTableWidgetItem(query.value(2).toString()); // proveedor
+          QTableWidgetItem *newItem7 = new QTableWidgetItem(descripcioncuenta(query.value(2).toString()));
+          if (!query.value(7).toString().isEmpty()) {
+              newItem6->setText(query.value(7).toString());
+              newItem7->setText(basedatos::instancia()->razon_externo(query.value(7).toString()));
+          }
+          QTableWidgetItem *newItem8 = new QTableWidgetItem(cadtiempo);
+          newItem8->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+          QTableWidgetItem *newItem9 = new QTableWidgetItem(baja ? query.value(5).toDate().toString("dd-MM-yyyy"):"");
+          QTableWidgetItem *newItem10 = new QTableWidgetItem(baja ? query.value(6).toString():"");
+
+          ui.tabla->setItem(fila,6,newItem6);
+          ui.tabla->setItem(fila,7,newItem7);
+          ui.tabla->setItem(fila,8,newItem8);
+          ui.tabla->setItem(fila,9,newItem9);
+          ui.tabla->setItem(fila,10,newItem10);
+
+          fila++;
+      }
+  }
+
+  /*fila=0;
   // QString cadsaldo,cadaa,cadneto;
   double valneto;
   while (fila<ui.tabla->rowCount())
-     {
-        double saldo=saldocuentaendiario(ui.tabla->item(fila,0)->text());
-        QTableWidgetItem *newItem3 = new QTableWidgetItem(formateanumerosep(saldo,comadecimal,decimales));
-        newItem3->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
-        ui.tabla->setItem(fila,3,newItem3);
+  {
+      double saldo=saldocuentaendiario(ui.tabla->item(fila,0)->text());
+      QTableWidgetItem *newItem3 = new QTableWidgetItem(formateanumerosep(saldo,comadecimal,decimales));
+      newItem3->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+      ui.tabla->setItem(fila,3,newItem3);
 
-        double aa=saldocuentaendiario(ui.tabla->item(fila,2)->text());
+      double aa=saldocuentaendiario(ui.tabla->item(fila,2)->text());
 
-        valneto=saldo+aa;
-        aa=aa*-1;
+      valneto=saldo+aa;
+      aa=aa*-1;
 
-        QTableWidgetItem *newItem4 = new QTableWidgetItem(formateanumerosep(aa,comadecimal,decimales));
-        newItem4->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
-        ui.tabla->setItem(fila,4,newItem4);
+      QTableWidgetItem *newItem4 = new QTableWidgetItem(formateanumerosep(aa,comadecimal,decimales));
+      newItem4->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+      ui.tabla->setItem(fila,4,newItem4);
 
-        QTableWidgetItem *newItem5 = new QTableWidgetItem(formateanumerosep(valneto,comadecimal,decimales));
-        newItem5->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
-        ui.tabla->setItem(fila,5,newItem5);
-        fila++;
-     }
-   ui.tabla->resizeColumnsToContents();
-
-     connect(ui.imprimirpushButton,SIGNAL(clicked()),SLOT(imprimir()));
-     connect(ui.informe_latex_pushButton,SIGNAL(clicked(bool)),SLOT(informe_latex()));
-     connect(ui.latexpushButton,SIGNAL(clicked()),SLOT(latex()));
-     connect(ui.copiarpushButton,SIGNAL(clicked()),SLOT(copiar()));
-
-#ifdef NOEDITTEX
-  ui.latexpushButton->hide();
-#endif
+      QTableWidgetItem *newItem5 = new QTableWidgetItem(formateanumerosep(valneto,comadecimal,decimales));
+      newItem5->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+      ui.tabla->setItem(fila,5,newItem5);
+      fila++;
+  }*/
+  ui.tabla->resizeColumnsToContents();
 
 }
 
@@ -150,6 +179,7 @@ void inmovneto::generalatex()
      stream << "\\begin{center}" << "\n";
      stream << "\\begin{longtable}{|c|p{3.5cm}|c|r|r|r|l|p{2.5cm}|r|c|p{2.5cm}|}" << "\n";
      stream << "\\hline" << "\n";
+     stream << "\\rowcolor{gray!30}\n";
 
     stream << "\\multicolumn{11}{|c|} {\\textbf{";
     QString cadena;
@@ -160,6 +190,7 @@ void inmovneto::generalatex()
     stream <<  "}} \\\\";
      stream << "\\hline" << "\n";
      // -------------------------------------------------------------------------------------------------------
+     stream << "\\rowcolor{gray!30}\n";
      stream << "{\\tiny{" << tr("Cuenta activo") << "}} & ";
      stream << "{\\tiny{" << tr("Descripción") << "}} & ";
      stream << "{\\tiny{" << tr("Cuenta a.acum.") << "}} & ";
@@ -177,6 +208,7 @@ void inmovneto::generalatex()
      // --------------------------------------------------------------------------------------------------------
      stream << "\\hline" << "\n";
     // stream << tr(" \\\\") << "\n";
+     stream << "\\rowcolor{gray!30}\n";
     stream << "\\multicolumn{11}{|c|} {\\textbf{";
     cadena=tr("VALORES NETOS DE ELEMENTOS DE INMOVILIZADO");
 
@@ -184,6 +216,7 @@ void inmovneto::generalatex()
     stream << cadena;
     stream <<  "}} \\\\";
      stream << "\\hline" << "\n";
+    stream << "\\rowcolor{gray!30}\n";
      stream << "{\\tiny{" << tr("Cuenta activo") << "}} & ";
      stream << "{\\tiny{" << tr("Descripción") << "}} & ";
      stream << "{\\tiny{" << tr("Cuenta a.acum.") << "}} & ";
@@ -209,7 +242,7 @@ void inmovneto::generalatex()
                  stream << ui.tabla->item(veces,4)->text() << "} & {\\tiny ";
                  stream << ui.tabla->item(veces,5)->text() << "} & {\\tiny ";
                  stream << ui.tabla->item(veces,6)->text() << "} & {\\tiny ";
-                 stream << ui.tabla->item(veces,7)->text() << "} & {\\tiny ";
+                 stream << filtracad(ui.tabla->item(veces,7)->text()) << "} & {\\tiny ";
                  stream << ui.tabla->item(veces,8)->text() << "} & {\\tiny ";
                  stream << ui.tabla->item(veces,9)->text() << "} & {\\tiny ";
                  stream << ui.tabla->item(veces,10)->text();
@@ -369,3 +402,10 @@ void inmovneto::copiar()
                               tr("Se ha pasado el contenido al portapapeles") );
 
 }
+
+void inmovneto::on_valor_neto_checkBox_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1);
+    cargar_datos();
+}
+

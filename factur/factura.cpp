@@ -537,15 +537,15 @@ void factura::actualizatotales()
         if (!encontrado) base+=convapunto(ui.tableWidget->item(veces,6)->text()).toDouble();
        }
     gsuplidos=suplidos;
-    ui.bilineEdit->setText(formateanumerosep(redond(base,2),coma,decimales));
-    ui.cuotaIVAlineEdit->setText(formateanumerosep(redond(cuotaIVA,2),coma,decimales));
-    ui.cuotaRElineEdit->setText(formateanumerosep(redond(cuotaRE,2),coma,decimales));
-    ui.totallineEdit->setText(formateanumerosep(redond(base+cuotaIVA+cuotaRE+suplidos,2),coma,decimales));
+    ui.bilineEdit->setText(formateanumero(redond(base,2),coma,decimales));
+    ui.cuotaIVAlineEdit->setText(formateanumero(redond(cuotaIVA,2),coma,decimales));
+    ui.cuotaRElineEdit->setText(formateanumero(redond(cuotaRE,2),coma,decimales));
+    ui.totallineEdit->setText(formateanumero(redond(base+cuotaIVA+cuotaRE+suplidos,2),coma,decimales));
     double tipo=convapunto(ui.tipo_ret_lineEdit->text()).toDouble();
     if (ui.ret_checkBox->isChecked())
       {
        ui.ret_lineEdit->setText(formateanumero(redond(tipo*base/100,2),coma,decimales));
-       ui.totallineEdit->setText(formateanumerosep(redond(suplidos+base+cuotaIVA+cuotaRE-tipo*base/100,2),coma,decimales));
+       ui.totallineEdit->setText(formateanumero(redond(suplidos+base+cuotaIVA+cuotaRE-tipo*base/100,2),coma,decimales));
       }
 }
 

@@ -3691,7 +3691,7 @@ void tabla_asientos::pasadatos2(int fila, QString col5, QString col6, QString co
   ui.Tablaapuntes->item(fila,55)->setText(arrto_sin_ret ? "1" : "");
   ui.Tablaapuntes->item(fila,56)->setText(dua);
   ui.Tablaapuntes->item(fila,59)->setText(info_donacion);
-  qDebug() << info_donacion;
+  //qDebug() << info_donacion;
 }
 
 

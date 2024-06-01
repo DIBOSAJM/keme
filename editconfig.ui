@@ -1110,6 +1110,20 @@
        <item>
         <layout class="QHBoxLayout">
          <item>
+          <widget class="QLabel" name="label_20">
+           <property name="text">
+            <string>Moneda:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="moneda_lineEdit">
+           <property name="text">
+            <string>EUR</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="label_12">
            <property name="text">
             <string>Prox.Domiciliación:</string>
@@ -1525,6 +1539,7 @@
   <tabstop>proxvencilineEdit</tabstop>
   <tabstop>anchocuentaslineEdit</tabstop>
   <tabstop>provinciacomboBox</tabstop>
+  <tabstop>moneda_lineEdit</tabstop>
   <tabstop>proxdomlineEdit</tabstop>
   <tabstop>uldoclineEdit</tabstop>
   <tabstop>prorratalineEdit</tabstop>
@@ -1540,17 +1555,17 @@
   <tabstop>pago_venci_lineEdit</tabstop>
   <tabstop>cobro_venci_lineEdit</tabstop>
   <tabstop>sec_recibidascheckBox</tabstop>
-  <tabstop>amoinvcheckBox</tabstop>
-  <tabstop>caja_iva_checkBox</tabstop>
   <tabstop>usuarioscheckBox</tabstop>
-  <tabstop>igiccheckBox</tabstop>
-  <tabstop>externoscheckBox</tabstop>
   <tabstop>tipo_proveedor_checkBox</tabstop>
+  <tabstop>amoinvcheckBox</tabstop>
+  <tabstop>igiccheckBox</tabstop>
   <tabstop>especialcheckBox</tabstop>
+  <tabstop>caja_iva_checkBox</tabstop>
+  <tabstop>externoscheckBox</tabstop>
   <tabstop>borrados_consol_checkBox</tabstop>
   <tabstop>url_actu_lineEdit</tabstop>
-  <tabstop>cancelarpushButton</tabstop>
   <tabstop>aceptarpushButton</tabstop>
+  <tabstop>cancelarpushButton</tabstop>
  </tabstops>
  <includes>
   <include location="global">qsqlquery.h</include>

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>899</width>
+    <width>929</width>
     <height>537</height>
    </rect>
   </property>
@@ -280,6 +280,20 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="quita_externo_pushButton">
+       <property name="toolTip">
+        <string>Borrar contenido campo</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../keme.qrc">
+         <normaloff>:/iconos/graf/borraelem.png</normaloff>:/iconos/graf/borraelem.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLineEdit" name="externo_lineEdit">
        <property name="maximumSize">
         <size>
@@ -455,7 +469,7 @@
      <item row="1" column="3">
       <widget class="QPushButton" name="habilitar_doc_pushButton">
        <property name="text">
-        <string>&amp;Habilitar</string>
+        <string>&amp;Habilitar/Cerrar</string>
        </property>
        <property name="icon">
         <iconset resource="../keme.qrc">
@@ -523,17 +537,31 @@
   <tabstop>numiniciallineEdit</tabstop>
   <tabstop>numfinallineEdit</tabstop>
   <tabstop>cuentainilineEdit</tabstop>
+  <tabstop>cuenta_inicial_pushButton_2</tabstop>
   <tabstop>cuentafinlineEdit</tabstop>
+  <tabstop>cuenta_final_pushButton</tabstop>
   <tabstop>todasradioButton</tabstop>
   <tabstop>nocontaradioButton</tabstop>
   <tabstop>contaradioButton</tabstop>
+  <tabstop>estado_todas_radioButton</tabstop>
+  <tabstop>no_cerradas_radioButton</tabstop>
+  <tabstop>cerradas_radioButton</tabstop>
+  <tabstop>busca_externo_pushButton</tabstop>
+  <tabstop>quita_externo_pushButton</tabstop>
+  <tabstop>externo_lineEdit</tabstop>
+  <tabstop>descrip_externo_lineEdit</tabstop>
+  <tabstop>xmlpushButton</tabstop>
   <tabstop>informepushButton</tabstop>
+  <tabstop>facturae_pushButton</tabstop>
   <tabstop>consultapushButton</tabstop>
   <tabstop>verasientopushButton</tabstop>
   <tabstop>contabilizarpushButton</tabstop>
   <tabstop>conttodopushButton</tabstop>
   <tabstop>borra_asientopushButton</tabstop>
   <tabstop>borrarpushButton</tabstop>
+  <tabstop>refrescarpushButton</tabstop>
+  <tabstop>copia_informe_pushButton</tabstop>
+  <tabstop>habilitar_doc_pushButton</tabstop>
   <tabstop>transferirpushButton</tabstop>
   <tabstop>editarpushButton</tabstop>
   <tabstop>nuevapushButton</tabstop>

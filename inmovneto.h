@@ -36,12 +36,14 @@ class inmovneto : public QDialog {
                 QStringList columnas;
                 bool comadecimal;
                 bool decimales;
+                void cargar_datos();
                 void generalatex();
         private slots :
                 void imprimir();
                 void informe_latex();
                 void latex();
                 void copiar();
+                void on_valor_neto_checkBox_stateChanged(int arg1);
 };
 
 

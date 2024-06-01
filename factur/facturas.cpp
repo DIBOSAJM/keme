@@ -21,6 +21,8 @@
 
 #include "facturas.h"
 #include <QSqlQuery>
+#include "busca_externo.h"
+#include "buscasubcuenta.h"
 #include "funciones.h"
 #include "factura.h"
 #include "basedatos.h"
@@ -188,18 +190,18 @@ void facturas::activaconfiltro()
         // serie,numero,cuenta, fecha_fac,
         // contabilizado,contabilizable, con_ret,
         // pase_diario_cta
-        model->setHeaderData(0, Qt::Horizontal, tr("serie"));
-        model->setHeaderData(1, Qt::Horizontal, tr("numero"));
-        model->setHeaderData(2, Qt::Horizontal, tr("cuenta"));
-        model->setHeaderData(3, Qt::Horizontal, tr("descripción"));
+        model->setHeaderData(0, Qt::Horizontal, tr("Serie"));
+        model->setHeaderData(1, Qt::Horizontal, tr("Número"));
+        model->setHeaderData(2, Qt::Horizontal, tr("Cuenta"));
+        model->setHeaderData(3, Qt::Horizontal, tr("Descripción"));
 
-        model->setHeaderData(4, Qt::Horizontal, tr("fecha fact."));
+        model->setHeaderData(4, Qt::Horizontal, tr("Fecha Doc."));
         model->setHeaderData(5, Qt::Horizontal, tr("Contab."));
         model->setHeaderData(6, Qt::Horizontal, tr("Cerrado"));
         model->setHeaderData(7, Qt::Horizontal, tr("Apunte"));
         model->setHeaderData(8, Qt::Horizontal, tr("TIPO DOC."));
         model->setHeaderData(9, Qt::Horizontal, tr("Externo"));
-        model->setHeaderData(10, Qt::Horizontal, tr("Total Fra."));
+        model->setHeaderData(10, Qt::Horizontal, tr("Total Doc."));
         model->setHeaderData(11, Qt::Horizontal, tr("Retención"));
         model->setHeaderData(12, Qt::Horizontal, tr("Suplidos"));
 
@@ -233,15 +235,20 @@ void facturas::refresca()
  actufiltro();
  model->clear();
  model->setQuery(basedatos::instancia()->select_cab_facturas (guardafiltro));
- model->setHeaderData(0, Qt::Horizontal, tr("serie"));
- model->setHeaderData(1, Qt::Horizontal, tr("numero"));
- model->setHeaderData(2, Qt::Horizontal, tr("cuenta"));
- model->setHeaderData(3, Qt::Horizontal, tr("descripción"));
- model->setHeaderData(4, Qt::Horizontal, tr("fecha fact."));
- model->setHeaderData(5, Qt::Horizontal, tr("Contabilizado"));
+ model->setHeaderData(0, Qt::Horizontal, tr("Serie"));
+ model->setHeaderData(1, Qt::Horizontal, tr("Número"));
+ model->setHeaderData(2, Qt::Horizontal, tr("Cuenta"));
+ model->setHeaderData(3, Qt::Horizontal, tr("Descripción"));
+ model->setHeaderData(4, Qt::Horizontal, tr("Fecha Doc."));
+ model->setHeaderData(5, Qt::Horizontal, tr("Contab."));
  model->setHeaderData(6, Qt::Horizontal, tr("Cerrado"));
- model->setHeaderData(7, Qt::Horizontal, tr("Apunte diario"));
+ model->setHeaderData(7, Qt::Horizontal, tr("Apunte"));
  model->setHeaderData(8, Qt::Horizontal, tr("TIPO DOC."));
+ model->setHeaderData(9, Qt::Horizontal, tr("Externo"));
+ model->setHeaderData(10, Qt::Horizontal, tr("Total Doc."));
+ model->setHeaderData(11, Qt::Horizontal, tr("Retención"));
+ model->setHeaderData(12, Qt::Horizontal, tr("Suplidos"));
+
  for (int veces=0; veces<9; veces++)
      ui.facstableView->setColumnWidth(veces,anchos[veces]);
 
@@ -1149,6 +1156,17 @@ void facturas::actufiltro()
      guardafiltro+=" and not contabilizado";
  if (ui.contaradioButton->isChecked())
      guardafiltro+=" and contabilizado";
+
+ if (ui.no_cerradas_radioButton->isChecked())
+     guardafiltro+=" and not cerrado";
+ if (ui.cerradas_radioButton->isChecked())
+     guardafiltro+=" and cerrado";
+ if (!ui.externo_lineEdit->text().isEmpty()) {
+     guardafiltro+=" and externo='";
+     guardafiltro+=ui.externo_lineEdit->text();
+     guardafiltro+="'";
+ }
+
  // guardafiltro+=" order by clave desc";
 }
 
@@ -1232,19 +1250,21 @@ void facturas::latexinforme()
     stream << "\\hline" << "\n";
     stream << "\\endhead" << "\n";
     // ---------------------------------------------------------------------------------------------------------
+    double suma_total=0;
     int veces=0;
           while ( veces<model->rowCount())
                {
                 double importe_factura=total_documento(
                          model->data(model->index(veces,0),Qt::DisplayRole).toString(),
                          model->data(model->index(veces,1),Qt::DisplayRole).toString());
-                stream << "{\\small { " <<
+     suma_total+=importe_factura;
+                stream << "{\\footnotesize { " <<
                         filtracad(model->data(model->index(veces,0),Qt::DisplayRole).toString())
-                     << "}} & {\\small {";
+                     << "}} & {\\footnotesize {";
                 stream << filtracad(model->data(model->index(veces,1),Qt::DisplayRole).toString())
-                        << "}} & {\\small {";
+                        << "}} & {\\footnotesize {";
                 stream << filtracad(model->data(model->index(veces,2),Qt::DisplayRole).toString())
-                        << "}} & {\\small {";
+                        << "}} & {\\footnotesize {";
                 QString cad;
                 if (model->data(model->index(veces,9),Qt::DisplayRole).toString().isEmpty())
                   {
@@ -1255,15 +1275,18 @@ void facturas::latexinforme()
                       cad=filtracad(basedatos::instancia()->razon_externo(model->data(model->index(veces,9),Qt::DisplayRole).toString()));
                     }
                 stream << cad;
-                stream << "}} & {\\small {";
+                stream << "}} & {\\footnotesize {";
                 stream << filtracad(model->data(model->index(veces,4),Qt::DisplayRole).toString())
-                        << "}} & {\\small {";
+                        << "}} & {\\footnotesize {";
                 stream << formateanumerosep(importe_factura,coma,decimales);
                 stream << "}} \\\\ \n  " << "\\hline\n";
                 veces++;
               }
 
     stream << "\\end{longtable}" << "\n";
+    stream << "{\\Large \\textbf {";
+    stream << tr("TOTAL SELECCIÓN: ") << formateanumerosep(suma_total,coma,decimales);
+    stream << "}}\n";
     stream << "\\end{center}" << "\n";
 
     stream << "% FIN_CUERPO\n";
@@ -1363,3 +1386,142 @@ void facturas::escondesalir()
 {
   // ui.salirpushButton->setEnabled(false);
 }
+
+void facturas::on_busca_externo_pushButton_clicked()
+{
+  busca_externo *b = new busca_externo();
+  int rdo=b->exec();
+  if (rdo==QDialog::Accepted) {
+         ui.externo_lineEdit->setText(b->codigo_elec());
+  }
+  else ui.externo_lineEdit->clear();
+  delete(b);
+}
+
+
+void facturas::on_externo_lineEdit_textChanged(const QString &arg1)
+{
+  QString codigo=arg1;
+  if (basedatos::instancia()->existe_externo(codigo))
+  {
+         ui.descrip_externo_lineEdit->setText(basedatos::instancia()->razon_externo(codigo));
+  }
+  else ui.descrip_externo_lineEdit->clear();
+}
+
+
+void facturas::on_cuenta_inicial_pushButton_2_clicked()
+{
+  QString cadena2;
+  buscasubcuenta *labusqueda=new buscasubcuenta(ui.cuentainilineEdit->text());
+  int cod=labusqueda->exec();
+  cadena2=labusqueda->seleccioncuenta();
+  if (cod==QDialog::Accepted && existesubcuenta(cadena2))
+         ui.cuentainilineEdit->setText(cadena2);
+  else ui.cuentainilineEdit->setText("");
+  delete labusqueda;
+
+}
+
+
+void facturas::on_cuenta_final_pushButton_clicked()
+{
+  QString cadena2;
+  buscasubcuenta *labusqueda=new buscasubcuenta(ui.cuentafinlineEdit->text());
+  int cod=labusqueda->exec();
+  cadena2=labusqueda->seleccioncuenta();
+  if (cod==QDialog::Accepted && existesubcuenta(cadena2))
+         ui.cuentafinlineEdit->setText(cadena2);
+  else ui.cuentafinlineEdit->setText("");
+  delete labusqueda;
+
+}
+
+
+void facturas::on_quita_externo_pushButton_clicked()
+{
+  ui.externo_lineEdit->clear();
+}
+
+
+void facturas::on_copia_informe_pushButton_clicked()
+{
+  QClipboard *cb = QApplication::clipboard();
+  QString copy_string;
+  copy_string=filtracad(nombreempresa());
+  copy_string+="\n\n";
+  copy_string+="FILTRO: ";
+  copy_string+=guardafiltro;
+  copy_string+="\n\n";
+  for (int i=0; i < model->columnCount();i++) {
+      copy_string+=model->headerData(i,Qt::Horizontal).toString();
+         if (i<(model->columnCount()-1)) copy_string+="\t";
+         else copy_string+="\n";
+  }
+  for (int i=0; i < model->rowCount(); i++) {
+      for (int j=0; j < model->columnCount();j++) {
+         copy_string+=model->index(i,j).data().toString();
+         if (j<(model->columnCount()-1)) copy_string+="\t";
+         else copy_string+="\n";
+
+      }
+  }
+
+  cb->setText(copy_string);
+
+  QMessageBox::information( this, tr("KEME-FACTUR"),
+                           tr("Se ha pasado el contenido al portapapeles") );
+
+  //  qDebug() << copy_string;
+}
+
+void facturas::on_habilitar_doc_pushButton_clicked()
+{
+
+  QItemSelectionModel *seleccion;
+  seleccion=ui.facstableView->selectionModel();
+  if (seleccion->hasSelection())
+  {
+      QList<QModelIndex> listaserie;
+      QList<QModelIndex> listanumero;
+      listaserie= seleccion->selectedRows ( 0 );
+      listanumero=seleccion->selectedRows (1);
+
+
+      if (listaserie.size()<1)
+      {
+         QMessageBox::warning( this, tr("Habilitar documento(s)"),tr("ERROR: "
+                                                        "se debe de seleccionar al menos un documento"));
+         return;
+      }
+
+      // comprobamos que no haya ningún documento contabilizado
+      for (int i = 0; i < listaserie.size(); ++i)
+      {
+         if (basedatos::instancia()->doc_contabilizado(model->datagen(listaserie.at(i),Qt::DisplayRole).toString(),
+                                                 model->datagen(listanumero.at(i),Qt::DisplayRole).toString()))
+         {
+             QMessageBox::warning( this, tr("KEME-FACTUR"),tr("ERROR: "
+                                                            "no se pueden habilitar documentos contabilizados"));
+                 return;
+
+         }
+      }
+
+      for (int i = 0; i < listaserie.size(); ++i)
+      {
+         if (basedatos::instancia()->doc_cerrado(model->datagen(listaserie.at(i),Qt::DisplayRole).toString(),
+                                                 model->datagen(listanumero.at(i),Qt::DisplayRole).toString()))
+             basedatos::instancia()->abre_doc(model->datagen(listaserie.at(i),Qt::DisplayRole).toString(),
+                                          model->datagen(listanumero.at(i),Qt::DisplayRole).toString());
+         else
+             basedatos::instancia()->cierra_doc(model->datagen(listaserie.at(i),Qt::DisplayRole).toString(),
+                                              model->datagen(listanumero.at(i),Qt::DisplayRole).toString());
+      }
+
+      QMessageBox::information( this, tr("KEME-FACTUR"),tr("ERROR: "
+                                                       "Operación realizada"));
+   refresca();
+  }
+}
+
