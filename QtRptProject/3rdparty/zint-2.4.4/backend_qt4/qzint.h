@@ -26,7 +26,8 @@ namespace Zint
 {
 #include "../backend/zint.h"
 
-class QZINTSHARED_EXPORT QZint
+// class QZINTSHARED_EXPORT QZint
+class QZint
 {
 private:
 
@@ -121,6 +122,7 @@ private:
 };
 }
 
-extern "C" QZINTSHARED_EXPORT Zint::QZint* createWidget();
+// extern "C" QZINTSHARED_EXPORT Zint::QZint* createWidget();
+extern "C" Zint::QZint* createWidget();
 
 #endif
