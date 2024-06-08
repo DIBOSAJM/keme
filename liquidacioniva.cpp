@@ -954,7 +954,7 @@ void liquidacioniva::calcular()
    if (consulta.next() && !(consulta.value(0).toDouble()<0.0001 && consulta.value(0).toDouble()>-0.0001))
    {
     ui.aibtable->insertRow(fila);
-    ui.aibtable->setItem(fila,0,new QTableWidgetItem(tr("B.I. al tipo 0")));
+    ui.aibtable->setItem(fila,0,new QTableWidgetItem(tr("B.I. exentas")));
     QTableWidgetItem *newItem1 = new QTableWidgetItem(
                    formatea_redondeado(consulta.value(0).toDouble(),comadecimal,decimales));
     newItem1->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);

@@ -1576,7 +1576,8 @@ bool tablaSII::fich_sii_emitidas(QString nombrefich)
                 if (con_no_sujeta) tag2311.appendChild(tag23111N);
 
                 // procesamos operacion exenta (tipo cero)
-                if (convapunto(ui->tableWidget->item(fila,9)->text()).toDouble()<0.0001)
+                //if (convapunto(ui->tableWidget->item(fila,9)->text()).toDouble()<0.0001)
+                if (basedatos::instancia()->clave_iva_apunte(ui->tableWidget->item(fila,0)->text()).isEmpty())
                    {
                     QDomElement tag231111 = doc.createElement("sii:Exenta");
                     tag23111.appendChild(tag231111);

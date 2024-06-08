@@ -762,7 +762,7 @@ void basedatos::solotablas(bool segunda, QString qbase)
     cadena = "CREATE TABLE monedas ("
              "codigo         varchar(40),"
              "descripcion    varchar(254),"
-             "tipo_cambio    numeric(20,6) defualt 0,"
+             "tipo_cambio    numeric(20,6) default 0,"
              "PRIMARY KEY (codigo) )";
     if (segunda) cadena = anadirMotor(cadena,qbase); else cadena = anadirMotor(cadena);
     if (segunda) ejecutar(cadena,qbase); else ejecutar(cadena);
@@ -2599,7 +2599,7 @@ void basedatos::solotablas(bool segunda, QString qbase)
     cadena = "CREATE TABLE tipos_cambio ("
              "codigo         varchar(40),"
              "nombre         varchar(255),"
-             "tipo_cambio    float8,"
+             "tipo_cambio    float8 default 0,"
              "PRIMARY KEY (codigo) )";
     if (segunda) cadena = anadirMotor(cadena,qbase); else cadena = anadirMotor(cadena);
     if (segunda) ejecutar(cadena,qbase); else ejecutar(cadena);
@@ -13187,7 +13187,7 @@ QSqlQuery basedatos::libroivafechas_sop_corrientes (QDate inicial, QDate final, 
     QString cadena = "select d.cuenta,l.tipo_iva,sum(l.base_iva),sum(l.cuota_iva),"
         "sum(l.base_iva+l.cuota_iva),sum(l.cuota_iva*l.prorrata*l.afecto), sum(debe-haber) "
         "from diario d, libroiva l "
-        "where d.pase=l.pase and l.soportado and not l.aib and not l.eib and l.clave_iva != ''";
+        "where d.pase=l.pase and l.soportado and not l.aib and not l.eib and l.clave_iva != '' and not op_no_sujeta";
     cadena += " and not l.agrario";
     cadena += " and d.fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
@@ -21950,12 +21950,11 @@ void basedatos::actualizade3226() {
 
    ejecutar("alter table configuracion add column moneda varchar(20) default ''");
 
-
    // monedas
    QString cadena = "CREATE TABLE monedas ("
             "codigo         varchar(40),"
             "descripcion    varchar(254),"
-            "tipo_cambio    numeric(20,6) defualt 0,"
+            "tipo_cambio    numeric(20,6) default 0,"
             "PRIMARY KEY (codigo) )";
    cadena = anadirMotor(cadena);
    ejecutar(cadena);
@@ -23927,9 +23926,8 @@ bool basedatos::comprobarVersion () {
               if (QMessageBox::question(
                 0 ,
                 QObject::tr("ACTUALIZAR TABLAS"),
-                QObject::tr("Las tablas pertenecen a la versión '") + versionbd() + QObject::tr("' ¿ Desea actualizarlas ?"),
-                QObject::tr("&Sí"), QObject::tr("&No"),
-                QString(), 0, 1 ) ==0 ) {
+                QObject::tr("Las tablas pertenecen a la versión '") + versionbd() + QObject::tr("' ¿ Desea actualizarlas ?"))
+                          == QMessageBox::Yes) {
                 if (versionbd()=="2.0") actualizade20();
                 if (versionbd()=="2.1") actualizade21();
                 if (versionbd()=="2.2") actualizade22();
@@ -31505,4 +31503,18 @@ QSqlQuery basedatos::select_sumDH_externos_cuenta_hasta_fecha (QString cuenta, Q
     cadena+=final.toString("yyyy-MM-dd");
     cadena+= "' group by cuenta, externo order by externo";
     return ejecutar(cadena);
+}
+
+
+QString basedatos::clave_iva_apunte(QString apunte)
+{
+    QString cadena="select clave_iva from libroiva where pase=";
+    cadena+=apunte;
+    QSqlQuery q=ejecutar(cadena);
+    if (q.isActive())
+        if (q.next())
+        {
+             return q.value(0).toString();
+        }
+    return QString();
 }

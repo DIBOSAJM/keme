@@ -3565,6 +3565,8 @@ class basedatos {
 
         QSqlQuery ejecutar_publica(QString cadena);
 
+        QString clave_iva_apunte(QString apunte);
+
     private:
 
         // Constructor de la clase
