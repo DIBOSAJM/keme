@@ -3212,9 +3212,7 @@ void liquidacioniva::mod303()
                  tr("¿ Sobreescribir ?"),
                  tr("'%1' ya existe."
                 "¿ Desea sobreescribirlo ?")
-                 .arg( nombre ),
-                 tr("&Sí"), tr("&No"),
-                 QString(), 0, 1 ))
+                 .arg( nombre ))==QMessageBox::No)
                      return;
            if (!genfich303(nombre))
               QMessageBox::information( this, tr("Fichero 303"),tr("NO se ha generado correctamente el fichero 303"));

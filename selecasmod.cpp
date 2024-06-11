@@ -194,9 +194,7 @@ void selecasmod::borramodelo()
   if (QMessageBox::question(
             this,
             tr("¿ Borrar asiento automático ?"),
-            tr("¿ Desea borrar '%1' ?").arg(eleccion ),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) ==0 )
+            tr("¿ Desea borrar '%1' ?").arg(eleccion )) == QMessageBox::Yes )
                           borraasientomodelo(eleccion);
  refresca();
 }
@@ -260,9 +258,7 @@ void selecasmod::exportaasmodelo()
        tr("¿ Sobreescribir ? -- Exportar asiento automático"),
        tr("'%1' ya existe."
           "¿ Desea sobreescribirlo ?")
-         .arg( nombre ),
-       tr("&Sí"), tr("&No"),
-       QString(), 0, 1 ) )
+         .arg( nombre )) == QMessageBox::No )
      return ;
    if (exportarasmodelo(eleccion,nombre))
       {

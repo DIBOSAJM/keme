@@ -205,6 +205,8 @@ class basedatos {
         // Borra de borrador un asiento
         void deleteBorrador(QString asiento);
 
+        void borra_borrador();
+
         // Borra de ajustes_conci a partir de fechas y cuenta
         void deleteAjustes_concifechascuenta(QDate inicial, QDate final, QString cuenta);
 

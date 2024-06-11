@@ -790,16 +790,12 @@ void genamort::eliminar()
          return;
       }
 
-    }
+  }
 
- int x=QMessageBox::question(this,tr("Asiento de amortización"),
-				tr("Se borrarán todos los registros de amortizaciones para"
-                                   " la selección, ¿ Desea proseguir ?"),
-				tr("&Sí"),
-				tr("&No"),
-                QString(),
-				0,1);
-    if (x==1) return;
+  if (QMessageBox::question(this,tr("Asiento de amortización"),
+    tr("Se borrarán todos los registros de amortizaciones para"
+    " la selección, ¿ Desea continuar ?"))==QMessageBox::No)
+      return;
 
     QProgressDialog progreso("Eliminando asiento ...", 0, 0, 100);
     progreso.setWindowModality(Qt::WindowModal);

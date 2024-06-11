@@ -239,13 +239,9 @@ void itemplanamort::fuerafococtaaa()
     if (!existecodigoplan(ui.ctaaalineEdit->text(),&cadena))
 	  {
        // preguntar si se desea añadir la cuenta, si no o si se cancela lo anterior dejar en blanco
-	    int x=QMessageBox::question(this,tr("Elemento plan amortizaciones"),
-					   tr("Esa cuenta auxiliar no existe, ¿ Desea añadirla ?"),
-					   tr("&Sí"),
-					   tr("&No"),
-                       QString(),
-					   0,1);
-	    if (x==0) {
+        if (QMessageBox::question(this,tr("Elemento plan amortizaciones"),
+                               tr("Esa cuenta auxiliar no existe, ¿ Desea añadirla ?"))==QMessageBox::Yes)
+        {
 
                    aux_express *lasubcuenta2=new aux_express();
                    lasubcuenta2->pasacodigo(ui.ctaaalineEdit->text());
@@ -283,13 +279,9 @@ void itemplanamort::fuerafococtaam()
     if (!existecodigoplan(ui.ctaamlineEdit->text(),&cadena))
 	  {
 	 // preguntar si se desea añadir la cuenta, si no o si se cancela lo anterior dejar en blanco
-	    int x=QMessageBox::question(this,tr("Elemento plan amortizaciones"),
-					   tr("Esa cuenta auxiliar no existe, ¿ Desea añadirla ?"),
-					   tr("&Sí"),
-					   tr("&No"),
-                       QString(),
-					   0,1);
-	    if (x==0) {
+        if (QMessageBox::question(this,tr("Elemento plan amortizaciones"),
+                               tr("Esa cuenta auxiliar no existe, ¿ Desea añadirla ?"))==QMessageBox::Yes)
+           {
                        aux_express *lasubcuenta2=new aux_express();
 		       lasubcuenta2->pasacodigo(ui.ctaamlineEdit->text());
 		       lasubcuenta2->exec();
@@ -716,13 +708,8 @@ void itemplanamort::botonborrarcipulsado()
 {
   if (ui.cilineEdit->text().length()==0) return;
 
-  int x=QMessageBox::question(this,tr("Borrar elemento CI"),
-					   tr("¿ Desea borrar el CI '%1' ?").arg(ui.cilineEdit->text()),
-					   tr("&Sí"),
-					   tr("&No"),
-                       QString(),
-					   0,1);
-  if (x==0)
+  if (QMessageBox::question(this,tr("Borrar elemento CI"),
+                            tr("¿ Desea borrar el CI '%1' ?").arg(ui.cilineEdit->text()))==QMessageBox::Yes)
      {
         basedatos::instancia()->deleteCi_amortcuentaci( ctaactivo, ui.cilineEdit->text() );
       ui.cilineEdit->clear();

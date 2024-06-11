@@ -22,7 +22,6 @@
 
 #include "lista_fact_predef.h"
 #include "basedatos.h"
-#include "edita_doc.h"
 #include "factura.h"
 #include <QMessageBox>
 
@@ -175,9 +174,7 @@ void lista_fact_predef::botoneliminarpulsado()
    if (QMessageBox::question(
             this,
             tr("FACTURAS PREDEFINIDAS"),
-            tr("¿ Desea borrar el elemento seleccionado ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) ==1 ) return;
+            tr("¿ Desea borrar el elemento seleccionado ?")) ==QMessageBox::No) return;
      basedatos::instancia()->eliminafra_predefinida(ui.codigolineEdit->text());
      modeloreg->select();
      ui.codigolineEdit->clear();

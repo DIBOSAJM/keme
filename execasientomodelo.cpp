@@ -306,9 +306,7 @@ void execasientomodelo::valorcambiado(int fila,int columna)
             if (QMessageBox::question(
               this,
               tr("Asientos automáticos"),
-              tr("Cuenta inexistente ¿ Desea añadirla ?"),
-              tr("&Sí"), tr("&No"),
-              QString(), 0, 1 ) ==0 )
+              tr("Cuenta inexistente ¿ Desea añadirla ?")) ==QMessageBox::Yes )
                 {
                  aux_express *lasubcuenta2=new aux_express();
                  lasubcuenta2->pasacodigo(ui.variablestable->item(fila,columna)->text());
@@ -1381,9 +1379,7 @@ void execasientomodelo::aspiradora()
                    tr("PROCESAR ARCHIVO PARA ASIENTOS"),
                    tr("Se va a procesar el archivo '%1' \n"
                       "¿ es correcta la operación ?")
-                     .arg( cadfich ),
-                   tr("&Sí"), tr("&No"),
-                   QString(), 0, 1 )) return;
+                     .arg( cadfich ))==QMessageBox::No) return;
 
    QFile fichero(adapta(cadfich));
    if (!fichero.exists()) return;
@@ -1467,9 +1463,7 @@ void execasientomodelo::aspiradora()
                    if (QMessageBox::question(
                      this,
                      tr("Asientos predefinidos"),
-                     tr("¿ Desea salir del proceso ?"),
-                     tr("&Sí"), tr("&No"),
-                     QString(), 0, 1 ) ==0 ) return;
+                     tr("¿ Desea salir del proceso ?")) == QMessageBox::Yes ) return;
                     else chequeado=false;
                  }
              }

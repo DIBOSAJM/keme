@@ -23,7 +23,6 @@
 #include "funciones.h"
 #include "basedatos.h"
 #include "item_inmov.h"
-#include "buscasubcuenta.h"
 #include <QMessageBox>
 
 
@@ -184,10 +183,8 @@ void inv_inmovilizado::borraelemento()
    if (QMessageBox::question(
           this,
           tr("Inventario de inmovilizado"),
-          tr("¿ Desea borrar el elemento seleccionado ?"),
-          tr("&Sí"), tr("&No"),
-           QString(), 0, 1 ) ==1 )
-                        return;
+          tr("¿ Desea borrar el elemento seleccionado ?")) ==QMessageBox::No )
+            return;
 
    basedatos::instancia()->borra_reg_inv_inmovilizado(numactivo);
    refrescar();

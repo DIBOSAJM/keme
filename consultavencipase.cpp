@@ -226,9 +226,7 @@ void consultavencipase::borravencimiento()
             this,
             tr("GESTIÓN VENCIMIENTOS"),
             tr("¿ Desea eliminar el vencimiento %1 ?")
-                .arg( elvencimiento ),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) )
+                .arg( elvencimiento )) == QMessageBox::No)
         return ;
 
     basedatos::instancia()->deleteVencimientosnum(vencimientoactual());

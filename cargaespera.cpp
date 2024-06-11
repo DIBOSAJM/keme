@@ -97,18 +97,38 @@ cargaespera::cargaespera() : QDialog()
 
 void cargaespera::refrescar()
 {
- QSqlQuery p=model->query(); 
- p.exec();
- model->clear();
- model->setQuery(p);
+// QSqlQuery p=model->query();
+// p.exec();
+// model->clear();
+// model->setQuery(p);
+
+ model->setQuery( basedatos::instancia()->select8Borradororderasiento() );
+ model->setHeaderData(0, Qt::Horizontal, tr("Asiento"));
+ model->setHeaderData(1, Qt::Horizontal, tr("Usuario"));
+ model->setHeaderData(2, Qt::Horizontal, tr("Cuenta"));
+ model->setHeaderData(3, Qt::Horizontal, tr("Concepto"));
+ model->setHeaderData(4, Qt::Horizontal, tr("DEBE"));
+ model->setHeaderData(5, Qt::Horizontal, tr("HABER"));
+ model->setHeaderData(6, Qt::Horizontal, tr("Documento"));
+ model->setHeaderData(7, Qt::Horizontal, tr("C.I."));
+
+ ui.elborrador->setModel(model);
+ ui.elborrador->setAlternatingRowColors ( true);
+
+ comadecimal=haycomadecimal(); decimales=haydecimales();
+ // if (!conanalitica()) ui.elborrador->setColumnHidden(7,true);
+ ui.elborrador->setColumnHidden(7,true);
+ ui.elborrador->resizeColumnsToContents();
+
+
 }
 
 
-qlonglong cargaespera::asientoactual()
+int cargaespera::asientoactual()
 {
   if (!ui.elborrador->currentIndex().isValid()) return 0;
   int fila=ui.elborrador->currentIndex().row();
-  return model->record(fila).value("asiento").toLongLong();
+  return model->record(fila).value("asiento").toInt();
 }
 
 
@@ -121,9 +141,7 @@ void cargaespera::eliminarasiento()
     if (QMessageBox::question(
             this,
             tr("Apuntes en espera"),
-            tr("¿ Desea eliminar el asiento en espera seleccionado ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) )
+            tr("¿ Desea eliminar el asiento en espera seleccionado ?"))==QMessageBox::No )
         return ;
 
     basedatos::instancia()->deleteBorrador(asiento);
@@ -148,3 +166,17 @@ void cargaespera::elimasientoactual()
 
     basedatos::instancia()->deleteBorrador(asiento);
 }
+
+void cargaespera::on_borratodo_pushButton_clicked()
+{
+    if (QMessageBox::question(
+            this,
+            tr("Apuntes en espera"),
+            tr("¿ Desea eliminar todo el contenido ?"))==QMessageBox::No )
+            return ;
+
+        basedatos::instancia()->borra_borrador();
+
+        refrescar();
+}
+

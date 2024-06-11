@@ -243,11 +243,9 @@ void buscasubcuenta_input::procesaimputaciones()
           double valor=query.value(0).toDouble();
           if (valor>99.999 && valor<100.001)
              {
-              if (!QMessageBox::question(this,
+              if (QMessageBox::question(this,
                     tr("ANALÍTICA"),
-                    tr("¿ Sobreescribir imputaciones ?"),
-                    tr("&Sí"), tr("&No"),
-                    QString(), 0, 1 ))
+                    tr("¿ Sobreescribir imputaciones ?"))==QMessageBox::Yes)
                 {
                   sobreescribir=true;
                 }

@@ -49,12 +49,10 @@ void borraintasientos::procesar()
   QString intervalo=ui.iniciallineEdit->text();
   intervalo+=" - ";
   intervalo+=ui.finallineEdit->text();
-    if (!QMessageBox::question(
+    if (QMessageBox::question(
             this,
             tr("¿ Borrar asientos ?"),
-            tr("¿ Desea borrar el intervalo de asientos %1 ?").arg(intervalo),
-            tr("&Sí"), tr("&No"),
-          QString(), 0, 1 ) ==0 )
+            tr("¿ Desea borrar el intervalo de asientos %1 ?").arg(intervalo)) == QMessageBox::No )
                           return;
     // falta comprobar si algún asiento corresponde a ejercicio cerrado
     if (ejerciciocerrado(elejercicio))

@@ -102,6 +102,22 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="borratodo_pushButton">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>B&amp;orra Todo</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/delete_128.png</normaloff>:/iconos/graf/delete_128.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="CancelarButton">
        <property name="font">
         <font>
@@ -144,6 +160,14 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>elborrador</tabstop>
+  <tabstop>CargarpushButton</tabstop>
+  <tabstop>BorrarButton</tabstop>
+  <tabstop>borratodo_pushButton</tabstop>
+  <tabstop>CancelarButton</tabstop>
+  <tabstop>refrescapushButton</tabstop>
+ </tabstops>
  <resources>
   <include location="keme.qrc"/>
  </resources>

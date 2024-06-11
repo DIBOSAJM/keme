@@ -123,9 +123,7 @@ void vtosanulados::borrarvto()
             this,
             tr("Vencimientos anulados"),
             tr("Esta operación dejará al pase del diario\ncorrespondiente sin vencimiento asignado\n"
-	       "¿ Desea Proseguir ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) )
+           "¿ Desea continuar ?")) == QMessageBox::No )
         return ;
     borravenci(cadena);
     refrescar();
@@ -150,9 +148,7 @@ void vtosanulados::recuperavto()
             tr("Vencimientos anulados"),
             tr("Va a suprimir del vencimiento seleccionado\n"
 	"la marca de anulado, "
-	"¿ Desea Proseguir ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) )
+    "¿ Desea continuar ?")) == QMessageBox::No )
         return ;
     desanulavencimiento(cadena);
     refrescar();

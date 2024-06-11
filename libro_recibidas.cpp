@@ -2684,9 +2684,7 @@ void libro_recibidas::on_documentos_pushButton_clicked()
                this,
                tr("LIBRO DE FACTURAS"),
                tr("Hay registros sin documento:\n")+vacios.join("-")+
-                  tr("\n ¿ Desea continuar?"),
-               tr("&Sí"), tr("&No"),
-                      QString(), 0, 1 ) ==1 )
+                  tr("\n ¿ Desea continuar?")) ==QMessageBox::No )
                              return;
 
     }

@@ -6083,6 +6083,10 @@ void basedatos::deleteBorrador (QString asiento) {
     ejecutar("delete from borrador where asiento="+ asiento.left(-1).replace("'","''"));
 }
 
+void basedatos::borra_borrador() {
+    ejecutar("delete from borrador");
+}
+
 // Borra de ajustes_conci a partir de fechas y cuenta
 void basedatos::deleteAjustes_concifechascuenta (QDate inicial, QDate final, QString cuenta) {
     QString cadena = "delete from ajustes_conci where fecha>='";

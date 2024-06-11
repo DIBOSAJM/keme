@@ -697,9 +697,7 @@ void ivasoportado::botonaceptar()
           tr("Cuenta de factura"),tr("ATENCIÓN: La cuenta de factura '")+
           ui.CtafralineEdit->text()+
           tr("' puede no ser correcta\n")+
-          tr("¿ Desea borrar el contenido del campo ?"),
-          tr("&Sí"), tr("&No"),
-                  QString(), 0, 1 ) ==1 )
+          tr("¿ Desea borrar el contenido del campo ?")) ==QMessageBox::No )
                      {
                         accept();
                         return;

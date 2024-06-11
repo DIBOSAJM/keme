@@ -117,9 +117,7 @@ void asigna_fichdoc::suprimedocdef()
    if (QMessageBox::question(
           this,
           tr("Tabla de asientos"),
-          tr("¿ Desea borrar el fichero asignado del documento ?"),
-          tr("&Sí"), tr("&No"),
-          QString(), 0, 1 ) ==1 )
+          tr("¿ Desea borrar el fichero asignado del documento ?")) ==QMessageBox::No )
                         return;
 
    bool gestor_bd=basedatos::instancia()->gestor_doc_bd();

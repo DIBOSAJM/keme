@@ -131,9 +131,7 @@ void tabla_iva_rep::refrescar()
      if (QMessageBox::question(
               this,
               tr("Libro de facturas"),
-              tr("Se van a cargar más de 1000 registros ¿ Correcto ?"),
-              tr("&Sí"), tr("&No"),
-              QString(), 0, 1 ) ==1 )
+           tr("Se van a cargar más de 1000 registros ¿ Correcto ?")) == QMessageBox::No )
                             return;
 
 
@@ -664,9 +662,7 @@ void tabla_iva_rep::busca_en_col()
             if (QMessageBox::question(this,
                             tr("Libro de facturas"),
                             tr("La búsqueda no ha tenido éxito.\n"
-                               "¿ Desea comenzar desde la primera fila ?"),
-                            tr("&Sí"), tr("&No"),
-                            QString(), 0, 1 ))
+                               "¿ Desea comenzar desde la primera fila ?"))==QMessageBox::No)
                           salir=true; else inicio=0;
           }
       }

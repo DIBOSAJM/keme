@@ -1597,9 +1597,7 @@ void consmayor::importa_c43 () {
             tr("Este proceso añade información para la conciliación\n"
                "de cuentas bancarias. Sólo se añadirán fechas no\n"
                "importadas anteriormente en la cuenta %1.\n"
-               "¿ Desea continuar ?").arg(cuenta),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) !=0 )
+               "¿ Desea continuar ?").arg(cuenta)) ==QMessageBox::No )
                           return;
 
   QFileDialog dialogofich(this);
@@ -1647,9 +1645,7 @@ void consmayor::importa_csv () {
             tr("Este proceso añade información para la conciliación\n"
                "de cuentas bancarias. Sólo se añadirán fechas no\n"
                "importadas anteriormente en la cuenta %1.\n"
-               "¿ Desea continuar ?").arg(cuenta),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) !=0 )
+               "¿ Desea continuar ?").arg(cuenta)) ==QMessageBox::No )
                           return;
 
   QFileDialog dialogofich(this);
@@ -1703,11 +1699,9 @@ void consmayor::elimina_cuaderno() {
  if (QMessageBox::question(
           this,
           tr("Eliminación de cuenta externa"),
-          tr("Se van a borrar todos los pases de la cuenta importada\n"
+          tr("Se van a borrar todos los apuntes de la cuenta importada\n"
              "para conciliación, a partir de la fecha %1,\n"
-             "la operación es irreversible ¿ Desea proseguir ?").arg(fecha.toString("dd.MM.yyyy")),
-          tr("&Sí"), tr("&No"),
-          QString(), 0, 1 ) ==0 )
+             "la operación es irreversible ¿ Desea continuar ?").arg(fecha.toString("dd.MM.yyyy"))) == QMessageBox::Yes )
          {
             basedatos::instancia()->deleteCuenta_ext_concifechacuenta(fecha, cuenta);
             QMessageBox::information( this, tr("Borrar registros"),

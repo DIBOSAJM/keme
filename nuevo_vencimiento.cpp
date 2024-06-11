@@ -123,15 +123,11 @@ void nuevo_vencimiento::expandepuntoordenante()
      || (cod_longitud_variable() && ui.OrdenantelineEdit->text().length()>3 &&
         !existesubcuenta(ui.OrdenantelineEdit->text()))) 
 	  {
-	 // preguntar si se desea añadir la cuenta, si no o si se cancela lo anterior dejar en blanco
-	    int x=QMessageBox::question(this,tr("Vencimientos"),
-					   tr("Esa cuenta no existe, ¿ Desea añadirla ?"),
-					   tr("&Sí"),
-					   tr("&No"),
-                       QString(),
-					   0,1);
-	    if (x==0) {
-                       aux_express *lasubcuenta2=new aux_express();
+     // preguntar si se desea añadir la cuenta, si no o si se cancela lo anterior dejar en blanco
+     if (QMessageBox::question(this,tr("Vencimientos"),
+                       tr("Esa cuenta no existe, ¿ Desea añadirla ?")) == QMessageBox::Yes)
+        {
+               aux_express *lasubcuenta2=new aux_express();
 		       lasubcuenta2->pasacodigo(ui.OrdenantelineEdit->text());
 		       lasubcuenta2->exec();
 	               delete lasubcuenta2;
@@ -139,7 +135,7 @@ void nuevo_vencimiento::expandepuntoordenante()
 			   ui.OrdenantelineEdit->setText("");
 		       else  ui.OrdenanteNombrelineEdit->setText(cadena);
 
-		     }
+        }
 	    else ui.OrdenantelineEdit->setText("");
 	}
  ui.domiciliablecheckBox->setChecked(basedatos::instancia()->cuenta_domiciliable(ui.OrdenantelineEdit->text()));
@@ -193,19 +189,15 @@ void nuevo_vencimiento::expandepuntotesoreria()
         !existesubcuenta(ui.TesorerialineEdit->text()))) 
 	  {
 	 // preguntar si se desea añadir la cuenta, si no o si se cancela lo anterior dejar en blanco
-	    int x=QMessageBox::question(this,tr("Vencimientos"),
-					   tr("Esa cuenta no existe, ¿ Desea añadirla ?"),
-					   tr("&Sí"),
-					   tr("&No"),
-                       QString(),
-					   0,1);
-	    if (x==0) {
-                        aux_express *lasubcuenta2=new aux_express();
+        if (QMessageBox::question(this,tr("Vencimientos"),
+                               tr("Esa cuenta no existe, ¿ Desea añadirla ?")) == QMessageBox::Yes)
+            {
+                aux_express *lasubcuenta2=new aux_express();
 		        lasubcuenta2->pasacodigo(ui.TesorerialineEdit->text());
 		        lasubcuenta2->exec();
 	                delete lasubcuenta2;
                         if (!existesubcuenta(ui.TesorerialineEdit->text()))
-			   ui.TesorerialineEdit->setText("");                        
+                ui.TesorerialineEdit->setText("");
                          else
                              {
                               if (existecodigoplan(ui.TesorerialineEdit->text(),&cadena))

@@ -343,9 +343,7 @@ void patrimonio::salir()
      if (QMessageBox::question(
             this,
             tr("SALIR"),
-            tr("¿ Desea salir ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) ==0 )
+             tr("¿ Desea salir ?")) == QMessageBox::Yes )
                           accept();
   accept();
 }
@@ -509,9 +507,7 @@ void patrimonio::grabafich()
        tr("¿ Sobreescribir ?"),
        tr("'%1' ya existe."
           "¿ Desea sobreescribirlo ?")
-         .arg( nombre ),
-       tr("&Sí"), tr("&No"),
-       QString(), 0, 1 ) )
+         .arg( nombre )) == QMessageBox::No)
      return ;
    if (grabado(nombre))
       {

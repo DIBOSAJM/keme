@@ -415,9 +415,7 @@ void presupuesto_ed::borratodo()
 {
     if (QMessageBox::question(this,
            tr("Borrar presupuesto"),
-           tr("¿ Desea borrar toda la información del presupuesto ?"),
-           tr("&Sí"), tr("&No"),
-                           QString(), 0, 1 ) )
+                           tr("¿ Desea borrar toda la información del presupuesto ?")) == QMessageBox::No )
     return ;
 
     basedatos::instancia()->deletePresupuestoejerciciosubcuentas(ejercicio,subcuentas);
@@ -445,9 +443,7 @@ void presupuesto_ed::borralinea()
        }
   if (QMessageBox::question(this,
            tr("Borrar líneas"),
-           tr("¿ Desea borrar la línea seleccionada ?"),
-           tr("&Sí"), tr("&No"),
-                                 QString(), 0, 1 ) )
+           tr("¿ Desea borrar la línea seleccionada ?")) == QMessageBox::No )
      return ;
 
   int fila=ui.pretableView->currentIndex().row();

@@ -23,7 +23,6 @@
 
 #include "tabla_asientos.h"
 #include "funciones.h"
-#include "subcuentas.h"
 #include "aux_express.h"
 #include "buscasubcuenta.h"
 #include "buscaconcepto.h"
@@ -42,10 +41,8 @@
 #include "aritmetica.h"
 #include "consultavencipase.h"
 #include "procesavencimiento.h"
-#include "pidenombre.h"
 #include "asignainputdiario.h"
 #include "retencion.h"
-#include "directorio.h"
 #include "privilegios.h"
 #include "busca_externo.h"
 #include "externos.h"
@@ -1679,9 +1676,7 @@ void tabla_asientos::borratodo(bool preguntar)
      if (QMessageBox::question(
             this,
             tr("Tabla de asientos"),
-            tr("¿ Desea borrar todo el contenido ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) ==1 )
+              tr("¿ Desea borrar todo el contenido ?")) == QMessageBox::No )
                           return;
  ret_procesada=false;
  ui.Tablaapuntes->clearContents();
@@ -2032,14 +2027,12 @@ void tabla_asientos::incorporar()
                }
             if (!encontrada && avisar_cta_libro_fact_no_diario)
               {
-                if (!QMessageBox::question(this,
+                if (QMessageBox::question(this,
                     tr("Tabla de asientos"),
                     tr("La cuenta '%1' se registra en el libro de facturas (IVA) \n"
                        "pero no está representada en la tabla de asientos\n"
                        "¿ Desea volver a la edición ?")
-                      .arg( cuenta_factura ),
-                    tr("&Sí"), tr("&No"),
-                    QString(), 0, 1 ) )
+                                                 .arg( cuenta_factura )) ==QMessageBox::Yes )
                   return ;
               }
            }
@@ -2236,9 +2229,7 @@ void tabla_asientos::incorporar()
                               tr("Tabla de asientos"),
                               tr("El documento ")+ui.Tablaapuntes->item(veces,4)->text()+
                               tr(" en la cuenta: ")+ui.Tablaapuntes->item(veces,0)->text()+
-                              tr(" está repetido. ¿ Desea continuar ?"),
-                              tr("&Sí"), tr("&No"),
-                              QString(), 0, 1 ) ==1 )
+                                         tr(" está repetido. ¿ Desea continuar ?")) == QMessageBox::No )
                                             return;
                      }
 
@@ -2260,9 +2251,7 @@ void tabla_asientos::incorporar()
                               tr("Tabla de asientos"),
                               tr("El documento ")+ui.Tablaapuntes->item(veces,4)->text()+
                               tr(" en la cuenta: ")+ui.Tablaapuntes->item(veces,0)->text()+
-                              tr(" está repetido. ¿ Desea continuar ?"),
-                              tr("&Sí"), tr("&No"),
-                              QString(), 0, 1 ) ==1 )
+                                   tr(" está repetido. ¿ Desea continuar ?")) == QMessageBox::No )
                                             return;
                      }
                  }
@@ -3105,12 +3094,17 @@ void tabla_asientos::procesavenci(QString pase)
             int resultado=0;
 
             if (!evitar_pregunta_venci)
-                if (espredefinido || ui.ed_venci_checkBox->isChecked())
-              resultado=QMessageBox::question(this,tr("Tabla de asientos"),
-                   tr("¿ Son correctos los vencimientos asociados \n"
-                      "automáticamente a la cuenta %1 ?").arg(cta_ordenante),
-                   tr("&Sí"),
-                   tr("&Editar"),tr("&Descartar vencimientos"));
+               if (espredefinido || ui.ed_venci_checkBox->isChecked()) {
+                   QMessageBox::StandardButton boton = QMessageBox::question(this,tr("Tabla de asientos"),
+                   tr("¿ Desea editar los vencimientos asociados \n"
+                     "automáticamente a la cuenta %1 ?").arg(cta_ordenante),
+                     QMessageBox::Save|QMessageBox::Yes|QMessageBox::Discard, QMessageBox::Save );
+
+                    if (boton==QMessageBox::Save) resultado=0;
+                    if (boton==QMessageBox::Yes) resultado=1;
+                    if (boton==QMessageBox::Discard) resultado=2;
+
+               }
 
             if (resultado==1)
               {
@@ -5139,9 +5133,7 @@ void tabla_asientos::cancelar()
    if (QMessageBox::question(
             this,
             tr("Tabla de asientos"),
-            tr("¿ Desea salir y cancelar la edición ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) ==0 )
+            tr("¿ Desea salir y cancelar la edición ?")) ==QMessageBox::Yes )
                           reject();
 }
 
@@ -6672,9 +6664,7 @@ void tabla_asientos::suprimedocdef()
      if (QMessageBox::question(
             this,
             tr("Tabla de asientos"),
-            tr("¿ Desea borrar el fichero asignado del documento ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) ==1 )
+          tr("¿ Desea borrar el fichero asignado del documento ?")) ==QMessageBox::No )
                           return;
 
 

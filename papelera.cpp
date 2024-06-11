@@ -94,9 +94,7 @@ void papelera::borrar_todo()
     if (QMessageBox::question(
              this,
              tr("PAPELERA"),
-             tr("¿ Desea eliminar todo el contenido de la papelera ?"),
-             tr("&Sí"), tr("&No"),
-             QString(), 0, 1 ) > 0 )
+             tr("¿ Desea eliminar todo el contenido de la papelera ?")) == QMessageBox::No )
                            return;
 
     QProgressDialog progreso("Eliminando contenido ...", 0, 0, 0);
@@ -126,9 +124,7 @@ void papelera::recupera()
     if (QMessageBox::question(
              this,
              tr("PAPELERA"),
-             tr("¿ Desea recuperar el asiento %1 ?").arg(asiento),
-             tr("&Sí"), tr("&No"),
-             QString(), 0, 1 ) > 0 )
+            tr("¿ Desea recuperar el asiento %1 ?").arg(asiento))==QMessageBox::No)
                            return;
   // comprobar ejercicio no cerrado, período no bloqueado, cuenta no bloqueada
     if (ejerciciocerrado(ejercicio) || ejerciciocerrando(ejercicio))

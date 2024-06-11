@@ -26,7 +26,6 @@
 #include "calcestado.h"
 #include "funciones.h"
 #include "privilegios.h"
-#include "directorio.h"
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QProgressDialog>
@@ -126,9 +125,7 @@ void selecestado::borrarestado()
   if (QMessageBox::question(
             this,
             tr("¿ Borrar estado contable ?"),
-            tr("¿ Desea borrar '%1' ?").arg(eleccion ),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) ==0 )
+          tr("¿ Desea borrar '%1' ?").arg(eleccion )) == QMessageBox::Yes )
                      {
                           borraestado(eleccion);
                      }
@@ -196,9 +193,7 @@ void selecestado::exportestado()
        tr("¿ Sobreescribir ? -- Exportar estado contable"),
        tr("'%1' ya existe."
           "¿ Desea sobreescribirlo ?")
-         .arg( nombre ),
-       tr("&Sí"), tr("&No"),
-       QString(), 0, 1 ) )
+         .arg( nombre )) == QMessageBox::No )
      return ;
    if (exportarestado(eleccion,nombre))
       {

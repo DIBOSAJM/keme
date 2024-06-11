@@ -167,9 +167,7 @@ void regularizaciones::botoneliminarpulsado()
    if (QMessageBox::question(
             this,
             tr("REGULARIZACIONES"),
-            tr("¿ Desea borrar el elemento seleccionado ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) ==1 ) return;
+             tr("¿ Desea borrar el elemento seleccionado ?")) == QMessageBox::No ) return;
      basedatos::instancia()->eliminaregulariz(ui.codigolineEdit->text());
      modeloreg->select();
      ui.codigolineEdit->clear();
@@ -310,9 +308,7 @@ if (nombre.isEmpty()) return;
            tr("¿ Sobreescribir ? -- Exportar asiento regularización"),
            tr("'%1' ya existe."
               "¿ Desea sobreescribirlo ?")
-             .arg( nombre ),
-           tr("&Sí"), tr("&No"),
-           QString(), 0, 1 ) )
+             .arg( nombre )) == QMessageBox::No)
          return ;
       if ( !regul.open( QIODevice::WriteOnly ) )
         {

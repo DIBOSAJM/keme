@@ -681,9 +681,7 @@ void tablaSII::cancelar()
             if (QMessageBox::question(
                    this,
                    tr("Tabla SII"),
-                   tr("Hay cambios sin actualizar ¿ Desea salir ?"),
-                   tr("&Sí"), tr("&No"),
-                   QString(), 0, 1 ) ==0 )
+                   tr("Hay cambios sin actualizar ¿ Desea salir ?"))==QMessageBox::Yes )
                                 {
                                  reject();
                                  break;
@@ -825,9 +823,7 @@ void tablaSII::genera_fich_xml()
          tr("¿ Sobreescribir ? -- Exportar asiento automático"),
          tr("'%1' ya existe."
             "¿ Desea sobreescribirlo ?")
-           .arg( nombre ),
-         tr("&Sí"), tr("&No"),
-         QString(), 0, 1 ) )
+           .arg( nombre )) == QMessageBox::No )
        return ;
 
      if (recibidas)

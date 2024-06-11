@@ -345,9 +345,7 @@ void xbrlpymes::gen_archivo()
        tr("¿ Sobreescribir ? -- Exportar cuentas"),
        tr("'%1' ya existe."
           "¿ Desea sobreescribirlo ?")
-         .arg( nombre ),
-       tr("&Sí"), tr("&No"),
-       QString(), 0, 1 ) )
+         .arg( nombre )) == QMessageBox::No )
      return ;
 
    // -----------------------------------------------------------------------------------

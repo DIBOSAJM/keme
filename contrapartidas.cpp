@@ -57,16 +57,14 @@ void contrapartidas::ctacambiada()
            if (QMessageBox::question(
               this,
               tr("Crear cuenta auxiliar"),
-              tr("Esa cuenta no existe, ¿ Desea añadirla ?"),
-              tr("&Sí"), tr("&No"),
-              QString(), 0, 1 ) ==0 )
+              tr("Esa cuenta no existe, ¿ Desea añadirla ?")) ==QMessageBox::Yes )
              {
-                   aux_express *lasubcuenta2=new aux_express();
-           lasubcuenta2->pasacodigo(ui->auxiliarlineEdit->text());
-           lasubcuenta2->exec();
+               aux_express *lasubcuenta2=new aux_express();
+               lasubcuenta2->pasacodigo(ui->auxiliarlineEdit->text());
+               lasubcuenta2->exec();
                delete(lasubcuenta2);
                if (!existecodigoplan(ui->auxiliarlineEdit->text(),&cadena))
-            ui->auxiliarlineEdit->clear();
+               ui->auxiliarlineEdit->clear();
          }
           else
                 ui->auxiliarlineEdit->clear();
@@ -95,11 +93,9 @@ void contrapartidas::ctafinedicion()
            if (QMessageBox::question(
               this,
               tr("Crear cuenta auxiliar"),
-              tr("Esa cuenta no existe, ¿ Desea añadirla ?"),
-              tr("&Sí"), tr("&No"),
-              QString(), 0, 1 ) ==0 )
+              tr("Esa cuenta no existe, ¿ Desea añadirla ?")) == QMessageBox::Yes )
               {
-                   aux_express *lasubcuenta2=new aux_express();
+               aux_express *lasubcuenta2=new aux_express();
                lasubcuenta2->pasacodigo(ui->auxiliarlineEdit->text());
                lasubcuenta2->exec();
                delete(lasubcuenta2);
@@ -149,11 +145,9 @@ void contrapartidas::ctacambiada2()
            if (QMessageBox::question(
               this,
               tr("Crear cuenta auxiliar"),
-              tr("Esa cuenta no existe, ¿ Desea añadirla ?"),
-              tr("&Sí"), tr("&No"),
-              QString(), 0, 1 ) ==0 )
+              tr("Esa cuenta no existe, ¿ Desea añadirla ?")) == QMessageBox::Yes )
                {
-                   aux_express *lasubcuenta2=new aux_express();
+                aux_express *lasubcuenta2=new aux_express();
                 lasubcuenta2->pasacodigo(ui->auxiliarlineEdit_2->text());
                 lasubcuenta2->exec();
                 delete(lasubcuenta2);
@@ -187,9 +181,7 @@ void contrapartidas::ctafinedicion2()
            if (QMessageBox::question(
               this,
               tr("Crear cuenta auxiliar"),
-              tr("Esa cuenta no existe, ¿ Desea añadirla ?"),
-              tr("&Sí"), tr("&No"),
-              QString(), 0, 1 ) ==0 )
+              tr("Esa cuenta no existe, ¿ Desea añadirla ?")) == QMessageBox::Yes )
                {
                 aux_express *lasubcuenta2=new aux_express();
                 lasubcuenta2->pasacodigo(ui->auxiliarlineEdit_2->text());
@@ -301,9 +293,7 @@ void contrapartidas::boton_aceptar()
         if (QMessageBox::question(
           this,
           tr("Generación de asientos"),
-          tr("El campo concepto está vacío. ¿ Desea continuar ?"),
-          tr("&Sí"), tr("&No"),
-          QString(), 0, 1 ) ) return;
+          tr("El campo concepto está vacío. ¿ Desea continuar ?")) == QMessageBox::No ) return;
        }
 
     accept();

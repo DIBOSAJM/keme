@@ -1064,9 +1064,7 @@ void facturas::borralinea()
     if (QMessageBox::question(
              this,
              tr("Borrar registro"),
-             tr("¿ Desea borrar el documento seleccionado ?"),
-             tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) ==1 )
+            tr("¿ Desea borrar el documento seleccionado ?")) == QMessageBox::Yes )
                            return;
 
 

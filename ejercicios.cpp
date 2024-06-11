@@ -168,9 +168,7 @@ void ejercicios::borraejercicio()
         tr("Borrar ejercicio"),
         tr("Se eliminarán todos los datos del ejercicio '%1' "
            "¿ Confirmar ?")
-          .arg(elcodigo),
-        tr("&Sí"), tr("&No"),
-                                 QString(), 0, 1 ))
+          .arg(elcodigo))==QMessageBox::No)
       return ;
 
     QDate inicio=inicioejercicio(elcodigo);

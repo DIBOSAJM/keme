@@ -208,9 +208,7 @@ void lotes::borra_linea()
    if (QMessageBox::question(
           this,
           tr("Eliminar registros"),
-          tr("¿ Desea borrar la línea seleccionada ?"),
-          tr("&Sí"), tr("&No"),
-          QString(), 0, 1 ) ==1 )
+          tr("¿ Desea borrar la línea seleccionada ?")) ==QMessageBox::No )
                         return;
 
    ui->tableWidget->removeRow(ui->tableWidget->currentRow());
@@ -357,9 +355,7 @@ void lotes::genera_docs()
            this,
            tr("Lotes de documentos"),
            tr("¿ Desea generar documentos para la fecha ") +
-              ui->fecha_dateEdit->date().toString("dd-MM-yyyy") + " ?",
-           tr("&Sí"), tr("&No"),
-           QString(), 0, 1 ) ==1 )
+              ui->fecha_dateEdit->date().toString("dd-MM-yyyy") + " ?") ==QMessageBox::No )
                          return;
 
 

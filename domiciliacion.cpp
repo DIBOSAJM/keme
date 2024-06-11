@@ -487,9 +487,7 @@ void domiciliacion::c19()
          tr("¿ Sobreescribir ? Domiciliaciones"),
          tr("'%1' ya existe."
             "¿ Desea sobreescribirlo ?")
-           .arg( nombre ),
-         tr("&Sí"), tr("&No"),
-          QString(), 0, 1 ) )
+           .arg( nombre )) == QMessageBox::No )
        return ;
 
 
@@ -780,9 +778,7 @@ void domiciliacion::c58()
          tr("¿ Sobreescribir ? Domiciliaciones"),
          tr("'%1' ya existe."
             "¿ Desea sobreescribirlo ?")
-           .arg( nombre ),
-         tr("&Sí"), tr("&No"),
-         QString(), 0, 1 ) )
+           .arg( nombre )) == QMessageBox::No )
        return ;
 
 
@@ -1096,9 +1092,7 @@ void domiciliacion::sepa19_14()
          tr("¿ Sobreescribir ? Domiciliaciones"),
          tr("'%1' ya existe."
             "¿ Desea sobreescribirlo ?")
-           .arg( nombre ),
-         tr("&Sí"), tr("&No"),
-         QString(), 0, 1 ) )
+           .arg( nombre )) == QMessageBox::No )
        return ;
 
 
@@ -1609,9 +1603,7 @@ void domiciliacion::sepa_xml()
          tr("¿ Sobreescribir ? Domiciliaciones"),
          tr("'%1' ya existe."
             "¿ Desea sobreescribirlo ?")
-           .arg( nombre ),
-         tr("&Sí"), tr("&No"),
-         QString(), 0, 1 ) )
+           .arg( nombre )) == QMessageBox::No )
        return ;
 
     // generamos xml
@@ -2388,9 +2380,7 @@ void domiciliacion::registrar_realizacion()
   if (QMessageBox::question(
         this,
         tr("Vencimientos"),
-        tr("Se va a procesar contablemente la domiciliación.\n¿Desea continuar?"),
-        tr("&Sí"), tr("&No"),
-          QString(), 0, 1 ) )
+        tr("Se va a procesar contablemente la domiciliación.\n¿Desea continuar?")) == QMessageBox::No )
         return ;
 
 
@@ -2622,9 +2612,7 @@ if (impagado)
   {
     if (QMessageBox::question(this,
         tr("Impagados/Devoluciones"),
-        tr("¿ Desea eliminar la marca de <impagado> del registro marcado ?"),
-        tr("&Sí"), tr("&No"),
-        QString(), 0, 1 ) )
+        tr("¿ Desea eliminar la marca de <impagado> del registro marcado ?")) == QMessageBox::No )
       return ;
     // actualizamos registro de vencimentos impagado=false
     QString concepto=tr("Anulación impagado, documento origen ");

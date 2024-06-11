@@ -95,9 +95,7 @@ bool edasiento(QString elasiento, QString usuario, bool modoconsulta, QString ej
             QObject::tr("El asiento a editar se corresponde con un vencimiento,\n"
                         "procesado; se va a proceder a su borrado y a la asignación\n"
                         "de un nuevo pago/cobro\n"
-                        "¿ Desea continuar ?"),
-            QObject::tr("&Sí"), QObject::tr("&No"),
-            QString(), 0, 1 ) ==1 )
+                        "¿ Desea continuar ?")) == QMessageBox::No )
              return false;
       // hay que averiguar el número de registro del vencimiento
       // antes de borrar el asiento
@@ -129,9 +127,7 @@ bool edasiento(QString elasiento, QString usuario, bool modoconsulta, QString ej
             QObject::tr("El asiento a editar posee apuntes en el registro de vencimientos,\n"
                         "si lo edita se crearán nuevos apuntes y quedarán vencimientos\n"
                         "procesados no asignados a este asiento,\n"
-                        "¿ Desea continuar ?"),
-            QObject::tr("&Sí"), QObject::tr("&No"),
-            QString(), 0, 1 ) ==1 )
+                        "¿ Desea continuar ?")) == QMessageBox::No )
              return false;
      }
 

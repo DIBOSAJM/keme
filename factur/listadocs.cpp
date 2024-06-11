@@ -179,9 +179,7 @@ void listadocs::botoneliminarpulsado()
    if (QMessageBox::question(
             this,
             tr("TIPOS DOCUMENTO"),
-            tr("¿ Desea borrar el elemento seleccionado ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) ==1 ) return;
+             tr("¿ Desea borrar el elemento seleccionado ?")) ==QMessageBox::No ) return;
      basedatos::instancia()->eliminatipo_doc(ui.codigolineEdit->text());
      modeloreg->select();
      ui.codigolineEdit->clear();
@@ -289,8 +287,6 @@ void listadocs::suprime_fondo() {
     if (QMessageBox::question(
              this,
              tr("TIPOS DOCUMENTO"),
-             tr("¿ Desea eliminar la imagen de fondo del documento seleccionado ?"),
-             tr("&Sí"), tr("&No"),
-             QString(), 0, 1 ) ==1 ) return;
+             tr("¿ Desea eliminar la imagen de fondo del documento seleccionado ?")) ==QMessageBox::No) return;
     basedatos::instancia()->elimina_img_tipos_doc(codigo_m);
 }

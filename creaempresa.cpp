@@ -116,9 +116,7 @@ bool creaempresa::creabd()
                         tr("Los datos para la importación se seleccionarán de un archivo.\n"
                            "La importación solo será válida para códigos de cuenta auxiliar\n"
                            " con longitud fija."
-                           "¿ Desea continuar ?"),
-                        tr("&Sí"), tr("&No"),
-                                  QString(), 0, 1 ))
+                           "¿ Desea continuar ?")) == QMessageBox::No)
                return false;
     }
 
@@ -729,12 +727,10 @@ int creaempresa::importar_conta(QString cadfich)
     stream1.seek(0);
     if (facturasrep(&stream1))
       {
-       if (!QMessageBox::question(this,
+       if (QMessageBox::question(this,
            tr("Importar"),
            tr("En el diario hay códigos de facturas coincidentes\n"
-              "con la información a importar ¿ se aborta el proceso ?"),
-           tr("&Sí, abortar"), tr("&No, continuar"),
-                                   QString(), 0, 1 ) )
+              "con la información a importar ¿ se aborta el proceso ?")) == QMessageBox::Yes )
         {
          QMessageBox::information( this, tr("Importar"),
                                  tr("PROCESO NO LLEVADO A CABO"));

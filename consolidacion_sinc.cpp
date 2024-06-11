@@ -79,9 +79,7 @@ void consolidacion_sinc::borra_conex()
                     tr("Consolidación"),
                     tr("¿ Desea borrar la conexión '%1' con todos "
                        "los datos importados ?")
-                      .arg( cadcodigo ),
-                    tr("&Sí"), tr("&No"),
-                              QString(), 0, 1 ) )
+                      .arg( cadcodigo )) == QMessageBox::No )
                   return ;
     basedatos::instancia()->borra_datos_consolidada(fila+1);
     for (int veces=nombrebase; veces<=import_tipos_diario; veces++)

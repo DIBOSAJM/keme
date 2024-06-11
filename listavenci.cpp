@@ -513,9 +513,7 @@ void listavenci::procesar()
              if (QMessageBox::question(
                       this,
                       tr("Vencimientos"),
-                      tr("¿ Desea procesar por lotes los vencimientos seleccionados ?"),
-                      tr("&Sí"), tr("&No"),
-                      QString(), 0, 1 ) )
+                      tr("¿ Desea procesar por lotes los vencimientos seleccionados ?")) == QMessageBox::No)
                   return ;
             for (int i = 0; i < listacta_ordenante.size(); ++i)
               {
@@ -572,9 +570,7 @@ void listavenci::anular()
    if (QMessageBox::question(
             this,
             tr("Vencimientos"),
-            tr("¿ Desea anular el vencimiento seleccionado ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) )
+            tr("¿ Desea anular el vencimiento seleccionado ?")) == QMessageBox::No )
         return ;
    anulavencimiento(cadena);
    refrescar();
@@ -598,9 +594,7 @@ void listavenci::borrar()
              if (QMessageBox::question(
                       this,
                       tr("Vencimientos"),
-                      tr("¿ Desea borrar por lotes los vencimientos seleccionados ?"),
-                      tr("&Sí"), tr("&No"),
-                      QString(), 0, 1 ) )
+                      tr("¿ Desea borrar por lotes los vencimientos seleccionados ?")) == QMessageBox::No )
                   return ;
             for (int i = 0; i < listanum.size(); ++i)
               {
@@ -957,9 +951,7 @@ void listavenci::unificarproc()
       if (QMessageBox::question(
             this,
             tr("Vencimientos"),
-            tr("Se van a procesar los vencimientos selecccionados.\n¿Desea continuar?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) )
+            tr("Se van a procesar los vencimientos selecccionados.\n¿Desea continuar?")) == QMessageBox::No )
             return ;
   // generamos asiento y actualizamos vencimientos en una sola transacción
 

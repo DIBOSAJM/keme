@@ -157,9 +157,7 @@ void tipos_automaticos::botoneliminarpulsado()
    if (QMessageBox::question(
             this,
             tr("TIPOS DE ASIENTOS AUTOMÁTICOS"),
-            tr("¿ Desea borrar el elemento seleccionado ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) ==1 ) return;
+             tr("¿ Desea borrar el elemento seleccionado ?")) == QMessageBox::No ) return;
      basedatos::instancia()->eliminatipo_automatico(ui.codigolineEdit->text());
      modeloreg->select();
      ui.codigolineEdit->clear();

@@ -45,7 +45,7 @@ class cargaespera : public QDialog {
 	public:
                 cargaespera();
                 ~cargaespera();
-                qlonglong asientoactual();
+                int asientoactual();
                 void elimasientoactual();
         private:
                 Ui::cargaespera ui;
@@ -55,6 +55,7 @@ class cargaespera : public QDialog {
                 void refrescar();
                 void eliminarasiento();
 
+                void on_borratodo_pushButton_clicked();
 };
 
 

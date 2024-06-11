@@ -5309,9 +5309,7 @@ void borrarasientofunc(QString elasiento, QString ejercicio, bool papelera)
   if (QMessageBox::question(
             0,
             QObject::tr("¿ Borrar asiento ?"),
-            QObject::tr("¿ Desea borrar el asiento %1 ?").arg(elasiento),
-            QObject::tr("&Sí"), QObject::tr("&No"),
-                 QString(), 1, 1 ) !=0 )
+            QObject::tr("¿ Desea borrar el asiento %1 ?").arg(elasiento)) ==QMessageBox::No )
                           return;
   basedatos::instancia()->borraasientos(elasiento,elasiento,ejercicio,papelera);
 }
@@ -8095,9 +8093,7 @@ bool f_importa_csv_cta_conci(QString qfichero,QString cuenta)
               0,QObject::tr("Importar fichero para conciliación"),
              QObject::tr("Se va a importar a partir de la fecha %1\n"
                  "en la cuenta %2.\n"
-                 "¿ Desea continuar ?").arg(maxfecha.toString("dd.MM.yyyy"),cuenta),
-             QObject::tr("&Sí"),QObject::tr("&No"),
-            QString(), 0, 1 ) !=0 )
+                 "¿ Desea continuar ?").arg(maxfecha.toString("dd.MM.yyyy"),cuenta)) ==QMessageBox::No )
                             return false;
 
 
@@ -8200,9 +8196,7 @@ bool f_importarfichc43(QString qfichero,QString cuenta)
            QObject::tr("Se va a importar la c/c %1\n"
                "a partir de la fecha %2\n"
                "en la cuenta %3.\n"
-               "¿ Desea proseguir ?").arg(cc,maxfecha.toString("dd.MM.yyyy"),cuenta),
-           QObject::tr("&Sí"),QObject::tr("&No"),
-          QString(), 0, 1 ) !=0 )
+               "¿ Desea continuar ?").arg(cc,maxfecha.toString("dd.MM.yyyy"),cuenta)) ==QMessageBox::No )
                           return false;
 
 

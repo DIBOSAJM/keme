@@ -95,16 +95,13 @@ void pidecuentafechas::ctacambiada()
            if (QMessageBox::question(
               this,
               tr("Crear cuenta auxiliar"),
-              tr("Esa cuenta no existe, ¿ Desea añadirla ?"),
-              tr("&Sí"), tr("&No"),
-              QString(), 0, 1 ) ==0 )
-	         {
+               tr("Esa cuenta no existe, ¿ Desea añadirla ?")) == QMessageBox::Yes ) {
 	           subcuentas *lasubcuenta2=new subcuentas();
-		   lasubcuenta2->pasacodigo(ui.auxiliarlineEdit->text());
-		   lasubcuenta2->exec();
+               lasubcuenta2->pasacodigo(ui.auxiliarlineEdit->text());
+               lasubcuenta2->exec();
 	           delete(lasubcuenta2);
 	           if (!existecodigoplan(ui.auxiliarlineEdit->text(),&cadena))
-			ui.auxiliarlineEdit->clear();
+               ui.auxiliarlineEdit->clear();
 		 }
 		  else
 	            ui.auxiliarlineEdit->clear();
@@ -134,18 +131,15 @@ void pidecuentafechas::ctafinedicion()
            if (QMessageBox::question(
               this,
               tr("Crear cuenta auxiliar"),
-              tr("Esa cuenta no existe, ¿ Desea añadirla ?"),
-              tr("&Sí"), tr("&No"),
-              QString(), 0, 1 ) ==0 )
-	         {
-	           subcuentas *lasubcuenta2=new subcuentas();
+                 tr("Esa cuenta no existe, ¿ Desea añadirla ?")) == QMessageBox::Yes ) {
+           subcuentas *lasubcuenta2=new subcuentas();
 		   lasubcuenta2->pasacodigo(ui.auxiliarlineEdit->text());
 		   lasubcuenta2->exec();
-	           delete(lasubcuenta2);
-	           if (!existecodigoplan(ui.auxiliarlineEdit->text(),&cadena))
+           delete(lasubcuenta2);
+           if (!existecodigoplan(ui.auxiliarlineEdit->text(),&cadena))
 			ui.auxiliarlineEdit->clear();
-		 }
-		  else
+           }
+           else
 	            ui.auxiliarlineEdit->clear();
 	   }
          if (esauxiliar(ui.auxiliarlineEdit->text())) 

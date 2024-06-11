@@ -281,9 +281,7 @@ void aux_express::botoneliminarpulsado()
    if (QMessageBox::question(
             this,
             tr("CUENTAS AUXILIARES"),
-            tr("¿ Desea borrar la cuenta seleccionada ?"),
-            tr("&Sí"), tr("&No"),
-             QString(), 0, 1 ) ==1 ) return;
+            tr("¿ Desea borrar la cuenta seleccionada ?")) == QMessageBox::No ) return;
 
    if (cuentaendiario(ui.codigolineEdit->text()))
     {

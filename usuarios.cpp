@@ -118,9 +118,7 @@ void usuarios::borrausuario()
   if (QMessageBox::question(
             this,
             tr("¿ Borrar usuario ?"),
-            tr("¿ Desea borrar '%1' ?").arg(eleccion ),
-            tr("&Sí"), tr("&No"),
-           QString(), 0, 1 ) ==0 )
+            tr("¿ Desea borrar '%1' ?").arg(eleccion )) ==QMessageBox::Yes )
                           basedatos::instancia()->borrausuario(eleccion);
 
     refrescar();

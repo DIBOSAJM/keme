@@ -856,9 +856,7 @@ void externos::borrafoto()
   if (QMessageBox::question(
             this,
             tr("¿ Borrar imagen ?"),
-            tr("¿ Desea borrar la imagen actual ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) ==0 )
+            tr("¿ Desea borrar la imagen actual ?")) ==QMessageBox::Yes )
                {
                 QPixmap foto;
                 ui->fotolabel->setPixmap(foto);

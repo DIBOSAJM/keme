@@ -22,7 +22,6 @@
 #include "imprimediario.h"
 #include "funciones.h"
 #include "basedatos.h"
-#include "directorio.h"
 #include <QFileDialog>
 #include <QMessageBox>
 #include <qtrpt.h>
@@ -123,9 +122,7 @@ void imprimediario::guardacsv()
          tr("¿ Sobreescribir ?"),
          tr("'%1' ya existe."
             "¿ Desea sobreescribirlo ?")
-           .arg( nombre ),
-         tr("&Sí"), tr("&No"),
-                                                  QString(), 0, 1 ) )
+           .arg( nombre )) == QMessageBox::No )
        return ;
 
     if ( !fichero.open( QIODevice::WriteOnly ) )

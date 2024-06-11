@@ -98,9 +98,7 @@ void formas_pago::borrar()
     if (QMessageBox::question(
            this,
            tr("Formas de pago"),
-           tr("¿ Desea borrar el elemento '%1' ?").arg(ui->tableWidget->item(fila,0)->text()),
-           tr("&Sí"), tr("&No"),
-           QString(), 0, 1 ) ==1 )
+           tr("¿ Desea borrar el elemento '%1' ?").arg(ui->tableWidget->item(fila,0)->text())) == QMessageBox::No )
                          return;
     ui->tableWidget->removeRow(fila);
 

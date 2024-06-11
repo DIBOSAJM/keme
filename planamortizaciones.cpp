@@ -272,9 +272,7 @@ void planamortizaciones::eliminarelemento()
     if (QMessageBox::question(
             this,
             tr("Plan de amortizaciones"),
-            tr("¿ Desea dar de baja el elemento seleccionado ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) )
+            tr("¿ Desea dar de baja el elemento seleccionado ?")) == QMessageBox::No )
         return ;
 
     basedatos::instancia()->deletePlanamortizacionescuenta_activo(cuenta);

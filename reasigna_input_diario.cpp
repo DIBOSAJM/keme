@@ -263,13 +263,8 @@ void reasigna_input_diario::botonborrarcipulsado()
 {
   if (ui.cilineEdit->text().length()==0) return;
 
-  int x=QMessageBox::question(this,tr("Borrar elemento CI"),
-                                           tr("¿ Desea borrar el CI '%1' ?").arg(ui.cilineEdit->text()),
-                                           tr("&Sí"),
-                                           tr("&No"),
-                                           QString(),
-                                           0,1);
-  if (x==0)
+  if (QMessageBox::question(this,tr("Borrar elemento CI"),
+                                tr("¿ Desea borrar el CI '%1' ?").arg(ui.cilineEdit->text()))==QMessageBox::Yes)
      {
       for (int veces=0; veces<ui.tableWidget->rowCount(); veces++)
          {

@@ -316,9 +316,7 @@ void concilia::salir()
    if (QMessageBox::question(
             this,
             tr("Abandonar conciliación"),
-            tr("Hay cambios, ¿ desea salir ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) ==0 )
+            tr("Hay cambios, ¿ desea salir ?")) ==QMessageBox::Yes )
                           accept();
          else return;
   }
@@ -2087,9 +2085,7 @@ void concilia::contabiliza_externa()
     if (QMessageBox::question(
            this,
            tr("Conciliación"),
-           tr("¿ Desea contabilizar todos los apuntes no conciliados en la selección ?"),
-           tr("&Sí"), tr("&No"),
-           QString(), 0, 1 ) ==1 )
+           tr("¿ Desea contabilizar todos los apuntes no conciliados en la selección ?")) ==QMessageBox::No )
                          return;
 
   QString aux1, aux2, concepto, valorcontra;
@@ -2205,9 +2201,7 @@ void concilia::contabiliza_externa()
        if (QMessageBox::question(
          this,
          tr("Generación de asientos"),
-         tr("¿ Desea salir del proceso ?"),
-         tr("&Sí"), tr("&No"),
-         QString(), 0, 1 ) ==0 ) return;
+         tr("¿ Desea salir del proceso ?")) ==QMessageBox::Yes ) return;
      }
 
   progreso.close();

@@ -10,6 +10,10 @@ int main(int argc, char *argv[])
 
     QTranslator translator;
 
+    QTranslator baseTranslator;
+    baseTranslator.load("qtbase_es", QLibraryInfo::path(QLibraryInfo::TranslationsPath));
+    a.installTranslator(&baseTranslator);
+
     if (idioma>0 && idioma<6)
        {
         // if (idioma!=3) QLocale::setDefault(QLocale(QLocale::Spanish, QLocale::Spain));

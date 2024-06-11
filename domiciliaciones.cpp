@@ -202,9 +202,7 @@ void domiciliaciones::borrar()
 
     if (QMessageBox::question(this,
         tr("Domiciliaciones"),
-        tr("¿ Desea eliminar la dociciliacion '%1' ?").arg(id_dom),
-        tr("&Sí"), tr("&No"),
-        QString(), 0, 1 ) )
+        tr("¿ Desea eliminar la dociciliacion '%1' ?").arg(id_dom)) == QMessageBox::No )
       return ;
 
     // QMessageBox::information( this, tr("Domiciliaciones"),tr("Sigue la operación"));

@@ -237,13 +237,8 @@ void asignainputcta::botonborrarcipulsado()
 {
   if (ui.cilineEdit->text().length()==0) return;
 
-  int x=QMessageBox::question(this,tr("Borrar elemento CI"),
-					   tr("¿ Desea borrar el CI '%1' ?").arg(ui.cilineEdit->text()),
-					   tr("&Sí"),
-					   tr("&No"),
-                       QString(),
-					   0,1);
-  if (x==0)
+  if (QMessageBox::question(this,tr("Borrar elemento CI"),
+                            tr("¿ Desea borrar el CI '%1' ?").arg(ui.cilineEdit->text()))==QMessageBox::Yes)
      {
         basedatos::instancia()->delete_input_cta( ctaactivo, ui.cilineEdit->text() );
       ui.cilineEdit->clear();

@@ -465,9 +465,7 @@ bool relop::genfich182(QString nombre)
        tr("¿ Sobreescribir ?"),
        tr("'%1' ya existe."
       "¿ Desea sobreescribirlo ?")
-       .arg( nombre ),
-       tr("&Sí"), tr("&No"),
-                                            QString(), 0, 1 ) )
+       .arg( nombre )) == QMessageBox::No )
            return false;
 
    QFile doc( adapta(nombre)  );

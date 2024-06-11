@@ -374,9 +374,7 @@ void datos_accesorios::botonsalir()
     {
       if (QMessageBox::question(this,
           tr("Cancelar edición"),
-          tr("¿ Desea cancelar la edición ?"),
-          tr("&Sí"), tr("&No"),
-                                  QString(), 0, 1 ) )
+          tr("¿ Desea cancelar la edición ?"))==QMessageBox::Yes )
         return ;
     }
   accept();
@@ -467,9 +465,7 @@ void datos_accesorios::borrafoto()
   if (QMessageBox::question(
             this,
             tr("¿ Borrar imagen ?"),
-            tr("¿ Desea borrar la imagen actual ?"),
-            tr("&Sí"), tr("&No"),
-           QString(), 0, 1 ) ==0 )
+            tr("¿ Desea borrar la imagen actual ?")) ==QMessageBox::Yes )
                {
                 QPixmap foto;
                 ui.fotolabel->setPixmap(foto);

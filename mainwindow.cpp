@@ -2935,8 +2935,7 @@ void MainWindow::exportplan()
       tr("¿ Sobreescribir ? -- Exportar plan"),
       tr("'%1' ya existe."
          "¿ Desea sobreescribirlo ?")
-        .arg( nombre ),
-      tr("&Sí"), tr("&No"),QString(), 0, 1 ) )
+        .arg( nombre )) == QMessageBox::No )
     return ;
   // QMessageBox::information( this, tr("EXPORTAR PLAN"),adapta(nombre));
   if (nombre.right(4)==".pln")
@@ -3126,8 +3125,7 @@ void MainWindow::exportplansubcuentas()
       tr("¿ Sobreescribir ? -- Exportar plan"),
       tr("'%1' ya existe."
          "¿ Desea sobreescribirlo ?")
-        .arg( nombre ),
-      tr("&Sí"), tr("&No"),QString(), 0, 1 ) ) return ;
+        .arg( nombre ) ) == QMessageBox::No ) return ;
   if (nombre.right(4)==".pln")
      {
        if (exportaplan(nombre,true))
@@ -3160,9 +3158,7 @@ void MainWindow::actualizaplan()
                "de alta los códigos inexistentes;\n"
                "sería conveniente realizar una copia de seguridad\n"
                "antes de realizar la operación,\n"
-               "¿ Desea continuar ?"),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) !=0 )
+               "¿ Desea continuar ?")) == QMessageBox::No )
                           return;
 
 #ifdef NOMACHINE
@@ -3703,9 +3699,7 @@ void MainWindow::filtrardiario()
        if (filtroactivo.trimmed().isEmpty() && QMessageBox::question(
                this, tr("Filtrar diario"),
                tr("El filtro está vacío\n"
-                  "¿ añadir filtro por defecto ?\n"),
-               tr("&Sí"), tr("&No"),
-               QString(), 0, 1 ) ==0 )
+                  "¿ añadir filtro por defecto ?\n")) ==QMessageBox::Yes )
            filtroactivo=condicionesfiltrodefecto();
        refrescardiario();
 /*       delete(punterodiario);
@@ -4933,9 +4927,7 @@ void MainWindow::importa_conci(bool csv)
             tr("Este proceso añade información para la conciliación\n"
                "de cuentas bancarias. Sólo se añadirán fechas no\n"
                "importadas anteriormente en la cuenta %1.\n"
-               "¿ Desea continuar ?").arg(cuenta),
-            tr("&Sí"), tr("&No"),
-            QString(), 0, 1 ) !=0 )
+               "¿ Desea continuar ?").arg(cuenta)) == QMessageBox::No )
                           return;
 
 #ifdef NOMACHINE
@@ -5011,9 +5003,7 @@ void MainWindow::borraimportac43()
               tr("Eliminación de pases c43"),
               tr("Se van a borrar todos los pases de la cuenta importada\n"
                  "del cuaderno 43, a partir de la fecha %1,\n"
-                 "la operación es irreversible ¿ Desea proseguir ?").arg(fecha.toString("dd.MM.yyyy")),
-              tr("&Sí"), tr("&No"),
-              QString(), 0, 1 ) ==0 )
+                 "la operación es irreversible ¿ Desea continuar ?").arg(fecha.toString("dd.MM.yyyy"))) == QMessageBox::Yes )
              {
                 basedatos::instancia()->deleteCuenta_ext_concifechacuenta(fecha, cuenta);
                 QMessageBox::information( this, tr("Borrar registros"),
@@ -6279,9 +6269,7 @@ void MainWindow::renumera()
                    "COPIA DE SEGURIDAD. LA BASE DE DATOS NO DEBE\n"
                    "DE SER ACCEDIDA POR NINGÚN PUESTO MIENTRAS SE\n"
                    "REALIZA EL PROCESO\n"
-                   " ¿ Continuar ?"),
-                tr("&Sí"), tr("&No"),
-                QString(), 0, 1 ) ) return;
+                   " ¿ Continuar ?")) == QMessageBox::No ) return;
 
   QProgressDialog progreso("Borrando papelera ...", 0, 0, 0);
   progreso.setWindowTitle(tr("PROCESANDO..."));
@@ -6561,9 +6549,7 @@ void MainWindow::verificaBD()
 {
     if (QMessageBox::question(this,
                     tr("Verificar base de datos"),
-                    tr("El proceso puede ser prolongado para bases de datos grandes ¿ desea continuar ?"),
-                    tr("&Sí"), tr("&No"),
-                    QString(), 0, 1 ) )
+                    tr("El proceso puede ser prolongado para bases de datos grandes ¿ desea continuar ?")) == QMessageBox::No )
                   return ;
     bool errenlace=false;
     QProgressDialog progress(tr("Verificando..."), tr("Abortar"), 0, 7, this);

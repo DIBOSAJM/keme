@@ -59,9 +59,7 @@ void asigna_dir_trab::borra_conex()
     if (QMessageBox::question(this,
                     tr("Consolidación"),
                     tr("¿ Desea borrar rutas asociadas a la conexión '%1' ?")
-                      .arg( cadcodigo ),
-                    tr("&Sí"), tr("&No"),
-                              QString(), 0, 1 ) )
+                      .arg( cadcodigo ))==QMessageBox::No )
                   return ;
     ui.conextableWidget->item(fila,0)->setText(QString());
     ui.conextableWidget->item(fila,1)->setText(QString());

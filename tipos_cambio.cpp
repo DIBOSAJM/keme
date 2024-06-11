@@ -51,9 +51,7 @@ void tipos_cambio::on_borrar_pushButton_clicked()
         if (QMessageBox::question(
                this,
                tr("TIPOS DE CAMBIO"),
-               tr("¿ Desea borrar '%1' ?").arg(ui->tableWidget->verticalHeaderItem(i)->text()),
-               tr("&Sí"), tr("&No"),
-                QString(), 0, 1 ) ==1 )
+                tr("¿ Desea borrar '%1' ?").arg(ui->tableWidget->verticalHeaderItem(i)->text())) == QMessageBox::No )
                              return;
         ui->tableWidget->removeRow(i);
     }
@@ -78,9 +76,7 @@ void tipos_cambio::on_cancelar_pushButton_clicked()
         if (QMessageBox::question(
                this,
                tr("TIPOS DE CAMBIO"),
-               tr("HAY CAMBIOS ¿ Desea cancelar y salir ?"),
-               tr("&Sí"), tr("&No"),
-                QString(), 0, 1 ) ==1 )
+                tr("HAY CAMBIOS ¿ Desea cancelar y salir ?")) == QMessageBox::No )
                              return;
     }
     reject();
