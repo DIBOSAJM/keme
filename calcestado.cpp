@@ -71,8 +71,8 @@ calcestado::calcestado() : QDialog() {
   connect(ui.copiarpushButton,SIGNAL(clicked()),this,SLOT(copia()));
   connect(ui.graficopushButton,SIGNAL(clicked()),this,SLOT(generagrafico()));
 
-  connect(ui.Ejercicio1comboBox,SIGNAL(currentIndexChanged (QString)),this,SLOT(actualizacomboej1()));
-  connect(ui.Ejercicio2comboBox,SIGNAL(currentIndexChanged (QString)),this,SLOT(actualizacomboej2()));
+  connect(ui.Ejercicio1comboBox,SIGNAL(currentIndexChanged (int)),this,SLOT(actualizacomboej1()));
+  connect(ui.Ejercicio2comboBox,SIGNAL(currentIndexChanged (int)),this,SLOT(actualizacomboej2()));
 
   connect(ui.ini_ej1_dateEdit,SIGNAL(dateChanged (QDate)),this,SLOT(fecha_ej1_ini_cambiada()));
   connect(ui.fin_ej1_dateEdit,SIGNAL(dateChanged (QDate)),this,SLOT(fecha_ej1_fin_cambiada()));

@@ -21,7 +21,6 @@
 
 #include "exec_regul.h"
 #include "basedatos.h"
-#include "regul_sec.h"
 #include "funciones.h"
 #include "expresiones.h"
 #include <QMessageBox>
@@ -46,7 +45,7 @@ exec_regul::exec_regul() : QDialog() {
 
      // connect(ui.tabla,SIGNAL( clicked ( QModelIndex )),this,SLOT(tablapulsada()));
      connect(ui.ejecutarpushButton,SIGNAL(clicked()),this,SLOT(tablapulsada()));
-     connect(ui.ejerciciocomboBox,SIGNAL(currentIndexChanged (QString )),this,
+     connect(ui.ejerciciocomboBox,SIGNAL(currentIndexChanged (int)),this,
             SLOT(ejerciciocambiado()));
 
   QSqlQuery query = basedatos::instancia()->selectCodigoejerciciosordercodigo();

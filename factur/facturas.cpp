@@ -1064,7 +1064,7 @@ void facturas::borralinea()
     if (QMessageBox::question(
              this,
              tr("Borrar registro"),
-            tr("¿ Desea borrar el documento seleccionado ?")) == QMessageBox::Yes )
+            tr("¿ Desea borrar el documento seleccionado ?")) == QMessageBox::No )
                            return;
 
 
@@ -1517,8 +1517,7 @@ void facturas::on_habilitar_doc_pushButton_clicked()
                                               model->datagen(listanumero.at(i),Qt::DisplayRole).toString());
       }
 
-      QMessageBox::information( this, tr("KEME-FACTUR"),tr("ERROR: "
-                                                       "Operación realizada"));
+      QMessageBox::information( this, tr("KEME-FACTUR"),tr("Operación realizada"));
    refresca();
   }
 }

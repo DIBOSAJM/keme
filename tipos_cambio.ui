@@ -13,20 +13,152 @@
   <property name="windowTitle">
    <string>TIPOS DE CAMBIO</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QTableWidget" name="tableWidget">
-     <column>
-      <property name="text">
-       <string>NOMBRE</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>CAMBIO</string>
-      </property>
-     </column>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>MONEDA DE REFERENCIA:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="referencia_lineEdit">
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>255</red>
+             <green>252</green>
+             <blue>225</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>255</red>
+             <green>252</green>
+             <blue>225</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QTableWidget" name="tableWidget">
+       <column>
+        <property name="text">
+         <string>NOMBRE</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>CAMBIO</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="mueve_arriba_pushButton">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/up.png</normaloff>:/iconos/graf/up.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="mueve_abajo_pushButton">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="keme.qrc">
+           <normaloff>:/iconos/graf/down.png</normaloff>:/iconos/graf/down.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -51,6 +183,17 @@
        <property name="icon">
         <iconset resource="keme.qrc">
          <normaloff>:/iconos/graf/File.png</normaloff>:/iconos/graf/File.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="actualizar_pushButton">
+       <property name="text">
+        <string>Ac&amp;tualizar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/reload2.png</normaloff>:/iconos/graf/reload2.png</iconset>
        </property>
       </widget>
      </item>
@@ -97,9 +240,12 @@
  <tabstops>
   <tabstop>tableWidget</tabstop>
   <tabstop>nuevo_pushButton</tabstop>
+  <tabstop>actualizar_pushButton</tabstop>
   <tabstop>borrar_pushButton</tabstop>
   <tabstop>cancelar_pushButton</tabstop>
   <tabstop>aceptar_pushButton</tabstop>
+  <tabstop>mueve_arriba_pushButton</tabstop>
+  <tabstop>mueve_abajo_pushButton</tabstop>
  </tabstops>
  <resources>
   <include location="keme.qrc"/>

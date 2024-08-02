@@ -1735,6 +1735,8 @@ class basedatos {
 
         QString msj_vto_dcho();
 
+        QString config_moneda();
+
         QString msj_vto_obl();
 
         bool tipo_proveedor_config();
@@ -1757,7 +1759,7 @@ class basedatos {
                                  bool sec_recibidas, QString prox_domicilia, QString cod_ine_plaza,
                                  bool caja_iva, bool borrados_consol, QString msj_vto_dcho, QString msj_vto_obl,
                                  bool externos, QString tfno, bool gd_bd, bool tipo_proveedor, QString cod_homol_pruebas,
-                                 QString nombre, QString apellidos, bool curl, QString url_actu);
+                                 QString nombre, QString apellidos, bool curl, QString url_actu, QString moneda);
 
         // 
         void updateDiarioasientoasiento(QString nuevo, QString antiguo, QString ejercicio);
@@ -3568,6 +3570,12 @@ class basedatos {
         QSqlQuery ejecutar_publica(QString cadena);
 
         QString clave_iva_apunte(QString apunte);
+
+        void borra_registros_monedas();
+
+        void insert_registro_moneda(int posic, QString codigo, QString descripcion, double tipo_cambio);
+
+        QSqlQuery select_registros_monedas();
 
     private:
 

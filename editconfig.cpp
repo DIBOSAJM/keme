@@ -23,7 +23,6 @@
 #include "funciones.h"
 #include "basedatos.h"
 #include "graf_recorte.h"
-#include "directorio.h"
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -130,7 +129,8 @@ move ( x, y ); */
        ui.apellidos_lineEdit->setText(query.value(51).toString());
        ui.curl_checkBox->setChecked(query.value(52).toBool());
        ui.url_actu_lineEdit->setText(query.value(53).toString());
-       imagen=query.value(54).toString();
+       ui.moneda_lineEdit->setText(query.value(54).toString());
+       imagen=query.value(55).toString();
      }
   for (int veces=0; veces<ui.provinciacomboBox->count(); veces++)
      {
@@ -211,7 +211,8 @@ void editconfig::aceptar()
                                                  ui.nombre_lineEdit->text(),
                                                  ui.apellidos_lineEdit->text(),
                                                  ui.curl_checkBox->isChecked(),
-                                                 ui.url_actu_lineEdit->text());
+                                                 ui.url_actu_lineEdit->text(),
+                                                ui.moneda_lineEdit->text());
 
     basedatos::instancia()->graba_config_imagenlogo(fototexto());
 

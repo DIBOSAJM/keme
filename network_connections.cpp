@@ -242,3 +242,81 @@ bool aeat_soap::processed() {
 
    return loaded;
 }
+
+// --------------------------------------------------------------------------------
+
+currency_exchange::currency_exchange()
+{
+    mNetReply=nullptr;
+}
+
+void currency_exchange::restrictions(QDate wdate, QString wbase)
+{
+    date=wdate;
+    base=wbase;
+}
+
+void currency_exchange::load_data()
+{
+    loaded=false;
+    mDataBuffer= new QByteArray;
+    QUrl url;
+    url.setScheme("https");
+    url.setHost("api.vatcomply.com");
+    //url.setPort(int);
+    url.setPath("/rates");
+    url.setQuery("base="+base+"&date="+date.toString("yyyy-MM-dd"));
+    QNetworkRequest q(url);
+
+    mNetReply = mNetMan->get(QNetworkRequest(q));
+    connect(mNetReply, &QIODevice::readyRead, this, &currency_exchange::OnDataReadyToRead);
+    connect(mNetReply, &QNetworkReply::finished, this, &currency_exchange::OnProcessFinished);
+}
+
+bool currency_exchange::data_loaded()
+{
+    QTime _Timer = QTime::currentTime().addMSecs(3000);
+    while( (QTime::currentTime() < _Timer) && (!loaded))
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 5);
+
+    return loaded;
+
+}
+
+bool currency_exchange::conn_error()
+{
+    return connection_error;
+}
+
+QString currency_exchange::conn_error_string()
+{
+    return network_reply_error_string;
+}
+
+int currency_exchange::conn_error_number()
+{
+    return network_reply_error;
+}
+
+QJsonObject currency_exchange::values()
+{
+    return exchanges;
+}
+
+void currency_exchange::OnDataReadyToRead()
+{
+    mDataBuffer->append(mNetReply->readAll());
+}
+
+void currency_exchange::OnProcessFinished()
+{
+    QJsonDocument doc = QJsonDocument::fromJson(*mDataBuffer);
+    // QJsonArray array = doc.array();
+
+    exchanges = doc.object();
+    // qDebug() << *mDataBuffer;
+    delete mDataBuffer;
+    delete mNetReply;
+    loaded=true;
+
+}

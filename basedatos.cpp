@@ -23,7 +23,7 @@
 
 #include "funciones.h"
 
-#define VERSION "3.2.2.6"
+#define VERSION "4.0.0.0"
 
 #include <QMessageBox>
 #include <QApplication>
@@ -760,10 +760,11 @@ void basedatos::solotablas(bool segunda, QString qbase)
 
     // monedas
     cadena = "CREATE TABLE monedas ("
+             "posic          int,"
              "codigo         varchar(40),"
              "descripcion    varchar(254),"
              "tipo_cambio    numeric(20,6) default 0,"
-             "PRIMARY KEY (codigo) )";
+             "PRIMARY KEY (posic) )";
     if (segunda) cadena = anadirMotor(cadena,qbase); else cadena = anadirMotor(cadena);
     if (segunda) ejecutar(cadena,qbase); else ejecutar(cadena);
 
@@ -2591,15 +2592,6 @@ void basedatos::solotablas(bool segunda, QString qbase)
         else cadena += "caja_iva bool default false,";
 
      cadena+="imagen         text,"
-             "PRIMARY KEY (codigo) )";
-    if (segunda) cadena = anadirMotor(cadena,qbase); else cadena = anadirMotor(cadena);
-    if (segunda) ejecutar(cadena,qbase); else ejecutar(cadena);
-
-    // tipos_cambio
-    cadena = "CREATE TABLE tipos_cambio ("
-             "codigo         varchar(40),"
-             "nombre         varchar(255),"
-             "tipo_cambio    float8 default 0,"
              "PRIMARY KEY (codigo) )";
     if (segunda) cadena = anadirMotor(cadena,qbase); else cadena = anadirMotor(cadena);
     if (segunda) ejecutar(cadena,qbase); else ejecutar(cadena);
@@ -11637,7 +11629,7 @@ QSqlQuery basedatos::selectConfiguracion () {
                 "prox_documento, gestion_usuarios, analitica_tabla, provincia_def,"
                 "cuentas_aa, cuentas_ag, amoinv, sec_recibidas, prox_domiciliacion, "
                 "cod_ine_plaza, caja_iva, borrados_consol, msj_vto_dcho, msj_vto_obl, externos, tfno, "
-                "gestor_db, tipo_proveedor, cod_homol_pruebas, nombre, apellidos, curl, url_actu, imagen "
+                "gestor_db, tipo_proveedor, cod_homol_pruebas, nombre, apellidos, curl, url_actu, moneda, imagen "
         "from configuracion";
     return ejecutar(cadena);
 }
@@ -15481,7 +15473,7 @@ void basedatos::updateConfiguracion (QString empresa ,QString nif, QString domic
                                      QString cod_ine_plaza, bool caja_iva, bool borrados_consol,
                                      QString msj_vto_dcho, QString msj_vto_obl,bool externos,
                                      QString tfno, bool gd_bd, bool tipo_proveedor, QString cod_homol_pruebas,
-                                     QString nombre, QString apellidos, bool curl, QString url_actu) {
+                                     QString nombre, QString apellidos, bool curl, QString url_actu, QString moneda) {
     QString cadena = "update configuracion set ";
     cadena += "empresa='"+ empresa.left(-1).replace("'","''");
     cadena += "',nif='"+ nif.left(-1).replace("'","''");
@@ -15582,6 +15574,9 @@ void basedatos::updateConfiguracion (QString empresa ,QString nif, QString domic
     cadena+="apellidos='";
     cadena+=apellidos;
     cadena+="',";
+    cadena+="moneda='";
+    cadena+=moneda;
+    cadena+="',";
     cadena+="url_actu='";
     cadena+=url_actu;
     cadena+="', ";
@@ -15611,6 +15606,18 @@ QString basedatos::msj_vto_dcho()
             return q.value(0).toString();
     return QString();
 }
+
+QString basedatos::config_moneda()
+{
+    QString cadena="select moneda from configuracion";
+    QSqlQuery q=ejecutar(cadena);
+    if(q.isActive())
+        if (q.next())
+            return q.value(0).toString();
+    return QString();
+}
+
+
 
 QSqlQuery basedatos::cuenta_max_fecha_diario(QString filtro) {
     QString cadena="select cuenta, max(fecha) from diario where (diario!='";
@@ -21956,10 +21963,11 @@ void basedatos::actualizade3226() {
 
    // monedas
    QString cadena = "CREATE TABLE monedas ("
+            "posic          int,"
             "codigo         varchar(40),"
             "descripcion    varchar(254),"
             "tipo_cambio    numeric(20,6) default 0,"
-            "PRIMARY KEY (codigo) )";
+            "PRIMARY KEY (posic) )";
    cadena = anadirMotor(cadena);
    ejecutar(cadena);
 
@@ -23891,7 +23899,7 @@ bool basedatos::comprobarVersion () {
                 && laversion !="3.2.1.9" && laversion !="3.2.2.0"
                 && laversion !="3.2.2.1" && laversion !="3.2.2.2"
                 && laversion !="3.2.2.3" && laversion !="3.2.2.4"
-                && laversion !="3.2.2.5") {
+                && laversion !="3.2.2.5" && laversion !="3.2.2.6") {
             if (!(splash==NULL))
              {
               splash->finish( 0 );
@@ -24001,7 +24009,8 @@ bool basedatos::comprobarVersion () {
                 if (versionbd()=="3.2.2.2") actualizade3222();
                 if (versionbd()=="3.2.2.3") actualizade3223();
                 if (versionbd()=="3.2.2.4") actualizade3224();
-                actualizade3225();
+                if (versionbd()=="3.2.2.5") actualizade3225();
+                actualizade3226();
 
               }
             else {
@@ -31522,3 +31531,35 @@ QString basedatos::clave_iva_apunte(QString apunte)
         }
     return QString();
 }
+
+void basedatos::borra_registros_monedas() {
+    ejecutar("delete from monedas");
+
+}
+
+void basedatos::insert_registro_moneda(int posic, QString codigo, QString descripcion, double tipo_cambio)
+{
+    QString cadena="insert into monedas ( posic, codigo, descripcion, tipo_cambio) "
+          "values (";
+    QString cadnum;
+    cadnum.setNum(posic);
+    cadena += cadnum;
+    cadena += ",'";
+    cadena += codigo;
+    cadena += "','";
+    cadena += descripcion;
+    cadena += "', ";
+    cadnum.setNum(tipo_cambio,'f',6);
+    cadena += cadnum;
+    cadena += ")";
+    ejecutar(cadena);
+}
+
+
+QSqlQuery basedatos::select_registros_monedas ()
+{
+    QString cadena="select codigo, descripcion, tipo_cambio from monedas";
+    cadena+= " order by posic";
+    return ejecutar(cadena);
+}
+

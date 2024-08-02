@@ -136,7 +136,6 @@ void tabla_iva_rep::refrescar()
 
 
  QProgressDialog progreso("Cargando registros ...",  0, 0, 100);
- progreso.setWindowModality(Qt::WindowModal);
  progreso.setMaximum(registros);
  progreso.setMinimumDuration ( 0 );
  progreso.setWindowTitle(tr("PROCESANDO..."));

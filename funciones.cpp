@@ -8077,7 +8077,6 @@ bool f_importa_csv_cta_conci(QString qfichero,QString cuenta)
         } else return false;
 
     QProgressDialog progreso("Procesando archivo...", 0, 0, lineas);
-    progreso.setWindowModality(Qt::WindowModal);
     // progreso.setMaximum(0);
     int proceso=1;
     progreso.setValue(proceso);
@@ -8179,7 +8178,6 @@ bool f_importarfichc43(QString qfichero,QString cuenta)
       } else return false;
 
   QProgressDialog progreso("Procesando cuaderno ...", 0, 0, lineas);
-  progreso.setWindowModality(Qt::WindowModal);
   // progreso.setMaximum(0);
   int proceso=1;
   progreso.setValue(proceso);

@@ -685,7 +685,7 @@ void contabilizar_factura(QString serie, QString numero, QString usuario, bool n
          QString cuentaiva=basedatos::instancia()->cuenta_tipo_iva(claveiva);
          QString tipoiva=q.value(2).toString();
          QString tipore=q.value(3).toString();
-         if (claveiva=="EXENTO") base_exenta+=importe;
+         if (claveiva=="EXENTO") {base_exenta+=importe; claveiva="";}
          if (cuentaiva.isEmpty()) continue;
          double cuota=redond(importe*(tipoiva.toDouble()+tipore.toDouble())/100,2);
          totalfactura+=cuota;
@@ -725,7 +725,7 @@ void contabilizar_factura(QString serie, QString numero, QString usuario, bool n
           mes.setNum(fecha_fac.month());
           anyo.setNum(fecha_fac.year());
 
-          tablaasiento->pasadatos2(fila,cuenta_ingreso_exenta,cad_base_exenta,tipo_exento(),
+          tablaasiento->pasadatos2(fila,cuenta_ingreso_exenta,cad_base_exenta,/*tipo_exento()*/ "",
                                    "", //tipo iva
                                    "", // tipo re
                                    "0", // cuota iva
@@ -926,7 +926,7 @@ void contabilizar_factura(QString serie, QString numero, QString usuario, bool n
               info_donacion=basedatos::instancia()->info_donacion_doc(tipo_doc);
            }
 
-           tablaasiento->pasadatos2(fila,cuenta_ingreso,totaloper,tipo_exento(),
+           tablaasiento->pasadatos2(fila,cuenta_ingreso,totaloper,/*tipo_exento()*/ "",
                                     "", //tipo iva
                                     "", // tipo re
                                     "0", // cuota iva

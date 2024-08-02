@@ -26,7 +26,6 @@
 #include <QRadioButton>
 #include "datos_accesorios.h"
 #include "consmayor.h"
-#include "directorio.h"
 #include "pidefecha.h"
 #include <QProgressDialog>
 #include <QMessageBox>
@@ -157,7 +156,6 @@ void conta347::cargadatos()
 
    QProgressDialog progreso(tr("Cargando información ... ")
                             , 0, 0, 0);
-   progreso.setWindowModality(Qt::WindowModal);
    progreso.setMinimumDuration ( 0 );
    progreso.show();
    progreso.raise();

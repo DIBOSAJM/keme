@@ -25,10 +25,21 @@ private slots:
 
     void on_cancelar_pushButton_clicked();
 
+    void on_actualizar_pushButton_clicked();
+
+    void on_mueve_arriba_pushButton_clicked();
+
+    void on_mueve_abajo_pushButton_clicked();
+
+    void on_aceptar_pushButton_clicked();
+
 private:
     Ui::tipos_cambio *ui;
     bool cambios=false;
     bool comadecimal;
+    QStringList cod_moneda;
+    QStringList descrip_moneda;
+
 };
 
 #endif // TIPOS_CAMBIO_H

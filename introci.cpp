@@ -69,9 +69,9 @@ introci::introci() : QDialog() {
  ui.d3comboBox->insertItem( -1,"");
  ui.d3comboBox->setCurrentIndex ( 0 );
 
- connect(ui.ci1comboBox,SIGNAL(currentIndexChanged (QString)),this,SLOT(combo1cambiado()));
- connect(ui.ci2comboBox,SIGNAL(currentIndexChanged (QString)),this,SLOT(combo2cambiado()));
- connect(ui.ci3comboBox,SIGNAL(currentIndexChanged (QString)),this,SLOT(combo3cambiado()));
+ connect(ui.ci1comboBox,SIGNAL(currentIndexChanged (int)),this,SLOT(combo1cambiado()));
+ connect(ui.ci2comboBox,SIGNAL(currentIndexChanged (int)),this,SLOT(combo2cambiado()));
+ connect(ui.ci3comboBox,SIGNAL(currentIndexChanged (int)),this,SLOT(combo3cambiado()));
 
  connect(ui.d1comboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(d1cambiado()));
  connect(ui.d2comboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(d2cambiado()));
