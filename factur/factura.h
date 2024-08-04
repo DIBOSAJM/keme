@@ -58,7 +58,7 @@ class factura : public QDialog {
                                        bool con_ret,
                                        bool re,
                                        QString tipo_ret,
-                                       QString retencion,
+                                       QString retencion, QString externo,
                                        QString tipo_doc
                                        );
                 void carga_lineas_doc(QString serie,

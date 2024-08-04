@@ -468,9 +468,10 @@ void contabilizar_factura(QString serie, QString numero, QString usuario, bool n
     03 - Entregas interiores de bienes o servicios no sujetos
     04 - Entrega intracomunitaria de bienes
     05 - Entrega intracomunitaria de servicios
-    06 - Exportación de bienes o servicios
+    06 - Exportación de bienes
     07 - Operación exenta que no da derecho a deducción
     08 - Donación
+    09 - PRESTACIÓN SERVICIOS EXTRANJERO ISP
     */
     // generamos tantos apuntes como cuentas de gasto + tipoiva
 
@@ -801,6 +802,7 @@ void contabilizar_factura(QString serie, QString numero, QString usuario, bool n
           // 06 - Exportación de bienes o servicios
           // 07 - Operación exenta que no da derecho a deducción
           // 08 - Donación
+          // 09 - EXP SERVICIOS ISP
          q = basedatos::instancia()->select_lin_doc(clave);
          tabla_asientos *tablaasiento=new tabla_asientos(haycomadecimal(),haydecimales(),usuario);
          tablaasiento->pasafechaasiento(fecha);
@@ -808,7 +810,7 @@ void contabilizar_factura(QString serie, QString numero, QString usuario, bool n
          tablaasiento->pasa_concepto_sii(concepto_sii);
          if (nomsj) tablaasiento->evita_pregunta_venci();
          if (tipo_operacion==4) tablaasiento->activa_eib_exterior();
-         if (tipo_operacion==6) tablaasiento->activa_exportacionexento();
+         if (tipo_operacion==6 || tipo_operacion==9) tablaasiento->activa_exportacionexento();
          if (tipo_operacion==7) tablaasiento->activa_nodeduccionexento();
 
          double totalfactura=0;
@@ -946,13 +948,13 @@ void contabilizar_factura(QString serie, QString numero, QString usuario, bool n
                                     "0", // bien inversion
                                     "1", // afecto
                                     "","","","", // agrario, nombre, cif, importacion
-                                    tipo_operacion==6 ? "1" : "", // exportación
+                                    (tipo_operacion==6 || tipo_operacion==9) ? "1" : "", // exportación
                                     tipo_operacion==7 ? "1" : "", // exenta no deduc
                                     "","", // isp_op_interiores, caja_iva
                                     false, false, false, // no 347 - arrto_ret - arrto_sin_ret
                                     "",info_donacion);
            // qDebug() << info_donacion;
-           if (tipo_operacion==3) tablaasiento->activa_fila_nosujeta(fila);// no sujetas
+           if (tipo_operacion==3 || tipo_operacion==9) tablaasiento->activa_fila_nosujeta(fila);// no sujetas
            if (tipo_operacion==5) tablaasiento->activa_fila_prservicios_ue(fila);// pr servicios ue
            int filaexento=0; // guarda la línea donde se guarda info del libro facturas
            filaexento=fila;

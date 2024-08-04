@@ -76,6 +76,7 @@ void traspasos::procesar()
                     q.value(9).toBool(),
                     q.value(10).toString(),
                     q.value(11).toString(),
+                    q.value(20).toString(),
                     tipodoc); // tipo_doc
        }
     // ahora nos concentramos en cargar las líneas del documento

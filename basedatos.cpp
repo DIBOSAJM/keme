@@ -656,6 +656,7 @@ void basedatos::solotablas(bool segunda, QString qbase)
     cadena+="apellidos   varchar(255) default '',";
     cadena+="url_actu   varchar(255) default '',";
     cadena+="moneda varchar(20) default '',";
+    cadena+="fecha_monedas date,";
     if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
         cadena += "curl bool default 0,";
           else cadena += "curl bool default false,";
@@ -15618,6 +15619,16 @@ QString basedatos::config_moneda()
 }
 
 
+QDate basedatos::fecha_actu_cambios()
+{
+    QString cadena="select fecha_monedas from configuracion";
+    QSqlQuery q=ejecutar(cadena);
+    if(q.isActive())
+        if (q.next())
+            return q.value(0).toDate();
+    return QDate();
+}
+
 
 QSqlQuery basedatos::cuenta_max_fecha_diario(QString filtro) {
     QString cadena="select cuenta, max(fecha) from diario where (diario!='";
@@ -21960,6 +21971,7 @@ void basedatos::actualizade3226() {
 
 
    ejecutar("alter table configuracion add column moneda varchar(20) default ''");
+   ejecutar("alter table configuracion add column fecha_monedas date");
 
    // monedas
    QString cadena = "CREATE TABLE monedas ("
@@ -31563,3 +31575,9 @@ QSqlQuery basedatos::select_registros_monedas ()
     return ejecutar(cadena);
 }
 
+void basedatos::update_fecha_actu_cambios(QDate fecha) {
+    QString cadena = "update configuracion set fecha_monedas='";
+    cadena+=fecha.toString("yyyy-MM-dd");
+    cadena+="'";
+    ejecutar(cadena);
+}

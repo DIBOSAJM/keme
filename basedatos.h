@@ -1737,6 +1737,8 @@ class basedatos {
 
         QString config_moneda();
 
+        QDate fecha_actu_cambios();
+
         QString msj_vto_obl();
 
         bool tipo_proveedor_config();
@@ -3576,6 +3578,8 @@ class basedatos {
         void insert_registro_moneda(int posic, QString codigo, QString descripcion, double tipo_cambio);
 
         QSqlQuery select_registros_monedas();
+
+        void update_fecha_actu_cambios(QDate fecha);
 
     private:
 

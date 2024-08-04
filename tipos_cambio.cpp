@@ -16,6 +16,7 @@ tipos_cambio::tipos_cambio(QWidget *parent) :
 
     QString moneda_base=basedatos::instancia()->config_moneda();
     ui->referencia_lineEdit->setText(moneda_base);
+    ui->dateEdit->setDate(basedatos::instancia()->fecha_actu_cambios());
 
     QString codigos_moneda=
         "ADP;Peseta Andorrana*"
@@ -306,8 +307,7 @@ void tipos_cambio::on_actualizar_pushButton_clicked()
 {
     currency_exchange c;
     qDebug() << tr("procedimiento actualizar");
-    QDate date; date.setDate(2024,6,14);
-    c.restrictions(date,"EUR");
+    c.restrictions(QDate::currentDate(),ui->referencia_lineEdit->text());
     c.load_data();
     if (c.data_loaded()) {
         if (c.conn_error()) {
@@ -339,12 +339,10 @@ void tipos_cambio::on_actualizar_pushButton_clicked()
                 }
             }
         }
-
-
-        QJsonDocument doc(jsresponse);
-        qDebug() << doc.toJson();
-
-    } else qDebug() << tr("NO SE HA CARGADO NADA");
+        //QJsonDocument doc(jsresponse);
+        //qDebug() << doc.toJson();
+        ui->dateEdit->setDate(QDate::currentDate());
+    } // else qDebug() << tr("NO SE HA CARGADO NADA");
 }
 
 
@@ -433,7 +431,7 @@ void tipos_cambio::on_aceptar_pushButton_clicked()
         basedatos::instancia()->insert_registro_moneda(veces+1,ui->tableWidget->verticalHeaderItem(veces)->text(),
                                                        ui->tableWidget->item(veces,0)->text(),convapunto(ui->tableWidget->item(veces,1)->text()).toDouble());
     }
-
+    basedatos::instancia()->update_fecha_actu_cambios(ui->dateEdit->date());
     accept();
 }
 

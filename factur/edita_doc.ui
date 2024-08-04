@@ -214,7 +214,7 @@
          <item>
           <spacer name="horizontalSpacer_3">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -268,7 +268,7 @@
              </item>
              <item>
               <property name="text">
-               <string>06 - Exportación de bienes o servicios</string>
+               <string>06 - Exportación de bienes</string>
               </property>
              </item>
              <item>
@@ -279,6 +279,11 @@
              <item>
               <property name="text">
                <string>08 - Donación</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>09 - Prestación servicios al exterior (ISP)</string>
               </property>
              </item>
             </widget>
@@ -996,10 +1001,10 @@
                 </size>
                </property>
                <property name="frameShape">
-                <enum>QFrame::WinPanel</enum>
+                <enum>QFrame::Shape::WinPanel</enum>
                </property>
                <property name="frameShadow">
-                <enum>QFrame::Sunken</enum>
+                <enum>QFrame::Shadow::Sunken</enum>
                </property>
                <property name="text">
                 <string/>
@@ -1011,10 +1016,10 @@
                <item>
                 <spacer name="horizontalSpacer_2">
                  <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                  <enum>Qt::Orientation::Horizontal</enum>
                  </property>
                  <property name="sizeType">
-                  <enum>QSizePolicy::Preferred</enum>
+                  <enum>QSizePolicy::Policy::Preferred</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -1175,7 +1180,7 @@
             </size>
            </property>
            <property name="frameShape">
-            <enum>QFrame::Box</enum>
+            <enum>QFrame::Shape::Box</enum>
            </property>
            <property name="text">
             <string>IMG FONDO</string>
@@ -1351,7 +1356,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>

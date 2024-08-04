@@ -1028,6 +1028,7 @@ void factura::solo_cabecera_doc(QString serie,
                        bool re,
                        QString tipo_ret,
                        QString retencion,
+                       QString externo,
                        QString tipo_doc
                        )
 {
@@ -1037,7 +1038,9 @@ void factura::solo_cabecera_doc(QString serie,
     ui.fecha_asiento_dateEdit->setDate(fecha_asiento);
     ui.fechadateEdit->setDate(fecha_fac);
     ui.fechaopdateEdit->setDate(fecha_op);
-    contabilizable=contabilizable;
+    //contabilizable=contabilizable;
+    Q_UNUSED(contabilizable);
+    ui.externo_lineEdit->setText(externo);
     ui.ret_checkBox->setChecked(con_ret);
     ui.recheckBox->setChecked(re);
     ui.tipo_ret_lineEdit->setText(coma ? convacoma(tipo_ret) : tipo_ret);

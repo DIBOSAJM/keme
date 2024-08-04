@@ -393,6 +393,8 @@ void lotes::genera_docs()
      progreso.setMinimumDuration(100);
 
 
+     QStringList lista_suplidos;
+     lista_suplidos=basedatos::instancia()->lista_ref_suplidos();
 
     // vamos generando las facturas una a una
     for (int veces=0;veces<ui->tableWidget->rowCount();veces++)
@@ -400,8 +402,11 @@ void lotes::genera_docs()
         progreso.setValue(veces);
         QCoreApplication::processEvents();
         // calculamos el total de la factura
+
         bool primero=true;
         double total_base=0;
+        double total_suplidos=0;
+        double total_factura=0;
         if (q.isActive())
            {
             if (q.first())
@@ -422,7 +427,11 @@ void lotes::genera_docs()
                           }
                     primero=false;
                    }
-                total_base+=importe*(1-q.value(8).toDouble()/100);
+                if (!lista_suplidos.contains(q.value(1).toString())) {
+                   total_base+=importe*(1-q.value(8).toDouble()/100);
+                   total_factura+=importe*(1-q.value(8).toDouble()/100)*(1+q.value(6).toDouble()/100+q.value(7).toDouble()/100);
+                }
+                 else total_suplidos+=importe*(1-q.value(8).toDouble()/100);
                } while (q.next());
            }
         // Comenzamos transacción: tablas series_fact, facturas, detalle_fact (añadir)
@@ -442,6 +451,8 @@ void lotes::genera_docs()
          // insertamos
          QString cadret; cadret.setNum(total_base*tipo_ret/100,'f',2);
          QString cadtiporet; cadtiporet.setNum(tipo_ret,'f',2);
+         QString cadtotalfra; cadtotalfra.setNum(total_factura,'f',2);
+         QString cadtotalsuplidos; cadtotalsuplidos.setNum(total_suplidos,'f',2);
          int clave_cabecera=basedatos::instancia()->nuevacabecerafactura(
                       serie,
                       cadnum,
@@ -459,7 +470,9 @@ void lotes::genera_docs()
                       notas,
                       pie1,
                       pie2,
-                      "0","",ui->tableWidget->item(veces,4)->text(),concepto_sii);
+                      "0","",ui->tableWidget->item(veces,4)->text(),concepto_sii,
+                      "", "", "",
+                      cadtotalsuplidos, cadtotalfra);
          primero=true;
          if (q.isActive())
             {

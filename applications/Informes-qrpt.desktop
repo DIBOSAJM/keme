@@ -1,0 +1,22 @@
+[Desktop Entry]
+Categories=Application;Office;
+Comment[es_ES]=Diseñador de informes
+Comment=Diseñador de informes
+Encoding=UTF-8
+Exec='/opt/keme/QtRptDesigner'
+GenericName[es_ES]=Report-Designer
+GenericName=Report-Designer
+Icon=/opt/keme/pixmaps/dqrptdesigner
+MimeType=
+Name[es_ES]=Informes
+Name=Informes
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-DCOP-ServiceType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=

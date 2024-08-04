@@ -145,6 +145,7 @@
         <file>graf/oss-open-source-excellence-black.svg</file>
         <file>graf/oss-open-source-excellence-white.svg</file>
         <file>graf/oss-community-leader-white.svg</file>
+        <file>graf/factur.png</file>
     </qresource>
     <qresource prefix="/splash">
         <file>graf/splash.jpg</file>
