@@ -24,7 +24,7 @@
      <x>0</x>
      <y>0</y>
      <width>1333</width>
-     <height>30</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuEmpresa">
@@ -467,7 +467,7 @@
   </action>
   <action name="actionConfiguraci_n">
    <property name="text">
-    <string>&amp;Configuración</string>
+    <string>&amp;Datos Empresa Base Datos</string>
    </property>
   </action>
   <action name="actionEjercicios">
