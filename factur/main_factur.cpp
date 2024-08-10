@@ -75,8 +75,6 @@ main_factur::main_factur(){
     estilonumerico=COMADECIMAL;
     sindecimales=false;
 
-    p_facturas=NULL;
-
     connect(ui.actionSeries, SIGNAL(triggered()), this,
               SLOT (seriesfac()));
 
@@ -120,6 +118,12 @@ void main_factur::seriesfac()
     listaseries *l = new listaseries();
     l->exec();
     delete(l);
+    if (centralWidget()!=NULL)
+        p_facturas=static_cast<facturas*>(centralWidget());
+    if (p_facturas!=NULL) {
+        p_facturas->carga_combos_series();
+        p_facturas->refresca();
+    }
 }
 
 

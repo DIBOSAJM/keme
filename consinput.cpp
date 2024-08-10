@@ -418,6 +418,7 @@ void consinput::generalatex()
            stream << "\\begin{center}\n";
            stream << "\\begin{tabular}{|l|r|p{6cm}|l|l|r|r|r|}\n";
            stream << "\\hline\n";
+           stream << "\\rowcolor{gray!30}\n";
            stream << "{\\scriptsize {" << tr("FECHA") << "}} & {\\scriptsize {" << tr("ASTO.") << 
                      "}} & {\\scriptsize {" << tr("CONCEPTO") << "}} &  {\\scriptsize {" << tr("CUENTA") << 
                      "}} &  {\\scriptsize {" << tr("CI") << "}} & {\\scriptsize {" << tr("DEBE") << 
@@ -530,7 +531,8 @@ void consinput::generalatex()
                         stream << "\\begin{center}\n";
                         stream << "\\begin{tabular}{|l|r|p{6cm}|l|l|r|r|r|}\n";
                         stream << "\\hline\n";
-                        stream << "{\\scriptsize {" << tr("FECHA") << "}} & {\\scriptsize {" << tr("ASTO.") << 
+                        stream << "\\rowcolor{gray!30}\n";
+                        stream << "{\\scriptsize {" << tr("FECHA") << "}} & {\\scriptsize {" << tr("ASTO.") <<
                            "}} & {\\scriptsize {" << tr("CONCEPTO") << "}} &  {\\scriptsize {" << tr("CUENTA") << 
                            "}} &  {\\scriptsize {" << tr("CI") << "}} & {\\scriptsize {" << tr("DEBE") <<
                            "}} & {\\scriptsize {" << tr("HABER") << "}} & {\\scriptsize {" << tr("SALDO") << 
@@ -539,8 +541,8 @@ void consinput::generalatex()
   	       }
 	     }
            stream  << "\\multicolumn{5}{|r|}{" << tr("Sumas ...") << "} & " << "{\\scriptsize {" <<
-                      formateanumero(sumadebe,comadecimal,decimales) << "}}";
-           stream << " & " << "{\\scriptsize {" << formateanumero(sumahaber,comadecimal,decimales) <<
+                      formateanumerosep(sumadebe,comadecimal,decimales) << "}}";
+           stream << " & " << "{\\scriptsize {" << formateanumerosep(sumahaber,comadecimal,decimales) <<
                  "}}" << "& \\\\";
            stream << "\\hline\n";
            // final de la tabla

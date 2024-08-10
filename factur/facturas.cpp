@@ -494,7 +494,7 @@ void facturas::xmldoc()
 
 }
 
-void facturas::informe (QString qserie, QString qnumero) {
+void facturas::informe (QString qserie, QString qnumero, bool pdf_novis) {
     QString nombre_empresa=basedatos::instancia()->selectEmpresaconfiguracion();
     QString domicilio=basedatos::instancia()->domicilio();
     QString poblacion=basedatos::instancia()->ciudad();
@@ -697,15 +697,17 @@ void facturas::informe (QString qserie, QString qnumero) {
     QString fichdoc=basedatos::instancia()->fichreport(tipo_doc);
     if (!fichdoc.isEmpty()) fileName=fichdoc; // dirtrabajobd()+QDir::separator()+"zz_Informes"+QDir::separator()+fichdoc;
 
-    pide_fich *p = new pide_fich();
-    p->pasa(tr("Selección plantilla"),tr("Plantilla Informe:"));
-    p->pasadir(dirtrabajobd()+QDir::separator()+"zz_Informes");
-    p->pasa_nombre_fichero(fileName);
-    int resultado=p->exec();
-    if (resultado==QDialog::Accepted)
-        fileName=p->nombre_fichero();
-      else  {delete(p); return;}
-    delete(p);
+    if (!pdf_novis) {
+       pide_fich *p = new pide_fich();
+       p->pasa(tr("Selección plantilla"),tr("Plantilla Informe:"));
+       p->pasadir(dirtrabajobd()+QDir::separator()+"zz_Informes");
+       p->pasa_nombre_fichero(fileName);
+       int resultado=p->exec();
+       if (resultado==QDialog::Accepted)
+         fileName=p->nombre_fichero();
+        else  {delete(p); return;}
+       delete(p);
+    }
 
 
 
@@ -862,13 +864,22 @@ void facturas::informe (QString qserie, QString qnumero) {
 
     });
 
-    report->printExec(true);
+    if (!pdf_novis) report->printExec(true);
 
     QString qfichero=dirtrabajodocs(tipo_doc); // el directorio será dirtrabajo() + ruta tipo doc
     qfichero.append(QDir::separator());
     QString cadfich=qserie+qnumero+".pdf";
     qfichero.append(cadfich);
     report->printPDF(qfichero,false);
+
+}
+
+void facturas::carga_combos_series()
+{
+    ui.serieinicialcomboBox->addItems(basedatos::instancia()->listacodseries());
+    ui.seriefinalcomboBox->addItems(basedatos::instancia()->listacodseries());
+
+    ui.seriefinalcomboBox->setCurrentIndex(ui.seriefinalcomboBox->count()-1);
 
 }
 void facturas::informe_documento() {
@@ -878,6 +889,22 @@ void facturas::informe_documento() {
                            tr("Para generar un documento hay que seleccionarlo de la lista"));
        return;
       }
+
+    QItemSelectionModel *seleccion;
+    seleccion=ui.facstableView->selectionModel();
+    if (seleccion->hasSelection())
+        if (seleccion->selectedRows().count()>1) {
+            QList<QModelIndex> lista_serie=seleccion->selectedRows(0);
+            QList<QModelIndex> lista_numero=seleccion->selectedRows(1);
+            for (int i=0; i<lista_serie.count(); i++) {
+                QString qserie=model->datagen(lista_serie.at(i),Qt::DisplayRole).toString();
+                QString qnumero=model->datagen(lista_numero.at(i),Qt::DisplayRole).toString();
+                informe(qserie,qnumero,true);
+            }
+            QMessageBox::information(this,tr("Informe documento"),tr("Se han generado los documentos"));
+            return;
+        }
+
     informe(serie(),numero());
 
 }

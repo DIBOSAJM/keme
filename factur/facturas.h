@@ -48,6 +48,7 @@ class facturas : public QDialog {
                 void pasafiltro(QString filtro);
                 void refresca();
                 void escondesalir();
+                void carga_combos_series();
 
       private:
                 Ui::facturas ui;
@@ -61,7 +62,7 @@ class facturas : public QDialog {
                 void latexinforme();
                 int numero_de_filas();
                 bool comadecimal, decimales;
-                void informe (QString qserie, QString qnumero);
+                void informe (QString qserie, QString qnumero, bool pdf_novis=false);
 
 
       private slots:

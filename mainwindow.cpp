@@ -2513,6 +2513,7 @@ void MainWindow::nuevaempresa()
   eldiario->pasaanchos(anchocol);
   eldiario->muestratabla();
   creaDockWindows();
+  activaTodo();
 }
 
 
