@@ -104,7 +104,6 @@ void relop::cargadatos()
 
    QProgressDialog progreso(tr("Cargando información ... ")
                             , 0, 0, 0);
-   progreso.setWindowModality(Qt::WindowModal);
    progreso.setMinimumDuration ( 0 );
    progreso.show();
    progreso.update();
