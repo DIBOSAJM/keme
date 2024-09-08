@@ -36,7 +36,6 @@
          <property name="font">
           <font>
            <pointsize>16</pointsize>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -44,7 +43,7 @@
           <string>nombre de la cuenta</string>
          </property>
          <property name="textFormat">
-          <enum>Qt::PlainText</enum>
+          <enum>Qt::TextFormat::PlainText</enum>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -71,10 +70,10 @@
                   </size>
                  </property>
                  <property name="frameShape">
-                  <enum>QFrame::NoFrame</enum>
+                  <enum>QFrame::Shape::NoFrame</enum>
                  </property>
                  <property name="frameShadow">
-                  <enum>QFrame::Plain</enum>
+                  <enum>QFrame::Shadow::Plain</enum>
                  </property>
                  <property name="text">
                   <string>Cuenta Auxiliar:</string>
@@ -380,10 +379,10 @@
             </size>
            </property>
            <property name="frameShape">
-            <enum>QFrame::WinPanel</enum>
+            <enum>QFrame::Shape::WinPanel</enum>
            </property>
            <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
+            <enum>QFrame::Shadow::Raised</enum>
            </property>
            <property name="lineWidth">
             <number>0</number>
@@ -464,7 +463,7 @@
          <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -557,7 +556,7 @@
          <item>
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -1152,7 +1151,7 @@
           <item>
            <widget class="QLineEdit" name="debelineEdit">
             <property name="alignment">
-             <set>Qt::AlignRight</set>
+             <set>Qt::AlignmentFlag::AlignRight</set>
             </property>
             <property name="readOnly">
              <bool>true</bool>
@@ -1182,7 +1181,7 @@
           <item>
            <widget class="QLineEdit" name="haberlineEdit">
             <property name="alignment">
-             <set>Qt::AlignRight</set>
+             <set>Qt::AlignmentFlag::AlignRight</set>
             </property>
             <property name="readOnly">
              <bool>true</bool>
@@ -1216,7 +1215,7 @@
           <item>
            <widget class="QLineEdit" name="saldolineEdit">
             <property name="alignment">
-             <set>Qt::AlignRight</set>
+             <set>Qt::AlignmentFlag::AlignRight</set>
             </property>
             <property name="readOnly">
              <bool>true</bool>
@@ -1234,13 +1233,12 @@
         <widget class="QPushButton" name="csvpushButton">
          <property name="maximumSize">
           <size>
-           <width>31</width>
-           <height>21</height>
+           <width>35</width>
+           <height>25</height>
           </size>
          </property>
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -1253,13 +1251,12 @@
         <widget class="QPushButton" name="c43pushButton">
          <property name="maximumSize">
           <size>
-           <width>31</width>
-           <height>21</height>
+           <width>35</width>
+           <height>25</height>
           </size>
          </property>
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -1272,13 +1269,12 @@
         <widget class="QPushButton" name="borra_imp_pushButton">
          <property name="maximumSize">
           <size>
-           <width>31</width>
-           <height>21</height>
+           <width>35</width>
+           <height>25</height>
           </size>
          </property>
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -1295,13 +1291,12 @@
         <widget class="QPushButton" name="punteo_conci_pushButton">
          <property name="maximumSize">
           <size>
-           <width>31</width>
-           <height>21</height>
+           <width>35</width>
+           <height>25</height>
           </size>
          </property>
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>

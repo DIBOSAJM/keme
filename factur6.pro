@@ -14,6 +14,8 @@ CONFIG += qt
 RC_FILE = factur.rc
 CONFIG += release
 
+ICON = factur.icns
+
 
 include(./QtRptProject/QtRPT/QtRPT.pri)
 include(./QtRptProject/3rdparty/QtXlsx/qtxlsx.pri)
