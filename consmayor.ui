@@ -1233,8 +1233,8 @@
         <widget class="QPushButton" name="csvpushButton">
          <property name="maximumSize">
           <size>
-           <width>35</width>
-           <height>25</height>
+           <width>38</width>
+           <height>28</height>
           </size>
          </property>
          <property name="font">
@@ -1251,8 +1251,8 @@
         <widget class="QPushButton" name="c43pushButton">
          <property name="maximumSize">
           <size>
-           <width>35</width>
-           <height>25</height>
+           <width>38</width>
+           <height>28</height>
           </size>
          </property>
          <property name="font">
@@ -1269,8 +1269,8 @@
         <widget class="QPushButton" name="borra_imp_pushButton">
          <property name="maximumSize">
           <size>
-           <width>35</width>
-           <height>25</height>
+           <width>38</width>
+           <height>28</height>
           </size>
          </property>
          <property name="font">
@@ -1291,8 +1291,8 @@
         <widget class="QPushButton" name="punteo_conci_pushButton">
          <property name="maximumSize">
           <size>
-           <width>35</width>
-           <height>25</height>
+           <width>38</width>
+           <height>28</height>
           </size>
          </property>
          <property name="font">
