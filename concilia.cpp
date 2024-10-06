@@ -1720,7 +1720,7 @@ void concilia::imprimeconciliacion()
 {
    latexinforme();
 
-   int valor=imprimelatex2(fichinforme);
+   int valor=consultalatex2(fichinforme);
    if (valor==1)
        QMessageBox::warning( this, tr("Conciliación"),tr("PROBLEMAS al llamar a Latex"));
    if (valor==2)

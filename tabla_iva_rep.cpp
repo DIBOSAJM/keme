@@ -55,8 +55,10 @@ ui.tableWidget->setColumnWidth(0,60);
 ui.tableWidget->setColumnWidth(5,200);
 ui.tableWidget->setColumnWidth(7,60);
 
+if (!privileg.isEmpty()) {
 if (privileg[edi_asiento]=='0') ui.edasientopushButton->setEnabled(false);
 if (privileg[borrar_asiento]=='0') ui.borra_asientoButton->setEnabled(false);
+}
 
 col_busqueda=-1;
 

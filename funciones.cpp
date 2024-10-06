@@ -2971,7 +2971,6 @@ int consultalatex(QString qfichero)
 {
     QProgressDialog progreso(QObject::tr("Generando informe ... ")
                              , 0, 0, 0);
-    progreso.setWindowModality(Qt::WindowModal);
     progreso.setMinimumDuration ( 0 );
     progreso.setWindowTitle(QObject::tr("Generando  ... "));;
     progreso.show();
@@ -3145,7 +3144,6 @@ int consultalatex2(QString qfichero)
 {
     QProgressDialog progreso(QObject::tr("Generando informe ... ")
                              , 0, 0, 0);
-    progreso.setWindowModality(Qt::WindowModal);
     progreso.setMinimumDuration ( 0 );
     progreso.setWindowTitle(QObject::tr("Generando  ... "));;
     progreso.show();
@@ -8302,4 +8300,16 @@ QString xml_aeat_ok_ids(QStringList nif, QStringList nombre) {
 bool casi_cero(double numero) {
     if (numero<0.0001 && numero >-0.0001) return true;
     return false;
+}
+
+
+QString busca_nif(QString contenido, QString nif_propio) {
+    QString trabajo=contenido.replace("\r\n"," ");
+    QStringList palabras=trabajo.split(' ');
+    for (int i=0; i<palabras.count(); i++) {
+        QString palabra=palabras.at(i);
+        if (palabra.startsWith("ES")) palabra=palabra.remove("ES");
+        if (isNifCifNie(palabra)>0 && palabra!=nif_propio) return palabra;
+    }
+    return QString();
 }

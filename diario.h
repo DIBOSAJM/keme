@@ -49,9 +49,14 @@ class diario: public QWidget {
     Q_OBJECT
         public:
            diario();
+            void dragEnterEvent(QDragEnterEvent *e);
+            void dropEvent(QDropEvent *e);
            void activaconfiltro(QString filtro,bool qcomadecimal,bool sindecimales, QString usuario);
+           void activaconfiltrob(QString filtro, bool qcomadecimal, bool qsindecimales);
            bool pasafiltro(QString filtro,bool qcomadecimal, bool sindecimales);
+           bool pasafiltrob(QString filtro,bool qcomadecimal, bool sindecimales);
            void pasafiltroedlin(QString filtro);
+           void pasafiltroedlinb(QString filtro);
            int anchocolumna(int columna);
            void pasaanchocolumna(int columna,int ancho);
            void pasaanchos(int ancho[]);
@@ -85,13 +90,16 @@ class diario: public QWidget {
            void cabecera_campo_orden(int campo);
            void esconde_filtro();
            void muestra_filtro();
+           bool borrador();
+           QString file_droped();
            ~diario();
         private:
            Ui::diario ui;
-           CustomSqlModel *model;
+           CustomSqlModel *model,*modelb;
            bool comadecimal, sindecimales;
            QString usuario;
-           QString guardafiltro;
+           QString guardafiltro, guardafiltro2;
+           QString fichero_droped;
        private slots:
            void infocuentapase(QModelIndex primaryKeyIndex);
            void editarasientod();
@@ -102,8 +110,10 @@ class diario: public QWidget {
            void cambiacuenpase();
            void ed_registro_iva();
            void ed_registro_ret();
-
-
+           void on_tabWidget_currentChanged(int index);
+       signals:
+           void cambio_tab(int ntab);
+           void filedroped();
 };
 
 

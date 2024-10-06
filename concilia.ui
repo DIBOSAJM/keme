@@ -19,7 +19,6 @@
      <property name="font">
       <font>
        <pointsize>14</pointsize>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -27,7 +26,7 @@
       <string>Cuenta y descripción</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>
@@ -36,7 +35,7 @@
      <item>
       <spacer>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -59,7 +58,7 @@
      <item>
       <spacer>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -82,7 +81,7 @@
      <item>
       <spacer>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -135,7 +134,7 @@
          <item>
           <spacer>
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -164,7 +163,7 @@
            <item>
             <widget class="QPushButton" name="cambia_cuenta_pushButton">
              <property name="text">
-              <string>Cambia cuenta</string>
+              <string>Ca&amp;mbia cuenta</string>
              </property>
              <property name="icon">
               <iconset resource="keme.qrc">
@@ -175,7 +174,7 @@
            <item>
             <widget class="QPushButton" name="conc_doc_pushButton">
              <property name="text">
-              <string>Concepto/Doc</string>
+              <string>Concep&amp;to/Doc</string>
              </property>
              <property name="icon">
               <iconset resource="keme.qrc">
@@ -186,7 +185,7 @@
            <item>
             <widget class="QPushButton" name="fechapushButton">
              <property name="text">
-              <string>&amp;Fecha</string>
+              <string>Fec&amp;ha</string>
              </property>
              <property name="icon">
               <iconset resource="keme.qrc">
@@ -208,7 +207,7 @@
            <item>
             <widget class="QPushButton" name="consultapushButton">
              <property name="text">
-              <string>C&amp;onsulta</string>
+              <string>Co&amp;nsulta</string>
              </property>
              <property name="icon">
               <iconset resource="keme.qrc">
@@ -219,7 +218,7 @@
            <item>
             <widget class="QPushButton" name="nuevopushButton">
              <property name="text">
-              <string>&amp;Nuevo</string>
+              <string>N&amp;uevo</string>
              </property>
              <property name="icon">
               <iconset resource="keme.qrc">
@@ -493,7 +492,7 @@
             </size>
            </property>
            <property name="text">
-            <string>&amp;Vencimientos</string>
+            <string>Vencimien&amp;tos</string>
            </property>
            <property name="icon">
             <iconset resource="keme.qrc">
@@ -504,7 +503,7 @@
          <item>
           <spacer>
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -534,7 +533,7 @@
          <item>
           <widget class="QPushButton" name="oculta_pushButton">
            <property name="text">
-            <string>&amp;Oculta línea</string>
+            <string>Oculta&amp; línea</string>
            </property>
           </widget>
          </item>
@@ -551,7 +550,7 @@
          <item>
           <widget class="QPushButton" name="adpartidapushButton">
            <property name="text">
-            <string>&amp;Añadir línea</string>
+            <string>Aña&amp;dir línea</string>
            </property>
           </widget>
          </item>
@@ -587,7 +586,7 @@
      <item>
       <spacer>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -607,7 +606,7 @@
      <item>
       <widget class="QPushButton" name="eliminapushButton">
        <property name="text">
-        <string>&amp;Elimina marcas</string>
+        <string>Elimina m&amp;arcas</string>
        </property>
       </widget>
      </item>
@@ -621,35 +620,35 @@
      <item>
       <widget class="QPushButton" name="imprimeinfpushButton">
        <property name="text">
-        <string>Imprime &amp;Informe</string>
+        <string>Imprime In&amp;forme</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="consultainfpushButton">
        <property name="text">
-        <string>Co&amp;nsulta Informe</string>
+        <string>Con&amp;sulta Informe</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="latexpushButton">
        <property name="text">
-        <string>Editar &amp;Latex</string>
+        <string>Editar Late&amp;x</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="cancelarpushButton">
        <property name="text">
-        <string>&amp;Cancelar</string>
+        <string>Cance&amp;lar</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="aceptarpushButton">
        <property name="text">
-        <string>&amp;Aceptar</string>
+        <string>Ace&amp;ptar</string>
        </property>
       </widget>
      </item>

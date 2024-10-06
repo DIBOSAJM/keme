@@ -2629,7 +2629,7 @@ bool liquidacioniva::genfich303(QString qnombre)
       else contenido+="0";
 
    // iva repercutido *****************
-   double base0=0,base1=0,base5=0,base2=0,base3=0,tipo1=0,tipo2=0,tipo3=0,cuota0=0,cuota1=0,cuota5=0,cuota2=0,cuota3=0;
+   double base0=0,base1=0,base5=0,base75=0,base2=0,base3=0,tipo1=0,tipo2=0,tipo3=0,tipo75=0,cuota0=0,cuota1=0,cuota5=0,cuota75=0,cuota2=0,cuota3=0;
    double base175re=0, cuota175re=0, base1re=0, base2re=0, base3re=0, tipo1re=0, tipo2re=0, tipo3re=0, cuota1re=0, cuota2re=0, cuota3re=0;
    for (int veces=0; veces<ui.repercutidotable->rowCount(); veces++)
      {
@@ -2650,14 +2650,20 @@ bool liquidacioniva::genfich303(QString qnombre)
           base1+=convapunto(ui.repercutidotable->item(veces,1)->text()).toDouble();
           cuota1+=convapunto(ui.repercutidotable->item(veces,3)->text()).toDouble();
         }
-      if (valor<10 && valor>4.001)
+      if (valor<7.5 && valor>4.001)
         {
          // suponemos tipo 5 nuevo
           base5+=convapunto(ui.repercutidotable->item(veces,1)->text()).toDouble();
           cuota5+=convapunto(ui.repercutidotable->item(veces,3)->text()).toDouble();
         }
+      if (valor<10 && valor>5.001)
+      {
+          // suponemos tipo 7.5 nuevo
+          base75+=convapunto(ui.repercutidotable->item(veces,1)->text()).toDouble();
+          cuota75+=convapunto(ui.repercutidotable->item(veces,3)->text()).toDouble();
+      }
       // -----------------
-      if (valor<17 && valor>6)
+      if (valor<17 && valor>9)
         {
          // suponemos tipo reducido
           tipo2=valor;
@@ -2719,9 +2725,15 @@ bool liquidacioniva::genfich303(QString qnombre)
    contenido+=cadnum2dec_cadena_signo(cuota1,17);
 
    // tipo 5
-   contenido+=cadnum2dec_cadena_signo(base5,17);
-   contenido+=cadnum2dec_cadena_signo(5,5);
-   contenido+=cadnum2dec_cadena_signo(cuota5,17);
+   if (base75>0) {
+       contenido+=cadnum2dec_cadena_signo(base75,17);
+       contenido+="00750" ;//cadnum2dec_cadena_signo(7.5,5);
+       contenido+=cadnum2dec_cadena_signo(cuota75,17);
+   } else {
+     contenido+=cadnum2dec_cadena_signo(base5,17);
+     contenido+="00500"; //cadnum2dec_cadena_signo(5,5);
+     contenido+=cadnum2dec_cadena_signo(cuota5,17);
+   }
 
    // tipo 10
    contenido+=cadnum2dec_cadena_signo(base2,17);
@@ -2734,6 +2746,7 @@ bool liquidacioniva::genfich303(QString qnombre)
    //contenido+=cadnum2dec_cadena_signo(tipo3,5);
    contenido+="02100";
    contenido+=cadnum2dec_cadena_signo(cuota3,17);
+
 
    // ahora vamos a por las AIB
    double base_aib=0,base_aib_corrientes=0, base_aib_inversion=0,sop_aib_corrientes=0, sop_aib_inversion=0, rep_aib=0;
@@ -2825,7 +2838,6 @@ bool liquidacioniva::genfich303(QString qnombre)
    contenido+=cadnum2dec_cadena_signo(base175re,17);
    contenido+=cadnum2dec_cadena_signo(1.75,5);
    contenido+=cadnum2dec_cadena_signo(cuota175re,17);
-
 
    contenido+=cadnum2dec_cadena_signo(base1re,17);
    contenido+=cadnum2dec_cadena_signo(tipo1re,5);
@@ -2941,9 +2953,18 @@ bool liquidacioniva::genfich303(QString qnombre)
    contenido+=cadnum2dec_cadena_signo(sumadevengado-sumadeducir,17);
    // QMessageBox::warning( this, tr("Fichero 303"),cadnum2dec_cadena_signo_signo(sumadevengado-sumadeducir,17));
 
+   // línea en blanco
+   contenido+=cadnum2dec_cadena_signo(0,17);
+   contenido+="00000";
+   contenido+=cadnum2dec_cadena_signo(0,17);
+   // línea en blanco
+   contenido+=cadnum2dec_cadena_signo(0,17);
+   contenido+="00000";
+   contenido+=cadnum2dec_cadena_signo(0,17);
 
-   // 600 espacios
-   str.clear(); str.fill(' ',600);
+
+   // 522 espacios
+   str.clear(); str.fill(' ',522);
    contenido+=str;
 
    // espacio para el sello electrónico
@@ -3048,18 +3069,26 @@ bool liquidacioniva::genfich303(QString qnombre)
    // declaración sin actividad
     contenido+=" ";
 
-  // declaración complementaria
-   if (escomplementaria) contenido+="X"; else contenido +=" ";
-   if (escomplementaria) contenido+=contenido+=completacadnum(declaracion_anterior,13);
-      else contenido+="             ";
+   // Rectificativa
+    contenido+=" ";
+   // Rectificativa, número justificante decl. anterior
+    QString str2; str2.fill(' ',13);
+    contenido+=str2;
+    // Rectificativa - solicita dar baja/modificar domiciliación
+    contenido+=" ";
+    // Rectificativa - otros ajustes
+    contenido+=str;
+    // Rectificativa - rectificación
+    contenido+=str;
+    // Reservado AEAT
+    str.clear(); str.fill(' ',120);
+    contenido+=str;
+    // rectificación
+    contenido+=" ";
+    // rectificación discrepancia critero administrativo
+    contenido+=" ";
 
-   str.clear(); str.fill(' ',35);
-   contenido+=str;
-
-   str.clear(); str.fill(' ',52);
-   contenido+=str;
-
-   str.clear(); str.fill(' ',513);
+   str.clear(); str.fill(' ',443);
    contenido+=str;
 
    contenido+="</T30303000>";
@@ -3142,40 +3171,6 @@ void liquidacioniva::mod303()
     //delete(m);
     if (resultado!=QDialog::Accepted) return;
 
-
-#ifdef NOMACHINE
-  directorio *dir = new directorio();
-  dir->pasa_directorio(dirtrabajobd());
-  dir->activa_pide_archivo(tr("modelo.303"));
-  if (dir->exec() == QDialog::Accepted)
-    {
-      // QMessageBox::information( this, tr("selección"),
-      //                         dir->selec_actual() );
-      // QMessageBox::information( this, tr("selección"),
-      //                         dir->ruta_actual() );
-      QString nombre=dir->respuesta_arch();
-      if (nombre.length()>0)
-          {
-           // QString nombre=nombre.fromLocal8Bit(fileNames.at(0));
-           if (nombre.right(4)!=".303") nombre=nombre+".303";
-           // QMessageBox::information( this, tr("selección"),
-           //                         nombre );
-           QString rutadir=dir->directorio_actual();
-           if (!rutadir.endsWith(QDir::separator())) rutadir.append(QDir::separator());
-           nombre=rutadir+nombre;
-           // QMessageBox::information( this, tr("selección"),
-           //                          nombre );
-           // if (!genfich347(nombre))
-           //   QMessageBox::information( this, tr("Fichero 347"),tr("NO se ha generado correctamente el fichero 303"));
-           if (nombre.right(4)!=".303") nombre=nombre+".303";
-           if (!genfich303(nombre))
-              QMessageBox::information( this, tr("Fichero 303"),tr("NO se ha generado correctamente el fichero 303"));
-          }
-    }
-   delete(dir);
-#else
-
-
   QFileDialog dialogofich(this);
   dialogofich.setFileMode(QFileDialog::AnyFile);
   dialogofich.setOption(QFileDialog::DontConfirmOverwrite,true);
@@ -3218,8 +3213,6 @@ void liquidacioniva::mod303()
               QMessageBox::information( this, tr("Fichero 303"),tr("NO se ha generado correctamente el fichero 303"));
           }
        }
-#endif
-
 
 }
 

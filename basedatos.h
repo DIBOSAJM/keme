@@ -404,7 +404,7 @@ class basedatos {
 
         void asigna_clave_ci_apunte(QString apunte, QString clave_ci);
 
-        // 
+        //
         void insertDiario(QString cadnumasiento, qlonglong pase, QString cadfecha,
                           QString cuentagasto,
                           double debe, double haber, QString concepto, QString documento,
@@ -412,7 +412,7 @@ class basedatos {
                           QString ci, QString usuario, QString clave_ci, QString ejercicio,
                           QString nrecepcion, bool hay_fecha_factura=false,
                           QDate fecha_factura=QDate::currentDate(), QString externo="",
-                          QString concepto_sii="");
+                          QString concepto_sii="", bool borrador=false);
 
         void insertDiario_imp (QString cadnumasiento, qlonglong pase, QString cadfecha,
                                       QString cuentagasto, double debe, double haber,
@@ -1546,7 +1546,7 @@ class basedatos {
         // 
         QSqlQuery select11Diariofiltro(QString filtro);
 
-        QSqlQuery selectDiariofiltro_nomsj_error (QString filtro, bool *correcto);
+        QSqlQuery selectDiariofiltro_nomsj_error (QString filtro, bool *correcto, bool borrador=false);
 
         QSqlQuery select6ejerciciosorderapertura();
 
@@ -2379,6 +2379,8 @@ class basedatos {
         void actualizade3225();
 
         void actualizade3226();
+
+        void actualizade4000();
 
         void introclave_op_retenciones();
 

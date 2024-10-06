@@ -130,6 +130,7 @@
 #include "tipos_cambio.h"
 
 #include <QSplashScreen>
+#include <QPdfDocument>
 
 #define APLICACION "KEME-Contabilidad - "
 
@@ -699,11 +700,17 @@ QString cadena;
 filtroactivo=condicionesfiltrodefecto();
 eldiario->pasafiltroedlin(filtro_a_lingu(filtroactivo));
 if (filtroactivo.length()>0) cadena=" WHERE "+filtroactivo+" ";
+if (filtroactivo.isEmpty()) cadena="where contabilizado ";
+  else cadena+=" and contabilizado ";
 cadena+=ordenarpor();
 eldiario->activaconfiltro(cadena,estilonumerico,sindecimales,usuario);
+eldiario->activaconfiltrob(filtroactivob,estilonumerico,sindecimales);
 eldiario->pasaanchos(anchocol);
 eldiario->muestratabla();
 punterodiario->cabecera_campo_orden(n_campo_orden());
+on_diario_tab_cambiado(0);
+connect(eldiario, SIGNAL(cambio_tab(int)),this, SLOT(on_diario_tab_cambiado(int)));
+connect(eldiario, SIGNAL(filedroped()),this, SLOT(fichero_soltado_en_diario()));
 imgdiario();
 creaDockWindows();
 }
@@ -803,10 +810,13 @@ void MainWindow::activaWidgets()
     filtroactivo=condicionesfiltrodefecto();
     eldiario->pasafiltroedlin(filtro_a_lingu(filtroactivo));
     if (filtroactivo.length()>0) cadena=" WHERE "+filtroactivo+" ";
-    //  falta pasar cadena a lineEdit del filtro
+    if (filtroactivo.isEmpty()) cadena="where contabilizado ";
+      else cadena+=" and contabilizado ";
+
     cadena+=ordenarpor();
     if (!basedatos::instancia()->gestiondeusuarios()) usuario.clear();
     eldiario->activaconfiltro(cadena,estilonumerico,sindecimales,usuario);
+    eldiario->activaconfiltrob("",estilonumerico,sindecimales);
     eldiario->pasaanchos(anchocol);
     punterodiario->cabecera_campo_orden(n_campo_orden());
     eldiario->muestratabla();
@@ -820,6 +830,10 @@ void MainWindow::activaWidgets()
      }
 */
     imgdiario();
+    on_diario_tab_cambiado(0);
+    connect(eldiario, SIGNAL(cambio_tab(int )),this, SLOT(on_diario_tab_cambiado(int )));
+    connect(eldiario, SIGNAL(filedroped()),this, SLOT(fichero_soltado_en_diario()));
+
     QString msj_titulo=tr(APLICACION);
     if (!titulo.isEmpty()) msj_titulo=titulo+" - ";
     if (basedatos::instancia()->gestiondeusuarios())
@@ -2513,6 +2527,9 @@ void MainWindow::nuevaempresa()
   eldiario->pasaanchos(anchocol);
   eldiario->muestratabla();
   creaDockWindows();
+  on_diario_tab_cambiado(0);
+  connect(eldiario, SIGNAL(cambio_tab(int )),this, SLOT(on_diario_tab_cambiado(int )));
+  connect(eldiario, SIGNAL(filedroped()),this, SLOT(fichero_soltado_en_diario()));
   activaTodo();
 }
 
@@ -3279,6 +3296,7 @@ void MainWindow::nuevoasiento()
         t->pasadiario(diario);
         t->pasanocerrar(noclose);
         t->pasa_doc(doc);
+        if (punterodiario->borrador()) t->set_borrador();
         t->exec();
         rutacargadocs=!t->ruta_docs().isEmpty() ? t->ruta_docs() : rutacargadocs;
         grabapreferencias();
@@ -3365,7 +3383,7 @@ void MainWindow::gestautomaticos()
  QString guardarfiltro=filtroactivo;
  filtroactivo="ejercicio=''";
  refrescardiario();
- punterodiario->esconde_filtro();
+ //punterodiario->esconde_filtro();
  selecasmod *selec = new selecasmod(usuario);
  if (activa_msj_tabla) selec->activar_msj_tabla();
  selec->activar_msj_tabla();
@@ -3374,7 +3392,7 @@ void MainWindow::gestautomaticos()
  actualizadockautomaticos();
  filtroactivo=guardarfiltro;
  // refrescardiario();
- punterodiario->muestra_filtro();
+ //punterodiario->muestra_filtro();
  refresh_diario2();
 
 }
@@ -3386,7 +3404,9 @@ void MainWindow::refresh_diario()
      QString cadena;
      punterodiario->pasafiltroedlin(filtroactivo);
      if (filtroactivo.length()>0) cadena=" WHERE "+filtroactivo+" ";
-     //  falta pasar cadena a lineEdit del filtro
+
+     if (filtroactivo.isEmpty()) cadena =" WHERE contabilizado";
+        else cadena+= " and contabilizado ";
      cadena+=ordenarpor();
      if (!punterodiario->pasafiltro(cadena,estilonumerico,sindecimales))
         {
@@ -3394,6 +3414,7 @@ void MainWindow::refresh_diario()
                    tr("El filtro suministrado no es correcto"));
           filtrar_inicio();
         }
+    punterodiario->pasafiltrob(filtroactivob,estilonumerico,sindecimales);
 
      if (basedatos::instancia()->essqlite()) punterodiario->refresca(); // nuevo para SQLITE
      punterodiario->cabecera_campo_orden(n_campo_orden());
@@ -3411,7 +3432,9 @@ void MainWindow::refresh_diario2()
      QString cadena;
      punterodiario->pasafiltroedlin(filtroactivo);
      if (filtroactivo.length()>0) cadena=" WHERE "+filtroactivo+" ";
-     //  falta pasar cadena a lineEdit del filtro
+     if (filtroactivo.isEmpty()) cadena =" WHERE contabilizado";
+        else cadena+= " and contabilizado ";
+
      cadena+=ordenarpor();
      if (!punterodiario->pasafiltro(cadena,estilonumerico,sindecimales))
         {
@@ -3419,7 +3442,7 @@ void MainWindow::refresh_diario2()
                    tr("El filtro suministrado no es correcto"));
           filtrar_inicio();
         }
-
+     punterodiario->pasafiltrob("",estilonumerico,sindecimales);
      if (basedatos::instancia()->essqlite()) punterodiario->refresca(); // nuevo para SQLITE
      punterodiario->cabecera_campo_orden(n_campo_orden());
 
@@ -4324,6 +4347,7 @@ if (resultado==QDialog::Accepted)
     if (AstoEspera>0)
     {
        tabla_asientos *tablaasiento=new tabla_asientos(estilonumerico,!sindecimales, usuario);
+       if (punterodiario->borrador()) tablaasiento->set_borrador();
 
        QSqlQuery query = basedatos::instancia()->select20Borradorasiento(AstoEspera);
        int fila=0;
@@ -7190,6 +7214,30 @@ void MainWindow::inv_inmov()
   delete(i);
 }
 
+void MainWindow::fichero_soltado_en_diario()
+{
+  fichero_soltado_diario=punterodiario->file_droped();
+  QMessageBox::information(this, tr("KEME-Contabilidad"),fichero_soltado_diario);
+  procesa_fichero_pdf();
+}
+
+void MainWindow::procesa_fichero_pdf() {
+    QPdfDocument *pdf = new QPdfDocument(this);
+    if (pdf->load(fichero_soltado_diario)==QPdfDocument::Error::None) {
+      QString global_tex;
+      if (pdf->pageCount()>10) { delete (pdf); return;}
+      for (int i=0; i< pdf->pageCount(); i++) {
+          QPdfSelection sel=pdf->getAllText(i);
+          if (!global_tex.isEmpty()) global_tex.append(" ");
+          global_tex+=sel.text();
+      }
+      qDebug() << global_tex;
+      qDebug() << "\n";
+      qDebug() << "\n";
+      qDebug() << busca_nif(global_tex, basedatos::instancia()->cif());
+    } else QMessageBox::information(this, tr("KEME-Contabilidad"),tr("Error al cargar el fichero"));
+    delete (pdf);
+}
 
 void MainWindow::on_actionModelo_182_registro_donaciones_triggered()
 {
@@ -7212,4 +7260,16 @@ void MainWindow::on_action_Tipos_de_Cambio_triggered()
     tipos_cambio *t = new tipos_cambio;
     t->exec();
     delete(t);
+}
+
+void MainWindow::on_diario_tab_cambiado(int index)
+{
+  if (index==0) {
+      ui->actionBorrar_Asiento->setVisible(false);
+      ui->actionEditar_Asiento->setVisible(false);
+  } else {
+      ui->actionBorrar_Asiento->setVisible(true);
+      ui->actionEditar_Asiento->setVisible(true);
+  }
+
 }

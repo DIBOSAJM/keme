@@ -23,7 +23,7 @@
 
 #include "funciones.h"
 
-#define VERSION "4.0.0.0"
+#define VERSION "4.0.0.2"
 
 #include <QMessageBox>
 #include <QApplication>
@@ -920,9 +920,17 @@ void basedatos::solotablas(bool segunda, QString qbase)
                   cadena += "revisado       bool default false,";
               cadena+="codigo_var_evpn_pymes varchar(160) default '',";
               cadena+="fecha_factura        date, ";
-              cadena+="concepto_sii varchar(255) default '', "
-
-              "PRIMARY KEY (pase) )";
+              cadena+="concepto_sii varchar(255) default '', ";
+              if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
+                 cadena+="registro timestamp,";
+              else
+                cadena+="registro timestamp default now(),";
+              cadena+="contabilizacion timestamp,";
+              if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
+                  cadena+="contabilizado bool default 1,";
+              else
+                  cadena+="contabilizado bool default true,";
+              cadena+="PRIMARY KEY (pase) )";
     if (segunda) cadena = anadirMotor(cadena,qbase); else cadena = anadirMotor(cadena);
     if (segunda) ejecutar(cadena,qbase); else ejecutar(cadena);
 
@@ -7347,10 +7355,10 @@ void basedatos::insertDiario (QString cadnumasiento, qlonglong pase, QString cad
                               QString concepto, QString documento, QString diario,
                               QString ci, QString usuario, QString clave_ci,
                               QString ejercicio, QString nrecepcion, bool hay_fecha_factura,
-                              QDate fecha_factura, QString externo, QString concepto_sii) {
+                              QDate fecha_factura, QString externo, QString concepto_sii, bool borrador) {
     QString cad1="INSERT into diario (asiento,pase,fecha, cuenta,debe, haber,concepto,"
         "documento,diario,usuario,ci, clave_ci, ejercicio, nrecepcion, "
-        "fecha_factura, externo, concepto_sii) VALUES(";
+        "fecha_factura, externo, concepto_sii, contabilizado) VALUES(";
     cad1 += cadnumasiento.left(-1).replace("'","''") +",";
     QString cadnumpase;
 	cadnumpase.setNum(pase);
@@ -7399,7 +7407,9 @@ void basedatos::insertDiario (QString cadnumasiento, qlonglong pase, QString cad
     cad1+=externo;
     cad1+="','";
     cad1+=concepto_sii;
-    cad1+="')";
+    cad1+="', ";
+    if (borrador) cad1+="false "; else cad1+="true ";
+    cad1+=");";
     ejecutar(cad1);
 }
 
@@ -14588,11 +14598,18 @@ QSqlQuery basedatos::select11Diariofiltro (QString filtro) {
 }
 
 
-QSqlQuery basedatos::selectDiariofiltro_nomsj_error (QString filtro, bool *correcto) {
+QSqlQuery basedatos::selectDiariofiltro_nomsj_error (QString filtro, bool *correcto, bool borrador) {
     QString cadena="SELECT cuenta, fecha, asiento, concepto, debe, "
         "haber, documento, diario, usuario, pase,ci, clave_ci, copia_doc,"
         "ejercicio, nrecepcion, revisado, externo from diario ";
     if (filtro.length()>0) cadena += filtro;
+    if (filtro.length()>0) {
+       if (borrador) cadena+= " and not contabilizado";
+          else cadena+=" and contabilizado";
+    } else {
+        if (borrador) cadena+= " where not contabilizado";
+           else cadena+=" where contabilizado";
+    }
     cadena+=" limit 50000";
     QSqlQuery query;
     if (!query.exec(cadena)) *correcto=false;
@@ -21987,6 +22004,26 @@ void basedatos::actualizade3226() {
    ejecutar("update configuracion set version='4.0.0.0'");
 }
 
+void basedatos::actualizade4000()
+{
+    QString cadena="alter table diario add column ";
+    if ( cualControlador() == SQLITE )
+       cadena+="registro timestamp;";
+    else
+      cadena+="registro timestamp default now();";
+    ejecutar(cadena);
+    cadena="alter table diario add column contabilizacion timestamp;";
+    ejecutar(cadena);
+    cadena="alter table diario add column ";
+    if ( cualControlador() == SQLITE )
+        cadena+="contabilizado bool default 1;";
+    else
+        cadena+="contabilizado bool default true;";
+    ejecutar(cadena);
+
+    ejecutar("update configuracion set version='4.0.0.2'");
+}
+
 
 void basedatos::actualizade2977()
 {
@@ -23911,7 +23948,8 @@ bool basedatos::comprobarVersion () {
                 && laversion !="3.2.1.9" && laversion !="3.2.2.0"
                 && laversion !="3.2.2.1" && laversion !="3.2.2.2"
                 && laversion !="3.2.2.3" && laversion !="3.2.2.4"
-                && laversion !="3.2.2.5" && laversion !="3.2.2.6") {
+                && laversion !="3.2.2.5" && laversion !="3.2.2.6"
+                && laversion !="4.0.0.0") {
             if (!(splash==NULL))
              {
               splash->finish( 0 );
@@ -24022,7 +24060,8 @@ bool basedatos::comprobarVersion () {
                 if (versionbd()=="3.2.2.3") actualizade3223();
                 if (versionbd()=="3.2.2.4") actualizade3224();
                 if (versionbd()=="3.2.2.5") actualizade3225();
-                actualizade3226();
+                if (versionbd()=="3.2.2.6") actualizade3226();
+                actualizade4000();
 
               }
             else {

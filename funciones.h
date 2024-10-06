@@ -741,3 +741,5 @@ bool f_importarfichc43(QString qfichero,QString cuenta);
 QString xml_aeat_ok_ids(QStringList nif, QStringList nombre);
 
 bool casi_cero(double numero);
+
+QString busca_nif(QString contenido, QString nif_propio);

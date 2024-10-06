@@ -83,9 +83,11 @@ private:
 
     bool visualizador_extendido=false;
 
-    QString filtroactivo;
+    QString filtroactivo, filtroactivob;
 
     QString orden_campo_diario;
+
+    QString fichero_soltado_diario;
 
     // TreeModel modeloarbol;
 
@@ -120,6 +122,7 @@ private:
     void refresh_diario();
     void refresh_diario2();
     void icono_papelera();
+    void procesa_fichero_pdf();
 
 private slots:
     void conex();
@@ -328,9 +331,11 @@ private slots:
     void util_carga_docs_bd();
 
     void inv_inmov();
+    void fichero_soltado_en_diario();
     void on_actionModelo_182_registro_donaciones_triggered();
     void on_actionFicheros_de_transferencias_triggered();
     void on_action_Tipos_de_Cambio_triggered();
+    void on_diario_tab_cambiado(int index);
 };
 
 #endif // MAINWINDOW_H

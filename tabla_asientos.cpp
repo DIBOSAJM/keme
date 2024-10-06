@@ -2482,7 +2482,7 @@ void tabla_asientos::incorporar()
              ui.Tablaapuntes->item(fila,4)->text(),
              diario, ui.Tablaapuntes->item(fila,16)->text(),elusuario, cadproxci,
              zejercicio, cadnumrecibidas,hay_fecha_factura, fecha_factura, qexterno,
-                                             ui.concepto_sii_lineEdit->text());
+                                             ui.concepto_sii_lineEdit->text(),borrador);
         if (basedatos::instancia()->hayvenciasociado(ui.Tablaapuntes->item(fila,0)->text()) ||
            basedatos::instancia()->hay_venci_cta_asociado_ver(ui.Tablaapuntes->item(fila,0)->text()) ||
            (!ui.externo_lineEdit->text().isEmpty() &&
@@ -6744,6 +6744,11 @@ tabla_asientos::~tabla_asientos()
            inputaciones[veces]=NULL;
         }
       }
+}
+
+void tabla_asientos::set_borrador()
+{
+ borrador=true;
 }
 
 

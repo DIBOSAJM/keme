@@ -32,6 +32,7 @@ class tabla_asientos  : public QDialog {
 	public:
                 tabla_asientos(bool concomadecimal, bool condecimales, QString qusuario);
                 ~tabla_asientos();
+                void set_borrador();
                 void preparaaib();
                 void preparaeib();
                 void preparaautofactura();
@@ -232,6 +233,7 @@ class tabla_asientos  : public QDialog {
                 bool pasar_fecha_iva_aut;
                 QDate fecha_iva_aut;
                 bool avisar_cta_libro_fact_no_diario;
+                bool borrador=false;
                 // -------------------------------------------------------------
                 void procesaivasoportado(int fila,int columna);
                 void procesaivarepercutido(int fila, int columna);

@@ -171,37 +171,23 @@ QVariant CustomSqlModel::data(const QModelIndex &index, int role) const
 diario::diario() : QWidget() {
   ui.setupUi(this);
 
-// esta porción de código es para asegurarnos de que la ventana
-// sale por el centro del escritorio
-  /*
-QDesktopWidget *desktop = QApplication::desktop();
+  setAcceptDrops(true);
 
-int screenWidth, width; 
-int screenHeight, height;
-int x, y;
-QSize windowSize;
+  ui.fecha_pushButton->hide();
+  ui.concepto_pushButton->hide();
+  ui.cuenta_pushButton->hide();
 
-screenWidth = desktop->width(); // ancho de la pantalla
-screenHeight = desktop->height(); // alto de la pantalla
-
-windowSize = size(); // tamaño de nuestra ventana
-width = windowSize.width(); 
-height = windowSize.height();
-
-x = (screenWidth - width) / 2;
-y = (screenHeight - height) / 2;
-y -= 50;
-
-// mueve la ventana a las coordenadas deseadas
-move ( x, y );*/
-// -------------------------------------------------------------
-model=NULL;
+  model=NULL;
+  modelb=NULL;
   ui.latabladiario->setSelectionBehavior(QAbstractItemView::SelectRows);
   ui.latabladiario->setSelectionMode(QAbstractItemView::ContiguousSelection);
+  ui.borrador_tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+  ui.borrador_tableView->setSelectionMode(QAbstractItemView::ContiguousSelection);
   ui.fechadateEdit->setDate(QDate::currentDate());
   comadecimal=true; sindecimales=false;
                         //objeto del que sale la señal
   connect(ui.latabladiario,SIGNAL(clicked(QModelIndex)),this,SLOT(infocuentapase(QModelIndex)));
+  connect(ui.borrador_tableView,SIGNAL(clicked(QModelIndex)),this,SLOT(infocuentapase(QModelIndex)));
   // connect(ui.latabladiario,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(editarasientod()));
   connect(ui.iniciopushButton,SIGNAL(clicked()),SLOT(inicio()));
   connect(ui.finpushButton,SIGNAL(clicked()),SLOT(fin()));
@@ -228,16 +214,39 @@ model=NULL;
 
 }
 
+void diario::dragEnterEvent(QDragEnterEvent *e)
+{
+    if (e->mimeData()->hasUrls()) {
+        e->acceptProposedAction();
+    }
+}
+
+void diario::dropEvent(QDropEvent *e)
+{
+    foreach (const QUrl &url, e->mimeData()->urls()) {
+        QString fileName = url.toLocalFile();
+        // qDebug() << "Dropped file:" << fileName;
+        //setText(fileName);
+        setMaximumHeight(height());
+        //setScaledContents(true);
+        if (fileName.endsWith(".pdf") || fileName.endsWith(".PDF")) {
+           fichero_droped=fileName;
+           emit filedroped();
+        }
+    }
+}
+
 void diario::activaconfiltro(QString filtro,bool qcomadecimal, bool qsindecimales, QString qusuario)
 {
         CustomSqlModel *elmodelo = new CustomSqlModel;
         comadecimal=qcomadecimal;
         sindecimales=qsindecimales;
         guardafiltro=filtro;
+        // qDebug() << guardafiltro;
         model = elmodelo;
         model->pasainfo(qcomadecimal, qsindecimales);
 
-        model->setQuery( basedatos::instancia()->select11Diariofiltro(filtro) );
+        model->setQuery( basedatos::instancia()->select11Diariofiltro(guardafiltro) );
         model->setHeaderData(0, Qt::Horizontal, tr("cuenta"));
         model->setHeaderData(1, Qt::Horizontal, tr("fecha"));
         model->setHeaderData(2, Qt::Horizontal, tr("asiento"));
@@ -273,62 +282,108 @@ void diario::activaconfiltro(QString filtro,bool qcomadecimal, bool qsindecimale
 
 }
 
+void diario::activaconfiltrob(QString filtro, bool qcomadecimal, bool qsindecimales)
+{
+    CustomSqlModel *elmodelob = new CustomSqlModel;
+    if (filtro.isEmpty()) guardafiltro2="where not contabilizado";
+     else
+       guardafiltro2=filtro+ " not contabilizado";
+     guardafiltro2+=" order by ejercicio desc,asiento desc,pase desc";
+    modelb = elmodelob;
+    modelb->pasainfo(qcomadecimal, qsindecimales);
+
+    modelb->setQuery( basedatos::instancia()->select11Diariofiltro(guardafiltro2) );
+    modelb->setHeaderData(0, Qt::Horizontal, tr("cuenta"));
+    modelb->setHeaderData(1, Qt::Horizontal, tr("fecha"));
+    modelb->setHeaderData(2, Qt::Horizontal, tr("asiento"));
+    modelb->setHeaderData(3, Qt::Horizontal, tr("concepto"));
+    modelb->setHeaderData(4, Qt::Horizontal, tr("debe"));
+    modelb->setHeaderData(5, Qt::Horizontal, tr("haber"));
+    modelb->setHeaderData(6, Qt::Horizontal, tr("documento"));
+    modelb->setHeaderData(7, Qt::Horizontal, tr("diario"));
+    modelb->setHeaderData(8, Qt::Horizontal, tr("usuario"));
+    modelb->setHeaderData(9, Qt::Horizontal, tr("apunte"));
+    modelb->setHeaderData(10, Qt::Horizontal, tr("ci"));
+    modelb->setHeaderData(11, Qt::Horizontal, tr("ci"));
+    modelb->setHeaderData(12, Qt::Horizontal, tr("fichero doc"));
+    modelb->setHeaderData(13, Qt::Horizontal, tr("ejercicio"));
+    modelb->setHeaderData(14, Qt::Horizontal, tr("recepción"));
+    modelb->setHeaderData(15, Qt::Horizontal, tr("revisado"));
+
+    ui.borrador_tableView->setModel(modelb);
+    if ((!conanalitica() && !conanalitica_parc())
+        || basedatos::instancia()->analitica_tabla()) ui.borrador_tableView->setColumnHidden(10,true);
+    else ui.borrador_tableView->setColumnHidden(10,false);
+    if (!basedatos::instancia()->analitica_tabla()) ui.borrador_tableView->setColumnHidden(11,true);
+    else ui.borrador_tableView->setColumnHidden(11,false);
+
+    if (!basedatos::instancia()->gestiondeusuarios()) ui.borrador_tableView->setColumnHidden(8,true);
+    else ui.borrador_tableView->setColumnHidden(8,false);
+
+    ui.borrador_tableView->setAlternatingRowColors ( true);
+    // infocuentapase();
+
+}
+
 void diario::cabecera_campo_orden(int campo)
 {
     // cuenta, fecha, asiento, concepto, debe,
     // haber, documento, diario, usuario, pase,ci,
     // clave_ci, copia_doc, ejercicio
-    if (model==NULL) return;
-    model->setHeaderData(0, Qt::Horizontal, tr("cuenta"));
-    model->setHeaderData(1, Qt::Horizontal, tr("fecha"));
-    model->setHeaderData(2, Qt::Horizontal, tr("asiento"));
-    model->setHeaderData(3, Qt::Horizontal, tr("concepto"));
-    model->setHeaderData(4, Qt::Horizontal, tr("debe"));
-    model->setHeaderData(5, Qt::Horizontal, tr("haber"));
-    model->setHeaderData(6, Qt::Horizontal, tr("documento"));
-    model->setHeaderData(7, Qt::Horizontal, tr("diario"));
-    model->setHeaderData(8, Qt::Horizontal, tr("usuario"));
-    model->setHeaderData(9, Qt::Horizontal, tr("apunte"));
-    model->setHeaderData(10, Qt::Horizontal, tr("ci"));
-    model->setHeaderData(11, Qt::Horizontal, tr("ci"));
-    model->setHeaderData(12, Qt::Horizontal, tr("fichero doc"));
-    model->setHeaderData(13, Qt::Horizontal, tr("ejercicio"));
-    model->setHeaderData(14, Qt::Horizontal, tr("recepción"));
-    model->setHeaderData(15, Qt::Horizontal, tr("revisado"));
+    CustomSqlModel *model_actu;
+    model_actu=model;
+    if (borrador()) model_actu=modelb;
+    if (model_actu==NULL) return;
+    model_actu->setHeaderData(0, Qt::Horizontal, tr("cuenta"));
+    model_actu->setHeaderData(1, Qt::Horizontal, tr("fecha"));
+    model_actu->setHeaderData(2, Qt::Horizontal, tr("asiento"));
+    model_actu->setHeaderData(3, Qt::Horizontal, tr("concepto"));
+    model_actu->setHeaderData(4, Qt::Horizontal, tr("debe"));
+    model_actu->setHeaderData(5, Qt::Horizontal, tr("haber"));
+    model_actu->setHeaderData(6, Qt::Horizontal, tr("documento"));
+    model_actu->setHeaderData(7, Qt::Horizontal, tr("diario"));
+    model_actu->setHeaderData(8, Qt::Horizontal, tr("usuario"));
+    model_actu->setHeaderData(9, Qt::Horizontal, tr("apunte"));
+    model_actu->setHeaderData(10, Qt::Horizontal, tr("ci"));
+    model_actu->setHeaderData(11, Qt::Horizontal, tr("ci"));
+    model_actu->setHeaderData(12, Qt::Horizontal, tr("fichero doc"));
+    model_actu->setHeaderData(13, Qt::Horizontal, tr("ejercicio"));
+    model_actu->setHeaderData(14, Qt::Horizontal, tr("recepción"));
+    model_actu->setHeaderData(15, Qt::Horizontal, tr("revisado"));
 
     switch (campo)
     {
-      case 0: model->setHeaderData(0, Qt::Horizontal, tr("cuenta*"));
+      case 0: model_actu->setHeaderData(0, Qt::Horizontal, tr("cuenta*"));
           break;
-      case 1: model->setHeaderData(1, Qt::Horizontal, tr("fecha*"));
+      case 1: model_actu->setHeaderData(1, Qt::Horizontal, tr("fecha*"));
           break;
-     case 2: model->setHeaderData(2, Qt::Horizontal, tr("asiento*"));;
+     case 2: model_actu->setHeaderData(2, Qt::Horizontal, tr("asiento*"));;
          break;
-     case 3: model->setHeaderData(3, Qt::Horizontal, tr("concepto*"));
+     case 3: model_actu->setHeaderData(3, Qt::Horizontal, tr("concepto*"));
          break;
-     case 4: model->setHeaderData(4, Qt::Horizontal, tr("debe*"));
+     case 4: model_actu->setHeaderData(4, Qt::Horizontal, tr("debe*"));
          break;
-     case 5: model->setHeaderData(5, Qt::Horizontal, tr("haber*"));
+     case 5: model_actu->setHeaderData(5, Qt::Horizontal, tr("haber*"));
          break;
-     case 6: model->setHeaderData(6, Qt::Horizontal, tr("documento*"));
+     case 6: model_actu->setHeaderData(6, Qt::Horizontal, tr("documento*"));
          break;
-     case 7: model->setHeaderData(7, Qt::Horizontal, tr("diario*"));
+     case 7: model_actu->setHeaderData(7, Qt::Horizontal, tr("diario*"));
          break;
-     case 8: model->setHeaderData(8, Qt::Horizontal, tr("usuario*"));
+     case 8: model_actu->setHeaderData(8, Qt::Horizontal, tr("usuario*"));
          break;
-     case 9: model->setHeaderData(9, Qt::Horizontal, tr("apunte*"));
+     case 9: model_actu->setHeaderData(9, Qt::Horizontal, tr("apunte*"));
          break;
-     case 10: model->setHeaderData(10, Qt::Horizontal, tr("ci*"));
+     case 10: model_actu->setHeaderData(10, Qt::Horizontal, tr("ci*"));
          break;
-     case 11: model->setHeaderData(11, Qt::Horizontal, tr("ci*"));
+     case 11: model_actu->setHeaderData(11, Qt::Horizontal, tr("ci*"));
          break;
-     case 12: model->setHeaderData(12, Qt::Horizontal, tr("fichero doc*"));
+     case 12: model_actu->setHeaderData(12, Qt::Horizontal, tr("fichero doc*"));
          break;
-     case 13: model->setHeaderData(13, Qt::Horizontal, tr("ejercicio*"));
+     case 13: model_actu->setHeaderData(13, Qt::Horizontal, tr("ejercicio*"));
          break;
-     case 14: model->setHeaderData(14, Qt::Horizontal, tr("recepcion*"));
+     case 14: model_actu->setHeaderData(14, Qt::Horizontal, tr("recepcion*"));
         break;
-    case 15:  model->setHeaderData(15, Qt::Horizontal, tr("revisado*"));
+    case 15:  model_actu->setHeaderData(15, Qt::Horizontal, tr("revisado*"));
 
     }
 
@@ -351,30 +406,79 @@ bool diario::pasafiltro(QString filtro,bool qcomadecimal,bool qsindecimales)
  bool correcto;
  QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (filtro, &correcto);
  if (correcto)
-    model->setQuery( q );
+    model->setQuery( std::move(q) );
    else return false;
  return true;
+}
+
+bool diario::pasafiltrob(QString filtro, bool qcomadecimal, bool qsindecimales)
+{
+    modelb->pasainfo(qcomadecimal,qsindecimales);
+    sindecimales=qsindecimales;
+    guardafiltro=filtro;
+    bool correcto;
+    QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (filtro, &correcto,true);
+    if (correcto)
+        modelb->setQuery( std::move(q) );
+    else return false;
+    return true;
 }
 
 
 void diario::refresca()
 {
- if (!conanalitica()) ui.latabladiario->setColumnHidden(10,true);
+ /* if (!conanalitica()) ui.latabladiario->setColumnHidden(10,true);
      else ui.latabladiario->setColumnHidden(10,false);
  if (!basedatos::instancia()->analitica_tabla()) ui.latabladiario->setColumnHidden(11,true);
      else ui.latabladiario->setColumnHidden(11,false);
  if (!basedatos::instancia()->gestiondeusuarios()) ui.latabladiario->setColumnHidden(8,true);
-    else ui.latabladiario->setColumnHidden(8,false);
+    else ui.latabladiario->setColumnHidden(8,false);*/
  //model->chknumeracion();
- QSqlQuery p=model->query(); 
- p.exec();
- model->clear();
- model->setQuery(p);
+
+    if ((!conanalitica() && !conanalitica_parc())
+        || basedatos::instancia()->analitica_tabla())
+    { ui.latabladiario->setColumnHidden(10,true); ui.borrador_tableView->setColumnHidden(10,true); }
+    else {ui.latabladiario->setColumnHidden(10,false); ui.borrador_tableView->setColumnHidden(10,false);}
+    if (!basedatos::instancia()->analitica_tabla())
+    { ui.latabladiario->setColumnHidden(11,true); ui.borrador_tableView->setColumnHidden(11,true); }
+    else {ui.latabladiario->setColumnHidden(11,false); ui.borrador_tableView->setColumnHidden(11,false);}
+    if (!basedatos::instancia()->gestiondeusuarios())
+    {ui.latabladiario->setColumnHidden(8,true); ui.borrador_tableView->setColumnHidden(8,true);}
+    else {ui.latabladiario->setColumnHidden(8,false); ui.borrador_tableView->setColumnHidden(8,false);}
+
+    // if (borrador()) {
+    //     QSqlQuery p=modelb->query();
+    //     p.exec();
+    //     modelb->clear();
+    //     modelb->setQuery(p);
+    // }
+    // else {
+    //  QSqlQuery p=model->query();
+    //  p.exec();
+    //  model->clear();
+    //  model->setQuery(p);
+    // }
+
+     QSqlQuery p=modelb->query();
+     p.exec();
+     modelb->clear();
+     modelb->setQuery(p);
+     QSqlQuery p2=model->query();
+     p2.exec();
+     model->clear();
+     model->setQuery(p2);
+
 }
 
 void diario::irfinal()
 {
  // QModelIndex indice=ui.latabladiario->currentIndex ();
+    if (borrador()) {
+     ui.borrador_tableView->setCurrentIndex(modelo()->index(modelo()->rowCount()-1,0));
+     ui.borrador_tableView->scrollToBottom();
+     ui.borrador_tableView->setFocus();
+     return;
+    }
  ui.latabladiario->setCurrentIndex(modelo()->index(modelo()->rowCount()-1,0));
  ui.latabladiario->scrollToBottom();
  ui.latabladiario->setFocus();
@@ -383,6 +487,13 @@ void diario::irfinal()
 
 void diario::irafila(int fila)
 {
+    if (borrador())    {
+        if (fila>=modelo()->rowCount()) irfinal();
+        else
+            ui.borrador_tableView->selectRow(fila);
+        return;
+    }
+
  if (fila>=modelo()->rowCount()) irfinal();
    else
        ui.latabladiario->selectRow(fila);
@@ -390,6 +501,12 @@ void diario::irafila(int fila)
 
 int diario::fila_actual()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return 0;
+        QModelIndex indice=ui.borrador_tableView->currentIndex ();
+        return indice.row();
+    }
+
     if (!ui.latabladiario->currentIndex().isValid()) return 0;
     QModelIndex indice=ui.latabladiario->currentIndex ();
     return indice.row();
@@ -397,12 +514,13 @@ int diario::fila_actual()
 
 int diario::anchocolumna(int col)
 {
- return ui.latabladiario->columnWidth(col);
+   return ui.latabladiario->columnWidth(col);
 }
 
 void diario::pasaanchocolumna(int columna,int ancho)
 {
   ui.latabladiario->setColumnWidth(columna,ancho);
+  ui.borrador_tableView->setColumnWidth(columna,ancho);
 }
 
 void diario::pasaanchos(int ancho[])
@@ -414,24 +532,32 @@ void diario::muestratabla(void)
 {
 
     if ((!conanalitica() && !conanalitica_parc())
-        || basedatos::instancia()->analitica_tabla()) ui.latabladiario->setColumnHidden(10,true);
-       else ui.latabladiario->setColumnHidden(10,false);
-    if (!basedatos::instancia()->analitica_tabla()) ui.latabladiario->setColumnHidden(11,true);
-      else ui.latabladiario->setColumnHidden(11,false);
-    if (!basedatos::instancia()->gestiondeusuarios()) ui.latabladiario->setColumnHidden(8,true);
-      else ui.latabladiario->setColumnHidden(8,false);
- ui.latabladiario->show();
+        || basedatos::instancia()->analitica_tabla())
+         { ui.latabladiario->setColumnHidden(10,true); ui.borrador_tableView->setColumnHidden(10,true); }
+    else {ui.latabladiario->setColumnHidden(10,false); ui.borrador_tableView->setColumnHidden(10,false);}
+    if (!basedatos::instancia()->analitica_tabla())
+      { ui.latabladiario->setColumnHidden(11,true); ui.borrador_tableView->setColumnHidden(11,true); }
+    else {ui.latabladiario->setColumnHidden(11,false); ui.borrador_tableView->setColumnHidden(11,false);}
+    if (!basedatos::instancia()->gestiondeusuarios())
+      {ui.latabladiario->setColumnHidden(8,true); ui.borrador_tableView->setColumnHidden(8,true);}
+    else {ui.latabladiario->setColumnHidden(8,false); ui.borrador_tableView->setColumnHidden(8,false);}
+    ui.latabladiario->show();
+    ui.borrador_tableView->show();
 }
 
 
 QModelIndex diario::indiceactual(void)
 {
- return ui.latabladiario->currentIndex();
+    if (borrador()) return ui.borrador_tableView->currentIndex();
+    else
+    return ui.latabladiario->currentIndex();
 }
 
 void diario::situate(QModelIndex indice)
 {
- ui.latabladiario->setCurrentIndex (indice);
+    if (borrador()) ui.borrador_tableView->setCurrentIndex (indice);
+    else
+    ui.latabladiario->setCurrentIndex (indice);
 }
 
 void diario::pasafiltroedlin(QString filtro)
@@ -439,14 +565,25 @@ void diario::pasafiltroedlin(QString filtro)
   ui.filtrolineEdit->setText(filtro);
 }
 
+void diario::pasafiltroedlinb(QString filtro)
+{
+    ui.filtrolineEdit_2->setText(filtro);
+}
+
 void diario::infocuentapase(QModelIndex primaryKeyIndex)
 {
    int fila=primaryKeyIndex.row();
-   QString cad = model->data(model->index(fila,0),Qt::DisplayRole).toString();
+    QString cad;
+   if (borrador()) cad = modelb->data(modelb->index(fila,0),Qt::DisplayRole).toString();
+   else
+    cad = model->data(model->index(fila,0),Qt::DisplayRole).toString();
    ui.codigolineEdit->setText(cad);
    ui.descriplineEdit->setText(descripcioncuenta(cad));
 
-   QString ejercicio=ejerciciodelafecha(model->datagen(model->index(fila,1),Qt::DisplayRole).toDate());
+   QString ejercicio;
+   if (borrador()) ejercicio=ejerciciodelafecha(modelb->datagen(modelb->index(fila,1),Qt::DisplayRole).toDate());
+    else
+      ejercicio=ejerciciodelafecha(model->datagen(model->index(fila,1),Qt::DisplayRole).toDate());
    double saldo=saldocuentaendiarioejercicio(cad,ejercicio);
    QString cadnum;
    cadnum.setNum(saldo,'f',2);
@@ -462,6 +599,11 @@ void diario::infocuentapase(QModelIndex primaryKeyIndex)
 
 QString diario::subcuentaactual()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return "";
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return  modelb->record(fila).value("cuenta").toString();;
+    }
  if (!ui.latabladiario->currentIndex().isValid()) return "";
  int fila=ui.latabladiario->currentIndex().row();
  return  model->record(fila).value("cuenta").toString();;
@@ -469,6 +611,11 @@ QString diario::subcuentaactual()
 
 QString diario::externoactual()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return "";
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return modelb->record(fila).value("externo").toString();
+    }
  if (!ui.latabladiario->currentIndex().isValid()) return "";
  int fila=ui.latabladiario->currentIndex().row();
  return model->record(fila).value("externo").toString();
@@ -477,15 +624,24 @@ QString diario::externoactual()
 
 qlonglong diario::asientoactual()
 {
+    if (borrador()){
+        if (!ui.borrador_tableView->currentIndex().isValid()) return 0;
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return modelb->record(fila).value("asiento").toLongLong();
+    }
+
  if (!ui.latabladiario->currentIndex().isValid()) return 0;
  int fila=ui.latabladiario->currentIndex().row();
  return model->record(fila).value("asiento").toLongLong();
- // return model->record(fila).field(2).defaultValue().toLongLong();
- // return model->data(model->index(fila,2),Qt::DisplayRole).toLongLong();
 }
 
 bool diario::apunterevisado()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return false;
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return modelb->record(fila).value("revisado").toBool();
+    }
   if (!ui.latabladiario->currentIndex().isValid()) return false;
   int fila=ui.latabladiario->currentIndex().row();
   return model->record(fila).value("revisado").toBool();
@@ -493,6 +649,11 @@ bool diario::apunterevisado()
 
 QString diario::ciactual()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return "";
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return modelb->record(fila).value("ci").toString();
+    }
  if (!ui.latabladiario->currentIndex().isValid()) return "";
  int fila=ui.latabladiario->currentIndex().row();
  return model->record(fila).value("ci").toString();
@@ -501,6 +662,11 @@ QString diario::ciactual()
 
 QDate diario::fechapaseactual()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return QDate::currentDate();
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return modelb->record(fila).value("fecha").toDate();
+    }
  if (!ui.latabladiario->currentIndex().isValid()) return QDate::currentDate();
  int fila=ui.latabladiario->currentIndex().row();
  return model->record(fila).value("fecha").toDate();
@@ -508,6 +674,11 @@ QDate diario::fechapaseactual()
 
 qlonglong diario::paseactual()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return 0;
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return modelb->record(fila).value("pase").toLongLong();
+    }
  if (!ui.latabladiario->currentIndex().isValid()) return 0;
  int fila=ui.latabladiario->currentIndex().row();
  return model->record(fila).value("pase").toLongLong();
@@ -515,6 +686,11 @@ qlonglong diario::paseactual()
 
 double diario::debe()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return 0;
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return modelb->record(fila).value("debe").toDouble();
+    }
  if (!ui.latabladiario->currentIndex().isValid()) return 0;
  int fila=ui.latabladiario->currentIndex().row();
  return model->record(fila).value("debe").toDouble();
@@ -522,6 +698,11 @@ double diario::debe()
 
 double diario::haber()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return 0;
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return modelb->record(fila).value("haber").toDouble();
+    }
  if (!ui.latabladiario->currentIndex().isValid()) return 0;
  int fila=ui.latabladiario->currentIndex().row();
  return model->record(fila).value("haber").toDouble();
@@ -529,18 +710,28 @@ double diario::haber()
 
 CustomSqlModel *diario::modelo()
 {
-  return model;
+    if (borrador())
+      return modelb;
+    return model;
 }
 
 
 QTableView *diario::tabladiario()
 {
- return ui.latabladiario;
+    if (borrador()) return ui.borrador_tableView;
+    else
+    return ui.latabladiario;
 }
 
 
 QString diario::conceptoactual()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return "";
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return modelb->record(fila).value("concepto").toString();
+    }
+
  if (!ui.latabladiario->currentIndex().isValid()) return "";
  int fila=ui.latabladiario->currentIndex().row();
  return model->record(fila).value("concepto").toString();
@@ -548,6 +739,11 @@ QString diario::conceptoactual()
 
 QString diario::codigo_var_evpn_pymes()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return "";
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return modelb->record(fila).value("codigo_var_evpn_pymes").toString();
+    }
  if (!ui.latabladiario->currentIndex().isValid()) return "";
  int fila=ui.latabladiario->currentIndex().row();
  return model->record(fila).value("codigo_var_evpn_pymes").toString();
@@ -555,6 +751,11 @@ QString diario::codigo_var_evpn_pymes()
 
 QString diario::documentoactual()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return "";
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return modelb->record(fila).value("documento").toString();
+    }
  if (!ui.latabladiario->currentIndex().isValid()) return "";
  int fila=ui.latabladiario->currentIndex().row();
  return model->record(fila).value("documento").toString();
@@ -594,6 +795,11 @@ void diario::editarasientod()
 
 QString diario::fichdocumentoactual()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return "";
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return modelb->record(fila).value("copia_doc").toString();
+    }
  if (!ui.latabladiario->currentIndex().isValid()) return "";
  int fila=ui.latabladiario->currentIndex().row();
  return model->record(fila).value("copia_doc").toString();
@@ -616,6 +822,11 @@ void diario::resetimagen()
 
 qlonglong diario::clave_ci_actual()
 {
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return 0;
+        int fila=ui.borrador_tableView->currentIndex().row();
+        return modelb->record(fila).value("clave_ci").toLongLong();
+    }
  if (!ui.latabladiario->currentIndex().isValid()) return 0;
  int fila=ui.latabladiario->currentIndex().row();
  return model->record(fila).value("clave_ci").toLongLong();
@@ -623,21 +834,29 @@ qlonglong diario::clave_ci_actual()
 
 QDate diario::fechasel()
 {
-  return ui.fechadateEdit->date();
+    if (borrador()) return ui.fechadateEdit_2->date();
+    else
+     return ui.fechadateEdit->date();
 }
 
 
 int diario::columna_actual()
 {
- if (!ui.latabladiario->currentIndex().isValid()) return -1;
+    if (borrador()) {
+        if (!ui.borrador_tableView->currentIndex().isValid()) return -1;
+        return ui.borrador_tableView->currentIndex().column();
+    }
 
+ if (!ui.latabladiario->currentIndex().isValid()) return -1;
  return ui.latabladiario->currentIndex().column();
 }
 
 
 void diario::inicio()
 {
-    ui.latabladiario->selectRow(0);
+    if (borrador()) ui.borrador_tableView->selectRow(0);
+    else
+     ui.latabladiario->selectRow(0);
     /*ui.latabladiario->setCurrentIndex(modelo()->index(0,0));
     ui.latabladiario->scrollToBottom();
     ui.latabladiario->setFocus();*/
@@ -646,7 +865,8 @@ void diario::inicio()
 
 void diario::fin()
 {
- ui.latabladiario->selectRow(modelo()->rowCount()-1);
+    if (borrador()) ui.borrador_tableView->selectRow(modelo()->rowCount()-1);
+    ui.latabladiario->selectRow(modelo()->rowCount()-1);
 }
 
 void diario::esconde_filtro()
@@ -681,6 +901,17 @@ void diario::muestra_filtro()
    ui.iva_pushButton->show();
    ui.ret_pushButton->show();
 
+}
+
+bool diario::borrador()
+{
+    if (ui.tabWidget->currentIndex()==1) return true;
+    return false;
+}
+
+QString diario::file_droped()
+{
+    return fichero_droped;
 }
 
 
@@ -734,9 +965,11 @@ void diario::edcondoc()
 
   int guardafila=fila_actual();
   bool correcto=false;
-  QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro, &correcto);
-  if (correcto)
-     model->setQuery( q );
+  QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro, &correcto, borrador());
+  if (correcto) {
+     if (borrador()) modelb->setQuery( q );
+       else model->setQuery( q );
+  }
   irafila(guardafila);
 }
 
@@ -770,9 +1003,11 @@ void diario::cambiacuenpase()
 
   int guardafila=fila_actual();
   bool correcto=false;
-  QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro, &correcto);
-  if (correcto)
-     model->setQuery( q );
+  QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro, &correcto, borrador());
+  if (correcto) {
+     if (borrador()) modelb->setQuery( q );
+      else model->setQuery( q );
+  }
   irafila(guardafila);
 }
 
@@ -1080,3 +1315,19 @@ void diario::ed_registro_ret() {
             delete(r);
         }
 }
+
+void diario::on_tabWidget_currentChanged(int index)
+{
+    if (index==0) {
+        ui.fecha_pushButton->hide();
+        ui.concepto_pushButton->hide();
+        ui.cuenta_pushButton->hide();
+    }
+    else {
+        ui.fecha_pushButton->show();
+        ui.concepto_pushButton->show();
+        ui.cuenta_pushButton->show();
+    }
+    emit cambio_tab(index);
+}
+

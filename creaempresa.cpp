@@ -230,7 +230,7 @@ void creaempresa::cargaplan()
         QString linea;
         bool longvariable=cod_longitud_variable();
         QProgressDialog progreso(tr("Importando plan ..."), 0, 0, 3);
-        progreso.setWindowModality(Qt::WindowModal);
+        // progreso.setWindowModality(Qt::WindowModal);
         progreso.setValue(1);
         QApplication::processEvents();
          while ( !stream.atEnd() ) {
