@@ -60,6 +60,7 @@ SOURCES += main.cpp\
         notas.cpp \
         pideejercicio.cpp \
         bloqueaper.cpp \
+    traspasoborrador.cpp \
         usuarios.cpp \
         usuario.cpp \
         ajuste_imagen.cpp \
@@ -253,6 +254,7 @@ HEADERS  += mainwindow.h\
          notas.h \
          pideejercicio.h \
          bloqueaper.h \
+    traspasoborrador.h \
          usuarios.h \
          usuario.h \
          ajuste_imagen.h \
@@ -442,6 +444,7 @@ FORMS    += mainwindow.ui\
           notas.ui \
           pideejercicio.ui \
           bloqueaper.ui \
+    traspasoborrador.ui \
           usuarios.ui \
           usuario.ui \
           ajuste_imagen.ui \

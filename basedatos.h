@@ -1513,6 +1513,9 @@ class basedatos {
 
         // 
         qlonglong selectMaxasientofecha(QDate fecha);
+        int selectMaxasientoEjercicio (QString ejercicio);
+        int selectMaxAsientoContabEjercicio(QString ejercicio);
+        QDate selectMaxFechaEjercicio(QString ejercicio);
 
         qlonglong min_asiento (QString ejercicio);
 
@@ -1546,7 +1549,7 @@ class basedatos {
         // 
         QSqlQuery select11Diariofiltro(QString filtro);
 
-        QSqlQuery selectDiariofiltro_nomsj_error (QString filtro, bool *correcto, bool borrador=false);
+        QSqlQuery selectDiariofiltro_nomsj_error (QString filtro, bool *correcto);
 
         QSqlQuery select6ejerciciosorderapertura();
 
@@ -1761,7 +1764,7 @@ class basedatos {
                                  bool sec_recibidas, QString prox_domicilia, QString cod_ine_plaza,
                                  bool caja_iva, bool borrados_consol, QString msj_vto_dcho, QString msj_vto_obl,
                                  bool externos, QString tfno, bool gd_bd, bool tipo_proveedor, QString cod_homol_pruebas,
-                                 QString nombre, QString apellidos, bool curl, QString url_actu, QString moneda);
+                                 QString nombre, QString apellidos, bool curl, QString url_actu, QString moneda, bool renum_borr, bool solo_borr);
 
         // 
         void updateDiarioasientoasiento(QString nuevo, QString antiguo, QString ejercicio);
@@ -2532,8 +2535,8 @@ class basedatos {
 
         // inserta apunte en diario para regularización parcial
         void insertDiarioRegulParc (QString cadnumasiento, QString cadnumpase, QString cadfecha,
-         QString cuenta, QString debe, QString haber, QString concepto, QString ejercicio,
-         QString diario);
+                                   QString cuenta, QString debe, QString haber, QString concepto, QString ejercicio,
+                                   QString diario, bool borrador);
 
         // crea tablas copia de libroiva y vencimientos y borra las originales
         void proctablas_libroiva_venci();
@@ -3582,6 +3585,14 @@ class basedatos {
         QSqlQuery select_registros_monedas();
 
         void update_fecha_actu_cambios(QDate fecha);
+
+        void marca_pase_contabilizado (QString pase);
+
+        void marca_todo_contabilizado ();
+
+        bool config_renum_borr();
+
+        bool solo_borr();
 
     private:
 

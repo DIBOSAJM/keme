@@ -276,6 +276,7 @@ void consmayor::cargadatos()
    QSqlQuery query = basedatos::instancia()->select9Diariofechascondicionorderfechapase(
            ui.inicialdateEdit->date() , ui.finaldateEdit->date() , condicion );
    int fila=0;
+   filas_borrador.clear();
     if (query.isActive())
     while ( query.next() ) {
         if (fila>=num) break; // prevenimos violación de segmento
@@ -325,6 +326,7 @@ void consmayor::cargadatos()
         QTableWidgetItem *newItempase = new QTableWidgetItem(query.value(9).toString());
         newItempase->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
         ui.mayortable->setItem(fila,11,newItempase); // apunte
+        if (!query.value(10).toBool()) filas_borrador << fila;
         fila++;
     }
   // calculamos acumulado de saldo inicial
@@ -434,6 +436,18 @@ void consmayor::cargadatos()
            }
         fila++;
        }
+    for (int v=0; v<filas_borrador.count(); v++) {
+           for (int column = 0; column < ui.mayortable->columnCount(); ++column)
+           {
+            QTableWidgetItem* item = ui.mayortable->item(filas_borrador.at(v), column);
+            if (!item)
+               {
+                item = new QTableWidgetItem();
+                ui.mayortable->setItem(filas_borrador.at(v), column, item);
+               }
+            item->setBackground(QColor(255, 200, 200));
+           }
+       }
    ui.debelineEdit->setText(formateanumero(sumadebe,comadecimal,decimales));
    ui.haberlineEdit->setText(formateanumero(sumahaber,comadecimal,decimales));
    ui.saldolineEdit->setText(formateanumero(saldoin,comadecimal,decimales));
@@ -443,6 +457,17 @@ void consmayor::cargadatos()
    ui.mayortable->resizeColumnToContents(4);
    ui.mayortable->resizeColumnToContents(5);
    ui.mayortable->resizeColumnToContents(6);
+
+   int currentRow=ui.mayortable->currentRow();
+   if (filas_borrador.contains(currentRow)) {
+       ui.editarpushButton->setEnabled(true);
+       ui.borrarpushButton->setEnabled(true);
+   }
+   else {
+       ui.editarpushButton->setEnabled(false);
+       ui.borrarpushButton->setEnabled(false);
+   }
+
 }
 
 
@@ -1195,6 +1220,7 @@ void consmayor::nuevo_asiento()
     t->pasafechaasiento(fecha);
     t->pasadiario(diario);
     t->pasa_doc(doc);
+    t->set_borrador();
     resultado=t->exec();
     delete(t);
 
@@ -2053,3 +2079,20 @@ void consmayor::actu_conci_punteo() {
     QMessageBox::information( this, tr("Consulta de mayor"),
      tr("Se ha trasladado el punteo de vencimientos a conciliación"));
 }
+
+void consmayor::on_mayortable_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
+{
+    Q_UNUSED(currentColumn);
+    Q_UNUSED(previousRow);
+    Q_UNUSED(previousColumn);
+
+    if (filas_borrador.contains(currentRow)) {
+        ui.editarpushButton->setEnabled(true);
+        ui.borrarpushButton->setEnabled(true);
+    }
+    else {
+        ui.editarpushButton->setEnabled(false);
+        ui.borrarpushButton->setEnabled(false);
+    }
+}
+

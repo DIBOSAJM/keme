@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>561</width>
-    <height>552</height>
+    <height>568</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -612,7 +612,6 @@ p, li { white-space: pre-wrap; }
          <widget class="QLabel" name="label_4">
           <property name="font">
            <font>
-            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -624,7 +623,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -638,7 +637,6 @@ p, li { white-space: pre-wrap; }
          <widget class="QLabel" name="label_5">
           <property name="font">
            <font>
-            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -730,7 +728,6 @@ p, li { white-space: pre-wrap; }
          </property>
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -761,7 +758,6 @@ p, li { white-space: pre-wrap; }
         <widget class="QLabel" name="label_3">
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -781,7 +777,6 @@ p, li { white-space: pre-wrap; }
         <widget class="QLabel" name="mediolabel">
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -796,6 +791,21 @@ p, li { white-space: pre-wrap; }
       </layout>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="contab_borr_checkBox">
+     <property name="font">
+      <font>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Contabilizar en Borrador</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout">
@@ -817,7 +827,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <spacer>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -888,8 +898,9 @@ p, li { white-space: pre-wrap; }
   <tabstop>doclineEdit</tabstop>
   <tabstop>cuenta_bancolineEdit</tabstop>
   <tabstop>medio_realizacionlineEdit</tabstop>
-  <tabstop>aceptarpushButton</tabstop>
+  <tabstop>contab_borr_checkBox</tabstop>
   <tabstop>cancelarpushButton</tabstop>
+  <tabstop>aceptarpushButton</tabstop>
  </tabstops>
  <resources>
   <include location="keme.qrc"/>

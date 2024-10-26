@@ -111,6 +111,8 @@ class diario: public QWidget {
            void ed_registro_iva();
            void ed_registro_ret();
            void on_tabWidget_currentChanged(int index);
+           void on_contabilizar_pushButton_clicked();
+
        signals:
            void cambio_tab(int ntab);
            void filedroped();

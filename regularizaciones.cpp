@@ -23,13 +23,11 @@
 #include "basedatos.h"
 #include "regul_sec.h"
 #include "funciones.h"
-#include "directorio.h"
 #include <QMessageBox>
 #include <QFileDialog>
 
 regularizaciones::regularizaciones() : QDialog() {
     ui.setupUi(this);
-
 
     ui.codigolineEdit->setFocus();
      QSqlTableModel *modelo = new QSqlTableModel;

@@ -43,6 +43,7 @@ class consmayor : public QDialog {
                 void informe_intervalo();
                 QStringList fechal ,asientol, conceptol, debel, haberl, documentol, externol, saldol;
                 QString cadsumadebeextracto, cadsumahaberextracto;
+                QList<int> filas_borrador;
 
 	private slots:
                 void botonsubcuentapulsado();
@@ -87,6 +88,7 @@ class consmayor : public QDialog {
                 void ed_registro_ret();
                 void actu_conci_punteo();
 
+                void on_mayortable_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 };
 
 

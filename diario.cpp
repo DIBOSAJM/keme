@@ -34,6 +34,7 @@
 #include "exento.h"
 #include "eib.h"
 #include "retencion.h"
+#include "traspasoborrador.h"
 
 CustomSqlModel::CustomSqlModel(QObject *parent)
         : QSqlQueryModel(parent)
@@ -184,6 +185,7 @@ diario::diario() : QWidget() {
   ui.borrador_tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
   ui.borrador_tableView->setSelectionMode(QAbstractItemView::ContiguousSelection);
   ui.fechadateEdit->setDate(QDate::currentDate());
+  ui.fechadateEdit_2->setDate(QDate::currentDate());
   comadecimal=true; sindecimales=false;
                         //objeto del que sale la señal
   connect(ui.latabladiario,SIGNAL(clicked(QModelIndex)),this,SLOT(infocuentapase(QModelIndex)));
@@ -415,9 +417,9 @@ bool diario::pasafiltrob(QString filtro, bool qcomadecimal, bool qsindecimales)
 {
     modelb->pasainfo(qcomadecimal,qsindecimales);
     sindecimales=qsindecimales;
-    guardafiltro=filtro;
+    guardafiltro2=filtro;
     bool correcto;
-    QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (filtro, &correcto,true);
+    QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (filtro, &correcto);
     if (correcto)
         modelb->setQuery( std::move(q) );
     else return false;
@@ -466,7 +468,7 @@ void diario::refresca()
      QSqlQuery p2=model->query();
      p2.exec();
      model->clear();
-     model->setQuery(p2);
+     model->setQuery(std::move(p2));
 
 }
 
@@ -937,10 +939,19 @@ void diario::editafechaasien()
 
   int guardafila=fila_actual();
   bool correcto=false;
-  QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro, &correcto);
-  if (correcto)
-     model->setQuery( q );
-  irafila(guardafila);
+
+  if (!borrador()) {
+     QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro, &correcto);
+     if (correcto)
+       model->setQuery( std::move(q) );
+  }
+  else {
+        QSqlQuery p=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro2, &correcto);
+        if (correcto)
+         modelb->setQuery(std::move(p));
+    }
+
+ irafila(guardafila);
 }
 
 
@@ -965,11 +976,18 @@ void diario::edcondoc()
 
   int guardafila=fila_actual();
   bool correcto=false;
-  QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro, &correcto, borrador());
-  if (correcto) {
-     if (borrador()) modelb->setQuery( q );
-       else model->setQuery( q );
+
+  if (!borrador()) {
+      QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro, &correcto);
+      if (correcto)
+          model->setQuery( std::move(q) );
   }
+  else {
+      QSqlQuery p=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro2, &correcto);
+      if (correcto)
+          modelb->setQuery(std::move(p));
+  }
+
   irafila(guardafila);
 }
 
@@ -1002,12 +1020,20 @@ void diario::cambiacuenpase()
   delete(c);
 
   int guardafila=fila_actual();
+
   bool correcto=false;
-  QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro, &correcto, borrador());
-  if (correcto) {
-     if (borrador()) modelb->setQuery( q );
-      else model->setQuery( q );
+
+  if (!borrador()) {
+      QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro, &correcto);
+      if (correcto)
+          model->setQuery( std::move(q) );
   }
+  else {
+      QSqlQuery p=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro2, &correcto);
+      if (correcto)
+          modelb->setQuery(std::move(p));
+  }
+
   irafila(guardafila);
 }
 
@@ -1329,5 +1355,84 @@ void diario::on_tabWidget_currentChanged(int index)
         ui.cuenta_pushButton->show();
     }
     emit cambio_tab(index);
+}
+
+
+void diario::on_contabilizar_pushButton_clicked()
+{
+    bool renum=false;
+    TraspasoBorrador * t = new TraspasoBorrador();
+    int result=t->exec();
+    renum=t->renum();
+    delete(t);
+    if ((!result)==QDialog::Accepted) return;
+    if (renum) {
+      // recorremos los registros en el diario borrador filtrado
+      // qDebug() << guardafiltro2.left(guardafiltro2.toLower().lastIndexOf("order by"));
+      //QString cad_sql="select asiento, pase, ejercicio, fecha from diario where not contabilizado order by ejercicio,fecha";
+      QString cad_sql="select asiento, pase, ejercicio, fecha from diario ";
+      cad_sql.append(guardafiltro2.left(guardafiltro2.toLower().lastIndexOf("order by")));
+      cad_sql.append("order by ejercicio,fecha");
+      //qDebug() << cad_sql;
+      //qDebug() << guardafiltro2;
+      if (guardafiltro2.left(guardafiltro2.toLower().lastIndexOf("order by")).contains("pase")) {
+          QMessageBox::warning(this, tr("CONTABILIZAR DEFINITIVO"), tr("No pueden haber restricciones a número de apunte en el filtro"));
+          return;
+      }
+      QSqlQuery q = basedatos::instancia()->ejecutar_publica(cad_sql);
+      if (q.isActive()) {
+          QString ejercicio;
+          int prox_asiento=0;
+          int asiento_guarda=0;
+          bool actualizadoamort=false;
+          while (q.next()) {
+              if (ejercicio!=q.value(2).toString()) {
+                  // comprobamos que la fecha sea mayor que la máxima del diario para el ejercicio
+                  QDate maxfecha=basedatos::instancia()->selectMaxFechaEjercicio(q.value(2).toString());
+                  if (q.value(3).toDate()<maxfecha) {
+                      if (QMessageBox::question(this,
+                                                tr("CONTABILIZAR DEFINITIVO"),
+                                                tr("El ejercicio '%1' tiene contabilizada una fecha mayor a la que figura en el borrador.\n"
+                                                   "¿Desea continuar?").arg(q.value(2).toString())
+                                                ) == QMessageBox::No ) return ;
+                  }
+                  if (!ejercicio.isEmpty()) {
+                     QString cadnum;
+                     cadnum.setNum(prox_asiento+1);
+                     basedatos::instancia()->update_ejercicio_prox_asiento(ejercicio, cadnum);
+                  }
+                  asiento_guarda=q.value(0).toInt();
+                  prox_asiento=basedatos::instancia()->selectMaxAsientoContabEjercicio(q.value(2).toString()) +1;
+                  ejercicio=q.value(2).toString();
+              }
+              if (q.value(0).toInt()!=asiento_guarda) {
+                  prox_asiento++;
+                  asiento_guarda=q.value(0).toInt();
+                  actualizadoamort=false;
+              }
+              QString cadnum; cadnum.setNum(prox_asiento);
+              basedatos::instancia()->cambia_asiento_a_pase (q.value(1).toString(), cadnum);
+              // asignamos contabilizado a apunte
+              basedatos::instancia()->marca_pase_contabilizado(q.value(1).toString());
+
+              // falta comprobar si es de amortización
+              if (basedatos::instancia()->esasientodeamort(q.value(0).toString(),
+                                                           ejercicio))
+              {
+                  // QMessageBox::information( this, tr("RENUMERAR"),);
+                  if (!actualizadoamort)
+                  {
+                      basedatos::instancia()->renum_amortiz (q.value(0).toString(), cadnum,
+                                                            ejercicio);
+                      actualizadoamort=true;
+                  }
+              }
+
+          }
+          QString cadnum;
+          cadnum.setNum(prox_asiento+1);
+          basedatos::instancia()->update_ejercicio_prox_asiento(ejercicio, cadnum);
+       }
+    } else basedatos::instancia()->marca_todo_contabilizado();// no renum
 }
 

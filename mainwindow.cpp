@@ -3384,7 +3384,8 @@ void MainWindow::gestautomaticos()
  filtroactivo="ejercicio=''";
  refrescardiario();
  //punterodiario->esconde_filtro();
- selecasmod *selec = new selecasmod(usuario);
+
+ selecasmod *selec = new selecasmod(usuario,punterodiario->borrador());
  if (activa_msj_tabla) selec->activar_msj_tabla();
  selec->activar_msj_tabla();
  selec->exec();
@@ -3403,6 +3404,7 @@ void MainWindow::refresh_diario()
      int guardafila=punterodiario->fila_actual();
      QString cadena;
      punterodiario->pasafiltroedlin(filtroactivo);
+     punterodiario->pasafiltroedlinb(filtroactivob);
      if (filtroactivo.length()>0) cadena=" WHERE "+filtroactivo+" ";
 
      if (filtroactivo.isEmpty()) cadena =" WHERE contabilizado";
@@ -3414,7 +3416,17 @@ void MainWindow::refresh_diario()
                    tr("El filtro suministrado no es correcto"));
           filtrar_inicio();
         }
-    punterodiario->pasafiltrob(filtroactivob,estilonumerico,sindecimales);
+
+     if (filtroactivob.isEmpty()) cadena =" WHERE not contabilizado";
+        else cadena= "WHERE " + filtroactivob + " and not contabilizado ";
+     cadena+=ordenarpor();
+
+    if (!punterodiario->pasafiltrob(cadena,estilonumerico,sindecimales)) {
+        QMessageBox::warning(this, tr("KEME-Contabilidad"),
+              tr("El filtro suministrado no es correcto"));
+        filtroactivob.clear();
+        // qDebug() << cadena;
+    }
 
      if (basedatos::instancia()->essqlite()) punterodiario->refresca(); // nuevo para SQLITE
      punterodiario->cabecera_campo_orden(n_campo_orden());
@@ -3428,9 +3440,9 @@ void MainWindow::refresh_diario()
 
 void MainWindow::refresh_diario2()
 {
-     // int guardafila=punterodiario->fila_actual();
      QString cadena;
      punterodiario->pasafiltroedlin(filtroactivo);
+     punterodiario->pasafiltroedlinb(filtroactivob);
      if (filtroactivo.length()>0) cadena=" WHERE "+filtroactivo+" ";
      if (filtroactivo.isEmpty()) cadena =" WHERE contabilizado";
         else cadena+= " and contabilizado ";
@@ -3442,14 +3454,25 @@ void MainWindow::refresh_diario2()
                    tr("El filtro suministrado no es correcto"));
           filtrar_inicio();
         }
-     punterodiario->pasafiltrob("",estilonumerico,sindecimales);
+
+     if (filtroactivob.isEmpty()) cadena =" WHERE not contabilizado";
+        else cadena= "WHERE " + filtroactivob + " and not contabilizado ";
+     cadena+=ordenarpor();
+
+     if (!punterodiario->pasafiltrob(cadena,estilonumerico,sindecimales)) {
+         QMessageBox::warning(this, tr("KEME-Contabilidad"),
+               tr("El filtro suministrado no es correcto"));
+         filtroactivob.clear();
+         // qDebug() << cadena;
+     }
+
+
      if (basedatos::instancia()->essqlite()) punterodiario->refresca(); // nuevo para SQLITE
+
      punterodiario->cabecera_campo_orden(n_campo_orden());
 
      punterodiario->pasaanchos(anchocol);
      punterodiario->muestratabla();
-     // punterodiario->irfinal();
-     // punterodiario->irafila(guardafila);
 
 }
 
@@ -3714,29 +3737,27 @@ void MainWindow::borraasiento()
 void MainWindow::filtrardiario()
 {
  filtrodiario *f = new filtrodiario(estilonumerico);
- f->pasafiltro(filtro_a_lingu(filtroactivo));
- f->pasacondicionesfiltrodefecto(condicionesfiltrodefecto());
+ if (punterodiario->borrador()) {
+    f->pasafiltro(filtro_a_lingu(filtroactivob));
+ }
+ else {
+     f->pasafiltro(filtro_a_lingu(filtroactivo));
+     f->pasacondicionesfiltrodefecto(condicionesfiltrodefecto());
+ }
  int resultado = f->exec();
  if (resultado == QDialog::Accepted)
       {
-       filtroactivo=lingu_a_filtro(f->filtro());
-       if (filtroactivo.trimmed().isEmpty() && QMessageBox::question(
+       if (punterodiario->borrador()){
+           filtroactivob=lingu_a_filtro(f->filtro());
+       } else {
+           filtroactivo=lingu_a_filtro(f->filtro());
+           if (filtroactivo.trimmed().isEmpty() && QMessageBox::question(
                this, tr("Filtrar diario"),
                tr("El filtro está vacío\n"
                   "¿ añadir filtro por defecto ?\n")) ==QMessageBox::Yes )
-           filtroactivo=condicionesfiltrodefecto();
+               filtroactivo=condicionesfiltrodefecto();
+       }
        refrescardiario();
-/*       delete(punterodiario);
-       diario *eldiario = new diario;
-       punterodiario=eldiario;
-       setCentralWidget(eldiario);
-       eldiario->pasafiltroedlin(filtro_a_lingu(filtroactivo));
-       QString cadena;
-       if (filtroactivo.length()>0) cadena=" WHERE "+filtroactivo+" ";
-       cadena+=ordenarpor();
-       eldiario->activaconfiltro(cadena,estilonumerico,sindecimales);
-       eldiario->pasaanchos(anchocol);
-       eldiario->muestratabla();*/
       }
  delete(f);
 }
@@ -4643,7 +4664,7 @@ void MainWindow::regulparc()
 
 void MainWindow::ejecuta_regul()
 {
-  exec_regul *r = new exec_regul();
+  exec_regul *r = new exec_regul(punterodiario->borrador());
   r->exec();
   delete(r);
  refrescardiario();
@@ -7267,9 +7288,18 @@ void MainWindow::on_diario_tab_cambiado(int index)
   if (index==0) {
       ui->actionBorrar_Asiento->setVisible(false);
       ui->actionEditar_Asiento->setVisible(false);
+      ui->actionEditar_Asiento_N_mero->setVisible(false);
+      if (basedatos::instancia()->solo_borr()) {
+          ui->actionNuevo_Asiento->setEnabled(false);
+          ui->actionAsientos_Predefinidos->setEnabled(false);
+          ui->actionEjecutar_regul->setEnabled(false);      }
   } else {
       ui->actionBorrar_Asiento->setVisible(true);
       ui->actionEditar_Asiento->setVisible(true);
+      ui->actionEditar_Asiento_N_mero->setVisible(true);
+      ui->actionNuevo_Asiento->setEnabled(true);
+      ui->actionAsientos_Predefinidos->setEnabled(true);
+      ui->actionEjecutar_regul->setEnabled(true);
   }
 
 }

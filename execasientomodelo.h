@@ -29,7 +29,7 @@
 class execasientomodelo : public QDialog {
     Q_OBJECT
 	public:
-                execasientomodelo(QString usuario);
+                execasientomodelo(QString usuario, bool borrador=true);
                 void cargadatos( QString asientomodelo );
                 QString fichdocumento();
                 void aspiradora();
@@ -67,6 +67,7 @@ class execasientomodelo : public QDialog {
                 void generaasiento(bool verificar);
                 QString concepto_sii;
                 CustomQLabel *etiqueta;
+                bool diario_borrador;
 
         private slots:
                 void valorcambiado(int fila,int columna);

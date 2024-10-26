@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>773</width>
-    <height>756</height>
+    <height>759</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -515,10 +515,10 @@
               </size>
              </property>
              <property name="frameShape">
-              <enum>QFrame::WinPanel</enum>
+              <enum>QFrame::Shape::WinPanel</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
+              <enum>QFrame::Shadow::Sunken</enum>
              </property>
              <property name="text">
               <string/>
@@ -530,10 +530,10 @@
              <item>
               <spacer name="horizontalSpacer_2">
                <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+                <enum>Qt::Orientation::Horizontal</enum>
                </property>
                <property name="sizeType">
-                <enum>QSizePolicy::Preferred</enum>
+                <enum>QSizePolicy::Policy::Preferred</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -1189,7 +1189,7 @@
               <item>
                <widget class="Line" name="line_2">
                 <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+                 <enum>Qt::Orientation::Horizontal</enum>
                 </property>
                </widget>
               </item>
@@ -1206,7 +1206,7 @@
               <item>
                <widget class="Line" name="line_3">
                 <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+                 <enum>Qt::Orientation::Horizontal</enum>
                 </property>
                </widget>
               </item>
@@ -1225,7 +1225,7 @@
             <item>
              <widget class="Line" name="line">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
              </widget>
             </item>
@@ -1282,6 +1282,23 @@
             <widget class="QCheckBox" name="curl_checkBox">
              <property name="text">
               <string>CURL para envío SII</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="renum_borr_checkBox">
+             <property name="text">
+              <string>Renumerar en borrador</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="solo_borr_checkBox">
+             <property name="text">
+              <string>Impedir adición en definitivo</string>
              </property>
             </widget>
            </item>
@@ -1453,10 +1470,10 @@
      <item>
       <spacer>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
+        <enum>QSizePolicy::Policy::Expanding</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -1551,6 +1568,8 @@
   <tabstop>gd_disco_radioButton</tabstop>
   <tabstop>gd_bd_radioButton</tabstop>
   <tabstop>curl_checkBox</tabstop>
+  <tabstop>renum_borr_checkBox</tabstop>
+  <tabstop>solo_borr_checkBox</tabstop>
   <tabstop>homol_pruebas_lineEdit</tabstop>
   <tabstop>pago_venci_lineEdit</tabstop>
   <tabstop>cobro_venci_lineEdit</tabstop>
@@ -1564,8 +1583,8 @@
   <tabstop>externoscheckBox</tabstop>
   <tabstop>borrados_consol_checkBox</tabstop>
   <tabstop>url_actu_lineEdit</tabstop>
-  <tabstop>aceptarpushButton</tabstop>
   <tabstop>cancelarpushButton</tabstop>
+  <tabstop>aceptarpushButton</tabstop>
  </tabstops>
  <includes>
   <include location="global">qsqlquery.h</include>

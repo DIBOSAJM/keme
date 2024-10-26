@@ -30,12 +30,13 @@
 class exec_regul : public QDialog {
     Q_OBJECT
 	public:
-                exec_regul();
+                exec_regul(bool borrador=true);
                 ~exec_regul();
                 void ejecuta(QString codigo);
         private:
                 Ui::exec_regul ui;
                 QSqlTableModel *modeloreg;
+                bool diario_borrador;
         private slots :
                 void tablapulsada();
                 void ejerciciocambiado();

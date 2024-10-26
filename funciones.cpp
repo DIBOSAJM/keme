@@ -4921,7 +4921,7 @@ QString margen_extra_latex()
 
 
 void ejecuta_regularizacion(QString cuenta_reg, QString cuentas, QString descripcion,
-                            QDate fechainicial,QDate fechafinal,QDate fechaasiento, QString diario)
+                            QDate fechainicial,QDate fechafinal,QDate fechaasiento, QString diario, bool borrador)
 {
 
     if (!fechacorrespondeaejercicio(fechaasiento))
@@ -5002,14 +5002,12 @@ void ejecuta_regularizacion(QString cuenta_reg, QString cuentas, QString descrip
    QString cadanchocuentas; cadanchocuentas.setNum(anchocuentas());
    QSqlQuery query = basedatos::instancia()->selectCodigoplancontablelengthauxiliarfiltro(cadanchocuentas, filtro);
    QString codigo;
-   int veces=0;
    double saldo=0;
    QString cadsaldo;
 
     if ( query.isActive() ) {
           while ( query.next() )
                {
-                 veces++;
 
                  codigo=query.value(0).toString();
                  // vamos calculando el saldo de las cuentas para el intervalo de fechas
@@ -5033,7 +5031,6 @@ void ejecuta_regularizacion(QString cuenta_reg, QString cuentas, QString descrip
       }
 
    query = basedatos::instancia()->selectCodigoplancontablelengthauxiliarfiltro(cadanchocuentas, filtro);
-   veces=0;
    saldo=0;
    cadsaldo.clear();
 
@@ -5041,7 +5038,6 @@ void ejecuta_regularizacion(QString cuenta_reg, QString cuentas, QString descrip
     if ( query.isActive() ) {
           while ( query.next() )
                {
-	         veces++;
 
 	         codigo=query.value(0).toString();
 	         // vamos calculando el saldo de las cuentas para el intervalo de fechas
@@ -5068,7 +5064,7 @@ void ejecuta_regularizacion(QString cuenta_reg, QString cuentas, QString descrip
 			 if (query2.value(0).toDouble()>0) qhaber = query2.value(0).toString();
                          basedatos::instancia()->insertDiarioRegulParc(cadnumasiento,
                                                                        cadnumpase,
-                          cadfechaasiento, codigo, qdebe, qhaber,descripcion, ejercicio, diario);
+                          cadfechaasiento, codigo, qdebe, qhaber,descripcion, ejercicio, diario, borrador);
 			        // queda actu saldo y proxpase
 			        // queda actu saldo y proxpase
 
@@ -5115,7 +5111,7 @@ void ejecuta_regularizacion(QString cuenta_reg, QString cuentas, QString descrip
 	   else qhaber = "0";
 
          basedatos::instancia()->insertDiarioRegulParc(cadnumasiento, cadnumpase,
-                    cadfechaasiento, cuenta_reg, qdebe, qhaber,descripcion, ejercicio,diario);
+                    cadfechaasiento, cuenta_reg, qdebe, qhaber,descripcion, ejercicio,diario,borrador);
 
          // queda actu saldo y proxpase
         if (saldo>0) 

@@ -593,7 +593,7 @@ QString fechaliteral(QDate fecha);
 void borraasientomodelo(QString asiento);
 
 void ejecuta_regularizacion(QString cuenta_reg, QString cuentas, QString descripcion,
-                            QDate fechainicial,QDate fechafinal,QDate fecha, QString diario);
+                            QDate fechainicial, QDate fechafinal, QDate fecha, QString diario, bool borrador);
 
 QString xmlAbreTagLin(int pos,QString cadena);
 

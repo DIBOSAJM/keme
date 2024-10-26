@@ -35,7 +35,7 @@
 #include "busca_externo.h"
 #include "externos.h"
 
-execasientomodelo::execasientomodelo(QString qusuario) : QDialog() {
+execasientomodelo::execasientomodelo(QString qusuario, bool borrador) : QDialog() {
     ui.setupUi(this);
 
     etiqueta = new CustomQLabel;
@@ -103,6 +103,7 @@ execasientomodelo::execasientomodelo(QString qusuario) : QDialog() {
  isp_op_interiores=false;
  importacion=false;
  exportacion=false;
+ diario_borrador=borrador;
  if (basedatos::instancia()->analitica_tabla()) ui.cipushButton->hide();
  if (!conanalitica()) ui.cipushButton->hide();
  if (!basedatos::instancia()->hay_externos())
@@ -366,6 +367,7 @@ void execasientomodelo::generaasiento(bool verificar)
    tabla_asientos *tablaasiento=new tabla_asientos(comadecimal,decimales,usuario);
    tablaasiento->pasafichprov(ui.fichdoclineEdit->text());
    tablaasiento->predefinido();
+   if (diario_borrador) tablaasiento->set_borrador();
    if (activa_msj_tabla) tablaasiento->pasanocerrar(true);
    if (!ui.forzar_ed_venci_checkBox->isChecked()) tablaasiento->evita_pregunta_venci();
    QSqlQuery query = basedatos::instancia()->selectFechacab_as_modeloasientomodelo( ui.modelolabel->text() );

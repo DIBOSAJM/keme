@@ -27,11 +27,10 @@
 #include "funciones.h"
 #include "privilegios.h"
 #include "tipos_automaticos.h"
-#include "directorio.h"
 #include <QMessageBox>
 #include <QFileDialog>
 
-selecasmod::selecasmod(QString qusuario) : QDialog() {
+selecasmod::selecasmod(QString qusuario, bool borrador) : QDialog() {
     ui.setupUi(this);
 
 // -------------------------------------------------------------
@@ -84,6 +83,9 @@ connect(ui.aspiradorapushButton,SIGNAL(clicked()),SLOT(aspiradora()));
  ui.treeWidget->setAlternatingRowColors(true);
 
  cargaarbol();
+
+ diario_borrador=borrador;
+
  //ui.treeView->setModel(&modeloarbol);
  //ui.treeView->expandAll();
  //ui.treeView->resizeColumnToContents(0);
@@ -178,7 +180,7 @@ void selecasmod::execasmodelo()
   QString eleccion;
   eleccion=elecactual();
   if (eleccion.isEmpty()) return;
- execasientomodelo *e = new execasientomodelo(usuario);
+ execasientomodelo *e = new execasientomodelo(usuario,diario_borrador);
  e->cargadatos(eleccion);
  if (activa_msj_tabla) e->activar_msj_tabla();
  e->exec();

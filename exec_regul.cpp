@@ -25,7 +25,7 @@
 #include "expresiones.h"
 #include <QMessageBox>
 
-exec_regul::exec_regul() : QDialog() {
+exec_regul::exec_regul(bool borrador) : QDialog() {
     ui.setupUi(this);
 
 
@@ -43,6 +43,7 @@ exec_regul::exec_regul() : QDialog() {
 
      ui.tabla->show();
 
+     diario_borrador=borrador;
      // connect(ui.tabla,SIGNAL( clicked ( QModelIndex )),this,SLOT(tablapulsada()));
      connect(ui.ejecutarpushButton,SIGNAL(clicked()),this,SLOT(tablapulsada()));
      connect(ui.ejerciciocomboBox,SIGNAL(currentIndexChanged (int)),this,
@@ -189,7 +190,7 @@ void exec_regul::ejecuta(QString codigo)
           cuenta_reg=cuenta_acreedora;    
          }
       ejecuta_regularizacion(cuenta_reg,cuentas,descripcion,ui.inicialdateEdit->date(),
-                             ui.finaldateEdit->date(),ui.asientodateEdit->date(),diario);
+                             ui.finaldateEdit->date(),ui.asientodateEdit->date(),diario,diario_borrador);
      } // fin del while
    } // fin del query active
   basedatos::instancia()->desbloquea_y_commit();

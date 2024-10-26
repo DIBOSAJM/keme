@@ -660,6 +660,12 @@ void basedatos::solotablas(bool segunda, QString qbase)
     if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
         cadena += "curl bool default 0,";
           else cadena += "curl bool default false,";
+    if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
+        cadena += "renum_borr bool default 1,";
+          else cadena += "renum_borr bool default true,";
+    if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
+        cadena += "solo_borr bool default 1,";
+          else cadena += "solo_borr bool default true,";
     cadena+="imagen text )";
     if (segunda) cadena = anadirMotor(cadena,qbase); else cadena = anadirMotor(cadena);
     if (segunda) ejecutar(cadena,qbase); else ejecutar(cadena);
@@ -7358,7 +7364,9 @@ void basedatos::insertDiario (QString cadnumasiento, qlonglong pase, QString cad
                               QDate fecha_factura, QString externo, QString concepto_sii, bool borrador) {
     QString cad1="INSERT into diario (asiento,pase,fecha, cuenta,debe, haber,concepto,"
         "documento,diario,usuario,ci, clave_ci, ejercicio, nrecepcion, "
-        "fecha_factura, externo, concepto_sii, contabilizado) VALUES(";
+        "fecha_factura, externo, concepto_sii, contabilizado, registro";
+    if (!borrador) cad1+=", contabilizacion";
+    cad1+=") VALUES(";
     cad1 += cadnumasiento.left(-1).replace("'","''") +",";
     QString cadnumpase;
 	cadnumpase.setNum(pase);
@@ -7409,6 +7417,12 @@ void basedatos::insertDiario (QString cadnumasiento, qlonglong pase, QString cad
     cad1+=concepto_sii;
     cad1+="', ";
     if (borrador) cad1+="false "; else cad1+="true ";
+    if (cualControlador()==SQLITE) cad1+=", current_timestamp";
+       else cad1+=", now()";
+    if (!borrador) {
+        if (cualControlador()==SQLITE) cad1+=", current_timestamp";
+           else cad1+=", now()";
+    }
     cad1+=");";
     ejecutar(cad1);
 }
@@ -11174,7 +11188,7 @@ qlonglong basedatos::selectCountasientodiariofechascondicion (QDate inicial, QDa
 // 
 QSqlQuery basedatos::select9Diariofechascondicionorderfechapase (QDate inicial, QDate final, QString condicion) {
     QString cadena = "select cuenta,fecha, asiento,concepto, debe,haber, documento, "
-                     "diario,ci, pase from diario where fecha>='";
+                     "diario,ci, pase, contabilizado from diario where fecha>='";
     cadena += inicial.toString("yyyy-MM-dd");
     cadena += "' and fecha<='";
     cadena += final.toString("yyyy-MM-dd");
@@ -11640,7 +11654,7 @@ QSqlQuery basedatos::selectConfiguracion () {
                 "prox_documento, gestion_usuarios, analitica_tabla, provincia_def,"
                 "cuentas_aa, cuentas_ag, amoinv, sec_recibidas, prox_domiciliacion, "
                 "cod_ine_plaza, caja_iva, borrados_consol, msj_vto_dcho, msj_vto_obl, externos, tfno, "
-                "gestor_db, tipo_proveedor, cod_homol_pruebas, nombre, apellidos, curl, url_actu, moneda, imagen "
+                "gestor_db, tipo_proveedor, cod_homol_pruebas, nombre, apellidos, curl, url_actu, moneda, renum_borr, solo_borr, imagen "
         "from configuracion";
     return ejecutar(cadena);
 }
@@ -14482,6 +14496,48 @@ qlonglong basedatos::selectMaxasientofecha (QDate fecha) {
 }
 
 
+int basedatos::selectMaxasientoEjercicio(QString ejercicio) {
+    QString cadena = "select max(asiento) from diario where ejercicio='";
+    cadena += ejercicio;
+    cadena += "'";
+    QSqlQuery query = ejecutar(cadena);
+    if ( (query.isActive()) && (query.next()) )
+    {
+        return query.value(0).toInt();
+    }
+
+    return 0;
+}
+
+
+int basedatos::selectMaxAsientoContabEjercicio(QString ejercicio) {
+    QString cadena = "select max(asiento) from diario where ejercicio='";
+    cadena += ejercicio;
+    cadena += "' and contabilizado";
+    QSqlQuery query = ejecutar(cadena);
+    if ( (query.isActive()) && (query.next()) )
+    {
+        return query.value(0).toInt();
+    }
+
+    return 0;
+}
+
+
+QDate basedatos::selectMaxFechaEjercicio(QString ejercicio) {
+    QString cadena = "select max(fecha) from diario where ejercicio='";
+    cadena += ejercicio;
+    cadena += "' and contabilizado";
+    QSqlQuery query = ejecutar(cadena);
+    if ( (query.isActive()) && (query.next()) )
+    {
+        return query.value(0).toDate();
+    }
+
+    return QDate(2000,1,1);
+}
+
+
 //
 qlonglong basedatos::min_asiento (QString ejercicio) {
     QString cadena = "select min(asiento) from diario where ejercicio='";
@@ -14598,18 +14654,18 @@ QSqlQuery basedatos::select11Diariofiltro (QString filtro) {
 }
 
 
-QSqlQuery basedatos::selectDiariofiltro_nomsj_error (QString filtro, bool *correcto, bool borrador) {
+QSqlQuery basedatos::selectDiariofiltro_nomsj_error (QString filtro, bool *correcto) {
     QString cadena="SELECT cuenta, fecha, asiento, concepto, debe, "
         "haber, documento, diario, usuario, pase,ci, clave_ci, copia_doc,"
         "ejercicio, nrecepcion, revisado, externo from diario ";
     if (filtro.length()>0) cadena += filtro;
-    if (filtro.length()>0) {
+    /*if (filtro.length()>0) {
        if (borrador) cadena+= " and not contabilizado";
           else cadena+=" and contabilizado";
     } else {
         if (borrador) cadena+= " where not contabilizado";
            else cadena+=" where contabilizado";
-    }
+    }*/
     cadena+=" limit 50000";
     QSqlQuery query;
     if (!query.exec(cadena)) *correcto=false;
@@ -15491,7 +15547,8 @@ void basedatos::updateConfiguracion (QString empresa ,QString nif, QString domic
                                      QString cod_ine_plaza, bool caja_iva, bool borrados_consol,
                                      QString msj_vto_dcho, QString msj_vto_obl,bool externos,
                                      QString tfno, bool gd_bd, bool tipo_proveedor, QString cod_homol_pruebas,
-                                     QString nombre, QString apellidos, bool curl, QString url_actu, QString moneda) {
+                                     QString nombre, QString apellidos, bool curl, QString url_actu, QString moneda,
+                                     bool renum_borr, bool solo_borr) {
     QString cadena = "update configuracion set ";
     cadena += "empresa='"+ empresa.left(-1).replace("'","''");
     cadena += "',nif='"+ nif.left(-1).replace("'","''");
@@ -15601,6 +15658,14 @@ void basedatos::updateConfiguracion (QString empresa ,QString nif, QString domic
     cadena+="curl=";
     if (cualControlador() == SQLITE) cadena+=(curl ? "1" : "0");
       else cadena+=(curl ? "true" : "false");
+    cadena+=", ";
+    cadena+="renum_borr=";
+    if (cualControlador() == SQLITE) cadena+=(renum_borr ? "1" : "0");
+      else cadena+=(renum_borr ? "true" : "false");
+    cadena+=", ";
+    cadena+="solo_borr=";
+    if (cualControlador() == SQLITE) cadena+=(solo_borr ? "1" : "0");
+      else cadena+=(solo_borr ? "true" : "false");
     ejecutar(cadena);
 }
 
@@ -22021,6 +22086,17 @@ void basedatos::actualizade4000()
         cadena+="contabilizado bool default true;";
     ejecutar(cadena);
 
+    cadena="alter table configuracion add column ";
+    if ( cualControlador() == SQLITE )
+        cadena += "renum_borr bool default true";
+          else cadena += "renum_borr bool default true";
+    ejecutar(cadena);
+
+    cadena="alter table configuracion add column ";
+    if (cualControlador() == SQLITE )
+        cadena += "solo_borr bool default 0";
+          else cadena += "solo_borr bool default false";
+
     ejecutar("update configuracion set version='4.0.0.2'");
 }
 
@@ -24944,9 +25020,11 @@ double basedatos::calculasaldocuentas(QString cadenacuentas, QDate inicial, QDat
 // inserta apunte en diario para regularización parcial
 void basedatos::insertDiarioRegulParc (QString cadnumasiento, QString cadnumpase, QString cadfecha,
          QString cuenta, QString debe, QString haber, QString concepto,
-         QString ejercicio, QString diario) {
+         QString ejercicio, QString diario, bool borrador) {
     QString cad2 = "INSERT into diario (asiento, pase,fecha,cuenta, debe,haber,concepto,"
-        "ejercicio, documento,diario,usuario) VALUES(";
+        "ejercicio, documento,diario,contabilizado, usuario, registro";
+    if (!borrador) cad2+=", contabilizacion";
+        cad2+=") VALUES(";
     cad2 += cadnumasiento.left(-1).replace("'","''") +",";
     cad2 += cadnumpase.left(-1).replace("'","''") +",'";
     cad2 += cadfecha.left(-1).replace("'","''") +"','";
@@ -24958,12 +25036,28 @@ void basedatos::insertDiarioRegulParc (QString cadnumasiento, QString cadnumpase
     // cad2 += documento;
     cad2 += "','";
     cad2 += diario;
+    cad2 += "',";
+    if (borrador) {
+        if (cualControlador()==SQLITE) cad2+= "0";
+          else cad2+="false";
+       }
+     else {
+        if (cualControlador()==SQLITE) cad2+= "1";
+          else cad2+="true";
+     }
     if (cualControlador() == SQLITE) {
-        cad2 += "','"+ usuario_sistema() +"')";
+        cad2 += ",'"+ usuario_sistema() +"'";
     }
     else {
-        cad2 += "',CURRENT_USER)";
+        cad2 += ",CURRENT_USER";
     }
+   if (cualControlador()==SQLITE) cad2+=", current_timestamp";
+     else cad2+=", now()";
+   if (!borrador) {
+    if (cualControlador()==SQLITE) cad2+=", current_timestamp";
+       else cad2+=", now()";
+   }
+    cad2+=")";
     ejecutar(cad2);
 }
 
@@ -31619,4 +31713,43 @@ void basedatos::update_fecha_actu_cambios(QDate fecha) {
     cadena+=fecha.toString("yyyy-MM-dd");
     cadena+="'";
     ejecutar(cadena);
+}
+
+void basedatos::marca_pase_contabilizado (QString pase) {
+    QString cad2 = "update diario set contabilizado=true";
+    cad2+=", contabilizacion=";
+    cad2+= (cualControlador()==SQLITE ? "current_timestamp": "now()");
+    cad2+=" where pase=";
+    cad2 += pase.left(-1).replace("'","''");
+    ejecutar(cad2);
+}
+
+void basedatos::marca_todo_contabilizado () {
+    QString cad2 = "update diario set contabilizado=true";
+    cad2+=", contabilizacion=";
+    cad2+= (cualControlador()==SQLITE ? "current_timestamp": "now()");
+    cad2+=" where not contabilizado";
+    ejecutar(cad2);
+}
+
+
+bool basedatos::config_renum_borr() {
+    QString cadquery = "SELECT renum_borr from configuracion";
+    QSqlQuery query = ejecutar(cadquery);
+    if ( (query.isActive()) && (query.first()) )
+    {
+        return query.value(0).toBool();
+    }
+    return true; // verdadero por defecto
+}
+
+
+bool basedatos::solo_borr() {
+    QString cadquery = "SELECT solo_borr from configuracion";
+    QSqlQuery query = ejecutar(cadquery);
+    if ( (query.isActive()) && (query.first()) )
+    {
+        return query.value(0).toBool();
+    }
+    return false; // falso por defecto
 }

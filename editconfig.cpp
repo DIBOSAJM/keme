@@ -130,7 +130,9 @@ move ( x, y ); */
        ui.curl_checkBox->setChecked(query.value(52).toBool());
        ui.url_actu_lineEdit->setText(query.value(53).toString());
        ui.moneda_lineEdit->setText(query.value(54).toString());
-       imagen=query.value(55).toString();
+       ui.renum_borr_checkBox->setChecked(query.value(55).toBool());
+       ui.solo_borr_checkBox->setChecked(query.value(56).toBool());
+       imagen=query.value(57).toString();
      }
   for (int veces=0; veces<ui.provinciacomboBox->count(); veces++)
      {
@@ -212,7 +214,9 @@ void editconfig::aceptar()
                                                  ui.apellidos_lineEdit->text(),
                                                  ui.curl_checkBox->isChecked(),
                                                  ui.url_actu_lineEdit->text(),
-                                                ui.moneda_lineEdit->text());
+                                                ui.moneda_lineEdit->text(),
+                                                ui.renum_borr_checkBox->isChecked(),
+                                                ui.solo_borr_checkBox->isChecked());
 
     basedatos::instancia()->graba_config_imagenlogo(fototexto());
 

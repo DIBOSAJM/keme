@@ -30,7 +30,7 @@
 class selecasmod : public QDialog {
     Q_OBJECT
 	public:
-                selecasmod(QString qusuario);
+                selecasmod(QString qusuario, bool borrador=true);
                 QString elecactual();
                 void activar_msj_tabla();
         private:
@@ -42,6 +42,7 @@ class selecasmod : public QDialog {
                 bool activa_msj_tabla;
                 QStringList lista_codigo;
                 QList<QTreeWidgetItem*> lista_puntero_item;
+                bool diario_borrador;
 
         private slots:
                // void seleccioncambiada();
