@@ -2369,6 +2369,7 @@ void liquidacioniva::gen_asiento()
   // se encarga de crear todas las celdas
   QString concepto=tr("Regularización IVA");
   t->marca_regul_iva();
+  t->set_borrador();
   int pos=0;
   int fila=0;
   while (pos<ui.repercutidotable->rowCount())

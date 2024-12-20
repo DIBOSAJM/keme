@@ -247,6 +247,7 @@ void copiaseg::procesar()
            QString ahost;
            QString acontrolador;
            QString apuerto;
+           QStringList arguments;
 
            anombredb = basedatos::instancia()->nombre();
            anombreusuario = basedatos::instancia()->usuario();
@@ -261,9 +262,11 @@ void copiaseg::procesar()
            QObject *parent=NULL;
            QString cadexec="sqlite3";
            QProcess *myProcess = new QProcess(parent);
-           cadexec+=" ";
-           cadexec+=nombre;
-           cadexec+=" .dump";
+           //cadexec+=" ";
+           //cadexec+=nombre;
+           //cadexec+=" .dump";
+           arguments << nombre;
+           arguments << ".dump";
            QString destino=dirtrabajo();
            destino.append(QDir::separator());
            destino+=nombrefichero;
@@ -272,7 +275,7 @@ void copiaseg::procesar()
            myProcess-> setWorkingDirectory(dirtrabajo());
 
           myProcess->setStandardOutputFile(destino);
-          myProcess->start(cadexec);
+          myProcess->start(cadexec, arguments);
 
           if (!myProcess->waitForStarted ())
              {

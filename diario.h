@@ -100,6 +100,7 @@ class diario: public QWidget {
            QString usuario;
            QString guardafiltro, guardafiltro2;
            QString fichero_droped;
+           void renumera_borr();
        private slots:
            void infocuentapase(QModelIndex primaryKeyIndex);
            void editarasientod();
@@ -112,6 +113,8 @@ class diario: public QWidget {
            void ed_registro_ret();
            void on_tabWidget_currentChanged(int index);
            void on_contabilizar_pushButton_clicked();
+
+           void on_renum_borrador_pushButton_clicked();
 
        signals:
            void cambio_tab(int ntab);

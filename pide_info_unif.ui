@@ -19,7 +19,6 @@
      <property name="font">
       <font>
        <pointsize>9</pointsize>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -27,14 +26,14 @@
       <string>INTRODUZCA FECHA</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QCalendarWidget" name="calendarWidget">
      <property name="firstDayOfWeek">
-      <enum>Qt::Monday</enum>
+      <enum>Qt::DayOfWeek::Monday</enum>
      </property>
     </widget>
    </item>
@@ -58,7 +57,21 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="documentolineEdit"/>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLineEdit" name="documentolineEdit"/>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="borrador_checkBox">
+         <property name="text">
+          <string>Registrar en borrador</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -211,7 +224,6 @@
          <widget class="QLabel" name="label_4">
           <property name="font">
            <font>
-            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -223,7 +235,7 @@
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -237,7 +249,6 @@
          <widget class="QLabel" name="label_5">
           <property name="font">
            <font>
-            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -300,7 +311,7 @@
      <item>
       <spacer>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>

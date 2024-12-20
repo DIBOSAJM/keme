@@ -95,7 +95,8 @@ ivasoportado::ivasoportado(bool concomadecimal, bool condecimales) : QDialog() {
 
  // averiguamos si hay prorrata y si es especial
  double prorrata=prorrata_iva();
- if (prorrata>0.001)
+ bool hay_prorrata=basedatos::instancia()->hay_prorrata();
+ if (hay_prorrata)
     {
      ui.prorratalineEdit->setEnabled(true);
      ui.prorratacheckBox->setEnabled(true);

@@ -335,6 +335,9 @@ void concilia::editafechaasien()
   int fila=ui.contabtableWidget->currentRow();
   QString asiento=asientoabsdepase(ui.contabtableWidget->item(fila,1)->text());
   QDate qfecha=basedatos::instancia()->select_fecha_diariopase(ui.contabtableWidget->item(fila,1)->text());
+  QString ejercicio=ejerciciodelafecha(qfecha);
+
+  if (basedatos::instancia()->asiento_contabilizado(asiento, ejercicio)) return;
 
   editafechaasiento *e = new editafechaasiento();
 
@@ -465,6 +468,12 @@ void concilia::cargadatos()
                  newItem->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
               ui.contabtableWidget->setItem(fila,veces,newItem);
              }
+      if (! query.value(8).toBool()) {
+         for (int v=0; v<6; v++) {
+              QTableWidgetItem* item = ui.contabtableWidget->item(fila, v);
+              item->setBackground(QColor(255, 200, 200));
+             }
+      }
       QTableWidgetItem *newItem = new QTableWidgetItem(formateanumero(sumadebe-sumahaber,
                                                         comadecimal,decimales));
       newItem->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
@@ -497,6 +506,8 @@ void concilia::cargadatos()
       fila++;
      }
  if (ui.contabtableWidget->rowCount()<1) return;
+ ui.contabtableWidget->setCurrentCell(0,0);
+ check_botones_edicion();
  actualiza_saldos_conciliado();
 }
 
@@ -545,6 +556,9 @@ void concilia::editaasiento()
 
   QString ejercicio=ejerciciodelafecha(fecha);
   QString qdiario;
+
+  if (basedatos::instancia()->asiento_contabilizado(asiento, ejercicio)) return;
+
   qdiario=diariodeasiento(asiento,ejercicio);
  
     if (qdiario==diario_apertura() || qdiario==diario_cierre() || qdiario==diario_regularizacion())
@@ -1155,12 +1169,14 @@ void concilia::concilia_automat()
       QDate fecha=fecha.fromString(ui.externatableWidget->item(veces,0)->text(),"dd.MM.yyyy");
       double debe=convapunto(ui.externatableWidget->item(veces,2)->text()).toDouble();
       double haber=convapunto(ui.externatableWidget->item(veces,3)->text()).toDouble();
+      QString descrip_externa=ui.externatableWidget->item(veces,1)->text();
       for (int veces2=0;veces2<ui.contabtableWidget->rowCount();veces2++)
           {
             // fecha (2), debe (4), haber (5)
             QDate fechac=fechac.fromString(ui.contabtableWidget->item(veces2,2)->text(),"dd.MM.yyyy");
             double debe2=convapunto(ui.contabtableWidget->item(veces2,4)->text()).toDouble();
             double haber2=convapunto(ui.contabtableWidget->item(veces2,5)->text()).toDouble();
+            QString descrip_conta=ui.contabtableWidget->item(veces2,3)->text();
             if (fechac!=fecha) continue;
             if (debe>0.001 || debe <-0.001)
                {
@@ -1169,6 +1185,7 @@ void concilia::concilia_automat()
                      // comprobamos que no hayan marcas de conciliado en uno u otro registro
                      if (ui.contabtableWidget->item(veces2,7)->text()=="1") continue;
                      // marcamos como conciliados
+                     if (ui.descrip_equiv_checkBox->isChecked() && descrip_externa!=descrip_conta) continue;
                      marcaext(veces);
                      marca(veces2);
                      break;
@@ -1181,6 +1198,7 @@ void concilia::concilia_automat()
                      // comprobamos que no hayan marcas de conciliado en uno u otro registro
                      if (ui.contabtableWidget->item(veces2,7)->text()=="1") continue;
                      // marcamos como conciliados
+                     if (ui.descrip_equiv_checkBox->isChecked() && descrip_externa!=descrip_conta) continue;
                      marcaext(veces);
                      marca(veces2);
                      break;
@@ -1798,6 +1816,9 @@ void concilia::borra_asiento()
    QDate fecha=basedatos::instancia()->select_fecha_diariopase (ui.contabtableWidget->item(fila,1)->text());
 
    QString ejercicio=ejerciciodelafecha(fecha);
+
+   if (basedatos::instancia()->asiento_contabilizado(asiento, ejercicio)) return;
+
    QString qdiario;
    qdiario=diariodeasiento(asiento,ejercicio);
 
@@ -1897,8 +1918,9 @@ void concilia::nuevo_asiento()
     QString diario=i.diario();
     QString doc=i.documento();
     //delete(i);
-    if (!resultado==QDialog::Accepted) return;
+    if (!(resultado==QDialog::Accepted)) return;
     tabla_asientos *t = new tabla_asientos(comadecimal,decimales,usuario);
+    t->set_borrador();
     t->pasafechaasiento(fecha);
     t->pasadiario(diario);
     t->pasa_doc(doc);
@@ -1982,6 +2004,7 @@ void concilia::contabiliza_externa_linea()
   fecha=fecha.fromString(ui.externatableWidget->item(linea_actual,0)->text(),"dd.MM.yyyy");
   tabla_asientos *tablaasiento=new tabla_asientos(comadecimal,decimales,usuario);
   tablaasiento->pasafechaasiento(fecha);
+  tablaasiento->set_borrador();
   // primero pasamos apunte de cuenta en conciliación
   if (concepto_cuaderno) concepto=ui.externatableWidget->item(linea_actual,1)->text();
   tablaasiento->pasadatos1(0,cuenta,concepto,ui.externatableWidget->item(linea_actual,3)->text(),
@@ -2095,7 +2118,7 @@ void concilia::contabiliza_externa()
   int cod=c->exec();
   c->valores(&aux1, &aux2, &concepto, &valorcontra, &coeficiente, &verificar, &concepto_cuaderno);
   delete(c);
-  if (!cod==QDialog::Accepted) return;
+  if (!(cod==QDialog::Accepted)) return;
 
   QProgressDialog progreso(tr("Contabilizando ..."), 0, 0, 0);
   progreso.setMinimumDuration(0);
@@ -2114,6 +2137,7 @@ void concilia::contabiliza_externa()
        tabla_asientos *tablaasiento=new tabla_asientos(comadecimal,decimales,usuario);
        // tablaasiento->pasanocerrar(true);
        tablaasiento->pasafechaasiento(fecha);
+       tablaasiento->set_borrador();
        // primero pasamos apunte de cuenta en conciliación
        if (concepto_cuaderno) concepto=ui.externatableWidget->item(veces,1)->text();
        tablaasiento->pasadatos1(0,cuenta,concepto,ui.externatableWidget->item(veces,3)->text(),
@@ -2304,6 +2328,12 @@ void concilia::actualiza_tras_edicion()
                  newItem->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
               ui.contabtableWidget->setItem(pos,veces,newItem);
              }
+      if (! query.value(8).toBool()) {
+          for (int v=0; v<6; v++) {
+              QTableWidgetItem* item = ui.contabtableWidget->item(pos, v);
+              item->setBackground(QColor(255, 200, 200));
+          }
+      }
       QTableWidgetItem *newItem = new QTableWidgetItem("0");
       newItem->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
       ui.contabtableWidget->setItem(pos,8,newItem);
@@ -2374,7 +2404,12 @@ void concilia::edcondoc() {
    QString qapunte=ui.contabtableWidget->item(fila,1)->text();
    QString asiento=ui.contabtableWidget->item(fila,0)->text();
    QDate qfecha=basedatos::instancia()->select_fecha_diariopase(ui.contabtableWidget->item(fila,1)->text());
+   QString ejercicio=ejerciciodelafecha(qfecha);
    QString documento = basedatos::instancia()->documento_pase(qapunte);
+
+   if (basedatos::instancia()->asiento_contabilizado(asiento, ejercicio)) return;
+
+
    edit_conc_doc *e = new edit_conc_doc();
    e->pasadatos( qapunte, qfecha, ui.contabtableWidget->item(fila,3)->text(),
                  documento );
@@ -2409,12 +2444,15 @@ void concilia::cambiacuentaapunte() {
 
     int fila=ui.contabtableWidget->currentRow();
 
-    cambiacuentapase *c = new cambiacuentapase();
-
     QString qapunte=ui.contabtableWidget->item(fila,1)->text();
     QString asiento=ui.contabtableWidget->item(fila,0)->text();
     QString codigo=cuenta;
     QDate qfecha=basedatos::instancia()->select_fecha_diariopase(ui.contabtableWidget->item(fila,1)->text());
+    QString ejercicio=ejerciciodelafecha(qfecha);
+
+    if (basedatos::instancia()->asiento_contabilizado(asiento, ejercicio)) return;
+
+    cambiacuentapase *c = new cambiacuentapase();
 
     QString qdebe=convapunto(ui.contabtableWidget->item(fila,4)->text());
 
@@ -2439,3 +2477,37 @@ void concilia::cambiacuentaapunte() {
       ui.contabtableWidget->setCurrentCell(fila,0);
 
 }
+
+void concilia::on_contabtableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
+{
+    Q_UNUSED(previousRow);
+    Q_UNUSED(previousColumn);
+    Q_UNUSED(currentColumn);
+    Q_UNUSED(currentRow);
+    check_botones_edicion();
+}
+
+
+void concilia::activa_botones_edicion(bool activa)
+{
+    ui.cambia_cuenta_pushButton->setEnabled(activa);
+    ui.conc_doc_pushButton->setEnabled(activa);
+    ui.fechapushButton->setEnabled(activa);
+    ui.borrapushButton->setEnabled(activa);
+    ui.editapushButton->setEnabled(activa);
+}
+
+void concilia::check_botones_edicion()
+{
+    int currentRow=ui.contabtableWidget->currentRow();
+    if (currentRow>0 || currentRow+1<ui.contabtableWidget->rowCount()) {
+        QColor fondo= ui.contabtableWidget->item(currentRow,0)->background().color();
+        if (fondo==QColor(255, 200, 200)) {
+            activa_botones_edicion(true);
+            return;
+        }
+    }
+    activa_botones_edicion(false);
+
+}
+

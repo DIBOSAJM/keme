@@ -260,7 +260,7 @@ void consmayor::cargadatos()
     qlonglong num = basedatos::instancia()->selectCountasientodiariofechascondicion( ui.inicialdateEdit->date() ,ui.finaldateEdit->date() , condicion );
     if (num > 15000)
     {
-	    switch( QMessageBox::warning( this, tr("Consultas de Mayor"),
+        switch( QMessageBox::question( this, tr("Consultas de Mayor"),
             tr("La consulta excede de 15000 registros,\n"
             "¿ desea cargarlos de todas formas ?"),
             tr("&Sí"), tr("&No"), 0, 0,1 ) ) 
@@ -1766,6 +1766,8 @@ void consmayor::edcondoc()
   int mes=ui.mayortable->item(ui.mayortable->currentRow(),1)->text().mid(3,2).toInt();
   int anyo=ui.mayortable->item(ui.mayortable->currentRow(),1)->text().right(4).toInt();
   QDate qfecha(anyo,mes,dia);
+
+
 
   edit_conc_doc *e = new edit_conc_doc();
   e->pasadatos( qapunte, qfecha, ui.mayortable->item(ui.mayortable->currentRow(),3)->text(),

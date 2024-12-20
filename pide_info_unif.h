@@ -30,6 +30,7 @@ public:
     QString externo();
     QString cuenta_gasto();
     QString importe_gasto();
+    bool borrador();
 
 
 

@@ -743,3 +743,16 @@ QString xml_aeat_ok_ids(QStringList nif, QStringList nombre);
 bool casi_cero(double numero);
 
 QString busca_nif(QString contenido, QString nif_propio);
+
+QJsonObject info_contenido_fact(QString contenido);
+
+QDate busca_primera_fecha(QString contenido);
+
+QString busca_cod_factura(QString contenido);
+
+void busca_info_nif(QString nif, QString *qexterno, QString *qcuenta_proveedor, QString *qcuenta_gasto,
+                    QString *qcuenta_iva_soportado, QString *qcuenta_ret_irpf);
+
+QString pdf_a_qstring(QString nfichero);
+
+QString graf_a_qstring(QString nfichero);

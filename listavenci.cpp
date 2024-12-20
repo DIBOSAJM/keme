@@ -883,6 +883,7 @@ void listavenci::unificarproc()
         QString ejercicio=ejerciciodelafecha(qvto);
         QString concepto_resumen=p.recupera_concepto();
         QString documento=p.recupera_documento();
+        bool borrador=p.borrador();
 
         if (resultado != QDialog::Accepted) return;
 
@@ -997,7 +998,7 @@ void listavenci::unificarproc()
             basedatos::instancia()->insertDiario10( cadnumasiento, cadnumpase, qvto.toString("yyyy-MM-dd"),
                                                     model->datagen(listacta_ordenante.at(i),
                                                     Qt::DisplayRole).toString() , debe, haber,
-                                                    concepto, documento, usuario, ejercicio, qexterno);
+                                                    concepto, documento, usuario, ejercicio, qexterno,borrador);
 
            //-------------------------------------------------------------------------------------------------
 
@@ -1046,7 +1047,7 @@ void listavenci::unificarproc()
         basedatos::instancia()->insertDiario10( cadnumasiento, cadnumpase,
                                                 qvto.toString("yyyy-MM-dd"), qctatesoreria,
                                                 debe, haber, concepto_resumen, documento,
-                                                usuario,ejercicio, qexterno );
+                                                usuario,ejercicio, qexterno, borrador );
 
 
    //---------------------------------------------------------------------------------------------------------
@@ -1081,7 +1082,7 @@ void listavenci::unificarproc()
           basedatos::instancia()->insertDiario10( cadnumasiento, cadnumpase,
                                                   qvto.toString("yyyy-MM-dd"), p.cuenta_gasto(),
                                                   debe, haber, concepto_resumen, documento,
-                                                  usuario,ejercicio, qexterno );
+                                                  usuario,ejercicio, qexterno, borrador );
           if (gastos_op>0) {
               QString cnum; cnum.setNum(gastos_op,'f',2);
               basedatos::instancia()->updateSaldossubcuentasaldocargocodigo(p.cuenta_gasto(), cnum, true);

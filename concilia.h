@@ -61,6 +61,8 @@ class concilia : public QDialog {
                 void marcaext(int fila);
                 void actualiza_saldos_conciliado();
                 void actualiza_tras_edicion();
+                void activa_botones_edicion(bool activa);
+                void check_botones_edicion();
 
       private slots:
                 void marcaactual();
@@ -96,6 +98,7 @@ class concilia : public QDialog {
                 void valor1cambiado();
                 void edcondoc();
                 void cambiacuentaapunte();
+                void on_contabtableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 };
 
 

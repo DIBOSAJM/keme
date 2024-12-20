@@ -51,6 +51,8 @@ class ivasop_aut : public QDialog {
                         QString *externo);
                   QString fichdocumento();
                   void pasa_fecha(QDate fecha);
+                  void pasa_datos_ini(QString externo, QString cuenta_proveedor, QString cuenta_gasto, QString cuenta_iva_soportado, QString cuenta_ret_irpf,
+                                      QDate fecha, QJsonObject importes_info, QString factura, QString fichero);
                   QString concepto();
 
         private:

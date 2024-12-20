@@ -253,7 +253,12 @@ void cambiacuenta::procesar()
         }
      }
 
-
+    if (basedatos::instancia()->cuenta_origen_diario_definitivo(ui.origenlineEdit->text(), ui.fechasgroupBox->isChecked(),
+                  ui.inicialdateEdit->date() , ui.finaldateEdit->date())) {
+         QMessageBox::warning( this, tr("Intercambiar cuentas"),
+                              tr("ERROR: La cuenta a sustituir está en diario definitivo"));
+         return;
+    }
 
     basedatos::instancia()->updateDiariocuentafechasnodiario_apertura( ui.porlineEdit->text() , ui.origenlineEdit->text() , ui.fechasgroupBox->isChecked() , ui.inicialdateEdit->date() , ui.finaldateEdit->date() );
 

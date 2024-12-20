@@ -45,6 +45,8 @@ class editconfig : public QDialog {
             void tipo_proveedor_cheq();
 
 
+            void on_prorrata_checkBox_stateChanged(int arg1);
+            void on_niflineEdit_textChanged(const QString &arg1);
 };
 
 

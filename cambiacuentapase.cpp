@@ -166,6 +166,13 @@ void cambiacuentapase::procesar()
        return;
    }
 
+ if (basedatos::instancia()->apunte_cotabilizado(apunte)) {
+       QMessageBox::warning( this, tr("Editar subcuenta en apunte"),
+                            tr("ERROR: El apunte está marcado como definitivo"));
+       return;
+ }
+
+
 
  basedatos::instancia()->updateDiariocuentapase(ui.codigolineEdit->text() , apunte);
 

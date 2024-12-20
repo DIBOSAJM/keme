@@ -100,7 +100,7 @@ void renumerar::procesar()
 
     qlonglong asientoguarda=0;
     int pos=0;
-    bool actualizadoamort=false;
+    //bool actualizadoamort=false;
     if ( query.isActive() ) {
           while (query.next() )
                 {
@@ -121,13 +121,16 @@ void renumerar::procesar()
                                                            ejercicio))
                  {
                   // QMessageBox::information( this, tr("RENUMERAR"),);
-                  if (!actualizadoamort)
-                     {
-                      basedatos::instancia()->renum_amortiz (query.value(0).toString(), cadnum,
+                  basedatos::instancia()->renum_amortiz (query.value(0).toString(), cadnum,
                                                              ejercicio);
-                      actualizadoamort=true;
-                     }
                  }
+               // asiento es amortización mensual ?
+                 int mes=basedatos::instancia()->mes_asiento_amort(query.value(0).toString(), ejercicio,query.value(2).toDate().month());
+                 if (mes>0) {
+                     basedatos::instancia()->renum_amortiz_mes(query.value(0).toString(), cadnum,
+                                                               ejercicio, mes);
+                 }
+
               basedatos::instancia()->cambia_asiento_a_pase (query.value(1).toString(),
                                                              cadnum);
 	      }

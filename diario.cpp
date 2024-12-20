@@ -231,7 +231,11 @@ void diario::dropEvent(QDropEvent *e)
         //setText(fileName);
         setMaximumHeight(height());
         //setScaledContents(true);
-        if (fileName.endsWith(".pdf") || fileName.endsWith(".PDF")) {
+        if (fileName.endsWith(".pdf") || fileName.endsWith(".PDF") ||
+            fileName.endsWith(".png") || fileName.endsWith(".PNG") ||
+            fileName.endsWith(".jpg") || fileName.endsWith(".JPG") ||
+            fileName.endsWith(".jpeg") || fileName.endsWith(".JPEG") ||
+            fileName.endsWith(".tiff") || fileName.endsWith(".TIFF") ) {
            fichero_droped=fileName;
            emit filedroped();
         }
@@ -460,7 +464,9 @@ void diario::refresca()
     //  model->clear();
     //  model->setQuery(p);
     // }
-
+    // anchocolumna(int col);
+    int ancho[15];
+    for (int veces=0;veces<15;veces++) ancho[veces]=anchocolumna(veces);
      QSqlQuery p=modelb->query();
      p.exec();
      modelb->clear();
@@ -469,6 +475,8 @@ void diario::refresca()
      p2.exec();
      model->clear();
      model->setQuery(std::move(p2));
+
+     for (int veces=0;veces<15;veces++) pasaanchocolumna(veces,ancho[veces]);
 
 }
 
@@ -1056,9 +1064,9 @@ void diario::ed_registro_iva() {
 
     QString codigo=subcuentaactual();
 
-// ---------------------------------------------------------------------------------------------------
+   // ---------------------------------------------------------------------------------------------------
 
-QString cadrectif,cadautofact,cadagrario;
+  QString cadrectif,cadautofact,cadagrario;
     QSqlQuery query2 = basedatos::instancia()->select14Libroivapase(qapunte);
     if (query2.isActive())
       if (query2.next()) {
@@ -1197,7 +1205,7 @@ QString cadrectif,cadautofact,cadagrario;
                   e->esconde_externo();
                   if (query2.value(40).toBool()) e->selec_prservicios();
 
-                  if (e->exec() ==QDialog::Accepted) {;
+                  if (e->exec() ==QDialog::Accepted) {
                       QString cuentabase, baseimponible, ctafra;
                       QDate qfechafra, qfechaop;
                       QString claveop, prservicios;
@@ -1207,7 +1215,7 @@ QString cadrectif,cadautofact,cadagrario;
                       basedatos::instancia()->updateLibroiva(qapunte, cuentabase, baseimponible, "",
                                      "0", "0", "0", ctafra,
                                      qfechafra, false, false, prservicios!="1", "",
-                                     "0", false,
+                                     false, false,
                                      qfechaop, claveop, "",
                                      "",0 , "", "",
                                      false, prservicios=="1", false,
@@ -1366,7 +1374,7 @@ void diario::on_contabilizar_pushButton_clicked()
     renum=t->renum();
     delete(t);
     if ((!result)==QDialog::Accepted) return;
-    if (renum) {
+    if (renum) renumera_borr();
       // recorremos los registros en el diario borrador filtrado
       // qDebug() << guardafiltro2.left(guardafiltro2.toLower().lastIndexOf("order by"));
       //QString cad_sql="select asiento, pase, ejercicio, fecha from diario where not contabilizado order by ejercicio,fecha";
@@ -1382,9 +1390,6 @@ void diario::on_contabilizar_pushButton_clicked()
       QSqlQuery q = basedatos::instancia()->ejecutar_publica(cad_sql);
       if (q.isActive()) {
           QString ejercicio;
-          int prox_asiento=0;
-          int asiento_guarda=0;
-          bool actualizadoamort=false;
           while (q.next()) {
               if (ejercicio!=q.value(2).toString()) {
                   // comprobamos que la fecha sea mayor que la máxima del diario para el ejercicio
@@ -1394,45 +1399,73 @@ void diario::on_contabilizar_pushButton_clicked()
                                                 tr("CONTABILIZAR DEFINITIVO"),
                                                 tr("El ejercicio '%1' tiene contabilizada una fecha mayor a la que figura en el borrador.\n"
                                                    "¿Desea continuar?").arg(q.value(2).toString())
-                                                ) == QMessageBox::No ) return ;
+                                                ) == QMessageBox::No ) break ;
                   }
-                  if (!ejercicio.isEmpty()) {
-                     QString cadnum;
-                     cadnum.setNum(prox_asiento+1);
-                     basedatos::instancia()->update_ejercicio_prox_asiento(ejercicio, cadnum);
-                  }
-                  asiento_guarda=q.value(0).toInt();
-                  prox_asiento=basedatos::instancia()->selectMaxAsientoContabEjercicio(q.value(2).toString()) +1;
                   ejercicio=q.value(2).toString();
-              }
-              if (q.value(0).toInt()!=asiento_guarda) {
-                  prox_asiento++;
-                  asiento_guarda=q.value(0).toInt();
-                  actualizadoamort=false;
-              }
-              QString cadnum; cadnum.setNum(prox_asiento);
-              basedatos::instancia()->cambia_asiento_a_pase (q.value(1).toString(), cadnum);
-              // asignamos contabilizado a apunte
-              basedatos::instancia()->marca_pase_contabilizado(q.value(1).toString());
-
-              // falta comprobar si es de amortización
-              if (basedatos::instancia()->esasientodeamort(q.value(0).toString(),
-                                                           ejercicio))
-              {
-                  // QMessageBox::information( this, tr("RENUMERAR"),);
-                  if (!actualizadoamort)
-                  {
-                      basedatos::instancia()->renum_amortiz (q.value(0).toString(), cadnum,
-                                                            ejercicio);
-                      actualizadoamort=true;
-                  }
-              }
-
           }
-          QString cadnum;
-          cadnum.setNum(prox_asiento+1);
-          basedatos::instancia()->update_ejercicio_prox_asiento(ejercicio, cadnum);
+        basedatos::instancia()->marca_pase_contabilizado(q.value(1).toString());
        }
-    } else basedatos::instancia()->marca_todo_contabilizado();// no renum
+       refresca();
+    }
+}
+
+
+void diario::on_renum_borrador_pushButton_clicked()
+{
+    renumera_borr();
+    refresca();
+}
+
+
+void diario::renumera_borr()
+{
+    QString cad_sql="select asiento, pase, ejercicio, fecha from diario ";
+    cad_sql.append("where not contabilizado ");
+    cad_sql.append("order by ejercicio,fecha");
+    QSqlQuery q = basedatos::instancia()->ejecutar_publica(cad_sql);
+    if (q.isActive()) {
+        QString ejercicio;
+        int prox_asiento=0;
+        int asiento_guarda=0;
+        while (q.next()) {
+            if (ejercicio!=q.value(2).toString()) {
+                // comprobamos que la fecha sea mayor que la máxima del diario para el ejercicio
+                if (!ejercicio.isEmpty()) {
+                    QString cadnum;
+                    cadnum.setNum(prox_asiento+1);
+                    basedatos::instancia()->update_ejercicio_prox_asiento(ejercicio, cadnum);
+                }
+                asiento_guarda=q.value(0).toInt();
+                prox_asiento=basedatos::instancia()->selectMaxAsientoContabEjercicio(q.value(2).toString()) +1;
+                ejercicio=q.value(2).toString();
+            }
+            if (q.value(0).toInt()!=asiento_guarda) {
+                prox_asiento++;
+                asiento_guarda=q.value(0).toInt();
+            }
+            QString cadnum; cadnum.setNum(prox_asiento);
+            basedatos::instancia()->cambia_asiento_a_pase (q.value(1).toString(), cadnum);
+            // falta comprobar si es de amortización
+            if (basedatos::instancia()->esasientodeamort(q.value(0).toString(),
+                                                         ejercicio))
+            {
+                // QMessageBox::information( this, tr("RENUMERAR"),);
+                basedatos::instancia()->renum_amortiz (q.value(0).toString(), cadnum,
+                                                      ejercicio);
+            }
+            // asiento es amortización mensual ?
+            int mes=basedatos::instancia()->mes_asiento_amort(q.value(0).toString(), ejercicio,q.value(3).toDate().month());
+            if (mes>0) {
+                basedatos::instancia()->renum_amortiz_mes(q.value(0).toString(), cadnum,
+                                                          ejercicio, mes);
+            }
+
+        }
+        QString cadnum;
+        cadnum.setNum(prox_asiento+1);
+        basedatos::instancia()->update_ejercicio_prox_asiento(ejercicio, cadnum);
+    }
+    refresca();
+
 }
 

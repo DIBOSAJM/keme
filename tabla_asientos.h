@@ -81,6 +81,13 @@ class tabla_asientos  : public QDialog {
                 void activaparaedicion();
                 void chequeatotales();
                 void soportadoautonomo();
+                void pasa_info_sop_autonomo(QDate fecha, QString externo,
+                                            QString cuenta_proveedor,
+                                            QString cuenta_gasto,
+                                            QString cuenta_iva_soportado,
+                                            QString cuenta_ret_irpf, QString factura,
+                                            QString fichero);
+                void pasa_importes_sop_autonomo(QJsonObject info);
                 void repercutidoautonomo();
                 void activa_aibautonomo();
                 void activa_eibautonomo();
@@ -235,6 +242,20 @@ class tabla_asientos  : public QDialog {
                 bool avisar_cta_libro_fact_no_diario;
                 bool borrador=false;
                 // -------------------------------------------------------------
+                // -------------------------------------------------------------
+                // Parámetros en iva soportado autónomo
+                QDate aut_sop_fecha;
+                QString aut_sop_externo;
+                QString aut_sop_cuenta_proveedor;
+                QString aut_sop_cuenta_gasto;
+                QString aut_sop_cuenta_iva_soportado;
+                QString aut_sop_cuenta_ret_irpf;
+                QString aut_sop_factura;
+                QString aut_ruta_fichero;
+                QJsonObject out_sop_importes;
+                bool aut_sop_parametros_inicio=false;
+                // -------------------------------------------------------------
+
                 void procesaivasoportado(int fila,int columna);
                 void procesaivarepercutido(int fila, int columna);
                 void procesaretencion(int fila,int columna);

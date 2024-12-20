@@ -108,5 +108,9 @@ void nuevoejercicio::guardarejercicio()
                                                ui.cierredateEdit->date() ,
                                                false,
                                                false);
+    basedatos::instancia()->update_ejercicio_fechas(ui.aperturadateEdit->date() ,
+                                                    ui.cierredateEdit->date() ,
+                                                    ui.codigolineEdit->text());
+
   accept();
 }

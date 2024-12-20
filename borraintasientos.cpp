@@ -105,6 +105,17 @@ void borraintasientos::procesar()
      return;
    }
 
+   // combrobar se dentro del enlace hay asientos con la marca de contabilizado
+   if (basedatos::instancia()->int_asientos_con_contabilizado (ui.iniciallineEdit->text(),
+                                                              ui.finallineEdit->text(),
+                                                              elejercicio)) {
+       QMessageBox::warning( this, tr("¿ Borrar asientos ?"),
+                            tr("Error, hay asientos en contabilidad definitiva \n"
+                               "que no se pueden borrar"));
+       return;
+
+   }
+
    borraasientos(ui.iniciallineEdit->text(),ui.finallineEdit->text(),elejercicio);
    accept();
 }

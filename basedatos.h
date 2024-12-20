@@ -318,7 +318,7 @@ class basedatos {
         // Introduce 10 datos en diario
         void insertDiario10(QString cadnumasiento, QString cadnumpase, QString cadinicioej1,
                             QString cuenta, QString debe, QString haber, QString concepto,
-                            QString documento, QString usuario, QString ejercicio,QString externo="");
+                            QString documento, QString usuario, QString ejercicio, QString externo="", bool borrador=true);
 
         void insertDiario_ic (QString cadnumasiento, QString cadnumpase, QString cadinicioej1,
                               QString cuenta, QString debe, QString haber, QString concepto,
@@ -383,15 +383,15 @@ class basedatos {
 
         void borradeplancontable9999 ();
 
-        // 
+        //
         void insert11Diario(QString cadnumasiento, qlonglong pase, QString cadfecha,
                             QString cuentagasto, double debe, double haber, QString concepto,
-                            QString documento, QString usuario,QString ejercicio);
+                            QString documento, QString usuario, QString ejercicio, bool borrador);
 
         void insert12Diario (QString cadnumasiento, qlonglong pase, QString cadfecha,
-                             QString cuentagasto, double debe, double haber,
-                             QString concepto, QString ci, QString usuario,
-                             QString ejercicio);
+                            QString cuentagasto, double debe, double haber,
+                            QString concepto, QString ci, QString usuario,
+                            QString ejercicio, bool borrador);
 
         void insertpegaDiario (QString cadnumasiento, qlonglong pase, QString cadfecha,
              QString cuentagasto, double debe, double haber, QString concepto, 
@@ -1162,7 +1162,7 @@ class basedatos {
         QString selectAsientoamortcontableejercicio_mes (QString ejercicio, int mes);
 
         //
-        QSqlQuery selectCuentadebehaberdiarioasiento(QString cadasiento);
+        QSqlQuery selectCuentadebehaberdiarioasiento(QString cadasiento, QString ejercicio);
 
         // 
         QString selectImporteamortpersejerciciocuenta(QString ejercicio, QString cuenta);
@@ -1703,6 +1703,8 @@ class basedatos {
         //
         void updateDiariocuentafechasnodiario_apertura(QString por, QString origen, bool fechas, QDate inicial, QDate final);
 
+        bool cuenta_origen_diario_definitivo(QString origen, bool fechas, QDate inicial, QDate final);
+
         // Actualiza el diario a partir de cuenta
         void updateDiariocuentapase(QString codigo, QString apunte);
 
@@ -1734,6 +1736,8 @@ class basedatos {
 
         bool hay_externos();
 
+        bool hay_prorrata();
+
         bool guardar_borrados_consol();
 
         QString msj_vto_dcho();
@@ -1764,7 +1768,7 @@ class basedatos {
                                  bool sec_recibidas, QString prox_domicilia, QString cod_ine_plaza,
                                  bool caja_iva, bool borrados_consol, QString msj_vto_dcho, QString msj_vto_obl,
                                  bool externos, QString tfno, bool gd_bd, bool tipo_proveedor, QString cod_homol_pruebas,
-                                 QString nombre, QString apellidos, bool curl, QString url_actu, QString moneda, bool renum_borr, bool solo_borr);
+                                 QString nombre, QString apellidos, bool curl, QString url_actu, QString moneda, bool renum_borr, bool solo_borr, bool prorrata);
 
         // 
         void updateDiarioasientoasiento(QString nuevo, QString antiguo, QString ejercicio);
@@ -1867,6 +1871,8 @@ class basedatos {
         QString cuenta_externo(QString codigo);
 
         QString cif_externo(QString codigo);
+
+        QString select_codigo_cif_externo(QString cif);
 
         bool hayivaasociado_externo(QString codigo, QString &cuentaiva, QString &tipoiva, QString &cta_base_iva);
 
@@ -2019,6 +2025,10 @@ class basedatos {
         // Devuelve la cadena de inicio del iva repercutido
         QString cuentadeivarepercutido();
 
+        QString cuenta_ret_irpf();
+
+        QString cuenta_ret_ing();
+
         // Indica si un ci existe en el diario
         bool existeciendiario(QString codigo, int nivel);
 
@@ -2103,6 +2113,7 @@ class basedatos {
         // Indica si es un pase de apertura
         bool paseapertura(QString pase);
 
+        bool apunte_cotabilizado (QString pase);
         //
         bool paseconvto(QString pase);
 
@@ -2550,7 +2561,9 @@ class basedatos {
         void rettablas_libroiva_venci();
         QString ejerciciodeasientoamort(QString asiento);
         bool esasientodeamort(QString asiento, QString ejercicio);
+        int mes_asiento_amort(QString asiento, QString ejercicio, int mes);
         void renum_amortiz (QString asientoA, QString asientoN, QString ejercicio);
+        void renum_amortiz_mes (QString asientoA, QString asientoN, QString ejercicio, int mes);
         bool essqlite();
 
         bool existecodigotipovenci (QString cadena,QString *qdescrip);
@@ -2663,6 +2676,10 @@ class basedatos {
                                          QString ejercicio);
         bool int_asientos_con_enlace (QString asientoinicial,QString asientofinal,
                                                     QString ejercicio);
+
+        bool int_asientos_con_contabilizado (QString asientoinicial,QString asientofinal,
+                                                       QString ejercicio);
+
         bool int_asientos_cuentas_bloqueadas (QString asientoinicial,QString asientofinal,
                                               QString ejercicio);
         bool periodo_bloqueado_entre_fechas(QDate inicial, QDate final);
@@ -3593,6 +3610,14 @@ class basedatos {
         bool config_renum_borr();
 
         bool solo_borr();
+
+        bool asiento_contabilizado(QString asiento, QString ejercicio);
+
+        bool asientos_borrador(QString ejercicio);
+
+        void update_ejercicio_fechas(QDate fecha_inicial, QDate fecha_final, QString ejercicio);
+
+        QString cod_iva(double tipo);
 
     private:
 

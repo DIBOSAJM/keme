@@ -307,7 +307,7 @@ void procesavencimiento::botonprocesarpulsado()
     basedatos::instancia()->insertDiario10(cadnumasiento, cadnumpase, 
         ui.vencidateEdit->date().toString("yyyy-MM-dd"),
         ui.cuentalineEdit->text(), qdebe, qhaber, qconcepto, ui.doclineEdit->text(),
-        usuario, ejercicio,ui.externo_lineEdit->text());
+        usuario, ejercicio,ui.externo_lineEdit->text(),ui.contab_borr_checkBox->isChecked());
 
     QString pase_diario_vencimiento = cadnumpase;
 
@@ -357,7 +357,8 @@ void procesavencimiento::botonprocesarpulsado()
     basedatos::instancia()->insertDiario10(cadnumasiento, cadnumpase,
                                            ui.vencidateEdit->date().toString("yyyy-MM-dd"),
                                            ui.ctatesorerialineEdit->text(), qdebe, qhaber,
-                                           qconcepto, ui.doclineEdit->text(), usuario, ejercicio);
+                                           qconcepto, ui.doclineEdit->text(), usuario, ejercicio,
+                                           ui.externo_lineEdit->text(),ui.contab_borr_checkBox->isChecked());
 
 
    //---------------------------------------------------------------------------------------------------------
@@ -381,7 +382,8 @@ void procesavencimiento::botonprocesarpulsado()
         basedatos::instancia()->insertDiario10(cadnumasiento, cadnumpase,
                                                ui.vencidateEdit->date().toString("yyyy-MM-dd"),
                                                ui.cta_gastos_lineEdit->text(), qdebe, qhaber,
-                                               qconcepto, ui.doclineEdit->text(), usuario, ejercicio);
+                                               qconcepto, ui.doclineEdit->text(), usuario, ejercicio,
+                                               ui.externo_lineEdit->text(),ui.contab_borr_checkBox->isChecked());
         basedatos::instancia()->updateSaldossubcuentasaldocargocodigo(
                     ui.cta_gastos_lineEdit->text() ,
                     cadgasto , true );

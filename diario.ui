@@ -96,6 +96,13 @@
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="renum_borrador_pushButton">
+             <property name="text">
+              <string>&amp;Renumerar</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QLabel" name="fotolabel_2">
              <property name="text">
               <string/>
@@ -391,6 +398,19 @@
   <tabstop>descriplineEdit</tabstop>
   <tabstop>debelineEdit</tabstop>
   <tabstop>haberlineEdit</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>filtrolineEdit_2</tabstop>
+  <tabstop>fechadateEdit_2</tabstop>
+  <tabstop>contabilizar_pushButton</tabstop>
+  <tabstop>renum_borrador_pushButton</tabstop>
+  <tabstop>iniciopushButton</tabstop>
+  <tabstop>finpushButton</tabstop>
+  <tabstop>fecha_pushButton</tabstop>
+  <tabstop>concepto_pushButton</tabstop>
+  <tabstop>cuenta_pushButton</tabstop>
+  <tabstop>iva_pushButton</tabstop>
+  <tabstop>ret_pushButton</tabstop>
+  <tabstop>borrador_tableView</tabstop>
  </tabstops>
  <resources>
   <include location="keme.qrc"/>

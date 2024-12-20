@@ -154,7 +154,7 @@ bool edasiento(QString elasiento, QString usuario, bool modoconsulta, QString ej
      }
   // ------------------------------------------------------------------------------------
        tabla_asientos *t = new tabla_asientos(haycomadecimal(),haydecimales(),usuario);
-
+       t->set_borrador();
        t->pasafichdoc(basedatos::instancia()->copia_docdiario (elasiento,ejercicio));
 
        t->activaparaedicion(); // Hacer posible verificar aquí el cambio de ejercicio
@@ -576,6 +576,7 @@ void contabilizar_factura(QString serie, QString numero, QString usuario, bool n
     q = basedatos::instancia()->select_lin_doc(clave);
     tabla_asientos *tablaasiento=new tabla_asientos(haycomadecimal(),haydecimales(),usuario);
     tablaasiento->pasafechaasiento(fecha);
+    tablaasiento->set_borrador();
     if (nomsj) tablaasiento->evita_pregunta_venci();
     double totalfactura=0;
     int fila=0;

@@ -26,90 +26,71 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_18">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <layout class="QVBoxLayout">
-           <property name="spacing">
-            <number>0</number>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelEmpresa">
+           <property name="text">
+            <string>Empresa</string>
            </property>
-           <property name="leftMargin">
-            <number>0</number>
+           <property name="wordWrap">
+            <bool>false</bool>
            </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="labelEmpresa">
-             <property name="text">
-              <string>Empresa</string>
-             </property>
-             <property name="wordWrap">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="empresalineEdit">
-             <property name="maxLength">
-              <number>255</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          </widget>
          </item>
-         <item>
-          <layout class="QVBoxLayout">
-           <property name="spacing">
-            <number>0</number>
+         <item row="0" column="1">
+          <widget class="QLabel" name="labelNif">
+           <property name="text">
+            <string>CIF/NIF</string>
            </property>
-           <property name="leftMargin">
-            <number>0</number>
+           <property name="wordWrap">
+            <bool>false</bool>
            </property>
-           <property name="topMargin">
-            <number>0</number>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLineEdit" name="empresalineEdit">
+           <property name="maxLength">
+            <number>255</number>
            </property>
-           <property name="rightMargin">
-            <number>0</number>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="niflineEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <property name="bottomMargin">
-            <number>0</number>
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>0</height>
+            </size>
            </property>
-           <item>
-            <widget class="QLabel" name="labelNif">
-             <property name="text">
-              <string>CIF/NIF</string>
-             </property>
-             <property name="wordWrap">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="niflineEdit">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maxLength">
-              <number>255</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
+           <property name="maxLength">
+            <number>255</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="check_ciflabel">
+           <property name="maximumSize">
+            <size>
+             <width>15</width>
+             <height>15</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="keme.qrc">:/iconos/graf/check2.png</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -1144,7 +1125,7 @@
           <widget class="QLineEdit" name="uldoclineEdit"/>
          </item>
          <item>
-          <widget class="QLabel" name="label_2">
+          <widget class="QCheckBox" name="prorrata_checkBox">
            <property name="text">
             <string>Prorrata IVA %:</string>
            </property>
@@ -1152,6 +1133,9 @@
          </item>
          <item>
           <widget class="QLineEdit" name="prorratalineEdit">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="maximumSize">
             <size>
              <width>70</width>
@@ -1559,6 +1543,7 @@
   <tabstop>moneda_lineEdit</tabstop>
   <tabstop>proxdomlineEdit</tabstop>
   <tabstop>uldoclineEdit</tabstop>
+  <tabstop>prorrata_checkBox</tabstop>
   <tabstop>prorratalineEdit</tabstop>
   <tabstop>analiticaradioButton</tabstop>
   <tabstop>an_parc_radioButton</tabstop>

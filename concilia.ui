@@ -584,6 +584,13 @@
    <item>
     <layout class="QHBoxLayout">
      <item>
+      <widget class="QCheckBox" name="descrip_equiv_checkBox">
+       <property name="text">
+        <string>Equivalencia en descripción</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer>
        <property name="orientation">
         <enum>Qt::Orientation::Horizontal</enum>

@@ -224,3 +224,8 @@ QString pide_info_unif::cuenta_gasto() {
 QString pide_info_unif::importe_gasto() {
     return ui->gastos_lineEdit->text();
 }
+
+bool pide_info_unif::borrador()
+{
+    return ui->borrador_checkBox->isChecked();
+}

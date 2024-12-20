@@ -3310,6 +3310,7 @@ void MainWindow::nuevoasiento()
 
        if (activa_msj_tabla) t1->pasanocerrar(true);
        t1->pasa_fecha_iva_aut(fecha);
+       if (punterodiario->borrador()) t1->set_borrador();
        t1->soportadoautonomo();
        // tablaasiento->exec();
        delete(t1);
@@ -3323,6 +3324,7 @@ void MainWindow::nuevoasiento()
     case 3:
      {
        tabla_asientos *t = new tabla_asientos(estilonumerico,!sindecimales,usuario);
+       if (punterodiario->borrador()) t->set_borrador();
 
        if (activa_msj_tabla) t->pasanocerrar(true);
 
@@ -3357,6 +3359,7 @@ void MainWindow::apunteaib()
 
   tabla_asientos *t = new tabla_asientos(estilonumerico,!sindecimales, usuario);
   if (activa_msj_tabla) t->pasanocerrar(true);
+  if (punterodiario->borrador()) t->set_borrador();
   t->aibautonomo();
   // tablaasiento->exec();
   delete(t);
@@ -3371,6 +3374,7 @@ void MainWindow::apunteeib()
 
   tabla_asientos *t = new tabla_asientos(estilonumerico,!sindecimales, usuario);
   if (activa_msj_tabla) t->pasanocerrar(true);
+  if (punterodiario->borrador()) t->set_borrador();
   t->eibautonomo();
   // tablaasiento->exec();
   delete(t);
@@ -5389,6 +5393,7 @@ void MainWindow::apunteivasoportado()
     } */
 
  tabla_asientos *t = new tabla_asientos(estilonumerico,!sindecimales,usuario);
+ if (punterodiario->borrador()) t->set_borrador();
 
  if (activa_msj_tabla) t->pasanocerrar(true);
 
@@ -5409,6 +5414,7 @@ void MainWindow::apunteivarepercutido()
     } */
 
 tabla_asientos *t = new tabla_asientos(estilonumerico,!sindecimales,usuario);
+if (punterodiario->borrador()) t->set_borrador();
 
 if (activa_msj_tabla) t->pasanocerrar(true);
 
@@ -5982,7 +5988,7 @@ void MainWindow::plamort()
 
 void MainWindow::asamort()
 {
- genamort *g = new genamort(usuario);
+ genamort *g = new genamort(usuario,punterodiario->borrador());
  g->exec();
  delete(g);
  refrescardiario();
@@ -7243,7 +7249,7 @@ void MainWindow::fichero_soltado_en_diario()
 }
 
 void MainWindow::procesa_fichero_pdf() {
-    QPdfDocument *pdf = new QPdfDocument(this);
+    /*QPdfDocument *pdf = new QPdfDocument(this);
     if (pdf->load(fichero_soltado_diario)==QPdfDocument::Error::None) {
       QString global_tex;
       if (pdf->pageCount()>10) { delete (pdf); return;}
@@ -7252,12 +7258,62 @@ void MainWindow::procesa_fichero_pdf() {
           if (!global_tex.isEmpty()) global_tex.append(" ");
           global_tex+=sel.text();
       }
+      */
+      QString global_tex;
+      QString fichero_soltado_U=fichero_soltado_diario.toUpper();
+      if (fichero_soltado_U.endsWith("PDF"))
+         global_tex=pdf_a_qstring(fichero_soltado_diario);
+      if (fichero_soltado_U.endsWith("JPG") ||
+              fichero_soltado_U.endsWith("PNG") ||
+              fichero_soltado_U.endsWith("TIF") ||
+              fichero_soltado_U.endsWith("JPEG"))
+         global_tex=graf_a_qstring(fichero_soltado_diario);
+      if (global_tex.isEmpty()) return;
       qDebug() << global_tex;
       qDebug() << "\n";
       qDebug() << "\n";
-      qDebug() << busca_nif(global_tex, basedatos::instancia()->cif());
-    } else QMessageBox::information(this, tr("KEME-Contabilidad"),tr("Error al cargar el fichero"));
-    delete (pdf);
+      QString nif=busca_nif(global_tex, basedatos::instancia()->cif());
+      qDebug() << nif;
+      QDate fecha_fra= busca_primera_fecha(global_tex);
+      qDebug() << fecha_fra.toString("dd/MM/yyyy");
+
+      QString cod_factura=busca_cod_factura(global_tex);
+      qDebug() << "FACTURA:" + cod_factura;
+
+      QJsonObject importes=info_contenido_fact(global_tex);
+      QJsonDocument doc(importes);
+      qDebug() << doc.toJson();
+
+
+      // buscamos externo y cuenta asociada
+      QString externo;
+      QString cuenta_proveedor;
+      QString cuenta_gasto;
+      QString cuenta_iva_soportado;
+      QString cuenta_ret_irpf;
+
+      busca_info_nif(nif, &externo, &cuenta_proveedor, &cuenta_gasto,
+                     &cuenta_iva_soportado, &cuenta_ret_irpf);
+      //qDebug() << cuenta_proveedor;
+      //qDebug() << cuenta_gasto;
+      qDebug() << cuenta_iva_soportado;
+      //qDebug() << cuenta_ret_irpf;
+      // cargamos contenido en plantilla de factura recibida nacional
+      tabla_asientos *t = new tabla_asientos(estilonumerico,!sindecimales,usuario);
+      // if (punterodiario->borrador()) t->set_borrador();
+      t->set_borrador(); // siempre a borrador
+      if (activa_msj_tabla) t->pasanocerrar(true);
+      t->pasa_info_sop_autonomo(fecha_fra, externo, cuenta_proveedor, cuenta_gasto, cuenta_iva_soportado,
+                                cuenta_ret_irpf, cod_factura, fichero_soltado_diario);
+      t->pasa_importes_sop_autonomo(importes);
+      t->soportadoautonomo();
+      // tablaasiento->exec();
+      delete(t);
+      refrescardiario();
+
+
+    //} else QMessageBox::information(this, tr("KEME-Contabilidad"),tr("Error al cargar el fichero"));
+    //delete (pdf);
 }
 
 void MainWindow::on_actionModelo_182_registro_donaciones_triggered()
@@ -7289,17 +7345,41 @@ void MainWindow::on_diario_tab_cambiado(int index)
       ui->actionBorrar_Asiento->setVisible(false);
       ui->actionEditar_Asiento->setVisible(false);
       ui->actionEditar_Asiento_N_mero->setVisible(false);
+      ui->actionIntercambiar_nmeros_de_asiento->setVisible(false);
+      ui->actionIntercambiar_cuenta_en_diario->setVisible(false);
+      ui->actionCambiar_cuenta_a_apunte->setVisible(false);
+      ui->actionEdita_fecha_a_asiento->setVisible(false);
+      ui->actionEdita_concepto_y_documento_en_pase->setVisible(false);
       if (basedatos::instancia()->solo_borr()) {
           ui->actionNuevo_Asiento->setEnabled(false);
           ui->actionAsientos_Predefinidos->setEnabled(false);
-          ui->actionEjecutar_regul->setEnabled(false);      }
+          ui->actionEjecutar_regul->setEnabled(false);
+          ui->actionNuevo_Registro_IVA_soportado->setEnabled(false);
+          ui->actionNuevo_Registro_IVA_repercutido->setEnabled(false);
+          ui->actionAIB_Inversi_n_sujeto_pasivo->setEnabled(false);
+          ui->actionEIB_Prestaci_n_servicos_UE->setEnabled(false);
+          ui->actionAsiento_de_amortizaciones->setEnabled(false);
+      }
   } else {
       ui->actionBorrar_Asiento->setVisible(true);
       ui->actionEditar_Asiento->setVisible(true);
       ui->actionEditar_Asiento_N_mero->setVisible(true);
+      ui->actionIntercambiar_nmeros_de_asiento->setVisible(true);
+      ui->actionIntercambiar_cuenta_en_diario->setVisible(true);
+      ui->actionCambiar_cuenta_a_apunte->setVisible(true);
+      ui->actionEdita_fecha_a_asiento->setVisible(true);
+      ui->actionEdita_concepto_y_documento_en_pase->setVisible(false);
       ui->actionNuevo_Asiento->setEnabled(true);
       ui->actionAsientos_Predefinidos->setEnabled(true);
       ui->actionEjecutar_regul->setEnabled(true);
+      ui->actionNuevo_Registro_IVA_soportado->setEnabled(true);
+      ui->actionNuevo_Registro_IVA_repercutido->setEnabled(true);
+      ui->actionAIB_Inversi_n_sujeto_pasivo->setEnabled(true);
+      ui->actionEIB_Prestaci_n_servicos_UE->setEnabled(true);
+      ui->actionAsiento_de_amortizaciones->setEnabled(true);
   }
 
 }
+
+
+

@@ -58,6 +58,14 @@ void regularizacion::generar()
 
 void regularizacion::generar_ejercicio(QString qejercicio)
 {
+  // ¿ hay apuntes del ejercicio en el borrador ?
+    if (basedatos::instancia()->asientos_borrador(qejercicio)) {
+      QMessageBox::warning( this, tr("Regularización"),
+                           tr("Error, el borrador tiene contenido o\n"
+                              "para este ejercicio."));
+      return;
+    }
+
    if (ejerciciocerrado(qejercicio) ||
         ejerciciocerrando(qejercicio))
     {

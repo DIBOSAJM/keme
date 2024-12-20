@@ -25,7 +25,7 @@
 #include <QMessageBox>
 #include <QProgressDialog>
 
-genamort::genamort(QString qusuario) : QDialog() {
+genamort::genamort(QString qusuario, bool qborrador) : QDialog() {
     ui.setupUi(this);
 
   // cargar combo de ejercicios
@@ -74,6 +74,7 @@ genamort::genamort(QString qusuario) : QDialog() {
   connect(ui.eliminapushButton,SIGNAL(clicked()),SLOT(eliminar()));
 
   usuario=qusuario;
+  borrador=qborrador;
 }
 
 
@@ -282,7 +283,7 @@ void genamort::procesa()
                       basedatos::instancia()->insert11Diario(cadnumasiento, pase, cadfecha,
                                                              cuentagasto,
                                                              sumagasto, 0, concepto,"",usuario,
-                                                             ui.ejerciciocomboBox->currentText());
+                                                             ui.ejerciciocomboBox->currentText(),borrador);
 
 	         pase++;
                  cadimporte.setNum(sumagasto,'f',2);
@@ -413,7 +414,7 @@ void genamort::procesa()
                                                         query.value(3).toString() , 0,
                                                         valoramortcontable,
                                                         concepto,"",usuario,
-                                                        ui.ejerciciocomboBox->currentText());
+                                                        ui.ejerciciocomboBox->currentText(),borrador);
 
                 pase++;
 
@@ -437,7 +438,7 @@ void genamort::procesa()
                                                                     valoramortcontable*asignacion, 0,
                                                                     concepto,query_c.value(0).toString(),
                                                                     usuario,
-                                                                    ui.ejerciciocomboBox->currentText());
+                                                                    ui.ejerciciocomboBox->currentText(),borrador);
 
                              pase++;
 
@@ -447,7 +448,7 @@ void genamort::procesa()
                                                                     query.value(3).toString(), 0,
                                                                     valoramortcontable*asignacion,
                                                                     concepto,"",usuario,
-                                                                    ui.ejerciciocomboBox->currentText());
+                                                                    ui.ejerciciocomboBox->currentText(),borrador);
 
                              pase++;
 
@@ -484,7 +485,7 @@ void genamort::procesa()
            basedatos::instancia()->insertDiario(cadnumasiento, pase,
                 cadfecha, cuentagasto,
                 sumagasto, 0, concepto, "",
-                "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"");
+                "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"",borrador);
            actualizasaldo(cuentagasto,cadimporte,true);
            pase++;
           }
@@ -493,7 +494,7 @@ void genamort::procesa()
                  // añadimos apunte de total cuenta de gasto
                  basedatos::instancia()->insert11Diario(cadnumasiento, pase, cadfecha, cuentagasto,
                                                         sumagasto, 0, concepto,"", usuario,
-                                                        ui.ejerciciocomboBox->currentText());
+                                                        ui.ejerciciocomboBox->currentText(), borrador);
 
 	         pase++;
 	         actualizasaldo(cuentagasto,cadimporte,true);	
@@ -559,14 +560,14 @@ void genamort::procesa()
                      basedatos::instancia()->insertDiario(cadnumasiento, pase,
                           cadfecha, cuentagasto,
                           sumagasto, 0, concepto, "",
-                          "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"");
+                          "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"",borrador);
 
                     }
                     else
                       basedatos::instancia()->insert11Diario(cadnumasiento, pase, cadfecha,
                                                              cuentagasto,
                                                              sumagasto, 0, concepto,"",usuario,
-                                                             ui.ejerciciocomboBox->currentText());
+                                                             ui.ejerciciocomboBox->currentText(),borrador);
 
                  pase++;
                  cadimporte.setNum(sumagasto,'f',2);
@@ -619,7 +620,7 @@ void genamort::procesa()
                                                         query.value(4).toString() , 0,
                                                         valoramortcontable,
                                                         concepto+ cad,"",usuario,
-                                                        ui.ejerciciocomboBox->currentText());
+                                                        ui.ejerciciocomboBox->currentText(),borrador);
 
                 pase++;
                 basedatos::instancia()->actu_amoinv(numero,
@@ -645,7 +646,7 @@ void genamort::procesa()
                                                                     valoramortcontable*asignacion, 0,
                                                                     concepto,query_c.value(0).toString(),
                                                                     usuario,
-                                                                    ui.ejerciciocomboBox->currentText());
+                                                                    ui.ejerciciocomboBox->currentText(),borrador);
 
                              pase++;
 
@@ -655,7 +656,7 @@ void genamort::procesa()
                                                                     query.value(4).toString(), 0,
                                                                     valoramortcontable*asignacion,
                                                                     concepto,"",usuario,
-                                                                    ui.ejerciciocomboBox->currentText());
+                                                                    ui.ejerciciocomboBox->currentText(),borrador);
 
                              pase++;
 
@@ -692,7 +693,7 @@ void genamort::procesa()
            basedatos::instancia()->insertDiario(cadnumasiento, pase,
                 cadfecha, cuentagasto,
                 sumagasto, 0, concepto, "",
-                "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"");
+                "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"",borrador);
            actualizasaldo(cuentagasto,cadimporte,true);
            pase++;
           }
@@ -701,7 +702,7 @@ void genamort::procesa()
                  // añadimos apunte de total cuenta de gasto
                  basedatos::instancia()->insert11Diario(cadnumasiento, pase, cadfecha, cuentagasto,
                                                         sumagasto, 0, concepto,"", usuario,
-                                                        ui.ejerciciocomboBox->currentText());
+                                                        ui.ejerciciocomboBox->currentText(),borrador);
 
                  pase++;
                  actualizasaldo(cuentagasto,cadimporte,true);
@@ -792,6 +793,21 @@ void genamort::eliminar()
 
   }
 
+
+  QString cadasiento;
+  if (ui.mescomboBox->currentIndex()==0)
+      cadasiento = basedatos::instancia()->selectAsientoamortcontableejercicio( ui.ejerciciocomboBox->currentText() );
+  else
+      cadasiento = basedatos::instancia()->selectAsientoamortcontableejercicio_mes (
+          ui.ejerciciocomboBox->currentText(), ui.mescomboBox->currentIndex());
+
+   // consultar si cadasiento + ejercicio está contabilizado
+  if ( basedatos::instancia()->asiento_contabilizado(cadasiento, ui.ejerciciocomboBox->currentText())) {
+      QMessageBox::warning( this, tr("Asiento de amortización"),
+                           tr("ERROR, el asiento es definitivo"));
+      return;
+  }
+
   if (QMessageBox::question(this,tr("Asiento de amortización"),
     tr("Se borrarán todos los registros de amortizaciones para"
     " la selección, ¿ Desea continuar ?"))==QMessageBox::No)
@@ -808,14 +824,8 @@ void genamort::eliminar()
     // hay que ajustar la tabla de saldos de subcuentas antes de borrar
 
 
-    QString cadasiento;
-    if (ui.mescomboBox->currentIndex()==0)
-        cadasiento = basedatos::instancia()->selectAsientoamortcontableejercicio( ui.ejerciciocomboBox->currentText() );
-      else
-         cadasiento = basedatos::instancia()->selectAsientoamortcontableejercicio_mes (
-                 ui.ejerciciocomboBox->currentText(), ui.mescomboBox->currentIndex());
 
-    QSqlQuery query = basedatos::instancia()->selectCuentadebehaberdiarioasiento(cadasiento);
+    QSqlQuery query = basedatos::instancia()->selectCuentadebehaberdiarioasiento(cadasiento, ui.ejerciciocomboBox->currentText());
      if ( query.isActive() )
        {
           while (query.next())

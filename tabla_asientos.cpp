@@ -1079,7 +1079,7 @@ void tabla_asientos::procesaivasoportado(int fila,int columna)
                  if (qprorrata.length()>0) valprorrata=convapunto(qprorrata).toDouble()/100;
                  if (qafectacion.length()>0) valafectacion=convapunto(qafectacion).toDouble()/100;
                  if (valafectacion<0) valafectacion=1;
-                 if (valprorrata<0.00001) valprorrata=1;
+                 if (!basedatos::instancia()->hay_prorrata()) valprorrata=1;
 	         ui.Tablaapuntes->item(fila,0)->setText(qctaiva);
 		  // actualizamos cuota en DEBE ó HABER
 	         if (qcuota.left(1)=="-")
@@ -1781,16 +1781,16 @@ void tabla_asientos::botonivapulsado()
              double valafectacion=0;
              if (qprorrata.length()>0) valprorrata=convapunto(qprorrata).toDouble()/100;
              if (afectacion.length()>0) valafectacion=convapunto(afectacion).toDouble()/100;
-             if (valprorrata<0.00001) valprorrata=1;
+             if (!basedatos::instancia()->hay_prorrata()) valprorrata=1;
              if (valafectacion<0) valafectacion=1;
 	     ui.Tablaapuntes->item(fila,0)->setText(qctaiva);
 	     // actualizamos cuota en DEBE ó HABER
 	     if (qcuota.left(1)=="-")
 			   {
-			      if (ui.Tablaapuntes->item(fila,3)->text().length() >0)
+                  if (ui.Tablaapuntes->item(fila,3)->text().length() >=0)
                                  {
                                   double valor=convapunto(qcuota).toDouble()*-1*valprorrata*valafectacion;
-				  ui.Tablaapuntes->item(fila,3)->setText(
+                                  ui.Tablaapuntes->item(fila,3)->setText(
                                     formateanumero(valor,comadecimal,decimales));
                                  }
 			      else {
@@ -1801,16 +1801,16 @@ void tabla_asientos::botonivapulsado()
 			  }
 		        else 
 			  { 
-			    if (ui.Tablaapuntes->item(fila,2)->text().length()>0)
+                if (ui.Tablaapuntes->item(fila,2)->text().length()>=0)
                                {
                                 double valor=convapunto(qcuota).toDouble()*valprorrata*valafectacion;
-				ui.Tablaapuntes->item(fila,2)->setText(
+                                ui.Tablaapuntes->item(fila,2)->setText(
                                       formateanumero(valor,comadecimal,decimales));
                                }
 			    else {
-                                  double valor=convapunto(qcuota).toDouble()*valprorrata*valafectacion-1;
-				  ui.Tablaapuntes->item(fila,3)->setText(
-                                      formateanumero(valor,comadecimal,decimales)); 
+                                  double valor=convapunto(qcuota).toDouble()*valprorrata*valafectacion*-1;
+                                  ui.Tablaapuntes->item(fila,3)->setText(
+                                  formateanumero(valor,comadecimal,decimales));
                                  }
 			  }
              // actualizamos columnas 5 a 15 y 17,18 a 22
@@ -3647,7 +3647,7 @@ void tabla_asientos::pasadatos2(int fila, QString col5, QString col6, QString co
   if (col17.length()>0)
      {
       double val=convapunto(col17).toDouble()*100;
-      if (val>0.00001) cadnum.setNum(val,'f',0);
+      if (basedatos::instancia()->hay_prorrata()) cadnum.setNum(val,'f',0);
          else cadnum="100";
      }
      else cadnum="100";
@@ -3826,6 +3826,10 @@ void tabla_asientos::soportadoautonomo()
       {
        qIVAsoportado->pasa_fecha(fecha_iva_aut);
       }
+   if (aut_sop_parametros_inicio) qIVAsoportado->pasa_datos_ini(aut_sop_externo, aut_sop_cuenta_proveedor, aut_sop_cuenta_gasto,
+                                                                aut_sop_cuenta_iva_soportado, aut_sop_cuenta_ret_irpf, aut_sop_fecha,
+                                                                out_sop_importes, aut_sop_factura, aut_ruta_fichero);
+   // qDebug() << aut_sop_cuenta_iva_soportado;
    int resultado=qIVAsoportado->exec();
    if (resultado==QDialog::Rejected) 
             {
@@ -4284,6 +4288,27 @@ void tabla_asientos::soportadoautonomo()
 	  }
     delete(qIVAsoportado);
 
+}
+
+void tabla_asientos::pasa_info_sop_autonomo(QDate fecha, QString externo, QString cuenta_proveedor, QString cuenta_gasto,
+                                            QString cuenta_iva_soportado, QString cuenta_ret_irpf, QString factura, QString fichero)
+{
+  // guardamos en variables privadas para meterlo en iva_sop_autónomo si procede
+    aut_sop_fecha=fecha;
+    aut_sop_externo=externo;
+    aut_sop_cuenta_proveedor=cuenta_proveedor;
+    aut_sop_cuenta_gasto=cuenta_gasto;
+    aut_sop_cuenta_iva_soportado=cuenta_iva_soportado;
+    aut_sop_cuenta_ret_irpf=cuenta_ret_irpf;
+    aut_ruta_fichero=fichero;
+    aut_sop_parametros_inicio=true;
+    aut_sop_factura=factura;
+
+}
+
+void tabla_asientos::pasa_importes_sop_autonomo(QJsonObject info)
+{
+    out_sop_importes=info;
 }
 
 

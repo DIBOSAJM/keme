@@ -6,6 +6,7 @@ QT += sql
 QT += xml
 QT += charts
 QT += network
+QT += pdf
 
 CONFIG += c++17
 

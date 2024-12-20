@@ -337,6 +337,7 @@ bool ejercicios::bloqueado_actual() {
     return model->record(fila).value("bloqueado").toBool();
 }
 
+
 void ejercicios::editacierre()
 {
     QString elcodigo;
@@ -365,6 +366,10 @@ void ejercicios::editacierre()
   ef->exec();
   delete ef;
   refrescar();
+  ui.ejerciciostableView->selectRow(fila);
+  basedatos::instancia()->update_ejercicio_fechas(model->record(fila).value("apertura").toDate(),
+                                                  model->record(fila).value("cierre").toDate(),
+                                                  model->record(fila).value("codigo").toString());
 }
 
 

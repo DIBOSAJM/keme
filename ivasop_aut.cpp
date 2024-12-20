@@ -190,7 +190,8 @@ connect(ui.groupBox2,SIGNAL(toggled(bool)),this,SLOT(grboxcambiado1()));
 
  // averiguamos si hay prorrata y si es especial
  double prorrata=prorrata_iva();
- if (prorrata>0.001)
+ bool hay_prorrata=basedatos::instancia()->hay_prorrata();
+ if (hay_prorrata)
     {
      ui.prorratalineEdit->setEnabled(true);
      ui.prorratacheckBox->setEnabled(true);
@@ -1648,6 +1649,78 @@ void ivasop_aut::pasa_fecha(QDate fecha)
     ui.FechafradateEdit->setDate(fecha);
     ui.fechacontdateEdit->setDate(fecha);
     ui.fechaoperaciondateEdit->setDate(fecha);
+}
+
+void ivasop_aut::pasa_datos_ini(QString externo, QString cuenta_proveedor, QString cuenta_gasto, QString cuenta_iva_soportado, QString cuenta_ret_irpf,
+                                QDate fecha, QJsonObject importes_info, QString factura, QString fichero)
+{
+    ui.externo_lineEdit->setText(externo);
+    ui.CtafralineEdit->setText(cuenta_proveedor);
+    if (cuenta_iva_soportado.isEmpty()) { ui.groupBox->setChecked(false); ui.Ctabase_exenta_lineEdit->setText(cuenta_gasto); ui.exento_checkBox->setChecked(true);}
+      else {ui.CtabaselineEdit->setText(cuenta_gasto); ui.CtaivalineEdit->setText(cuenta_iva_soportado); }
+    ui.cuentaretlineEdit->setText(cuenta_ret_irpf);
+    if (!cuenta_ret_irpf.isEmpty()) ctaretfinedic();
+    ui.FechafradateEdit->setDate(fecha);
+    ui.documentolineEdit->setText(factura);
+    ui.fechacontdateEdit->setDate(fecha);
+    ui.fechaoperaciondateEdit->setDate(fecha);
+    ui.fichdoclineEdit->setText(fichero);
+    if (importes_info["base21"].toDouble()>0.001 || importes_info["base21"].toDouble()<-0.001) {
+        // buscamos en el combo de tipos de IVA el correspondiente
+        double base21=importes_info["base21"].toDouble();
+        QString clave_iva=basedatos::instancia()->cod_iva(21);
+        ui.ClaveivacomboBox->setCurrentText(clave_iva);
+        ui.baselineEdit->setText(formateanumero(base21,comadecimal,decimales));
+        comboivacambiado();
+    }
+
+    if (importes_info["base10"].toDouble()>0.001 || importes_info["base10"].toDouble()<-0.001) {
+        // buscamos en el combo de tipos de IVA el correspondiente
+        double base10=importes_info["base10"].toDouble();
+        QString clave_iva=basedatos::instancia()->cod_iva(10);
+        if (ui.baselineEdit->text().isEmpty()) {
+           ui.ClaveivacomboBox->setCurrentText(clave_iva);
+           ui.baselineEdit->setText(formateanumero(base10,comadecimal,decimales));
+           comboivacambiado();
+        }
+        else {
+            // Activamos groupbox segundo
+            ui.groupBox2->setChecked(true);
+            ui.ClaveivacomboBox2->setCurrentText(clave_iva);
+            ui.baselineEdit2->setText(formateanumero(base10,comadecimal,decimales));
+            comboivacambiado2();
+        }
+    }
+
+    if (importes_info["base4"].toDouble()>0.001 || importes_info["base4"].toDouble()<-0.001) {
+        // buscamos en el combo de tipos de IVA el correspondiente
+        double base4=importes_info["base4"].toDouble();
+        QString clave_iva=basedatos::instancia()->cod_iva(4);
+        if (ui.baselineEdit->text().isEmpty()) {
+            ui.ClaveivacomboBox->setCurrentText(clave_iva);
+            ui.baselineEdit->setText(formateanumero(base4,comadecimal,decimales));
+            comboivacambiado();
+        }
+        else {
+            if (ui.baselineEdit2->text().isEmpty()) {
+            // Activamos groupbox segundo
+            ui.groupBox2->setChecked(true);
+            ui.ClaveivacomboBox2->setCurrentText(clave_iva);
+            ui.baselineEdit2->setText(formateanumero(base4,comadecimal,decimales));
+            comboivacambiado2();
+            } else {
+                ui.groupBox3->setChecked(true);
+                ui.ClaveivacomboBox3->setCurrentText(clave_iva);
+                ui.baselineEdit3->setText(formateanumero(base4,comadecimal,decimales));
+                comboivacambiado3();
+            }
+
+        }
+    }
+    if (ui.exento_checkBox->isChecked()) {
+        double baseret=importes_info["baseret"].toDouble();
+        ui.base_exentalineEdit->setText(formateanumero(baseret,comadecimal, decimales));
+    }
 }
 
 

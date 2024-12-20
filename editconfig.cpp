@@ -54,6 +54,8 @@ y -= 50;
 move ( x, y ); */
 // -------------------------------------------------------------
 
+  ui.check_ciflabel->hide();
+
   connect(ui.an_parc_radioButton,SIGNAL(toggled(bool)),SLOT(analitica_parc_cambiado()));
   connect(ui.sin_analiticaradioButton,SIGNAL(toggled(bool)),SLOT(sin_analitica_cambiado()));
 
@@ -132,7 +134,9 @@ move ( x, y ); */
        ui.moneda_lineEdit->setText(query.value(54).toString());
        ui.renum_borr_checkBox->setChecked(query.value(55).toBool());
        ui.solo_borr_checkBox->setChecked(query.value(56).toBool());
-       imagen=query.value(57).toString();
+       ui.prorrata_checkBox->setChecked(query.value(57).toBool());
+       if (ui.prorrata_checkBox->isChecked()) ui.prorratalineEdit->setEnabled(true);
+       imagen=query.value(58).toString();
      }
   for (int veces=0; veces<ui.provinciacomboBox->count(); veces++)
      {
@@ -216,7 +220,7 @@ void editconfig::aceptar()
                                                  ui.url_actu_lineEdit->text(),
                                                 ui.moneda_lineEdit->text(),
                                                 ui.renum_borr_checkBox->isChecked(),
-                                                ui.solo_borr_checkBox->isChecked());
+                                                ui.solo_borr_checkBox->isChecked(), ui.prorrata_checkBox->isChecked());
 
     basedatos::instancia()->graba_config_imagenlogo(fototexto());
 
@@ -388,3 +392,24 @@ void editconfig::tipo_proveedor_cheq() {
         ui.homol_pruebas_lineEdit->setEnabled(false);
     }
 }
+
+void editconfig::on_prorrata_checkBox_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1);
+    if (ui.prorrata_checkBox->isChecked()) ui.prorratalineEdit->setEnabled(true);
+    else ui.prorratalineEdit->setEnabled(false);
+}
+
+
+void editconfig::on_niflineEdit_textChanged(const QString &arg1)
+{
+    if (!ui.niflineEdit->text().isEmpty())
+    {
+        if (isNifCifNie(ui.niflineEdit->text())>0)
+            ui.check_ciflabel->show();
+        else ui.check_ciflabel->hide();
+    }
+    else ui.check_ciflabel->hide();
+
+}
+

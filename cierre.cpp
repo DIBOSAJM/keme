@@ -57,6 +57,14 @@ void cierre::generar()
 
 void cierre::generar_ejercicio(QString qejercicio)
 {
+    if (basedatos::instancia()->asientos_borrador(qejercicio)) {
+        QMessageBox::warning( this, tr("Cierre"),
+                             tr("Error, el borrador tiene contenido o\n"
+                                "para este ejercicio."));
+        return;
+    }
+
+
    if (ejerciciocerrado(qejercicio) ||
         ejerciciocerrando(qejercicio))
     {

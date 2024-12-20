@@ -23,7 +23,7 @@
 #include "aritmetica.h"
 #include "basedatos.h"
 #include "privilegios.h"
-#include "pide_fich.h"
+#include <QPdfDocument>
 
 #include <QDir>
 #include <QMessageBox>
@@ -1174,7 +1174,7 @@ QString dirtrabajo(void)
           QDir d(caddir);
           if (!d.exists()) d.mkdir(caddir);
 
-          //QMessageBox::warning( 0, QObject::tr("ruta"),caddir);
+          QMessageBox::warning( 0, QObject::tr("ruta"),caddir);
 
           return caddir ;
         }
@@ -8305,7 +8305,295 @@ QString busca_nif(QString contenido, QString nif_propio) {
     for (int i=0; i<palabras.count(); i++) {
         QString palabra=palabras.at(i);
         if (palabra.startsWith("ES")) palabra=palabra.remove("ES");
+        palabra=palabra.remove('-');
         if (isNifCifNie(palabra)>0 && palabra!=nif_propio) return palabra;
     }
     return QString();
+}
+
+
+QJsonObject info_contenido_fact(QString contenido) {
+    QString trabajo=contenido.replace("\r\n"," ");
+    QStringList palabras=trabajo.split(' ');
+    QList<double> numeros;
+    for (const QString &palabra : palabras) {
+        bool ok=false;
+        double number=convapunto(palabra).toDouble(&ok);
+        if (ok && (number>0.001 || number<0.001) && (palabra.contains('.') || palabra.contains(','))) numeros << number;
+    }
+    double base21=0, base10=0, base4=0, baseret=0;
+    double cuota21=0, cuota10=0, cuota4=0, retencion=0;
+    for (const double &base : numeros) {
+        for (const double &numero : numeros) {
+            if ((numero/base>0.2045) and (numero/base<0.215)) { base21=base; cuota21=numero; }
+            if ((numero/base>0.9945) and (numero/base<0.105)) { base10=base; cuota10=numero; }
+            if ((numero/base>0.3945) and (numero/base<0.405)) { base4=base; cuota4=numero; }
+            if ((numero/base>0.1445) and (numero/base<0.1545)) { baseret=base; retencion=numero; }
+        }
+    }
+    QJsonObject respuesta;
+    respuesta.insert("base21",base21);
+    respuesta.insert("cuota21",cuota21);
+    respuesta.insert("base10",base10);
+    respuesta.insert("cuota10",cuota10);
+    respuesta.insert("base4",base4);
+    respuesta.insert("cuota4",cuota4);
+    respuesta.insert("baseret",baseret);
+    respuesta.insert("retencion",retencion);
+    return respuesta;
+}
+
+QDate busca_primera_fecha(QString contenido) {
+    QString trabajo=contenido.replace("\r\n"," ");
+    QStringList palabras=trabajo.split(' ');
+    for (int i=0; i<palabras.count(); i++) {
+        QString palabra=palabras.at(i);
+        if (palabra.length()!=10 && palabra.length()!=8) continue;
+        if (palabra[2]=='/' && palabra[5]=='/') {
+            QDate fecha;
+            if (palabra.length()==10)
+              fecha=QDate::fromString(palabra,"dd/MM/yyyy");
+             else fecha=QDate::fromString(palabra,"dd/MM/yy");
+            return fecha;
+        }
+        if (palabra[2]=='-' && palabra[5]=='-') {
+            QDate fecha;
+            if (palabra.length()==10)
+              fecha=QDate::fromString(palabra,"dd-MM-yyyy");
+             else fecha=QDate::fromString(palabra,"dd-MM-yy");
+            return fecha;
+        }
+        if (palabra[2]=='.' && palabra[5]=='.') {
+            QDate fecha;
+            if (palabra.length()==10)
+              fecha=QDate::fromString(palabra,"dd.MM.yyyy");
+             else fecha=QDate::fromString(palabra,"dd.MM.yy");
+            return fecha;
+        }
+
+    }
+    return QDate::currentDate();
+}
+
+QString busca_cod_factura(QString contenido) {
+    QString trabajo=contenido.replace("\r\n"," ");
+    QStringList palabras=trabajo.split(' ');
+    bool primero_factura=false;
+    for (int i=0; i<palabras.count(); i++) {
+        QString palabra=palabras.at(i).toUpper();
+        if (palabra.contains(QObject::tr("FACTURA")) && palabra.contains(":") && i<(palabras.count()-1))
+           return palabras.at(i+1);
+        if (i<palabras.count()-2) {
+            if (palabra.contains(QObject::tr("FACTURA")) && (palabras.at(i+1).contains(":")||palabras.at(i+1).contains("º") ||palabras.at(i+1).contains("°"))) return palabras.at(i+2);
+        }
+        if (palabra.contains(QObject::tr("FACTURA"))
+                && !palabra.contains(QObject::tr("FACTURAR")) &&!primero_factura) {
+            primero_factura=true;
+            continue;
+        }
+        if (palabra.contains(QObject::tr("FACTURA"))
+                && !palabra.contains(QObject::tr("FACTURAR")) &&primero_factura) {
+            if (i<(palabras.count()-1)) {
+                if (palabras.at(i+1).length()>2) return palabras.at(i+1);
+             else
+                if (i<palabras.count()-2)
+                    return palabras.at(i+2);
+            }
+        }
+    }
+    return QString();
+}
+
+void busca_info_nif(QString nif, QString *qexterno, QString *qcuenta_proveedor, QString *qcuenta_gasto,
+                    QString *qcuenta_iva_soportado, QString *qcuenta_ret_irpf) {
+    QString externo=*qexterno;
+    QString cuenta_proveedor=*qcuenta_proveedor;
+    QString cuenta_gasto=*qcuenta_gasto;
+    QString cuenta_iva_soportado=*qcuenta_iva_soportado;
+    QString cuenta_ret_irpf=*qcuenta_ret_irpf;
+
+    if (!nif.isEmpty()) {
+       externo=basedatos::instancia()->select_codigo_cif_externo(nif);
+       if (externo.isEmpty()) cuenta_proveedor=basedatos::instancia()->selectCuentaCifDatossubcuenta(nif);
+       if (!externo.isEmpty()) {
+           // buscamos apunte con externo y cuenta que empiece por código gasto
+           QString cad="select cuenta,fecha from diario where externo='";
+           cad.append(externo);
+           cad.append("' and ");
+           if (basedatos::instancia()->cualControlador() == basedatos::SQLITE) {
+               cad += "cuenta like '"+ basedatos::instancia()->clavegastos() +"%'";
+              }
+              else {
+                     cad+="position('";
+                     cad+=basedatos::instancia()->clavegastos();
+                     cad+="' in cuenta)=1";
+                   }
+           cad.append(" order by fecha DESC");
+           QSqlQuery q=basedatos::instancia()->ejecutar_publica(cad);
+           if (q.isActive())
+               if (q.next()) cuenta_gasto=q.value(0).toString();
+           // buscamos apunte con externo y cuenta que empiece por código cuenta IVA
+           cad="select cuenta,fecha from diario where externo='";
+           cad.append(externo);
+           cad.append("' and ");
+           if (basedatos::instancia()->cualControlador() == basedatos::SQLITE) {
+               cad += "cuenta like '"+ basedatos::instancia()->cuentadeivasoportado() +"%'";
+              }
+              else {
+                     cad+="position('";
+                     cad+=basedatos::instancia()->cuentadeivasoportado();
+                     cad+="' in cuenta)=1";
+                   }
+           cad.append(" order by fecha DESC");
+           q=basedatos::instancia()->ejecutar_publica(cad);
+           if (q.isActive())
+               if (q.next()) cuenta_iva_soportado=q.value(0).toString();
+           // buscamos apunte con externo y cuenta que empiece por código cuenta RETENCIÓN
+           cad="select cuenta,fecha from diario where externo='";
+           cad.append(externo);
+           cad.append("' and ");
+           if (basedatos::instancia()->cualControlador() == basedatos::SQLITE) {
+               cad += "cuenta like '"+ basedatos::instancia()->cuenta_ret_ing() +"%'";
+              }
+              else {
+                     cad+="position('";
+                     cad+=basedatos::instancia()->cuenta_ret_ing();
+                     cad+="' in cuenta)=1";
+                   }
+           cad.append(" order by fecha DESC");
+           q=basedatos::instancia()->ejecutar_publica(cad);
+           if (q.isActive())
+               if (q.next()) cuenta_ret_irpf=q.value(0).toString();
+           // buscamos apunte que no sea ni iva ni gasto ni retención
+           // buscamos apunte con cuenta de IVA ¿ hay cuenta de IVA ?
+           // buscamos apuntes de cuenta de retención
+           //qDebug() << basedatos::instancia()->cuenta_ret_irpf();
+           //qDebug() << cuenta_ret_irpf;
+           //qDebug() << cad;
+           cuenta_proveedor=basedatos::instancia()->cuenta_externo(externo);
+       } // no hay externo
+        else if (!cuenta_proveedor.isEmpty()) {
+           // select asiento where cuenta=cuenta_proveedor
+           // recorremos query y vemos contenido de cada asiento ---> nos detenemos el que tenga cuenta de gasto
+           // de ese asiento sacamos el resto de la información
+           QString cad="select asiento, fecha from diario where cuenta='";
+           cad.append(cuenta_proveedor);
+           cad.append("' and haber>0 order by fecha desc");
+           QString asiento;
+           QSqlQuery q=basedatos::instancia()->ejecutar_publica(cad);
+           if (q.isActive())
+               if (q.next()) asiento=q.value(0).toString();
+           if (asiento.isEmpty()) return;
+           cad="select cuenta from diario where asiento=";
+           cad.append(asiento);
+           q=basedatos::instancia()->ejecutar_publica(cad);
+           if (q.isActive())
+               while (q.next()) {
+                   if (q.value(0).toString().startsWith(basedatos::instancia()->clavegastos())) cuenta_gasto=q.value(0).toString();
+                   if (q.value(0).toString().startsWith(basedatos::instancia()->cuentadeivasoportado())) cuenta_iva_soportado=q.value(0).toString();
+                   if (q.value(0).toString().startsWith(basedatos::instancia()->cuenta_ret_irpf())) cuenta_ret_irpf=q.value(0).toString();
+               }
+       }
+      }
+
+
+
+    *qexterno=externo;
+    *qcuenta_proveedor=cuenta_proveedor;
+    *qcuenta_gasto=cuenta_gasto;
+    *qcuenta_iva_soportado=cuenta_iva_soportado;
+    *qcuenta_ret_irpf=cuenta_ret_irpf;
+
+}
+
+
+QString pdf_a_qstring(QString nfichero) {
+    QPdfDocument *pdf = new QPdfDocument(0);
+    if (pdf->load(nfichero)==QPdfDocument::Error::None) {
+      QString global_tex;
+      if (pdf->pageCount()>10) { delete (pdf); return QString();}
+      for (int i=0; i< pdf->pageCount(); i++) {
+          QPdfSelection sel=pdf->getAllText(i);
+          if (!global_tex.isEmpty()) global_tex.append(" ");
+          global_tex+=sel.text();
+      }
+      delete(pdf);
+      return global_tex;
+    }
+    delete(pdf);
+    return QString();
+}
+
+
+
+QString graf_a_qstring(QString nfichero) {
+
+    QProgressDialog progreso(QObject::tr("Cargando información ... ")
+                             , 0, 0, 0);
+    // progreso.setWindowModality(Qt::WindowModal);
+    progreso.setMinimumDuration ( 0 );
+    progreso.setWindowTitle(QObject::tr("Generando  ... "));;
+    progreso.show();
+    progreso.update();
+    QApplication::processEvents();
+
+
+    QObject *parent=NULL;
+
+    QStringList arguments;
+    QString destino=nfichero;
+    arguments << adapta(nfichero);
+    arguments << destino;
+    arguments << "-l" << "spa";
+
+    QString cadexec="tesseract";
+    QProcess *myProcess = new QProcess(parent);
+
+    myProcess-> setWorkingDirectory(adapta(dirtrabajo()));
+
+    QApplication::processEvents();
+
+    myProcess->start(cadexec,arguments);
+
+    QApplication::processEvents();
+
+    // system(cadexec);
+    if (!myProcess->waitForStarted ())
+       {
+         delete myProcess;
+         QMessageBox::warning( 0, QObject::tr("CONVERSIÓN DE FIHERO"),QObject::tr("Problemas ejecutando Tesseract"));
+         return QString();
+       }
+    QApplication::processEvents();
+    if (!myProcess->waitForFinished ())
+       {
+         delete myProcess;
+        QMessageBox::warning( 0, QObject::tr("CONVERSIÓN DE FIHERO"),QObject::tr("Problemas ejecutando Tesseract"));
+         return QString();
+       }
+
+    QApplication::processEvents();
+
+    delete myProcess;
+
+    QString contenido;
+
+    destino.append(".txt");
+    QFile fichero(destino);
+    // qDebug()<< destino;
+    if (!fichero.exists()) return QString();
+    if ( fichero.open( QIODevice::ReadOnly ) ) {
+          QTextStream stream( &fichero );
+          stream.setEncoding(QStringConverter::Utf8);
+          QString linea;
+          while ( !stream.atEnd() )
+            {
+              linea = stream.readLine(); // linea de texto excluyendo '\n'
+              linea.append(" ");
+              contenido.append(linea);
+           }
+          fichero.close();
+        }
+    fichero.remove();
+    return contenido;
 }

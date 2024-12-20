@@ -1008,7 +1008,7 @@ QString creaempresa::import_diario_pg(QTextStream *stream)
     qlonglong paseinicial=basedatos::instancia()->selectProx_paseconfiguracion();
     if (paseinicial==0) paseinicial=1;
     QString cadq="INSERT into diario (asiento,pase,fecha, cuenta,debe, haber,concepto,"
-        "documento,diario,usuario,ci, clave_ci, ejercicio, codfactura) VALUES(";
+        "documento,diario,usuario,ci, clave_ci, ejercicio, codfactura, contabilizado) VALUES(";
     bool primero=true;
     while(!stream->atEnd())
       {
@@ -1098,7 +1098,7 @@ QString creaempresa::import_diario_pg(QTextStream *stream)
         cadq += ejercicio.left(-1).replace("'","''");
         cadq += "','";
         cadq += codfactura;
-        cadq += "')";
+        cadq += "', false)";
         basedatos::instancia()->updateSaldossubcuentasaldomenosmascodigo(cuenta,convapunto(cadhaber),convapunto(caddebe));
        }
 

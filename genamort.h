@@ -29,7 +29,7 @@
 class genamort : public QDialog {
     Q_OBJECT
 	public:
-                genamort(QString qusuario);
+                genamort(QString qusuario, bool qborrador);
         private:
                 Ui::genamort ui;
                 QString usuario;
@@ -46,6 +46,7 @@ class genamort : public QDialog {
                 QString varoctubre;
                 QString varnoviembre;
                 QString vardiciembre;
+                bool borrador;
                 QString valamortpers( QString ejercicio, QString cuenta );
         private slots:
                 void procesa();
