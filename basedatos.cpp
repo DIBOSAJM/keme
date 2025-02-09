@@ -812,9 +812,13 @@ void basedatos::solotablas(bool segunda, QString qbase)
 
     // actividades
     cadena = "CREATE TABLE actividades ("
-             "codigo         varchar(40),"
-             "descripcion    varchar(254),"
-             "PRIMARY KEY (codigo) )";
+             "ref         varchar(40),"
+             "descripcion varchar(254),"
+             "codigo      varchar(40),"
+             "tipo        varchar(40),"
+             "epigrafe    varchar(40),"
+             "cnae        varchar(40),"
+             "PRIMARY KEY (ref) )";
     if (segunda) cadena = anadirMotor(cadena,qbase); else cadena = anadirMotor(cadena);
     if (segunda) ejecutar(cadena,qbase); else ejecutar(cadena);
 
@@ -6027,8 +6031,11 @@ void basedatos::deleteConceptosclave (QString qcodigo) {
 }
 
 // Borra de tabla una clave
-void basedatos::deleteclavetabla (QString tabla, QString qcodigo) {
-    ejecutar("delete from "+tabla+" where codigo = '"+ qcodigo.left(-1).replace("'","''") +"'");
+void basedatos::deleteclavetabla (QString tabla, QString qcodigo, bool actividades) {
+    if (actividades)
+       ejecutar("delete from "+tabla+" where ref = '"+ qcodigo.left(-1).replace("'","''") +"'");
+    else
+        ejecutar("delete from "+tabla+" where codigo = '"+ qcodigo.left(-1).replace("'","''") +"'");
 }
 
 // Borra de ci un codigo
@@ -6338,6 +6345,25 @@ void basedatos::inserttabla (QString tabla,QString codigo,QString descripcion) {
     cadquery += codigo.left(-1).replace("'","''");
     cadquery += "','";
     cadquery += descripcion.left(-1).replace("'","''");
+    cadquery += "')";
+    ejecutar(cadquery);
+}
+
+void basedatos::inserttabla_actividades(QString ref, QString descripcion, QString codigo, QString tipo, QString epigrafe, QString cnae)
+{
+    QString cadquery = "INSERT INTO actividades";
+    cadquery+=" (ref, descripcion, codigo, tipo, epigrafe, cnae) VALUES ('";
+    cadquery += ref.left(-1).replace("'","''");
+    cadquery += "','";
+    cadquery += descripcion.left(-1).replace("'","''");
+    cadquery += "','";
+    cadquery += codigo.left(-1).replace("'","''");
+    cadquery += "','";
+    cadquery += tipo.left(-1).replace("'","''");
+    cadquery += "','";
+    cadquery += epigrafe.left(-1).replace("'","''");
+    cadquery += "','";
+    cadquery += cnae.left(-1).replace("'","''");
     cadquery += "')";
     ejecutar(cadquery);
 }
@@ -7396,7 +7422,7 @@ void basedatos::insertDiario (QString cadnumasiento, qlonglong pase, QString cad
                               QString ejercicio, QString nrecepcion, bool hay_fecha_factura,
                               QDate fecha_factura, QString externo, QString concepto_sii, bool borrador) {
     QString cad1="INSERT into diario (asiento,pase,fecha, cuenta,debe, haber,concepto,"
-        "documento,diario,usuario,ci, clave_ci, ejercicio, nrecepcion, "
+        "documento, codfactura,diario,usuario,ci, clave_ci, ejercicio, nrecepcion, "
         "fecha_factura, externo, concepto_sii, contabilizado, registro";
     if (!borrador) cad1+=", contabilizacion";
     cad1+=") VALUES(";
@@ -7415,6 +7441,8 @@ void basedatos::insertDiario (QString cadnumasiento, qlonglong pase, QString cad
     cad1 += ",'";
 	cad1 += concepto.left(-1).replace("'","''");
 	cad1 += "','";
+    cad1 += documento.left(-1).replace("'","''");
+    cad1 += "','";
     cad1 += documento.left(-1).replace("'","''");
     cad1 += "','";
     cad1 += diario.left(-1).replace("'","''");
@@ -14827,6 +14855,29 @@ void basedatos::updatetabladescripcionclave (QString tabla, QString codigo,QStri
     ejecutar(cadquery);
 }
 
+void basedatos::update_atividades(QString ref, QString descripcion, QString codigo, QString tipo, QString epigrafe, QString cnae)
+{
+    QString cadquery = "UPDATE actividades ";
+    cadquery+=" SET descripcion='";
+    cadquery += descripcion.left(-1).replace("'","''");
+    cadquery += "', codigo='";
+    cadquery += codigo.left(-1).replace("'","''");
+    cadquery += "', tipo='";
+    cadquery += tipo.left(-1).replace("'","''");
+    cadquery += "', epigrafe='";
+    cadquery += epigrafe.left(-1).replace("'","''");
+    cadquery += "', cnae='";
+    cadquery += cnae.left(-1).replace("'","''");
+    cadquery += "' WHERE ref='";
+    cadquery += ref.left(-1).replace("'","''");
+    cadquery += "'";
+
+    // QMessageBox::warning( 0, QObject::tr("update"),cadquery);
+
+    ejecutar(cadquery);
+
+}
+
 // Actualiza la descripción y el nivel de un ci
 void basedatos::updateCidescripcioncodigo (QString codigo,QString descripcion,int nivel) {
     QString cadquery = "UPDATE ci SET ";
@@ -15537,6 +15588,8 @@ void basedatos::updateDiarioconceptodocumentopase (QString concepto, QString doc
     QString cadena = "update diario set concepto='";
     cadena += concepto.left(-1).replace("'","''");
     cadena += "', documento='";
+    cadena += documento.left(-1).replace("'","''");
+    cadena += "', codfactura='";
     cadena += documento.left(-1).replace("'","''");
     if (asiento) {
         cadena += "' where asiento=";
@@ -17703,14 +17756,34 @@ int basedatos::existecodigoconcepto (QString cadena,QString *qdescrip) {
     return 0;
 }
 
-bool basedatos::existecodigotabla (QString tabla, QString cadena,QString *qdescrip) {
+bool basedatos::existecodigotabla (QString tabla, QString cadena, QString *qdescrip, bool actividades) {
     QString cadquery = "SELECT codigo,descripcion from ";
+    if (actividades) cadquery = "SELECT ref,descripcion from ";
     cadquery+=tabla;
-    cadquery+=" where codigo = '"+ cadena.left(-1).replace("'","''") +"'";
+    if (actividades) cadquery+=" where ref = '";
+      else cadquery+=" where codigo = '";
+    cadquery+= cadena.left(-1).replace("'","''") +"'";
     QSqlQuery query = ejecutar(cadquery);
     if ( (query.isActive()) && (query.first()) )
     {
         *qdescrip = query.value(1).toString();
+        return true;
+    }
+    return false;
+}
+
+bool basedatos::existecodigotabla_actividades(QString ref, QString *descripcion, QString *codigo, QString *tipo, QString *epigrafe, QString *cnae)
+{
+    QString cadquery = "SELECT ref,descripcion, codigo, tipo, epigrafe, cnae from actividades";
+    cadquery+=" where ref = '"+ ref.left(-1).replace("'","''") +"'";
+    QSqlQuery query = ejecutar(cadquery);
+    if ( (query.isActive()) && (query.first()) )
+    {
+        *descripcion = query.value(1).toString();
+        *codigo = query.value(2).toString();
+        *tipo = query.value(3).toString();
+        *epigrafe = query.value(4).toString();
+        *cnae = query.value(5).toString();
         return true;
     }
     return false;
@@ -18919,6 +18992,22 @@ qlonglong basedatos::proximoasiento (QString ejercicio) {
 
     return vnum;
 }
+
+qlonglong basedatos::ultimo_asiento_contabilizado (QString ejercicio) {
+    QString cadena="select max(asiento) from diario where ejercicio='";
+    cadena+=ejercicio.left(-1).replace("'","''");
+    cadena+="' and contabilizado";
+    QSqlQuery query = ejecutar(cadena);
+    qlonglong vnum = 0;
+    if ( (query.isActive()) && (query.first()) )
+    {
+        vnum = query.value(0).toLongLong();
+    }
+    else vnum = 0;
+
+    return vnum;
+}
+
 
 
 qlonglong basedatos::proximo_nrecepcion (QString ejercicio) {
@@ -22220,6 +22309,19 @@ void basedatos::actualizade4000()
     cadena="alter table configuracion add column ";
     if ( cualControlador() == SQLITE ) cadena += "prorrata bool default 0";
     else cadena += "prorrata bool default false";
+    ejecutar(cadena);
+
+    cadena = "CREATE TABLE actividades ("
+             "ref         varchar(40),"
+             "descripcion varchar(254),"
+             "codigo      varchar(40),"
+             "tipo        varchar(40),"
+             "epigrafe    varchar(40),"
+             "cnae        varchar(40),"
+             "PRIMARY KEY (ref) )";
+    cadena = anadirMotor(cadena);
+    ejecutar("drop table actividades");
+    ejecutar(cadena);
 
     ejecutar("update configuracion set version='4.0.0.2'");
 }
@@ -31983,6 +32085,17 @@ bool basedatos::asientos_borrador(QString ejercicio)
     return false;
 }
 
+bool basedatos::borrador_con_contenido()
+{
+    QString cad="select contabilizado from diario where not contabilizado";
+    QSqlQuery query = ejecutar(cad);
+    if ( (query.isActive()) && (query.first()) )
+    {
+        return true;
+    }
+    return false;
+}
+
 
 void basedatos::update_ejercicio_fechas(QDate fecha_inicial, QDate fecha_final, QString ejercicio) {
    QString cad="update diario set ejercicio='";
@@ -32009,5 +32122,14 @@ QString basedatos::cod_iva(double tipo)
      return query.value(0).toString();
   }
   return QString();
+}
+
+QSqlQuery basedatos::consulta_conciliacion_ci_tabla(QString ejercicio)
+{
+ QString cad="select diario.pase, abs(diario.debe + diario.haber) as sumdia, sum(diario_ci.importe) as sumci "
+             "from diario, diario_ci where diario.clave_ci=diario_ci.clave_ci and diario.ejercicio='";
+ cad.append(ejercicio);
+ cad.append("' group by diario.pase, sumdia order by diario.pase");
+ return ejecutar(cad);
 }
 

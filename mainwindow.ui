@@ -116,6 +116,7 @@
      <addaction name="actionRegenera_Instalacion_Archivos"/>
      <addaction name="actionCarga_Documentos_en_Base_de_Datos"/>
      <addaction name="actionInventario_inmovilizado"/>
+     <addaction name="actionVerificar_cuadre_analitica_tabla"/>
     </widget>
     <addaction name="actionPreferencias"/>
     <addaction name="menuImportar"/>
@@ -125,6 +126,7 @@
     <addaction name="actionCopia_Seguridad"/>
     <addaction name="actionConsolidaci_n_Contable"/>
     <addaction name="menu_tiles"/>
+    <addaction name="actionChequea_Herramientas"/>
    </widget>
    <widget class="QMenu" name="menuDiario">
     <property name="title">
@@ -1423,6 +1425,16 @@
   <action name="action_Tipos_de_Cambio">
    <property name="text">
     <string>&amp;Tipos de Cambio</string>
+   </property>
+  </action>
+  <action name="actionChequea_Herramientas">
+   <property name="text">
+    <string>Chequea &amp;Herramientas</string>
+   </property>
+  </action>
+  <action name="actionVerificar_cuadre_analitica_tabla">
+   <property name="text">
+    <string>&amp;Verificar cuadre en analitica tabla</string>
    </property>
   </action>
  </widget>

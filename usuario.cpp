@@ -21,7 +21,6 @@
 
 #include "usuario.h"
 #include "basedatos.h"
-#include "directorio.h"
 #include <QFileDialog>
 #include <QMessageBox>
 #include "graf_recorte.h"
@@ -238,6 +237,7 @@ void usuario::chequeatodo()
   ui.checkBox82->setChecked(true);
   ui.checkBox83->setChecked(true);
   ui.checkBox84->setChecked(true);
+  ui.checkBox85->setChecked(true);
 
 }
 
@@ -328,6 +328,7 @@ void usuario::chequeanada()
     ui.checkBox82->setChecked(false);
     ui.checkBox83->setChecked(false);
     ui.checkBox84->setChecked(false);
+    ui.checkBox85->setChecked(false);
 
 }
 
@@ -442,6 +443,7 @@ privilegios.append(ui.checkBox81->isChecked() ? '1' : '0');
 privilegios.append(ui.checkBox82->isChecked() ? '1' : '0');
 privilegios.append(ui.checkBox83->isChecked() ? '1' : '0');
 privilegios.append(ui.checkBox84->isChecked() ? '1' : '0');
+privilegios.append(ui.checkBox85->isChecked() ? '1' : '0');
 
 
 basedatos::instancia()->grabarusuario(ui.codigolineEdit->text(),
@@ -584,6 +586,7 @@ void usuario::cargar(QString codigo)
     ui.checkBox82->setChecked(privilegios[81]=='1' ? true : false);
     ui.checkBox83->setChecked(privilegios[82]=='1' ? true : false);
     ui.checkBox84->setChecked(privilegios[83]=='1' ? true : false);
+    ui.checkBox85->setChecked(privilegios[84]=='1' ? true : false);
 
     if (codigo=="admin") ui.tabWidget->setTabEnabled(1,false);
 

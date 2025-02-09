@@ -23,7 +23,8 @@
                    presupuestos_edicion, previs_realiz,          asiento_amortizaciones,plan_amortizaciones,
                    ed_preferencias,      importar_asientos,      import_contaplus,      importfich,
                    marcar_cerrado_ej,    asignar_diario,         agrupar_tex_libro,     pconsolidacion,
-                   copia_segur,          utiles,                 activa_visor_local,    activa_sii
+                   copia_segur,          utiles,                 activa_visor_local,    activa_sii,
+                   contab_borrador
                    };
 
 

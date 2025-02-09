@@ -40,6 +40,7 @@ class eib : public QDialog {
                 void modoconsulta();
                 void esconde_externo();
                 QString externo();
+                void desactiva_base();
 
         private:
                 Ui::eib ui;

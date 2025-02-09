@@ -2690,7 +2690,7 @@ void libro_recibidas::on_documentos_pushButton_clicked()
     }
 
 
-    QFileDialog dialogofich(this);
+   /* QFileDialog dialogofich(this);
     dialogofich.setFileMode(QFileDialog::Directory);
     dialogofich.setViewMode(QFileDialog::List);
     dialogofich.setLabelText ( QFileDialog::LookIn, tr("Directorio:") );
@@ -2705,6 +2705,19 @@ void libro_recibidas::on_documentos_pushButton_clicked()
     if (dialogofich.exec())
        {directorio=dialogofich.directory();}
       else return;
+    qDebug() << directorio.absolutePath();*/
+
+    QString selectedDirectory = QFileDialog::getExistingDirectory(
+        this,
+        "Seleccionar un directorio",
+        dirtrabajo(), // Directorio inicial
+        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks
+        );
+
+
+    if (selectedDirectory.isEmpty()) {
+        QMessageBox::warning(this, tr("LIBRO DE FACTURAS"),tr("No se ha seleccionado ningún directorio"));
+    }
 
 
     for (int i=0;i<fich_docs.count();i++) {
@@ -2715,6 +2728,7 @@ void libro_recibidas::on_documentos_pushButton_clicked()
         if (!fichdoc.contains('-')) dest_fich=fichdoc;
           else dest_fich=fichdoc.mid(p);
         dest_fich.prepend(regs_orden.at(i)+"-");
+
         if (basedatos::instancia()->gestor_doc_bd()) {
             QString cadnum;
             if (!fichdoc.contains('-')) cadnum=fichdoc.section('.',0,0);
@@ -2722,7 +2736,9 @@ void libro_recibidas::on_documentos_pushButton_clicked()
             qlonglong num=cadnum.toLongLong();
             QByteArray outByteArray;
             outByteArray=basedatos::instancia()->documento_bd(num);
-            QString url=directorio.absolutePath().append(QDir::separator()).append(dest_fich);
+            //QString url=directorio.absolutePath().append(QDir::separator()).append(dest_fich);
+            QString directorio_sel=selectedDirectory;
+            QString url=directorio_sel.append(QDir::separator()).append(dest_fich);
             QFile file(url);
             file.open(QIODevice::WriteOnly);
 
@@ -2735,7 +2751,10 @@ void libro_recibidas::on_documentos_pushButton_clicked()
         QString fichdoc_ruta=expanderutadocfich(fichdoc);
         // copiamos el fichero a la ruta elegida
         QFile fichero(fichdoc_ruta);
-        fichero.copy(directorio.absolutePath().append(QDir::separator()).append(dest_fich));
+        //fichero.copy(directorio.absolutePath().append(QDir::separator()).append(dest_fich));
+        QString directorio_sel=selectedDirectory;
+        fichero.copy(directorio_sel.append(QDir::separator()).append(dest_fich));
+        // qDebug() << fichdoc_ruta << " " << selectedDirectory.append(QDir::separator()).append(dest_fich) << "\n";
     }
 
 }

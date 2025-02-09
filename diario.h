@@ -92,6 +92,7 @@ class diario: public QWidget {
            void muestra_filtro();
            bool borrador();
            QString file_droped();
+           void activa_tab(int qtab);
            ~diario();
         private:
            Ui::diario ui;

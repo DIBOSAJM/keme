@@ -214,6 +214,9 @@ diario::diario() : QWidget() {
 
   }
 
+  ui.contabilizar_pushButton->setEnabled(privilegios[contab_borrador]);
+  ui.renum_borrador_pushButton->setEnabled(privilegios[contab_borrador]);
+
 }
 
 void diario::dragEnterEvent(QDragEnterEvent *e)
@@ -924,6 +927,11 @@ QString diario::file_droped()
     return fichero_droped;
 }
 
+void diario::activa_tab(int qtab)
+{
+    ui.tabWidget->setCurrentIndex(qtab);
+}
+
 
 void diario::editafechaasien()
 {
@@ -1100,8 +1108,8 @@ void diario::ed_registro_iva() {
                                  query2.value(35).toBool(), query2.value(36).toBool(),
                                  query2.value(37).toString());
             i->desactiva_base_tipo();
-
-            if (i->exec()==QDialog::Accepted) {
+            if (!borrador()) i->modoconsulta();
+            if (i->exec()==QDialog::Accepted && borrador()) {
                 QString cuentabase, baseimponible, qclaveiva, qtipoiva, cuentaiva, cuotaiva;
                 QString ctafra;
                 QDate qfechafra;
@@ -1139,6 +1147,7 @@ void diario::ed_registro_iva() {
 
 
 
+
             }
             delete(i);
         }
@@ -1160,7 +1169,9 @@ void diario::ed_registro_iva() {
                                  query2.value(25).toString(), query2.value(26).toString(),
                                  query2.value(31).toString(),
                                  query2.value(35).toBool() ? "1" : "",query2.value(36).toBool() ? "1" : "");
-                  if (i->exec()==QDialog::Accepted) {
+                  i->desactiva_base_tipo();
+                  if (!borrador()) i->modoconsulta();
+                  if (i->exec()==QDialog::Accepted && borrador()) {
                       QString cuentabase, baseimponible, qclaveiva;
                       QString qtipoiva, qtipore, cuentaiva, cuotaiva, ctafra;
                       QDate qfechafra;
@@ -1204,8 +1215,9 @@ void diario::ed_registro_iva() {
                                query2.value(6).toString(),query2.value(14).toDate(),query2.value(15).toDate(), query2.value(16).toString());
                   e->esconde_externo();
                   if (query2.value(40).toBool()) e->selec_prservicios();
-
-                  if (e->exec() ==QDialog::Accepted) {
+                  e->desactiva_base();
+                  if (!borrador()) e->modoconsulta();
+                  if (e->exec() ==QDialog::Accepted && borrador()) {
                       QString cuentabase, baseimponible, ctafra;
                       QDate qfechafra, qfechaop;
                       QString claveop, prservicios;
@@ -1252,7 +1264,8 @@ void diario::ed_registro_iva() {
                                query2.value(33).toBool() ? "1" : "",
                                (query2.value(28).toBool() && !query2.value(10).toBool()) ? "1" : "",registro_donacion, query2.value(37).toString());
                    if (cadsoportado!="1") e->fuerzaemitidas();
-                    if (e->exec() ==QDialog::Accepted) {
+                   if (!borrador()) e->modoconsulta();
+                   if (e->exec() ==QDialog::Accepted && borrador()) {
                         QString cuentabase, baseimponible,  ctafra;
                         QDate qfechafra, fechaop;
                         QString claveop, rectificativa, frectif;
@@ -1332,7 +1345,9 @@ void diario::ed_registro_ret() {
                                tipo_ret, qretencion,
                                ing_cta, ing_cta_repercutido,
                                nombre_ret, cif_ret, provincia);
-            if (r->exec() ==QDialog::Accepted) {
+            r->desactiva_base_tipo();
+            if (!borrador()) r->modoconsulta();
+            if (r->exec() ==QDialog::Accepted && borrador()) {
                 r->recuperadatos(&cta_retenido, &ret_arrendamiento,
                                  &clave, &base_percepciones,
                                  &tipo_ret, &qretencion,
@@ -1374,6 +1389,17 @@ void diario::on_contabilizar_pushButton_clicked()
     renum=t->renum();
     delete(t);
     if ((!result)==QDialog::Accepted) return;
+    // verificamos que no haya más de un ejercicio en filtro
+    QString ver_ejercicios="select ejercicio from diario ";
+    ver_ejercicios.append(guardafiltro2.left(guardafiltro2.toLower().lastIndexOf("order by")));
+    ver_ejercicios.append(" group by ejercicio");
+    QSqlQuery qe = basedatos::instancia()->ejecutar_publica(ver_ejercicios);
+    if (qe.next())
+        if (qe.next()) {
+            if (!(QMessageBox::question(this,tr("Contabilizar"),tr("Hay asientos de diferentes ejercicios. ¿ Deseas asentarlo todo ?"))
+                ==QMessageBox::Yes)) return;
+        }
+
     if (renum) renumera_borr();
       // recorremos los registros en el diario borrador filtrado
       // qDebug() << guardafiltro2.left(guardafiltro2.toLower().lastIndexOf("order by"));

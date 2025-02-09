@@ -146,6 +146,7 @@
         <file>graf/oss-open-source-excellence-white.svg</file>
         <file>graf/oss-community-leader-white.svg</file>
         <file>graf/factur.png</file>
+        <file>graf/trabajando.gif</file>
     </qresource>
     <qresource prefix="/splash">
         <file>graf/splash.jpg</file>
@@ -174,6 +175,14 @@
     <qresource prefix="/fich">
         <file>fich/ejemplo-sqlite</file>
         <file>fich/memoria.tex</file>
+        <file>fich/codigos_actividades.csv</file>
+        <file>fich/tipos_actividades_A.csv</file>
+        <file>fich/tipos_actividades_B.csv</file>
+        <file>fich/TIPO_ACTIVIDAD_2.csv</file>
+        <file>fich/TIPO_ACTIVIDAD_3.csv</file>
+        <file>fich/TIPO_ACTIVIDAD_4.csv</file>
+        <file>fich/TIPO_ACTIVIDAD_5.csv</file>
+        <file>fich/codigos_cnae2009.csv</file>
     </qresource>
     <qresource prefix="/planes">
         <file>planes/pgc_pymes_RD1515-2007.pln</file>

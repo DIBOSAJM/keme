@@ -382,5 +382,12 @@ void retencion::modoconsulta()
    ui.retenidolineEdit->setReadOnly(true);
    ui.retlineEdit->setReadOnly(true);
    ui.tiporetlineEdit->setReadOnly(true);
+   ui.buscaretenidopushButton->setEnabled(false);
 
+}
+
+void retencion::desactiva_base_tipo()
+{
+    ui.baselineEdit->setEnabled(false);
+    ui.tiporetlineEdit->setEnabled(false);
 }

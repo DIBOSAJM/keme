@@ -1165,5 +1165,8 @@ void ivasoportado::desactiva_base_tipo() {
     ui.baselineEdit->setReadOnly(true);
     ui.ClaveivacomboBox->setEnabled(false);
     ui.CuotalineEdit->setEnabled(false);
+    ui.prorratacheckBox->setEnabled(false);
+    ui.prorratalineEdit->setReadOnly(true);
+    ui.afectacionlineEdit->setReadOnly(true);
 
 }

@@ -167,7 +167,7 @@ class basedatos {
         void deleteConceptosclave(QString qcodigo);
 
         // Borra de tabla una clave
-        void deleteclavetabla (QString tabla, QString qcodigo);
+        void deleteclavetabla (QString tabla, QString qcodigo, bool actividades=false);
 
         // Borra de ci un codigo
         void deleteCicodigo(QString codigo);
@@ -269,7 +269,9 @@ class basedatos {
         // Inserta datos en tabla
         void inserttabla(QString tabla,QString codigo,QString descripcion);
 
-      // Inserta datos en saldossubcuenta
+        void inserttabla_actividades(QString ref, QString descripcion, QString codigo, QString tipo, QString epigrafe, QString cnae);
+
+        // Inserta datos en saldossubcuenta
         void insertSaldossubcuenta(QString codigo, QString saldo, QString saldomedio1, QString saldomedio2);
 
         // 
@@ -1581,6 +1583,8 @@ class basedatos {
         // Actualiza la descripción del código de la tabla
         void updatetabladescripcionclave (QString tabla, QString codigo,QString descripcion);
 
+        void update_atividades(QString ref, QString descripcion, QString codigo, QString tipo, QString epigrafe, QString cnae);
+
         // Actualiza la descripción y el nivel de un ci
         void updateCidescripcioncodigo(QString codigo,QString descripcion,int nivel);
 
@@ -2008,7 +2012,8 @@ class basedatos {
 
         // Indica si existe un concepto y devuelve su descripción en puntero
         int existecodigoconcepto(QString cadena,QString *qdescrip);
-        bool existecodigotabla (QString tabla, QString cadena,QString *qdescrip);
+        bool existecodigotabla (QString tabla, QString cadena,QString *qdescrip, bool actividades=false);
+        bool existecodigotabla_actividades (QString ref, QString *descripcion, QString *codigo, QString *tipo, QString *epigrafe, QString *cnae);
 
         // Indica si la subcuenta es de gasto
         int escuentadegasto(const QString subcuenta);
@@ -2225,6 +2230,8 @@ class basedatos {
 
         // Indica cuál es el próximo asiento
         qlonglong proximoasiento(QString ejercicio);
+
+        qlonglong ultimo_asiento_contabilizado (QString ejercicio);
 
         // próximo número recepción fras. recibidas
         qlonglong proximo_nrecepcion (QString ejercicio);
@@ -3615,9 +3622,13 @@ class basedatos {
 
         bool asientos_borrador(QString ejercicio);
 
+        bool borrador_con_contenido();
+
         void update_ejercicio_fechas(QDate fecha_inicial, QDate fecha_final, QString ejercicio);
 
         QString cod_iva(double tipo);
+
+        QSqlQuery consulta_conciliacion_ci_tabla(QString ejercicio);
 
     private:
 

@@ -64,6 +64,7 @@ class ivarepercutido : public QDialog {
                 void fococtafra();
                 void fococtabi();
                 void modoconsulta();
+                void desactiva_base_tipo();
 
 
         private slots:

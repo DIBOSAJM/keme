@@ -36,6 +36,8 @@ TRANSLATIONS = keme4_eng.ts \
     keme4_eus.ts
 
 SOURCES += main.cpp\
+    actividad_edicion.cpp \
+    check_herramientas.cpp \
         mainwindow.cpp\
         arbol.cpp \
         aritmetica.cpp\
@@ -230,8 +232,10 @@ SOURCES += main.cpp\
     tipos_cambio.cpp
 
 HEADERS  += mainwindow.h\
+    actividad_edicion.h \
          aritmetica.h\
          arbol.h \
+    check_herramientas.h \
          funciones.h\
          basedatos.h\
          privilegios.h \
@@ -425,6 +429,8 @@ HEADERS  += mainwindow.h\
     tipos_cambio.h
 
 FORMS    += mainwindow.ui\
+    actividad_edicion.ui \
+    check_herramientas.ui \
           conexion.ui\
           diario.ui \
           preferencias.ui\

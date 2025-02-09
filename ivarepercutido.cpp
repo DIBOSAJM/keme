@@ -905,3 +905,11 @@ void ivarepercutido::modoconsulta()
     ui.arr_ret_checkBox->setEnabled(false);
     ui.arr_sin_ret_checkBox->setEnabled(false);
 }
+
+void ivarepercutido::desactiva_base_tipo()
+{
+    ui.baselineEdit->setReadOnly(true);
+    ui.ClaveivacomboBox->setEnabled(false);
+    ui.CuotalineEdit->setEnabled(false);
+
+}

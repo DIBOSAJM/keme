@@ -33,10 +33,12 @@ class edtabla : public QDialog {
                 edtabla(QString qtabla);
                 ~edtabla();
                 void pasacodigo( QString qconcepto );
+                void prepara_actividades();
         private:
                 Ui::edtabla ui;
                 QSqlTableModel *modeloedtabla;
                 QString nombretabla;
+                bool actividades=false;
         private slots :
                 void compruebacodigo();
                 void descripcioncambiada();

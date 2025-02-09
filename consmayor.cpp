@@ -1829,8 +1829,8 @@ QString cadrectif,cadautofact,cadagrario;
                                  query2.value(35).toBool(), query2.value(36).toBool(),
                                  query2.value(37).toString());
             i->desactiva_base_tipo();
-
-            if (i->exec()==QDialog::Accepted) {
+            if (!filas_borrador.contains(ui.mayortable->currentRow())) i->modoconsulta();
+            if (i->exec()==QDialog::Accepted && filas_borrador.contains(ui.mayortable->currentRow())) {
                 QString cuentabase, baseimponible, qclaveiva, qtipoiva, cuentaiva, cuotaiva;
                 QString ctafra;
                 QDate qfechafra;
@@ -1889,7 +1889,9 @@ QString cadrectif,cadautofact,cadagrario;
                                  query2.value(25).toString(), query2.value(26).toString(),
                                  query2.value(31).toString(),
                                  query2.value(35).toBool() ? "1" : "",query2.value(36).toBool() ? "1" : "");
-                  if (i->exec()==QDialog::Accepted) {
+                  i->desactiva_base_tipo();
+                  if (!filas_borrador.contains(ui.mayortable->currentRow())) i->modoconsulta();
+                  if (i->exec()==QDialog::Accepted && filas_borrador.contains(ui.mayortable->currentRow())) {
                       QString cuentabase, baseimponible, qclaveiva;
                       QString qtipoiva, qtipore, cuentaiva, cuotaiva, ctafra;
                       QDate qfechafra;
@@ -1933,8 +1935,9 @@ QString cadrectif,cadautofact,cadagrario;
                                query2.value(6).toString(),query2.value(14).toDate(),query2.value(15).toDate(), query2.value(16).toString());
                   e->esconde_externo();
                   if (query2.value(40).toBool()) e->selec_prservicios();
-
-                  if (e->exec() ==QDialog::Accepted) {;
+                  e->desactiva_base();
+                  if (!filas_borrador.contains(ui.mayortable->currentRow())) e->modoconsulta();
+                  if (e->exec() ==QDialog::Accepted &&filas_borrador.contains(ui.mayortable->currentRow())) {;
                       QString cuentabase, baseimponible, ctafra;
                       QDate qfechafra, qfechaop;
                       QString claveop, prservicios;
@@ -1981,7 +1984,8 @@ QString cadrectif,cadautofact,cadagrario;
                                query2.value(33).toBool() ? "1" : "",
                                (query2.value(28).toBool() && !query2.value(10).toBool()) ? "1" : "",registro_donacion, query2.value(37).toString());
                    if (cadsoportado!="1") e->fuerzaemitidas();
-                    if (e->exec() ==QDialog::Accepted) {
+                   if (!filas_borrador.contains(ui.mayortable->currentRow())) e->modoconsulta();
+                   if (e->exec() ==QDialog::Accepted && filas_borrador.contains(ui.mayortable->currentRow())) {
                         QString cuentabase, baseimponible,  ctafra;
                         QDate qfechafra, fechaop;
                         QString claveop, rectificativa, frectif;
@@ -2054,7 +2058,10 @@ void consmayor::ed_registro_ret() {
                                tipo_ret, qretencion,
                                ing_cta, ing_cta_repercutido,
                                nombre_ret, cif_ret, provincia);
-            if (r->exec() ==QDialog::Accepted) {
+            r->desactiva_base_tipo();
+            if (!filas_borrador.contains(ui.mayortable->currentRow())) r->modoconsulta();
+
+            if (r->exec() ==QDialog::Accepted && filas_borrador.contains(ui.mayortable->currentRow()))  {
                 r->recuperadatos(&cta_retenido, &ret_arrendamiento,
                                  &clave, &base_percepciones,
                                  &tipo_ret, &qretencion,
@@ -2091,10 +2098,14 @@ void consmayor::on_mayortable_currentCellChanged(int currentRow, int currentColu
     if (filas_borrador.contains(currentRow)) {
         ui.editarpushButton->setEnabled(true);
         ui.borrarpushButton->setEnabled(true);
+        ui.fecha_pushButton->setEnabled(true);
+        ui.concepto_pushButton->setEnabled(true);
     }
     else {
         ui.editarpushButton->setEnabled(false);
         ui.borrarpushButton->setEnabled(false);
+        ui.fecha_pushButton->setEnabled(false);
+        ui.concepto_pushButton->setEnabled(false);
     }
 }
 

@@ -22,6 +22,7 @@
 #include "funciones.h"
 #include "aritmetica.h"
 #include "basedatos.h"
+#include "network_connections.h"
 #include "privilegios.h"
 #include <QPdfDocument>
 
@@ -7695,6 +7696,10 @@ int isNifCifNie(QString dni)
   {
     QString cadena =dni.toUpper();//convertimos a mayusculas
     QString pre=cadena.mid(0,1);//extraemos el primer digito o letra
+    if (pre=="W" || pre=="K") {
+        if (validarNIFW(dni)) return 3;
+          else return -3;
+    }
     if (pre=="X"||pre=="Y"||pre=="Z") {//Si el primer digito es igual a X,Y o Z entonces es un NIE
         if (testNIE(dni)) {//llamamos a la funcion testNIE(); pasandole por parametro el dni. Devolvera true o false
             return 1;//Si es true devolvemos 1, 1 = NIE correcto.
@@ -7725,6 +7730,91 @@ int isNifCifNie(QString dni)
     }
 }
 
+
+/* bool validarNIFW(const QString& nif) {
+    // Comprobar que el NIF tenga 9 caracteres y comience con 'W'
+    if (nif.length() != 9 || nif.at(0) != 'W') {
+        return false;
+    }
+
+    // Extraer los 7 dígitos
+    QString digitos = nif.mid(1, 7);
+    bool ok;
+    digitos.toInt(&ok);
+    if (!ok) return false;
+
+
+    // Cálculo del dígito de control
+    int suma = 0;
+    int peso[] = {2, 4, 6, 8, 1, 3, 5};
+    for (int i = 0; i < 7; ++i) {
+        suma += (digitos.at(i).digitValue() * peso[i]) % 10 + (digitos.at(i).digitValue() * peso[i]) / 10;
+    }
+
+    int resto = (11 - (suma % 11)) % 11;
+    QChar letraA='A';
+    QChar letra0='0';
+    if (resto == 10) {
+        resto = letraA.unicode() - letra0.unicode(); // Convertir a 'A' si el resto es 10
+    } else if (resto == 11) {
+        resto = letra0.unicode(); // Convertir a '0' si el resto es 11
+    }
+
+    // Comprobar el dígito de control
+    if (resto != nif.at(8).unicode()) {
+        return false;
+    }
+
+    return true;
+}*/
+
+
+bool validarNIFW(const QString& nif) {
+    // Verificar longitud mínima
+    if (nif.length() != 9) {
+        return false;
+    }
+
+    // Comprobar que comienza con 'W'
+    if (!nif.startsWith('W')) {
+        return false;
+    }
+
+    // Expresión regular para verificar formato básico (W + 8 dígitos)
+    QRegularExpression regex("^W\\d{7}[A-Z0-9]$");
+    if (!regex.match(nif).hasMatch()) {
+        return false;
+    }
+
+    // Obtener la parte numérica y el dígito de control
+    QString numeros = nif.mid(1, 7);
+    QChar digitoControl = nif[8];
+
+    // Calcular el dígito de control esperado
+    int suma = 0;
+    for (int i = 0; i < numeros.length(); ++i) {
+        int digito = numeros[i].digitValue();
+        if (i % 2 == 0) { // Posiciones impares (0 indexado)
+            int doble = digito * 2;
+            suma += (doble / 10) + (doble % 10); // Sumar dígitos del resultado
+        } else { // Posiciones pares
+            suma += digito;
+        }
+    }
+
+    int resto = suma % 10;
+    int controlCalculado = (10 - resto) % 10;
+
+    // Verificar si el dígito de control calculado coincide con el proporcionado
+    if (digitoControl.isDigit()) {
+        return digitoControl.digitValue() == controlCalculado;
+    } else if (digitoControl.isLetter()) {
+        QString letras = "JABCDEFGHI"; // Asociación de dígitos a letras
+        return letras[controlCalculado] == digitoControl;
+    }
+
+    return false; // Si no es ni letra ni número válido
+}
 
 
 
@@ -8050,13 +8140,13 @@ bool f_importa_csv_cta_conci(QString qfichero,QString cuenta)
               if (valanyo<100 && valanyo>50) valanyo+=1900;
               if (valanyo<100 && valanyo<=50) valanyo+=2000;
               lafecha.setDate(valanyo,mes.toInt(),dia.toInt());
-              if (!fechacorrespondeaejercicio(lafecha) || fechadejerciciocerrado(lafecha))
+              /*if (!fechacorrespondeaejercicio(lafecha) || fechadejerciciocerrado(lafecha))
                  {
                     QMessageBox::warning( 0,QObject::tr("Importar cuenta"),
                          QObject::tr("Error, la fecha %1 no es correcta\n"
                              "la operación no se ha realizado.").arg(fecha));
                     return false;
-                 }
+                 }*/
               QString debe_haber=convapunto(linea.section('\t',2,2));
               if (debe_haber.toDouble()>-0.001 && debe_haber.toDouble()<0.001)
                  {
@@ -8306,6 +8396,7 @@ QString busca_nif(QString contenido, QString nif_propio) {
         QString palabra=palabras.at(i);
         if (palabra.startsWith("ES")) palabra=palabra.remove("ES");
         palabra=palabra.remove('-');
+        palabra=palabra.remove('.');
         if (isNifCifNie(palabra)>0 && palabra!=nif_propio) return palabra;
     }
     return QString();
@@ -8318,8 +8409,11 @@ QJsonObject info_contenido_fact(QString contenido) {
     QList<double> numeros;
     for (const QString &palabra : palabras) {
         bool ok=false;
-        double number=convapunto(palabra).toDouble(&ok);
-        if (ok && (number>0.001 || number<0.001) && (palabra.contains('.') || palabra.contains(','))) numeros << number;
+        QString dest=palabra;
+        if (dest.contains('.') && dest.contains(',')) dest=dest.remove('.');
+        double number=convapunto(dest).toDouble(&ok);
+        if (ok && (number>0.001 || number<0.001) && (palabra.contains('.') || palabra.contains(','))
+                && !palabra.endsWith('.') && (!palabra.endsWith(','))) numeros << number;
     }
     double base21=0, base10=0, base4=0, baseret=0;
     double cuota21=0, cuota10=0, cuota4=0, retencion=0;
@@ -8491,7 +8585,7 @@ void busca_info_nif(QString nif, QString *qexterno, QString *qcuenta_proveedor, 
                while (q.next()) {
                    if (q.value(0).toString().startsWith(basedatos::instancia()->clavegastos())) cuenta_gasto=q.value(0).toString();
                    if (q.value(0).toString().startsWith(basedatos::instancia()->cuentadeivasoportado())) cuenta_iva_soportado=q.value(0).toString();
-                   if (q.value(0).toString().startsWith(basedatos::instancia()->cuenta_ret_irpf())) cuenta_ret_irpf=q.value(0).toString();
+                   if (q.value(0).toString().startsWith(basedatos::instancia()->cuenta_ret_ing())) cuenta_ret_irpf=q.value(0).toString();
                }
        }
       }
@@ -8524,7 +8618,75 @@ QString pdf_a_qstring(QString nfichero) {
     return QString();
 }
 
+bool pdf_contiene_texto(QString nfichero) {
+    QPdfDocument *pdf = new QPdfDocument(0);
+    if (pdf->load(nfichero)==QPdfDocument::Error::None) {
+      QPdfSelection sel=pdf->getAllText(0);
+      if (!sel.text().isEmpty()) return true;
+    }
+ return false;
+}
 
+QString pdfgraf_a_qstring(QString nfichero) {
+    // extraemos jpg del pdf
+    QProgressDialog progreso(QObject::tr("Convirtiendo pdf ... ")
+                             , 0, 0, 0);
+    // progreso.setWindowModality(Qt::WindowModal);
+    progreso.setMinimumDuration ( 0 );
+    progreso.setWindowTitle(QObject::tr("Generando  ... "));;
+    progreso.show();
+    progreso.update();
+    QApplication::processEvents();
+
+
+    QObject *parent=NULL;
+
+    QStringList arguments;
+    arguments << "-j" << "-f" << "1" << "-l" << "1";
+    arguments << adapta(nfichero);
+    arguments << adapta(nfichero);
+
+    QString cadexec="pdfimages";
+    QProcess *myProcess = new QProcess(parent);
+
+    myProcess-> setWorkingDirectory(adapta(dirtrabajo()));
+
+    QApplication::processEvents();
+
+    myProcess->start(cadexec,arguments);
+
+    QApplication::processEvents();
+
+    // system(cadexec);
+    if (!myProcess->waitForStarted ())
+       {
+         delete myProcess;
+         QMessageBox::warning( 0, QObject::tr("CONVERSIÓN DE FIHERO"),QObject::tr("Problemas ejecutando pdfimages"));
+         return QString();
+       }
+    QApplication::processEvents();
+    myProcess->waitForFinished();
+    /* if (!myProcess->waitForFinished ())
+       {
+         delete myProcess;
+        QMessageBox::warning( 0, QObject::tr("CONVERSIÓN DE FIHERO"),QObject::tr("Problemas al finalizar pdfimages"));
+         return QString();
+       } */
+
+    QApplication::processEvents();
+
+    delete myProcess;
+
+    QString nombre_destino=nfichero.mid(nfichero.lastIndexOf(QDir::separator()))+"-000.jpg";
+    QString ruta_destino=nfichero.remove(nfichero.mid(nfichero.lastIndexOf(QDir::separator())));
+    QString ruta_nombre_destino=ruta_destino+nombre_destino;
+    // qDebug() << ruta_nombre_destino;
+    progreso.close();
+    QString texto=graf_a_qstring(ruta_nombre_destino);
+    QFile fichero(ruta_nombre_destino);
+    fichero.remove();
+    return texto;
+}
 
 QString graf_a_qstring(QString nfichero) {
 

@@ -336,6 +336,8 @@ private slots:
     void on_actionFicheros_de_transferencias_triggered();
     void on_action_Tipos_de_Cambio_triggered();
     void on_diario_tab_cambiado(int index);
+    void on_actionChequea_Herramientas_triggered();
+    void on_actionVerificar_cuadre_analitica_tabla_triggered();
 };
 
 #endif // MAINWINDOW_H

@@ -807,6 +807,7 @@ void contabilizar_factura(QString serie, QString numero, QString usuario, bool n
          q = basedatos::instancia()->select_lin_doc(clave);
          tabla_asientos *tablaasiento=new tabla_asientos(haycomadecimal(),haydecimales(),usuario);
          tablaasiento->pasafechaasiento(fecha);
+         tablaasiento->set_borrador();
          tablaasiento->pasa_externo(externo);
          tablaasiento->pasa_concepto_sii(concepto_sii);
          if (nomsj) tablaasiento->evita_pregunta_venci();

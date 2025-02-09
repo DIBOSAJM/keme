@@ -2726,7 +2726,7 @@ bool liquidacioniva::genfich303(QString qnombre)
    contenido+=cadnum2dec_cadena_signo(cuota1,17);
 
    // tipo 5
-   if (base75>0) {
+   if (base75>-0.001) {
        contenido+=cadnum2dec_cadena_signo(base75,17);
        contenido+="00750" ;//cadnum2dec_cadena_signo(7.5,5);
        contenido+=cadnum2dec_cadena_signo(cuota75,17);
@@ -2837,21 +2837,22 @@ bool liquidacioniva::genfich303(QString qnombre)
    // bases y tipos de recargo de equivalencia
    // tipo 175
    contenido+=cadnum2dec_cadena_signo(base175re,17);
-   contenido+=cadnum2dec_cadena_signo(1.75,5);
+   contenido+=cadnum2dec_cadena_signo(1.75,5);  // 1,75 CORRECTO
    contenido+=cadnum2dec_cadena_signo(cuota175re,17);
 
    contenido+=cadnum2dec_cadena_signo(base1re,17);
-   contenido+=cadnum2dec_cadena_signo(tipo1re,5);
+   //contenido+=cadnum2dec_cadena_signo(tipo1re,5);
+   contenido+="00100"; //CORRECTO
    contenido+=cadnum2dec_cadena_signo(cuota1re,17);
 
    contenido+=cadnum2dec_cadena_signo(base2re,17);
    //contenido+=cadnum2dec_cadena_signo(tipo2re,5);
-   contenido+="00140";
+   contenido+="00140"; // CORRECTO
    contenido+=cadnum2dec_cadena_signo(cuota2re,17);
 
    contenido+=cadnum2dec_cadena_signo(base3re,17);
    //contenido+=cadnum2dec_cadena_signo(tipo3re,5);
-   contenido+="00520";
+   contenido+="00520"; // CORRECTO
    contenido+=cadnum2dec_cadena_signo(cuota3re,17);
 
    // modificaciones bases y cuotas RE
@@ -2956,11 +2957,11 @@ bool liquidacioniva::genfich303(QString qnombre)
 
    // línea en blanco
    contenido+=cadnum2dec_cadena_signo(0,17);
-   contenido+="00000";
+   contenido+="00200";
    contenido+=cadnum2dec_cadena_signo(0,17);
    // línea en blanco
    contenido+=cadnum2dec_cadena_signo(0,17);
-   contenido+="00000";
+   contenido+="00050";
    contenido+=cadnum2dec_cadena_signo(0,17);
 
 

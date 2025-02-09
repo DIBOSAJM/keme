@@ -19,6 +19,7 @@
     En caso contrario, consulte <http://www.gnu.org/licenses/>.
   ----------------------------------------------------------------------------------*/
 
+#include <QNetworkAccessManager>
 #include <QString>
 #include <QDateTime>
 #include <QSqlQuery>
@@ -26,7 +27,6 @@
 #include <QDomDocument>
 #include <QtGui>
 #include <QSplashScreen>
-#include "network_connections.h"
 
 #define NUMPRIVILEGIOS 88
 
@@ -708,6 +708,8 @@ void informe_jasper_xml(QString ficherojasper, QString ficheroxml,
                         QString expresionxpath, QString fichpdf,
                         QString ruta_graf);
 
+bool validarNIFW(const QString& nif);
+
 int isNifCifNie(QString dni);
 
 bool ccc_correcto(QString ccc);
@@ -754,5 +756,9 @@ void busca_info_nif(QString nif, QString *qexterno, QString *qcuenta_proveedor, 
                     QString *qcuenta_iva_soportado, QString *qcuenta_ret_irpf);
 
 QString pdf_a_qstring(QString nfichero);
+
+bool pdf_contiene_texto(QString nfichero);
+
+QString pdfgraf_a_qstring(QString nfichero);
 
 QString graf_a_qstring(QString nfichero);

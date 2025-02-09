@@ -2424,7 +2424,7 @@ void domiciliacion::registrar_realizacion()
       QString pase_diario_vencimiento=cadnumpase;
       basedatos::instancia()->insertDiario10( cadnumasiento, cadnumpase, qvto.toString("yyyy-MM-dd"),
                                               q.value(1).toString() , debe, haber,
-                                              concepto, documento, usuario, ejercicio, q.value(21).toString());
+                                              concepto, documento, usuario, ejercicio, q.value(21).toString()); // por defecto borrador=true
 
      //-------------------------------------------------------------------------------------------------
 
@@ -2620,6 +2620,7 @@ if (impagado)
     concepto+= " - ";
     concepto+= fecha_operacion.toString("dd-MM-yyyy");
     tabla_asientos *t = new tabla_asientos(comadecimal,decimales,usuario);
+    t->set_borrador();
     t->fuerza_sin_vencimientos();
     t->pasadatos1(0,cuenta,concepto,"",importe,"","");
     t->pasadatos1(1,ui.aux_bancolineEdit->text(),concepto,importe,"","","");
@@ -2636,6 +2637,7 @@ if (impagado)
 // tabla asientos con procesado por defecto
 tabla_asientos *t = new tabla_asientos(comadecimal,decimales,usuario);
 t->fuerzacontado();
+t->set_borrador();
 //                 void pasadatos1( int fila, QString col0, QString col1, QString col2,
 //                                   QString col3, QString col4, QString col16);
 // primera fila

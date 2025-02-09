@@ -378,6 +378,11 @@ QString eib::externo()
    return ui.externo_lineEdit->text();
 }
 
+void eib::desactiva_base()
+{
+    ui.baselineEdit->setReadOnly(true);
+}
+
 void eib::esconde_externo()
 {
     ui.externo_lineEdit->hide();

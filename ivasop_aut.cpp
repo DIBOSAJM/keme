@@ -1840,7 +1840,11 @@ void ivasop_aut::arrendamiento_cambiado()
 void ivasop_aut::iva_exento_cambiado()
 {
     if (ui.exento_checkBox->isChecked()) ui.exento_groupBox->show();
-      else ui.exento_groupBox->hide();
+    else {
+        ui.exento_groupBox->hide();
+        ui.base_exentalineEdit->clear();
+        ui.Ctabase_exenta_lineEdit->clear();
+    }
 }
 
 

@@ -1,4 +1,5 @@
 #include "tablasii.h"
+#include "network_connections.h"
 #include "ui_tablasii.h"
 #include "basedatos.h"
 #include "funciones.h"
@@ -900,14 +901,14 @@ bool tablaSII::fich_sii_recibidas(QString nombrefich)
          QString dua;
          QString tipo_rectificativa;
          bool rectificativa=false;
-         fecha_operacion=fecha_operacion.fromString(ui->tableWidget->item(fila,1)->text(),"dd-MM-yyyy");
+         fecha_operacion=fecha_operacion.fromString(ui->tableWidget->item(fila,21)->text(),"dd-MM-yyyy");
          QSqlQuery q=basedatos::instancia()->campos_libroiva(ui->tableWidget->item(fila,0)->text());
          QString cta_operacion;
          if (q.isActive())
              if (q.next())
                 {
                  importacion=q.value(0).toBool();
-                 // fecha_operacion=q.value(1).toDate();
+                 fecha_operacion=q.value(1).toDate();
                  agrario=q.value(2).toBool();
                  aib_ais=q.value(3).toBool() || q.value(4).toBool();
                  autofactura_no_ue=q.value(5).toBool();

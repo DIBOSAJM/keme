@@ -128,6 +128,7 @@
 #include "inv_inmovilizado.h"
 #include "modelo_182.h"
 #include "tipos_cambio.h"
+#include "check_herramientas.h"
 
 #include <QSplashScreen>
 #include <QPdfDocument>
@@ -711,6 +712,7 @@ punterodiario->cabecera_campo_orden(n_campo_orden());
 on_diario_tab_cambiado(0);
 connect(eldiario, SIGNAL(cambio_tab(int)),this, SLOT(on_diario_tab_cambiado(int)));
 connect(eldiario, SIGNAL(filedroped()),this, SLOT(fichero_soltado_en_diario()));
+if (basedatos::instancia()->borrador_con_contenido()) eldiario->activa_tab(1);
 imgdiario();
 creaDockWindows();
 }
@@ -833,6 +835,7 @@ void MainWindow::activaWidgets()
     on_diario_tab_cambiado(0);
     connect(eldiario, SIGNAL(cambio_tab(int )),this, SLOT(on_diario_tab_cambiado(int )));
     connect(eldiario, SIGNAL(filedroped()),this, SLOT(fichero_soltado_en_diario()));
+    if (basedatos::instancia()->borrador_con_contenido()) eldiario->activa_tab(1);
 
     QString msj_titulo=tr(APLICACION);
     if (!titulo.isEmpty()) msj_titulo=titulo+" - ";
@@ -879,7 +882,8 @@ QString MainWindow::condicionesfiltrodefecto(void)
        QString ejercicio=ejerciciodelafecha(maxfecha);
        if (!ejercicio.isEmpty())
           {
-           qlonglong vnum = basedatos::instancia()->proximoasiento(ejercicio);
+           //qlonglong vnum = basedatos::instancia()->proximoasiento(ejercicio);
+           qlonglong vnum = basedatos::instancia()->ultimo_asiento_contabilizado (ejercicio);
            QString cadnum; cadnum.setNum(vnum-1);
            cadfiltro="asiento>";
            cadfiltro+=cadnum;
@@ -2808,6 +2812,7 @@ void MainWindow::tabla_homologacion()
 void MainWindow::tabla_actividades()
 {
  edtabla *e = new edtabla("actividades");
+ e->prepara_actividades();
  e->exec();
  delete(e);
 }
@@ -5631,9 +5636,9 @@ void MainWindow::verinput_apunte()
     if ( query.isActive() ) {
         double total=0;
         if (punterodiario->debe()>0.00001 ||
-            punterodiario->debe()<-0.00001) total=punterodiario->debe();
+            punterodiario->debe()<-0.00001) total=abs(punterodiario->debe());
         if (punterodiario->haber()>0.00001 ||
-            punterodiario->haber()<-0.00001) total=punterodiario->haber();
+            punterodiario->haber()<-0.00001) total=abs(punterodiario->haber());
         QString cadtotal;
         cadtotal.setNum(total,'f',2);
         // QMessageBox::information( this, tr("DIARIO"),
@@ -7244,7 +7249,7 @@ void MainWindow::inv_inmov()
 void MainWindow::fichero_soltado_en_diario()
 {
   fichero_soltado_diario=punterodiario->file_droped();
-  QMessageBox::information(this, tr("KEME-Contabilidad"),fichero_soltado_diario);
+  //QMessageBox::information(this, tr("KEME-Contabilidad"),fichero_soltado_diario);
   procesa_fichero_pdf();
 }
 
@@ -7261,8 +7266,13 @@ void MainWindow::procesa_fichero_pdf() {
       */
       QString global_tex;
       QString fichero_soltado_U=fichero_soltado_diario.toUpper();
-      if (fichero_soltado_U.endsWith("PDF"))
+      if (fichero_soltado_U.endsWith("PDF")) {
          global_tex=pdf_a_qstring(fichero_soltado_diario);
+         if (global_tex.isEmpty()) {
+             // tratamos de extraer gráfico jpg del pdf
+             global_tex=pdfgraf_a_qstring(fichero_soltado_diario);
+         }
+      }
       if (fichero_soltado_U.endsWith("JPG") ||
               fichero_soltado_U.endsWith("PNG") ||
               fichero_soltado_U.endsWith("TIF") ||
@@ -7359,6 +7369,7 @@ void MainWindow::on_diario_tab_cambiado(int index)
           ui->actionAIB_Inversi_n_sujeto_pasivo->setEnabled(false);
           ui->actionEIB_Prestaci_n_servicos_UE->setEnabled(false);
           ui->actionAsiento_de_amortizaciones->setEnabled(false);
+          ui->actionAsientos_en_Espera->setEnabled(false);
       }
   } else {
       ui->actionBorrar_Asiento->setVisible(true);
@@ -7368,7 +7379,7 @@ void MainWindow::on_diario_tab_cambiado(int index)
       ui->actionIntercambiar_cuenta_en_diario->setVisible(true);
       ui->actionCambiar_cuenta_a_apunte->setVisible(true);
       ui->actionEdita_fecha_a_asiento->setVisible(true);
-      ui->actionEdita_concepto_y_documento_en_pase->setVisible(false);
+      ui->actionEdita_concepto_y_documento_en_pase->setVisible(true);
       ui->actionNuevo_Asiento->setEnabled(true);
       ui->actionAsientos_Predefinidos->setEnabled(true);
       ui->actionEjecutar_regul->setEnabled(true);
@@ -7377,9 +7388,53 @@ void MainWindow::on_diario_tab_cambiado(int index)
       ui->actionAIB_Inversi_n_sujeto_pasivo->setEnabled(true);
       ui->actionEIB_Prestaci_n_servicos_UE->setEnabled(true);
       ui->actionAsiento_de_amortizaciones->setEnabled(true);
+      ui->actionAsientos_en_Espera->setEnabled(true);
   }
 
 }
 
 
+
+
+void MainWindow::on_actionChequea_Herramientas_triggered()
+{
+    Check_herramientas *c = new Check_herramientas();
+    c->exec();
+    delete(c);
+}
+
+
+void MainWindow::on_actionVerificar_cuadre_analitica_tabla_triggered()
+{
+    pideejercicio *p = new(pideejercicio);
+    p->activa_cancelar();
+    int result=p->exec();
+    QString ejercicio=p->contenido();
+    QSqlQuery q = basedatos::instancia()->consulta_conciliacion_ci_tabla(ejercicio);
+    QString respuesta_txt;
+    respuesta_txt=tr("DESCUADRES EJERCICIO: ");
+    respuesta_txt.append(ejercicio);
+    respuesta_txt.append("\n\n");
+    if (result!=QDialog::Accepted) return;
+    bool hay_descuadres=false;
+    if (q.isActive())
+        while (q.next()) {
+           double descuadre=q.value(1).toDouble()-q.value(2).toDouble();
+           if (descuadre>0.0049 || descuadre < -0.0049) {
+              hay_descuadres=true;
+              QString cadnum;
+              cadnum.setNum(q.value(0).toInt());
+              respuesta_txt.append(cadnum + ":  Valor en diario:");
+              cadnum.setNum(q.value(1).toDouble(),'f',2);
+              respuesta_txt.append(cadnum + ": Valor en analítica:");
+              cadnum.setNum(q.value(2).toDouble(),'f',4);
+              respuesta_txt.append(cadnum);
+              respuesta_txt.append("\n");
+           }
+        }
+    if (hay_descuadres)
+        QMessageBox::warning(this,tr("Descuadres Anlítica"),respuesta_txt);
+    else
+        QMessageBox::information(this,tr("Comprobación analítica"),tr("No hay descuadres"));
+}
 

@@ -50,6 +50,7 @@ class retencion : public QDialog {
                                 QString clave, QString base_percepciones,
                                 QString tipo_ret);
                 void modoconsulta();
+                void desactiva_base_tipo();
       private:
                 Ui::retencion ui;
                 bool comadecimal;

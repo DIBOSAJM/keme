@@ -2049,7 +2049,9 @@ void libro_emitidas::on_documentos_pushButton_clicked()
                     || numprog==1 || guardaprov!=query.value(2).toString()) numorden++;
                 guardadoc=query.value(0).toString();
                 guardaprov=query.value(2).toString();
-                regs_orden << cadnum.setNum(numorden)+"\t";
+                cadnum.setNum(numorden);
+                QString ceros; ceros.fill('0',4-cadnum.trimmed().length());
+                regs_orden << ceros+cadnum.setNum(numorden);
                 fich_docs << query.value(25).toString();
                 nums_apunte << query.value(15).toString();
                 cods_fra << query.value(0).toString();
@@ -2071,7 +2073,7 @@ void libro_emitidas::on_documentos_pushButton_clicked()
     }
 
 
-    QFileDialog dialogofich(this);
+    /*QFileDialog dialogofich(this);
     dialogofich.setFileMode(QFileDialog::Directory);
     dialogofich.setViewMode(QFileDialog::List);
     dialogofich.setLabelText ( QFileDialog::LookIn, tr("Directorio:") );
@@ -2085,7 +2087,20 @@ void libro_emitidas::on_documentos_pushButton_clicked()
     QDir directorio;
     if (dialogofich.exec())
        {directorio=dialogofich.directory();}
-      else return;
+      else return;*/
+
+    QString selectedDirectory = QFileDialog::getExistingDirectory(
+        this,
+        "Seleccionar un directorio",
+        dirtrabajo(), // Directorio inicial
+        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks
+        );
+
+
+    if (selectedDirectory.isEmpty()) {
+        QMessageBox::warning(this, tr("LIBRO DE FACTURAS"),tr("No se ha seleccionado ningún directorio"));
+    }
+
 
     for (int i=0;i<fich_docs.count();i++) {
         QString fichdoc=fich_docs.at(i);
@@ -2104,7 +2119,9 @@ void libro_emitidas::on_documentos_pushButton_clicked()
             qlonglong num=cadnum.toLongLong();
             QByteArray outByteArray;
             outByteArray=basedatos::instancia()->documento_bd(num);
-            QString url=directorio.absolutePath().append(QDir::separator()).append(dest_fich);
+            //QString url=directorio.absolutePath().append(QDir::separator()).append(dest_fich);
+            QString directorio_sel=selectedDirectory;
+            QString url=directorio_sel.append(QDir::separator()).append(dest_fich);
             QFile file(url);
             file.open(QIODevice::WriteOnly);
 
@@ -2117,7 +2134,9 @@ void libro_emitidas::on_documentos_pushButton_clicked()
         QString fichdoc_ruta=expanderutadocfich(fichdoc);
         // copiamos el fichero a la ruta elegida
         QFile fichero(fichdoc_ruta);
-        fichero.copy(directorio.absolutePath().append(QDir::separator()).append(dest_fich));
+        //fichero.copy(directorio.absolutePath().append(QDir::separator()).append(dest_fich));
+        QString directorio_sel=selectedDirectory;
+        fichero.copy(directorio_sel.append(QDir::separator()).append(dest_fich));
     }
 
 }

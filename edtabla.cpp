@@ -22,6 +22,7 @@
 #include "funciones.h"
 #include "edtabla.h"
 #include "basedatos.h"
+#include "actividad_edicion.h"
 #include <QSqlDatabase>
 #include <QSqlRecord>
 #include <QMessageBox>
@@ -84,7 +85,7 @@ void edtabla::compruebacodigo()
     }
 
 
- if (!basedatos::instancia()->existecodigotabla(nombretabla,ui.CodigoLineEdit->text(),&caddescrip))
+    if (!basedatos::instancia()->existecodigotabla(nombretabla,ui.CodigoLineEdit->text(),&caddescrip,actividades))
     {
        ui.BotonCancelar->setEnabled(true);
        ui.DescripcionLineEdit->setEnabled(true);
@@ -92,15 +93,15 @@ void edtabla::compruebacodigo()
        ui.CodigoLineEdit->setReadOnly(true);
      }
      else // codigo correcto
-            {
-              ui.DescripcionLineEdit->setText(caddescrip);
+         {
+          ui.DescripcionLineEdit->setText(caddescrip);
           ui.BotonCancelar->setEnabled(true);
           ui.BotonEliminar->setEnabled(true);
-              ui.DescripcionLineEdit->setEnabled(true);
+          ui.DescripcionLineEdit->setEnabled(true);
 	      ui.DescripcionLineEdit->setFocus();
           ui.CodigoLineEdit->setReadOnly(true);
     // Guardarboton->setEnabled(true);
-            }
+         }
 }
 
 
@@ -124,12 +125,36 @@ void edtabla::descripcioncambiada()
 void edtabla::botonguardarpulsado()
 {
     QString caddescrip;
-  
+
+    if (actividades) {
+        Actividad_edicion *a = new Actividad_edicion();
+        QString descripcion, codigo, tipo, epigrafe, cnae;
+        bool existe_ref=basedatos::instancia()->existecodigotabla_actividades(ui.CodigoLineEdit->text(), &descripcion, &codigo, &tipo, &epigrafe, &cnae);
+        if (existe_ref) {
+            a->pasa_params(codigo, tipo, epigrafe, cnae);
+        }
+        a->pasa_ref_descrip(ui.CodigoLineEdit->text(),ui.DescripcionLineEdit->text());
+        int resultado=a->exec();
+        if (resultado==QDialog::Accepted) {
+            a->devuelve_params(&codigo, &tipo, &epigrafe, &cnae);
+            if  (existe_ref)
+                basedatos::instancia()->update_atividades(ui.CodigoLineEdit->text(), ui.DescripcionLineEdit->text(),
+                                                          codigo, tipo, epigrafe, cnae);
+            else
+                basedatos::instancia()->inserttabla_actividades(ui.CodigoLineEdit->text(), ui.DescripcionLineEdit->text(),
+                                                                codigo, tipo, epigrafe, cnae);
+        }
+        delete(a);
+        if (resultado!=QDialog::Accepted) return;
+    }
+    else {
       if  (basedatos::instancia()->existecodigotabla(nombretabla,ui.CodigoLineEdit->text(),&caddescrip))
           basedatos::instancia()->updatetabladescripcionclave (nombretabla, ui.CodigoLineEdit->text(),
                                                                ui.DescripcionLineEdit->text());
       else 
         basedatos::instancia()->inserttabla(nombretabla,ui.CodigoLineEdit->text(),ui.DescripcionLineEdit->text());
+    }
+
      ui.CodigoLineEdit->clear();
      ui.CodigoLineEdit->setReadOnly(false);
      ui.CodigoLineEdit->setFocus();
@@ -139,8 +164,13 @@ void edtabla::botonguardarpulsado()
      ui.BotonEliminar->setDisabled(true);
      modeloedtabla->setTable(nombretabla);
      modeloedtabla->setSort(0,Qt::AscendingOrder);
-     modeloedtabla->setHeaderData(0, Qt::Horizontal, tr("CÓDIGO"));
+     modeloedtabla->setHeaderData(0, Qt::Horizontal, tr("REF"));
      modeloedtabla->setHeaderData(1, Qt::Horizontal, tr("DESCRIPCIÓN"));
+     modeloedtabla->setHeaderData(2, Qt::Horizontal, tr("CÓDIGO"));
+     modeloedtabla->setHeaderData(3, Qt::Horizontal, tr("TIPO"));
+     modeloedtabla->setHeaderData(4, Qt::Horizontal, tr("EPIGRAFE"));
+     modeloedtabla->setHeaderData(5, Qt::Horizontal, tr("CNAE"));
+
      modeloedtabla->select();
 }
 
@@ -159,7 +189,7 @@ void edtabla::botoncancelarpulsado()
 
 void edtabla::botoneliminarpulsado()
 {
-     basedatos::instancia()->deleteclavetabla (nombretabla, ui.CodigoLineEdit->text());
+     basedatos::instancia()->deleteclavetabla (nombretabla, ui.CodigoLineEdit->text(), actividades);
      modeloedtabla->select();
      ui.CodigoLineEdit->clear();
      ui.CodigoLineEdit->setReadOnly(false);
@@ -177,12 +207,29 @@ void edtabla::pasacodigo( QString qconcepto )
  ui.CodigoLineEdit->setText(qconcepto);
 }
 
+void edtabla::prepara_actividades()
+{
+    actividades=true;
+    ui.label->setText("Ref:");
+    ui.BotonGuardar->setText(tr("Guardar/Editar"));
+    modeloedtabla->setHeaderData(0, Qt::Horizontal, tr("REF"));
+    modeloedtabla->setHeaderData(1, Qt::Horizontal, tr("DESCRIPCIÓN"));
+    modeloedtabla->setHeaderData(2, Qt::Horizontal, tr("CÓDIGO"));
+    modeloedtabla->setHeaderData(3, Qt::Horizontal, tr("TIPO"));
+    modeloedtabla->setHeaderData(4, Qt::Horizontal, tr("EPIGRAFE"));
+    modeloedtabla->setHeaderData(5, Qt::Horizontal, tr("CNAE"));
+
+
+}
+
 void edtabla::tablapulsada()
 {
      QModelIndex indiceactual=ui.tabla->currentIndex();
      if (indiceactual.isValid())
        {
-        ui.CodigoLineEdit->setText(modeloedtabla->record(indiceactual.row()).value("codigo").toString());
+         if (actividades)
+           ui.CodigoLineEdit->setText(modeloedtabla->record(indiceactual.row()).value("ref").toString());
+          else ui.CodigoLineEdit->setText(modeloedtabla->record(indiceactual.row()).value("codigo").toString());
         ui.DescripcionLineEdit->setText(modeloedtabla->record(indiceactual.row()).value("descripcion").toString());
         ui.BotonCancelar->setEnabled(true);
         ui.BotonEliminar->setEnabled(true);
