@@ -2040,6 +2040,8 @@ class basedatos {
         // Indica si un ci existe en ci_amort
         bool existecienplanamort(QString codigo, int nivel);
 
+        QStringList cuentas_con_movimientos(QDate fecha_ini, QDate fecha_fin);
+
         // Devuelve la subcuenta anterior a una dada
         QString subcuentaanterior(QString qcodigo);
 
@@ -2402,6 +2404,8 @@ class basedatos {
         void actualizade3226();
 
         void actualizade4000();
+
+        void actualizade4002();
 
         void introclave_op_retenciones();
 
@@ -2936,51 +2940,51 @@ class basedatos {
         void fintransac_fich_import();
 
         void carga_tipo_doc(QString codigo,
-                                       QString *descrip,
-                                       QString *serie,
-                                       QString *pie1,
-                                       QString *pie2,
-                                       QString *moneda,
-                                       QString *codigo_moneda,
-                                       bool *contabilizable,
-                                       bool *rectificativo,
-                                       int *tipo_operacion,
-                                       QString *documento,
-                                       QString *cantidad,
-                                       QString *referencia,
-                                       QString *descripref,
-                                       QString *precio,
-                                       QString *totallin,
-                                       QString *bi,
-                                       QString *tipoiva,
-                                       QString *tipore,
-                                       QString *cuota,
-                                       QString *cuotare,
-                                       QString *totalfac,
-                                       QString *notas,
-                                       QString *venci,
-                                       QString *notastex,
-                                       QString *cif_empresa,
-                                       QString *cif_cliente,
-                                       QString *numero,
-                                       QString *fecha,
-                                       QString *cliente,
-                                       QString *descuento,
-                                       QString *totallineas, QString *suplidos,
-                                       QString *lineas_doc,
-                                       QString *nombre_emisor,
-                                       QString *domicilio_emisor,
-                                       QString *cp_emisor,
-                                       QString *poblacion_emisor,
-                                       QString *provincia_emisor,
-                                       QString *pais_emisor,
-                                       QString *cif_emisor,
-                                       QString *id_registral, QString *fichreport, QString *concepto_sii,
-                                       QString *fe_idioma, QString *fe_libro, QString *fe_registro,
-                                       QString *fe_hoja, QString *fe_folio, QString *fe_seccion, QString *fe_volumen,
-                                       QString *fe_datos_adic, QString *retencion, QString *clave_donacion, QString *comunidad_autonoma,
-                                       bool *donacion_especie, bool *donacion_2ejer, double *porcent_deduc_autonomia,
-                                       QString *imagen);
+                            QString *descrip,
+                            QString *serie,
+                            QString *pie1,
+                            QString *pie2,
+                            QString *moneda,
+                            QString *codigo_moneda,
+                            bool *contabilizable,
+                            bool *rectificativo, bool *verifactu,
+                            int *tipo_operacion,
+                            QString *documento,
+                            QString *cantidad,
+                            QString *referencia,
+                            QString *descripref,
+                            QString *precio,
+                            QString *totallin,
+                            QString *bi,
+                            QString *tipoiva,
+                            QString *tipore,
+                            QString *cuota,
+                            QString *cuotare,
+                            QString *totalfac,
+                            QString *notas,
+                            QString *venci,
+                            QString *notastex,
+                            QString *cif_empresa,
+                            QString *cif_cliente,
+                            QString *numero,
+                            QString *fecha,
+                            QString *cliente,
+                            QString *descuento,
+                            QString *totallineas, QString *suplidos,
+                            QString *lineas_doc,
+                            QString *nombre_emisor,
+                            QString *domicilio_emisor,
+                            QString *cp_emisor,
+                            QString *poblacion_emisor,
+                            QString *provincia_emisor,
+                            QString *pais_emisor,
+                            QString *cif_emisor,
+                            QString *id_registral, QString *fichreport, QString *concepto_sii,
+                            QString *fe_idioma, QString *fe_libro, QString *fe_registro,
+                            QString *fe_hoja, QString *fe_folio, QString *fe_seccion, QString *fe_volumen,
+                            QString *fe_datos_adic, QString *retencion, QString *clave_donacion, QString *comunidad_autonoma,
+                            bool *donacion_especie, bool *donacion_2ejer, double *porcent_deduc_autonomia,
+                            QString *imagen);
 
         bool es_euro_tipo_doc(QString codigo);
 
@@ -3029,51 +3033,51 @@ class basedatos {
         int lineas_doc(QString codigo);
 
         void guarda_tipo_doc(QString codigo,
-                                       QString descrip,
-                                       QString serie,
-                                       QString pie1,
-                                       QString pie2,
-                                       QString moneda,
-                                       QString codigo_moneda,
-                                       bool contabilizable,
-                                       bool rectificativo,
-                                       QString tipo_operacion,
-                                       QString documento,
-                                       QString cantidad,
-                                       QString referencia,
-                                       QString descripref,
-                                       QString precio,
-                                       QString totallin,
-                                       QString bi,
-                                       QString tipoiva,
-                                       QString tipore,
-                                       QString cuota,
-                                       QString cuotare,
-                                       QString totalfac, QString suplidos,
-                                       QString notas,
-                                       QString venci,
-                                       QString notastex,
-                                       QString cif_empresa,
-                                       QString cif_cliente,
-                                       QString numero,
-                                       QString fecha,
-                                       QString cliente,
-                                       QString descuento,
-                                       QString totallineas,
-                                       QString lineas_doc,  // tipo int
-                                       QString nombre_emisor,
-                                       QString domicilio_emisor,
-                                       QString cp_emisor,
-                                       QString poblacion_emisor,
-                                       QString provincia_emisor,
-                                       QString pais_emisor,
-                                       QString cif_emisor,
-                                       QString id_registral,
-                                       QString fichjasper, QString concepto_sii, QString fe_idioma,
-                                       QString fe_libro, QString fe_registro, QString fe_hoja, QString fe_folio,
-                                       QString fe_seccion, QString fe_volumen, QString fe_datos_adic,
-                                       QString retencion, QString clave_donacion="", QString comunidad_autonoma="",
-                                       bool donacion_especie=false, bool donacion_2ejer=false, QString porcent_deduc_autonomia="0");
+                             QString descrip,
+                             QString serie,
+                             QString pie1,
+                             QString pie2,
+                             QString moneda,
+                             QString codigo_moneda,
+                             bool contabilizable,
+                             bool rectificativo, bool verifactu,
+                             QString tipo_operacion,
+                             QString documento,
+                             QString cantidad,
+                             QString referencia,
+                             QString descripref,
+                             QString precio,
+                             QString totallin,
+                             QString bi,
+                             QString tipoiva,
+                             QString tipore,
+                             QString cuota,
+                             QString cuotare,
+                             QString totalfac, QString suplidos,
+                             QString notas,
+                             QString venci,
+                             QString notastex,
+                             QString cif_empresa,
+                             QString cif_cliente,
+                             QString numero,
+                             QString fecha,
+                             QString cliente,
+                             QString descuento,
+                             QString totallineas,
+                             QString lineas_doc,  // tipo int
+                             QString nombre_emisor,
+                             QString domicilio_emisor,
+                             QString cp_emisor,
+                             QString poblacion_emisor,
+                             QString provincia_emisor,
+                             QString pais_emisor,
+                             QString cif_emisor,
+                             QString id_registral,
+                             QString fichjasper, QString concepto_sii, QString fe_idioma,
+                             QString fe_libro, QString fe_registro, QString fe_hoja, QString fe_folio,
+                             QString fe_seccion, QString fe_volumen, QString fe_datos_adic,
+                             QString retencion, QString clave_donacion="", QString comunidad_autonoma="",
+                             bool donacion_especie=false, bool donacion_2ejer=false, QString porcent_deduc_autonomia="0");
 
         int tipo_operacion_tipo_doc(QString codigo);
 
@@ -3200,6 +3204,14 @@ class basedatos {
                           QString numero);
 
         qlonglong proxnum_serie(QString serie);
+
+        qlonglong proxnum_serie_no_incrementa(QString serie);
+
+        QString serie_ultima_huella(QString serie);
+
+        QSqlQuery fecha_serie_numero_de_huella(QString huella);
+
+        void incrementa_num_serie(QString serie);
 
         bool existecodigoref(QString cadena,QString *qdescrip);
 
@@ -3629,6 +3641,13 @@ class basedatos {
         QString cod_iva(double tipo);
 
         QSqlQuery consulta_conciliacion_ci_tabla(QString ejercicio);
+
+        QSqlQuery config_sif_verifactu();
+
+        void actualiza_config_sif_verifactu(QString sif_nif, QString sif_nombre_razon, QString sif_nombre_sif,
+                                            QString sif_id_sistema_informatico, QString sif_numero_instalacion,
+                                            bool sif_tipo_uso_verifactu, bool sif_posible_multi_ot,
+                                            bool sif_multi_ot, QString endpoint_verifactu);
 
     private:
 

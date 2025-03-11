@@ -68,7 +68,9 @@ class main_factur : public QMainWindow {
                   void cuenta_anticipo();
                   void gest_externos();
 
-          public:
+                  void on_actionConfiguraci_n_Veri_Factu_triggered();
+
+              public:
                   bool oknosalir();
 
                 };

@@ -44,6 +44,7 @@
 #include "lista_fact_predef.h"
 #include "lotes_fact.h"
 #include "pidecuenta.h"
+#include "config_verifactu.h"
 #include <QSplashScreen>
 #include <QMessageBox>
 
@@ -591,3 +592,11 @@ void main_factur::gest_externos()
     e->exec();
     delete(e);
 }
+
+void main_factur::on_actionConfiguraci_n_Veri_Factu_triggered()
+{
+    Config_Verifactu *c = new Config_Verifactu;
+    c->exec();
+    delete(c);
+}
+

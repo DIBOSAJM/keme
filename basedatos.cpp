@@ -23,7 +23,7 @@
 
 #include "funciones.h"
 
-#define VERSION "4.0.0.2"
+#define VERSION "4.0.1.0"
 
 #include <QMessageBox>
 #include <QApplication>
@@ -656,6 +656,18 @@ void basedatos::solotablas(bool segunda, QString qbase)
     cadena+="nombre      varchar(255) default '',";
     cadena+="apellidos   varchar(255) default '',";
     cadena+="url_actu   varchar(255) default '',";
+
+    cadena+="sif_nombre_razon varchar(255) default '', ";
+    cadena+="sif_nif varchar(20) default '', ";
+    cadena+="sif_nombre_sif varchar(255) default '', ";
+    cadena+="sif_id_sistema_informatico varchar(40) default '', ";
+    cadena+="sif_numero_instalacion varchar(40) default '', ";
+    cadena+="sif_tipo_uso_verifactu varchar(40) default 'S', ";
+    cadena+="sif_posible_multi_ot varchar(40) default 'S', ";
+    cadena+="sif_multi_ot varchar(40) default 'S', ";
+    cadena+="endpoint_verifactu varchar(255) default '', ";
+
+
     cadena+="moneda varchar(20) default '',";
     cadena+="fecha_monedas date,";
     if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
@@ -1762,6 +1774,7 @@ void basedatos::solotablas(bool segunda, QString qbase)
     cadena = "CREATE TABLE series_fact ("
              "codigo  varchar(80),"
              "descrip varchar(254),"
+             "ultima_huella varchar(254) default '',"
              "proxnum bigint default 0,"
              "PRIMARY KEY (codigo) )";
     if (segunda) cadena = anadirMotor(cadena,qbase); else cadena = anadirMotor(cadena);
@@ -1782,6 +1795,15 @@ void basedatos::solotablas(bool segunda, QString qbase)
              else {
                  cadena += "contabilizable bool default false,";
              }
+
+             if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE ) {
+                 cadena += "verifactu bool default 0,";
+             }
+             else {
+                 cadena += "verifactu bool default false,";
+             }
+
+
              if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE ) {
                  cadena += "rectificativo bool default 0,";
              }
@@ -1950,6 +1972,8 @@ void basedatos::solotablas(bool segunda, QString qbase)
             "c_a_rol1 varchar(254) default '',"
             "c_a_rol2 varchar(254) default '',"
             "c_a_rol3 varchar(254) default '',"
+            "huella_anterior varchar(254) default '',"
+            "huella varchar(254) default '',"
             "pase_diario_cta bigint";
     cadena+=")";
 
@@ -17961,6 +17985,20 @@ bool basedatos::existecienplanamort (QString codigo, int nivel) {
     return false;
 }
 
+QStringList basedatos::cuentas_con_movimientos(QDate fecha_ini, QDate fecha_fin)
+{
+  QString cadquery="select cuenta from diario where fecha>='";
+  cadquery+=fecha_ini.toString("yyyy-MM-dd");
+  cadquery+="' and fecha<='";
+  cadquery+=fecha_fin.toString("yyyy-MM-dd");
+  cadquery+="' order by cuenta";
+  QStringList lista_cuentas;
+  QSqlQuery query = ejecutar(cadquery);
+  if (query.isActive())
+      while (query.next()) lista_cuentas << query.value(0).toString();
+  return lista_cuentas;
+}
+
 // Devuelve la subcuenta anterior a una dada
 QString basedatos::subcuentaanterior (QString qcodigo) {
     QString cadquery = "SELECT codigo from saldossubcuenta where codigo < '"+
@@ -22326,6 +22364,72 @@ void basedatos::actualizade4000()
     ejecutar("update configuracion set version='4.0.0.2'");
 }
 
+void basedatos::actualizade4002()
+{
+    QString cadena="alter table configuracion add column ";
+    cadena+="sif_nombre_razon varchar(255) default ''";
+    ejecutar(cadena);
+
+    cadena="alter table configuracion add column ";
+    cadena+="sif_nif varchar(20) default ''";
+    ejecutar(cadena);
+
+    cadena="alter table configuracion add column ";
+    cadena+="sif_nombre_sif varchar(255) default ''";
+    ejecutar(cadena);
+
+    cadena="alter table configuracion add column ";
+    cadena+="sif_id_sistema_informatico varchar(40) default ''";
+    ejecutar(cadena);
+
+    cadena="alter table configuracion add column ";
+    cadena+="sif_numero_instalacion varchar(40) default ''";
+    ejecutar(cadena);
+
+    cadena="alter table configuracion add column ";
+    cadena+="sif_tipo_uso_verifactu varchar(40) default 'S'";
+    ejecutar(cadena);
+
+    cadena="alter table configuracion add column ";
+    cadena+="sif_posible_multi_ot varchar(40) default 'S'";
+    ejecutar(cadena);
+
+    cadena="alter table configuracion add column ";
+    cadena+="sif_multi_ot varchar(40) default 'S'";
+    ejecutar(cadena);
+
+    cadena="alter table configuracion add column ";
+    cadena+="endpoint_verifactu varchar(255) default ''";
+    ejecutar(cadena);
+
+
+    cadena="alter table facturas add column ";
+    cadena+="huella_anterior varchar(254) default ''";
+    ejecutar(cadena);
+
+    cadena="alter table facturas add column ";
+    cadena+="huella varchar(254) default ''";
+    ejecutar(cadena);
+
+
+    cadena="alter table tipos_doc add column ";
+    if ( cualControlador() == SQLITE ) {
+        cadena += "verifactu bool default 0";
+    }
+    else {
+        cadena += "verifactu bool default false";
+    }
+    ejecutar(cadena);
+
+    cadena="alter table series_fact add column ";
+    cadena+="ultima_huella varchar(254) default ''";
+    ejecutar(cadena);
+
+
+    ejecutar("update configuracion set version='4.0.1.0'");
+}
+
+
 
 void basedatos::actualizade2977()
 {
@@ -24251,7 +24355,7 @@ bool basedatos::comprobarVersion () {
                 && laversion !="3.2.2.1" && laversion !="3.2.2.2"
                 && laversion !="3.2.2.3" && laversion !="3.2.2.4"
                 && laversion !="3.2.2.5" && laversion !="3.2.2.6"
-                && laversion !="4.0.0.0") {
+                && laversion !="4.0.0.0" && laversion !="4.0.0.2") {
             if (!(splash==NULL))
              {
               splash->finish( 0 );
@@ -24363,7 +24467,8 @@ bool basedatos::comprobarVersion () {
                 if (versionbd()=="3.2.2.4") actualizade3224();
                 if (versionbd()=="3.2.2.5") actualizade3225();
                 if (versionbd()=="3.2.2.6") actualizade3226();
-                actualizade4000();
+                if (versionbd()=="4.0.0.0") actualizade4000();
+                actualizade4002();
 
               }
             else {
@@ -28281,6 +28386,7 @@ void basedatos::carga_tipo_doc(QString codigo,
                                QString *codigo_moneda,
                                bool *contabilizable,
                                bool *rectificativo,
+                               bool *verifactu,
                                int *tipo_operacion,
                                QString *documento,
                                QString *cantidad,
@@ -28328,7 +28434,7 @@ void basedatos::carga_tipo_doc(QString codigo,
 {
 
     QString cadquery = "SELECT descrip, serie, pie1, pie2, moneda,"
-                       "codigo_moneda, contabilizable, rectificativo, "
+                       "codigo_moneda, contabilizable, rectificativo, verifactu, "
                        "tipo_operacion,"
                        "documento, "
                        "cantidad, "
@@ -28365,56 +28471,57 @@ void basedatos::carga_tipo_doc(QString codigo,
      *codigo_moneda=query.value(5).toString();
      *contabilizable=query.value(6).toBool();
      *rectificativo=query.value(7).toBool();
-     *tipo_operacion=query.value(8).toInt();
-     *documento=query.value(9).toString();
-     *cantidad=query.value(10).toString();
-     *referencia=query.value(11).toString();
-     *descripref=query.value(12).toString();
-     *precio=query.value(13).toString();
-     *totallin=query.value(14).toString();
-     *bi=query.value(15).toString();
-     *tipoiva=query.value(16).toString();
-     *tipore=query.value(17).toString();
-     *cuota=query.value(18).toString();
-     *cuotare=query.value(19).toString();
-     *totalfac=query.value(20).toString();
-     *notas=query.value(21).toString();
-     *venci=query.value(22).toString();
-     *notastex=query.value(23).toString();
-     *cif_empresa=query.value(24).toString();
-     *cif_cliente=query.value(25).toString();
-     *numero=query.value(26).toString();
-     *fecha=query.value(27).toString();
-     *cliente=query.value(28).toString();
-     *descuento=query.value(29).toString();
-     *totallineas=query.value(30).toString();
-     *lineas_doc=query.value(31).toString();
-     *nombre_emisor=query.value(32).toString();
-     *domicilio_emisor=query.value(33).toString();
-     *cp_emisor=query.value(34).toString();
-     *poblacion_emisor=query.value(35).toString();
-     *provincia_emisor=query.value(36).toString();
-     *pais_emisor=query.value(37).toString();
-     *cif_emisor=query.value(38).toString();
-     *id_registral=query.value(39).toString();
-     *fichreport=query.value(40).toString();
-     *suplidos=query.value(41).toString();
-     *concepto_sii=query.value(42).toString();
-     *fe_idioma=query.value(43).toString();
-     *fe_libro=query.value(44).toString();
-     *fe_registro=query.value(45).toString();
-     *fe_hoja=query.value(46).toString();
-     *fe_folio=query.value(47).toString();
-     *fe_seccion=query.value(48).toString();
-     *fe_volumen=query.value(49).toString();
-     *fe_datos_adic=query.value(50).toString();
-     *retencion=query.value(51).toString();
-     *clave_donacion=query.value(52).toString();
-     *comunidad_autonoma=query.value(53).toString();
-     *donacion_especie=query.value(54).toBool();
-     *donacion_2ejer=query.value(55).toBool();
-     *porcent_deduc_autonomia=query.value(56).toDouble();
-     *imagen=query.value(57).toString();
+     *verifactu=query.value(8).toBool();
+     *tipo_operacion=query.value(9).toInt();
+     *documento=query.value(10).toString();
+     *cantidad=query.value(11).toString();
+     *referencia=query.value(12).toString();
+     *descripref=query.value(13).toString();
+     *precio=query.value(14).toString();
+     *totallin=query.value(15).toString();
+     *bi=query.value(16).toString();
+     *tipoiva=query.value(17).toString();
+     *tipore=query.value(18).toString();
+     *cuota=query.value(19).toString();
+     *cuotare=query.value(20).toString();
+     *totalfac=query.value(21).toString();
+     *notas=query.value(22).toString();
+     *venci=query.value(23).toString();
+     *notastex=query.value(24).toString();
+     *cif_empresa=query.value(25).toString();
+     *cif_cliente=query.value(26).toString();
+     *numero=query.value(27).toString();
+     *fecha=query.value(28).toString();
+     *cliente=query.value(29).toString();
+     *descuento=query.value(30).toString();
+     *totallineas=query.value(31).toString();
+     *lineas_doc=query.value(32).toString();
+     *nombre_emisor=query.value(33).toString();
+     *domicilio_emisor=query.value(34).toString();
+     *cp_emisor=query.value(35).toString();
+     *poblacion_emisor=query.value(36).toString();
+     *provincia_emisor=query.value(37).toString();
+     *pais_emisor=query.value(38).toString();
+     *cif_emisor=query.value(39).toString();
+     *id_registral=query.value(40).toString();
+     *fichreport=query.value(41).toString();
+     *suplidos=query.value(42).toString();
+     *concepto_sii=query.value(43).toString();
+     *fe_idioma=query.value(44).toString();
+     *fe_libro=query.value(45).toString();
+     *fe_registro=query.value(46).toString();
+     *fe_hoja=query.value(47).toString();
+     *fe_folio=query.value(48).toString();
+     *fe_seccion=query.value(49).toString();
+     *fe_volumen=query.value(50).toString();
+     *fe_datos_adic=query.value(51).toString();
+     *retencion=query.value(52).toString();
+     *clave_donacion=query.value(53).toString();
+     *comunidad_autonoma=query.value(54).toString();
+     *donacion_especie=query.value(55).toBool();
+     *donacion_2ejer=query.value(56).toBool();
+     *porcent_deduc_autonomia=query.value(57).toDouble();
+     *imagen=query.value(58).toString();
     }
 }
 
@@ -28610,6 +28717,7 @@ void basedatos::guarda_tipo_doc(QString codigo,
                                QString codigo_moneda,
                                bool contabilizable,
                                bool rectificativo,
+                               bool verifactu,
                                QString tipo_operacion,
                                QString documento,
                                QString cantidad,
@@ -28674,11 +28782,16 @@ void basedatos::guarda_tipo_doc(QString codigo,
       cadquery+=contabilizable ? "1":"0";
     else
         cadquery+=contabilizable ? "true":"false";
-    cadquery+=", rectificativo=";
-    if ( cualControlador() == SQLITE )
+   cadquery+=", rectificativo=";
+   if ( cualControlador() == SQLITE )
         cadquery+=rectificativo ? "1":"0";
       else
           cadquery+=rectificativo ? "true":"false";
+   cadquery+=", verifactu=";
+   if ( cualControlador() == SQLITE )
+        cadquery+=verifactu ? "1":"0";
+      else
+          cadquery+=verifactu ? "true":"false";
 
   cadquery+=", tipo_operacion=";
   cadquery+=tipo_operacion;
@@ -29317,6 +29430,67 @@ qlonglong basedatos::proxnum_serie(QString serie)
     ejecutar(cadena);
 
     return proxnum;
+}
+
+qlonglong basedatos::proxnum_serie_no_incrementa(QString serie)
+{
+    qlonglong proxnum=0;
+    QString cadena="select proxnum from series_fact where codigo='";
+    cadena+=serie;
+    cadena+="'";
+    QSqlQuery query = ejecutar(cadena);
+    if  (query.isActive() )
+        if (query.next())
+         {
+           proxnum = query.value(0).toLongLong();
+         }
+    return proxnum;
+}
+
+
+QString basedatos::serie_ultima_huella(QString serie)
+{
+    QString cadena="select ultima_huella from series_fact where codigo='";
+    cadena+=serie;
+    cadena+="'";
+    QSqlQuery query = ejecutar(cadena);
+    if  (query.isActive() )
+        if (query.next())
+         {
+           return query.value(0).toString();
+         }
+    return QString();
+}
+
+QSqlQuery basedatos::fecha_serie_numero_de_huella(QString huella)
+{
+    QString cadena="SELECT serie,numero,fecha_fac from facturas where huella='";
+    cadena+=huella;
+    cadena+="'";
+    return ejecutar(cadena);
+}
+
+
+
+void basedatos::incrementa_num_serie(QString serie)
+{
+    qlonglong proxnum=0;
+    QString cadena="select proxnum from series_fact where codigo='";
+    cadena+=serie;
+    cadena+="'";
+    QSqlQuery query = ejecutar(cadena);
+    if  (query.isActive() )
+        if (query.next())
+         {
+           proxnum = query.value(0).toLongLong();
+         }
+    QString cadnum; cadnum.setNum(proxnum+1);
+    cadena="update series_fact set proxnum=";
+    cadena+=cadnum;
+    cadena+=" where codigo='";
+    cadena+=serie;
+    cadena+="'";
+    ejecutar(cadena);
 }
 
 
@@ -32131,5 +32305,34 @@ QSqlQuery basedatos::consulta_conciliacion_ci_tabla(QString ejercicio)
  cad.append(ejercicio);
  cad.append("' group by diario.pase, sumdia order by diario.pase");
  return ejecutar(cad);
+}
+
+QSqlQuery basedatos::config_sif_verifactu()
+{
+    QString cad="select sif_nif, sif_nombre_razon, sif_nombre_sif, sif_id_sistema_informatico,sif_numero_instalacion, "
+                "sif_tipo_uso_verifactu, sif_posible_multi_ot, sif_multi_ot, endpoint_verifactu from configuracion";
+
+    return ejecutar(cad);
+}
+
+void basedatos::actualiza_config_sif_verifactu(QString sif_nif, QString sif_nombre_razon, QString sif_nombre_sif, QString sif_id_sistema_informatico,
+                                               QString sif_numero_instalacion, bool sif_tipo_uso_verifactu,
+                                               bool sif_posible_multi_ot, bool sif_multi_ot, QString endpoint_verifactu)
+{
+    QSqlQuery query;
+    query.prepare("update configuracion set sif_nif= :sif_nif, sif_nombre_razon=:sif_nombre_razon  ,sif_nombre_sif= :sif_nombre_sif, "
+                  "sif_id_sistema_informatico= :sif_id_sistema_informatico, sif_numero_instalacion= :sif_numero_instalacion, "
+                  "sif_tipo_uso_verifactu= :sif_tipo_uso_verifactu, sif_posible_multi_ot= :sif_posible_multi_ot, "
+                  "sif_multi_ot= :sif_multi_ot, endpoint_verifactu= :endpoint_verifactu");
+    query.bindValue(":sif_nif",sif_nif);
+    query.bindValue(":sif_nombre_sif",sif_nombre_sif);
+    query.bindValue(":sif_nombre_razon",sif_nombre_razon);
+    query.bindValue(":sif_id_sistema_informatico",sif_id_sistema_informatico);
+    query.bindValue(":sif_numero_instalacion",sif_numero_instalacion);
+    query.bindValue(":sif_tipo_uso_verifactu",sif_tipo_uso_verifactu);
+    query.bindValue(":sif_posible_multi_ot",sif_posible_multi_ot);
+    query.bindValue(":sif_multi_ot",sif_multi_ot);
+    query.bindValue(":endpoint_verifactu",endpoint_verifactu);
+    query=ejecuta(std::move(query));
 }
 

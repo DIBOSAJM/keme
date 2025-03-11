@@ -546,7 +546,11 @@ void consmayor::pasadatos(QString qsubcuenta, QDate qfecha , QString externo)
 
 void consmayor::subcuentaprevia()
 {
-    QString cadena=subcuentaanterior(ui.subcuentalineEdit->text());
+    QString cadena;
+    if (ui.conmovs_checkBox->isChecked()) {
+        cadena=previa_cuenta_mov(ui.subcuentalineEdit->text());
+    }
+    else cadena=subcuentaanterior(ui.subcuentalineEdit->text());
     if (cadena=="") return;
     ui.subcuentalineEdit->setText(cadena);
     refrescar();
@@ -555,7 +559,11 @@ void consmayor::subcuentaprevia()
 
 void consmayor::subcuentasiguiente()
 {
-    QString cadena=subcuentaposterior(ui.subcuentalineEdit->text());
+    QString cadena;
+    if (ui.conmovs_checkBox->isChecked()) {
+        cadena=siguiente_cuenta_mov(ui.subcuentalineEdit->text());
+    }
+    else cadena=subcuentaposterior(ui.subcuentalineEdit->text());
     if (cadena=="") return;
     ui.subcuentalineEdit->setText(cadena);
     refrescar();
@@ -1375,6 +1383,24 @@ void consmayor::informe_intervalo()
 
 }
 
+QString consmayor::siguiente_cuenta_mov(QString codigo)
+{
+    for (int v=0; v<cuentas_mov.count();v++) {
+        if (cuentas_mov.at(v)>codigo) return cuentas_mov.at(v);
+    }
+
+    return QString();
+}
+
+QString consmayor::previa_cuenta_mov(QString codigo)
+{
+    for (int v=cuentas_mov.count()-1; v>=0;v--) {
+        if (cuentas_mov.at(v)<codigo) return cuentas_mov.at(v);
+    }
+
+    return QString();
+}
+
 void consmayor::informe()
 {
     if (ui.intervalogroupBox->isChecked()) {
@@ -2107,5 +2133,29 @@ void consmayor::on_mayortable_currentCellChanged(int currentRow, int currentColu
         ui.fecha_pushButton->setEnabled(false);
         ui.concepto_pushButton->setEnabled(false);
     }
+}
+
+
+void consmayor::on_conmovs_checkBox_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1);
+    if (ui.conmovs_checkBox->isChecked()) {
+        cuentas_mov.clear();
+        cuentas_mov=basedatos::instancia()->cuentas_con_movimientos(ui.inicialdateEdit->date(), ui.finaldateEdit->date());
+    }
+}
+
+
+void consmayor::on_inicialdateEdit_userDateChanged(const QDate &date)
+{
+    Q_UNUSED(date);
+    ui.conmovs_checkBox->setChecked(false);
+}
+
+
+void consmayor::on_finaldateEdit_userDateChanged(const QDate &date)
+{
+    Q_UNUSED(date);
+    ui.conmovs_checkBox->setChecked(false);
 }
 

@@ -1447,7 +1447,7 @@ void diario::renumera_borr()
 {
     QString cad_sql="select asiento, pase, ejercicio, fecha from diario ";
     cad_sql.append("where not contabilizado ");
-    cad_sql.append("order by ejercicio,fecha");
+    cad_sql.append("order by ejercicio,fecha,asiento");
     QSqlQuery q = basedatos::instancia()->ejecutar_publica(cad_sql);
     if (q.isActive()) {
         QString ejercicio;

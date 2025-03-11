@@ -556,6 +556,8 @@ QString dirtrabajodocs(QString qdoc);
 
 QString dirtrabajo_sii();
 
+QString dirtrabajo_verifactu();
+
 QString dirtrabajo_sii_env();
 
 QString dirtrabajo_certificados();

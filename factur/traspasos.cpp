@@ -68,9 +68,9 @@ void traspasos::procesar()
          f->solo_cabecera_doc(q.value(0).toString(),
                     "",
                     q.value(2).toString(),
-                    q.value(4).toDate(),
-                              q.value(25).toDate(),
-                    q.value(5).toDate(),
+                    QDate().currentDate(), // q.value(4).toDate(),
+                    QDate().currentDate(), // q.value(25).toDate(),
+                    QDate().currentDate(), // q.value(5).toDate(),
                     false,
                     q.value(8).toBool(),
                     q.value(9).toBool(),
@@ -93,7 +93,12 @@ void traspasos::procesar()
       }
 
     f->addnotas(ui.docsplainTextEdit->toPlainText());
-    f->exec();
+      if (!(f->exec()==QDialog::Accepted)) {
+          // miramos de abrir de nuevo los documentos
+          for (int i = 0; i < lserie.size(); ++i) {
+              basedatos::instancia()->abre_doc(lserie.at(i),lnumero.at(i));
+          }
+      }
     delete(f);
 
     accept();

@@ -883,7 +883,8 @@ QString MainWindow::condicionesfiltrodefecto(void)
        if (!ejercicio.isEmpty())
           {
            //qlonglong vnum = basedatos::instancia()->proximoasiento(ejercicio);
-           qlonglong vnum = basedatos::instancia()->ultimo_asiento_contabilizado (ejercicio);
+           //qlonglong vnum = basedatos::instancia()->ultimo_asiento_contabilizado (ejercicio);
+           qlonglong vnum = basedatos::instancia()->selectMaxAsientoContabEjercicio(ejercicio);
            QString cadnum; cadnum.setNum(vnum-1);
            cadfiltro="asiento>";
            cadfiltro+=cadnum;

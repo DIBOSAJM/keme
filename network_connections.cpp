@@ -157,6 +157,9 @@ QString vies_vatNumber::response_address() {
 // ---------------------------------------------------------------------------
 
 aeat_soap::aeat_soap() {
+    if (mNetMan!=NULL) delete(mNetMan);
+    QNetworkAccessManager *manager=new QNetworkAccessManager();
+    mNetMan=manager;
 
 }
 
@@ -171,8 +174,12 @@ void aeat_soap::process(QString file, QString url, QString certificate_file, QSt
 
     valid=false;
 
-    QNetworkRequest request;
+    QNetworkRequest request;;
     request.setUrl(url);
+
+    //QSslConfiguration defaultConfig = QSslConfiguration::defaultConfiguration();
+    //request->setSslConfiguration(defaultConfig);
+
     request.setHeader(QNetworkRequest::ContentTypeHeader,"text/xml;charset=UTF-8");
     QSslConfiguration configuration;
 
@@ -189,7 +196,7 @@ void aeat_soap::process(QString file, QString url, QString certificate_file, QSt
     configuration.setCaCertificates(imported_certs);
     configuration.setPrivateKey(key);
     // configuration.setProtocol(QSsl::TlsV1_0);
-    configuration.setProtocol(QSsl::TlsV1_0OrLater);
+    configuration.setProtocol(QSsl::TlsV1_2OrLater);
     // configuration.setProtocol(QSsl::TlsV1_1);
     // configuration.setPeerVerifyMode(QSslSocket::QueryPeer);
     configuration.setPeerVerifyMode(QSslSocket::VerifyNone);
@@ -202,6 +209,7 @@ void aeat_soap::process(QString file, QString url, QString certificate_file, QSt
     // qDebug() << contents;
     mNetReply = mNetMan->post(request,contents.toUtf8());
     // QMessageBox::information( 0, tr("INFO"),"prueba");
+
     connect(mNetReply, &QIODevice::readyRead, this, &aeat_soap::OnDataReadyToRead);
     connect(mNetReply, &QNetworkReply::finished, this, &aeat_soap::OnProcessFinished);
 

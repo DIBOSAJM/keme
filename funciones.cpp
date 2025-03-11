@@ -1274,6 +1274,15 @@ QString dirtrabajo_sii()
     return dir;
 }
 
+QString dirtrabajo_verifactu()
+{
+    QString dir=dirtrabajo();
+    dir.append(QDir::separator());
+    dir.append(QObject::tr("VERIFACTU"));
+    QDir d(dir);
+    if (!d.exists()) d.mkdir(dir);
+    return dir;
+}
 
 QString dirtrabajo_sii_env()
 {

@@ -92,6 +92,7 @@ class factura : public QDialog {
                 bool modo_consulta;
                 int tipo_operacion;
                 bool contabilizable;
+                bool verifactu=false;
                 bool coma,decimales;
                 bool predefinida;
                 double gsuplidos=0;
@@ -114,6 +115,8 @@ class factura : public QDialog {
                 void guarda_predef();
                 void esconde_cta_anticipo();
                 void muestra_cta_anticipo();
+                bool envia_verifactu(QString serie, QString numero);
+                bool gen_fich_verifactu(QString fichero,QString serie, QString numero);
 
 
       private slots:

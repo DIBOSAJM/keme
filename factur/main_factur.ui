@@ -40,6 +40,7 @@
     <addaction name="actionFacturacion_predefinida"/>
     <addaction name="actionLotes_facturas"/>
     <addaction name="actionCuenta_anticipos"/>
+    <addaction name="actionConfiguraci_n_Veri_Factu"/>
    </widget>
    <widget class="QMenu" name="menuFacturaci_n">
     <property name="title">
@@ -184,6 +185,11 @@
    </property>
    <property name="text">
     <string>Externos</string>
+   </property>
+  </action>
+  <action name="actionConfiguraci_n_Veri_Factu">
+   <property name="text">
+    <string>Configuración Veri*Factu</string>
    </property>
   </action>
  </widget>

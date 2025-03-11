@@ -973,7 +973,7 @@ bool tablaSII::fich_sii_recibidas(QString nombrefich)
               {
                QString nif_iva=ui->tableWidget->item(fila,6)->text();
                ue=false;
-               QString paises="AT BE BG CY CZ DE DK EE EL ES FI FR GB HR HU IE IT LT LU LV MT NL PL PT RO SE SI SK GR";
+               QString paises="AT BE BG CY CZ DE DK EE EL ES FI FR HR HU IE IT LT LU LV MT NL PL PT RO SE SI SK GR";
 
                if ((nif_iva.length()>2) && (paises.contains(nif_iva.left(2))) && paises.contains(pais))
                   { pais=nif_iva.left(2); ue=true;
@@ -1467,7 +1467,7 @@ bool tablaSII::fich_sii_emitidas(QString nombrefich)
                QString pais;
                QString nif_iva=ui->tableWidget->item(fila,6)->text();
                bool ue=false;
-               QString paises="AT BE BG CY CZ DE DK EE EL ES FI FR GB HR HU IE IT LT LU LV MT NL PL PT RO SE SI SK GR";
+               QString paises="AT BE BG CY CZ DE DK EE EL ES FI FR HR HU IE IT LT LU LV MT NL PL PT RO SE SI SK GR";
                if ((nif_iva.length()>2) && (paises.contains(nif_iva.left(2))) &&paises.contains(qpais) )
                    { pais=nif_iva.left(2);
                     if (pais=="EL") pais="GR"; ue=true; }

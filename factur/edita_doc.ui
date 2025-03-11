@@ -212,6 +212,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QCheckBox" name="verifactu_checkBox">
+           <property name="text">
+            <string>Veri*Factu</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="horizontalSpacer_3">
            <property name="orientation">
             <enum>Qt::Orientation::Horizontal</enum>
@@ -1398,10 +1405,16 @@
   <tabstop>lineasspinBox</tabstop>
   <tabstop>contabilizablecheckBox</tabstop>
   <tabstop>rectificativocheckBox</tabstop>
+  <tabstop>verifactu_checkBox</tabstop>
   <tabstop>operacioncomboBox</tabstop>
   <tabstop>pie1lineEdit</tabstop>
   <tabstop>pie2lineEdit</tabstop>
   <tabstop>conceptoSII_lineEdit</tabstop>
+  <tabstop>clave_donacion_comboBox</tabstop>
+  <tabstop>donacion_especie_checkBox</tabstop>
+  <tabstop>ca_comboBox</tabstop>
+  <tabstop>recurrente_checkBox</tabstop>
+  <tabstop>porcentaje_deduccion_ca_lineEdit</tabstop>
   <tabstop>documentolineEdit</tabstop>
   <tabstop>totallineEdit</tabstop>
   <tabstop>cuotarelineEdit</tabstop>
@@ -1428,12 +1441,6 @@
   <tabstop>notastextEdit</tabstop>
   <tabstop>fotopushButton</tabstop>
   <tabstop>borrafotopushButton</tabstop>
-  <tabstop>nombre_emisorlineEdit</tabstop>
-  <tabstop>domicilio_emisorlineEdit</tabstop>
-  <tabstop>cp_emisorlineEdit</tabstop>
-  <tabstop>poblacion_emisorlineEdit</tabstop>
-  <tabstop>provincia_emisorlineEdit</tabstop>
-  <tabstop>pais_emisorlineEdit</tabstop>
   <tabstop>cif_emisorlineEdit</tabstop>
   <tabstop>idioma_fe_lineEdit</tabstop>
   <tabstop>id_registrallineEdit</tabstop>
@@ -1447,6 +1454,12 @@
   <tabstop>cancelarpushButton</tabstop>
   <tabstop>aceptarpushButton</tabstop>
   <tabstop>tabWidget</tabstop>
+  <tabstop>pais_emisorlineEdit</tabstop>
+  <tabstop>nombre_emisorlineEdit</tabstop>
+  <tabstop>domicilio_emisorlineEdit</tabstop>
+  <tabstop>cp_emisorlineEdit</tabstop>
+  <tabstop>poblacion_emisorlineEdit</tabstop>
+  <tabstop>provincia_emisorlineEdit</tabstop>
  </tabstops>
  <resources>
   <include location="../keme.qrc"/>

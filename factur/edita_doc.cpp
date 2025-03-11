@@ -56,7 +56,7 @@ edita_doc::edita_doc() : QDialog() {
 void edita_doc::pasacodigo(QString codigo)
 {
     QString descrip, serie, pie1, pie2, moneda, codigo_moneda, imagen;
-    bool contabilizable, rectificativo;
+    bool contabilizable, rectificativo, verifactu;
     int tipo_operacion;
     QString documento, cantidad, referencia, descripref, precio, totallin, bi;
     QString tipoiva, tipore, cuota, cuotare, totalfac, notas, venci, notastex;
@@ -88,7 +88,7 @@ void edita_doc::pasacodigo(QString codigo)
                                    &moneda,
                                    &codigo_moneda,
                                    &contabilizable,
-                                   &rectificativo,
+                                   &rectificativo, &verifactu,
                                    &tipo_operacion,
                                    &documento, &cantidad, &referencia, &descripref,
                                    &precio, &totallin, &bi,
@@ -122,6 +122,7 @@ void edita_doc::pasacodigo(QString codigo)
     ui.pie2lineEdit->setText(pie2);
     if (contabilizable) ui.contabilizablecheckBox->setChecked(true);
     if (rectificativo) ui.rectificativocheckBox->setChecked(true);
+    if (verifactu) ui.verifactu_checkBox->setChecked(true);
     for (int veces=0; veces<ui.seriecomboBox->count(); veces++)
         if (ui.seriecomboBox->itemText(veces)==serie)
            {
@@ -261,6 +262,7 @@ void edita_doc::terminar()
                                    ui.codcomboBox->currentText(),
                                    ui.contabilizablecheckBox->isChecked(),
                                    ui.rectificativocheckBox->isChecked(),
+                                   ui.verifactu_checkBox->isChecked(),
                                    tipooperacion,
                                    ui.documentolineEdit->text(),
                                    ui.cantidadlineEdit->text(),

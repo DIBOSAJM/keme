@@ -25,6 +25,7 @@ include(./QtRptProject/3rdparty/zint-2.4.4/backend_qt4/Zint.pri)
 
 
 HEADERS += factur/main_factur.h \
+    factur/config_verifactu.h \
            factur/listaseries.h \
            funciones.h \
            basedatos.h \
@@ -103,6 +104,7 @@ HEADERS += factur/main_factur.h \
     mensaje_url.h
 
 SOURCES += factur/amain.cpp \
+    factur/config_verifactu.cpp \
     factur/main_factur.cpp \
     factur/listaseries.cpp \
     funciones.cpp \
@@ -183,6 +185,7 @@ SOURCES += factur/amain.cpp \
 
 
 FORMS += factur/main_factur.ui \
+    factur/config_verifactu.ui \
          factur/listaseries.ui \
          factur/inicio.ui \
          factur/inicial.ui \

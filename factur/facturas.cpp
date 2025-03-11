@@ -1399,6 +1399,11 @@ void facturas::borraasiento()
          tr("Para borrar un asiento debe de seleccionar un registro con apunte en el diario"));
          return;
        }
+ if (basedatos::instancia()->apunte_cotabilizado(apunte_diario())) {
+           QMessageBox::warning( this, tr("BORRAR ASIENTO"),
+                                tr("ERROR: La factura está contabilizada en diario definitivo"));
+           return;
+ }
 QString elasiento=basedatos::instancia()->selectAsientodiariopase(apunte_diario());
 QString ejercicio=ejerciciodelafecha(basedatos::instancia()->select_fecha_diariopase(apunte_diario()));
 // consultarasiento(elasiento,usuario,ejercicio);
