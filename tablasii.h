@@ -40,6 +40,7 @@ private:
     bool consulta_SII(bool pruebas);
     bool fich_cons_sii_recibidas(QString nombrefich);
     bool fich_cons_sii_emitidas(QString nombrefich);
+    bool check_documentos_vacios();
 
 
 

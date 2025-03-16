@@ -115,8 +115,8 @@ class factura : public QDialog {
                 void guarda_predef();
                 void esconde_cta_anticipo();
                 void muestra_cta_anticipo();
-                bool envia_verifactu(QString serie, QString numero);
-                bool gen_fich_verifactu(QString fichero,QString serie, QString numero);
+                bool envia_verifactu(QString serie, QString numero, QString *ghuella, QString *huella_anterior);
+                bool gen_fich_verifactu(QString nombrefich, QString serie, QString numero, QString *huella, QString *huella_anterior);
 
 
       private slots:

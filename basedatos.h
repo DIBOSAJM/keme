@@ -794,6 +794,9 @@ class basedatos {
         // Devuelve datos de tiposiva distintos de clave
         QSqlQuery selectTodoTiposivanoclave(QString Clavedefecto);
 
+        // Devuelve datos de tiposiva
+        QSqlQuery selectTodoTiposiva();
+
         //
         QStringList tiposiva ();
 
@@ -3099,7 +3102,8 @@ class basedatos {
                                             QString pie2,
                                             QString pase_diario_cta,
                                             QString cta_anticipos, QString externo="", QString concepto_sii="",
-                                            QString c_a_rol1="", QString c_a_rol2="", QString c_a_rol3="", QString suplidos="0", QString total_factura="0");
+                                            QString c_a_rol1="", QString c_a_rol2="", QString c_a_rol3="", QString suplidos="0", QString total_factura="0",
+                                            QString huella="", QString huella_anterior="");
 
         int modificacabecerafactura(QString serie,
                                             QString numero,
@@ -3212,6 +3216,8 @@ class basedatos {
         QSqlQuery fecha_serie_numero_de_huella(QString huella);
 
         void incrementa_num_serie(QString serie);
+
+        void set_ult_huella_serie(QString serie, QString huella);
 
         bool existecodigoref(QString cadena,QString *qdescrip);
 

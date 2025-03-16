@@ -35,6 +35,8 @@
 #include <QFileDialog>
 #include <QProgressDialog>
 #include <QString>
+#include <QCryptographicHash>
+#include <QByteArray>
 
 #define VERY_FACTU_IDVERSION "1.0"
 
@@ -791,15 +793,16 @@ void factura::terminar(bool impri)
      qlonglong numero=basedatos::instancia()->proxnum_serie_no_incrementa(ui.serielineEdit->text());
      cadnum.setNum(numero);
     }
-
+   QString huella, huella_anterior;
    if (verifactu) {
        // intentamos enviar la factura
        // si no hay éxito terminamos la transacción - mensaje de error y vuelta a la pantalla de edición
-       if (!envia_verifactu(ui.serielineEdit->text(),cadnum)) {
+       if (!envia_verifactu(ui.serielineEdit->text(),cadnum,&huella,&huella_anterior)) {
            QMessageBox::warning(this,tr("Envío Veri*factu"),tr("ERROR en envío Veri*factu"));
            basedatos::instancia()->desbloquea_y_commit();
            return;
        }
+       basedatos::instancia()->set_ult_huella_serie(ui.serielineEdit->text(), huella);
     }
 
    if (ui.facturalineEdit->text().isEmpty()) ui.facturalineEdit->setText(cadnum);
@@ -873,7 +876,8 @@ void factura::terminar(bool impri)
                       ui.rol2_lineEdit->text(),
                       ui.rol3_lineEdit->text(),
                       cadsuplidos,
-                      cad_bi_mas_cuota
+                      cad_bi_mas_cuota,
+                      huella, huella_anterior
                      );
 
          }
@@ -1740,7 +1744,7 @@ void factura::muestra_cta_anticipo()
 
 }
 
-bool factura::envia_verifactu(QString serie, QString numero)
+bool factura::envia_verifactu(QString serie, QString numero, QString *ghuella, QString *huella_anterior)
 {
     // cargamos fichero certificado
     QString fich_certificado;
@@ -1808,18 +1812,20 @@ bool factura::envia_verifactu(QString serie, QString numero)
     nombrefichero+=".xml";
 
     // GENERAMOS xml
-    if (!gen_fich_verifactu(nombrefichero,serie,numero))
+    QString huella, huella_prev;
+    if (!gen_fich_verifactu(nombrefichero,serie,numero,&huella,&huella_prev))
     {
         progress.close();
         QMessageBox::warning( this, tr("FICHERO VERIFACTU"),
                              tr("ERROR: No se ha podido generar el archivo XML"));
         return false;
     }
-
+    *ghuella=huella;
+    *huella_anterior=huella_prev;
     return true;
 }
 
-bool factura::gen_fich_verifactu(QString fichero, QString serie, QString numero)
+bool factura::gen_fich_verifactu(QString nombrefich, QString serie, QString numero, QString *huella, QString *huella_anterior)
 {
     QDomDocument doc("ENVIO");
     QDomElement root = doc.createElement("soapenv:Body");
@@ -1841,19 +1847,24 @@ bool factura::gen_fich_verifactu(QString fichero, QString serie, QString numero)
     tag.appendChild(RegistroFactura);
 
     QDomElement RegistroAlta = doc.createElement("sum1:RegistroAlta");
-    RegistroFactura.appendChild(RegistroFactura);
+    RegistroFactura.appendChild(RegistroAlta);
     addElementoTextoDom(doc,RegistroAlta,"sum1:IDVersion",VERY_FACTU_IDVERSION);
 
     QDomElement IDFactura = doc.createElement("sum1:IDFactura");
     RegistroAlta.appendChild(IDFactura);
 
     addElementoTextoDom(doc,IDFactura,"sum1:IDEmisorFactura",basedatos::instancia()->cif());
-    addElementoTextoDom(doc,IDFactura,"sum1:NumSerieFactura",serie+numero);
+    addElementoTextoDom(doc,IDFactura,"sum1:NumSerieFactura",serie.trimmed()+numero.trimmed());
     addElementoTextoDom(doc,IDFactura,"sum1:FechaExpedicionFactura",ui.fechadateEdit->date().toString("dd-MM-yyyy"));
 
+    QString tipoFactura="F1";
     addElementoTextoDom(doc,RegistroAlta,"sum1:NombreRazonEmisor",nombreempresa());
-    addElementoTextoDom(doc,RegistroAlta,"sum1:TipoFactura","F1"); // de momento F1 factura completa - tenemos que añadir simplificada, sustitutiva de simplificada y rectificativa
-    addElementoTextoDom(doc,RegistroAlta,"sum1:DescripcionOperacion",tr("OPERACIÓN SEGÚN FACTURA"));
+    addElementoTextoDom(doc,RegistroAlta,"sum1:TipoFactura",tipoFactura); // de momento F1 factura completa - tenemos que añadir simplificada, sustitutiva de simplificada y rectificativa
+
+    QString descripcionOperacion=ui.concepto_sii_lineEdit->text();
+    if (descripcionOperacion.isEmpty()) descripcionOperacion=tr("OPERACIÓN SEGÚN FACTURA");
+
+    addElementoTextoDom(doc,RegistroAlta,"sum1:DescripcionOperacion",descripcionOperacion);
 
     QDomElement Destinatarios = doc.createElement("sum1:Destinatarios");
     RegistroAlta.appendChild(Destinatarios);
@@ -1898,12 +1909,13 @@ bool factura::gen_fich_verifactu(QString fichero, QString serie, QString numero)
     QList<double> tipos, res;
     QList<double> cuotas, cuotasre;
 
-    QSqlQuery query = basedatos::instancia()->selectTodoTiposivanoclave(clave_iva_defecto());
+    QSqlQuery query = basedatos::instancia()->selectTodoTiposiva();
     if ( query.isActive() )
     {
         while (query.next())
         {
             claves_iva << query.value(0).toString();
+            // qDebug() << query.value(0).toString();
             bases << 0;
             cuotas << 0;
             cuotasre <<0;
@@ -1921,10 +1933,11 @@ bool factura::gen_fich_verifactu(QString fichero, QString serie, QString numero)
     res << 0;
 
     int ultimo=ultimafila();
-    for (int veces=0; veces<ultimo; veces++)
+    for (int veces=0; veces<=ultimo; veces++)
     {
         if (ui.tableWidget->item(veces,0)==NULL) continue;
         int pos=claves_iva.indexOf(ui.tableWidget->item(veces,7)->text());
+
         if (pos>=0) {
             double cantidad=convapunto(ui.tableWidget->item(veces,2)->text()).toDouble();
             double precio=convapunto(ui.tableWidget->item(veces,3)->text()).toDouble();
@@ -1964,8 +1977,8 @@ bool factura::gen_fich_verifactu(QString fichero, QString serie, QString numero)
     // añadir a RegistroAlta los totales de cuota e importe total
     QString cad_cuota_total; cad_cuota_total.setNum(cuota_total,'f',2);
     QString cad_importe_total; cad_importe_total.setNum(importe_total,'f',2);
-    addElementoTextoDom(doc,RegistroAlta,"sum1:CuotaTotal",cad_cuota_total);
-    addElementoTextoDom(doc,RegistroAlta,"sum1:ImporteTotal",cad_importe_total);
+    addElementoTextoDom(doc,RegistroAlta,"sum1:CuotaTotal",cad_cuota_total.trimmed());
+    addElementoTextoDom(doc,RegistroAlta,"sum1:ImporteTotal",cad_importe_total.trimmed());
 
     QDomElement Encadenamiento = doc.createElement("sum1:Encadenamiento");
     RegistroAlta.appendChild(Encadenamiento);
@@ -1976,12 +1989,13 @@ bool factura::gen_fich_verifactu(QString fichero, QString serie, QString numero)
         addElementoTextoDom(doc,Encadenamiento,"sum1:PrimerRegistro","S");
     }
     else {
+           *huella_anterior=ultima_huella;
            QString serie_numero;
            QDate fecha_anterior;
            QSqlQuery q = basedatos::instancia()->fecha_serie_numero_de_huella(ultima_huella);
            if (q.isActive())
                if (q.next()) {
-                   serie_numero=q.value(0).toString()+q.value(1).toString();
+                   serie_numero=q.value(0).toString().trimmed()+q.value(1).toString().trimmed();
                    fecha_anterior=q.value(2).toDate();
                }
            QDomElement RegistroAnterior = doc.createElement("sum1:RegistroAnterior");
@@ -2001,25 +2015,65 @@ bool factura::gen_fich_verifactu(QString fichero, QString serie, QString numero)
         if (q2.next()) {
             //"select sif_nif,sif_nombre_razon, sif_nombre_sif, sif_id_sistema_informatico,sif_numero_instalacion, "
             //"sif_tipo_uso_verifactu, sif_posible_multi_ot, sif_multi_ot, endpoint_verifactu from configuracion"
-            addElementoTextoDom(doc,SistemaInformatico,"sum1:NombreRazon",q.value(1).toString());
-            addElementoTextoDom(doc,SistemaInformatico,"sum1:NIF",q.value(0).toString());
-            addElementoTextoDom(doc,SistemaInformatico,"sum1:NombreSistemaInformatico",q.value(2).toString());
-            addElementoTextoDom(doc,SistemaInformatico,"sum1:IdSistemaInformatico",q.value(3).toString());
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:NombreRazon",q2.value(1).toString());
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:NIF",q2.value(0).toString());
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:NombreSistemaInformatico",q2.value(2).toString());
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:IdSistemaInformatico",q2.value(3).toString());
             addElementoTextoDom(doc,SistemaInformatico,"sum1:Version",basedatos::instancia()->selectVersionconfiguracion());
-            addElementoTextoDom(doc,SistemaInformatico,"sum1:NumeroInstalacion",q.value(4).toString());
-            addElementoTextoDom(doc,SistemaInformatico,"sum1:TipoUsoPosibleSoloVerifactu",q.value(5).toBool() ? "S":"N");
-            addElementoTextoDom(doc,SistemaInformatico,"sum1:TipoUsoPosibleMultiOT",q.value(6).toBool() ? "S":"N");
-            addElementoTextoDom(doc,SistemaInformatico,"sum1:IndicadorMultiplesOT",q.value(7).toBool() ? "S":"N");
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:NumeroInstalacion",q2.value(4).toString());
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:TipoUsoPosibleSoloVerifactu",q2.value(5).toBool() ? "S":"N");
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:TipoUsoPosibleMultiOT",q2.value(6).toBool() ? "S":"N");
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:IndicadorMultiplesOT",q2.value(7).toBool() ? "S":"N");
         }
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QTimeZone localTimeZone = QTimeZone::systemTimeZone();
-    QString formattedDateTime = currentDateTime.toTimeZone(localTimeZone).toString("yyyy-MM-ddTHH:mm:ss+ttt");
+    QString formattedDateTime = currentDateTime.toTimeZone(localTimeZone).toString("yyyy-MM-ddTHH:mm:ssttt");
 
     addElementoTextoDom(doc,RegistroAlta,"sum1:FechaHoraHusoGenRegistro",formattedDateTime);
     addElementoTextoDom(doc,RegistroAlta,"sum1:TipoHuella","01");
-    QString huella;
-    addElementoTextoDom(doc,RegistroAlta,"sum1:Huella",huella);
+    QString referencia_registro_alta="IDEmisorFactura="+basedatos::instancia()->cif();
+    referencia_registro_alta.append("&");
+    referencia_registro_alta.append("NumSerieFactura="+serie.trimmed()+numero.trimmed());
+    referencia_registro_alta.append("&");
+    referencia_registro_alta.append("FechaExpedicionFactura="+ui.fechadateEdit->date().toString("dd-MM-yyyy"));
+    referencia_registro_alta.append("&");
+    referencia_registro_alta.append("TipoFactura="+tipoFactura);
+    referencia_registro_alta.append("&");
+    referencia_registro_alta.append("CuotaTotal="+cad_cuota_total.trimmed());
+    referencia_registro_alta.append("&");
+    referencia_registro_alta.append("ImporteTotal="+cad_importe_total.trimmed());
+    referencia_registro_alta.append("&");
+    referencia_registro_alta.append("Huella="+ultima_huella);
+    referencia_registro_alta.append("&");
+    referencia_registro_alta.append("FechaHoraHusoRegistro="+formattedDateTime);
+    // qDebug() << referencia_registro_alta;
+    QByteArray byteArray = referencia_registro_alta.toUtf8();
+    QByteArray hash = QCryptographicHash::hash(byteArray, QCryptographicHash::Sha256);
+    QString huella_gen=hash.toHex();
+    addElementoTextoDom(doc,RegistroAlta,"sum1:Huella",huella_gen);
+    *huella=huella_gen;
 
+    QString cadini="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    cadini+="<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\""
+        "xmlns:sum=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/tike/cont/ws/SuministroLR.xsd\"\n"
+        "xmlns:sum1=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/tike/cont/ws/SuministroInformacion.xsd\"\n"
+              "xmlns:xd=\"http://www.w3.org/2000/09/xmldsig#\">\n";
+    cadini+="<soapenv:Header/>";
+
+    QString xml = doc.toString();
+    xml.remove("<!DOCTYPE ENVIO>");
+    xml.prepend(cadini);
+    xml.append("</soapenv:Envelope>\n");
+
+    QFile fichero( adapta(nombrefich)  );
+
+    if ( !fichero.open( QIODevice::WriteOnly ) ) return false;
+
+    QTextStream stream( &fichero );
+    stream.setEncoding(QStringConverter::Utf8);
+
+    stream << xml;
+    fichero.close();
     return true;
 }
 

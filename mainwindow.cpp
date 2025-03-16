@@ -6304,8 +6304,12 @@ void MainWindow::seguridad()
    copiaseg *c = new copiaseg();
    c->exec();
    delete(c);
+   QString guardafiltro=filtroactivob;
+   filtroactivob.clear();
 
    actudatosprincipal();
+   filtroactivob=guardafiltro;
+   refrescardiario();
 
 }
 
@@ -7361,6 +7365,7 @@ void MainWindow::on_diario_tab_cambiado(int index)
       ui->actionCambiar_cuenta_a_apunte->setVisible(false);
       ui->actionEdita_fecha_a_asiento->setVisible(false);
       ui->actionEdita_concepto_y_documento_en_pase->setVisible(false);
+      ui->actionCortar->setEnabled(false);
       if (basedatos::instancia()->solo_borr()) {
           ui->actionNuevo_Asiento->setEnabled(false);
           ui->actionAsientos_Predefinidos->setEnabled(false);
@@ -7381,6 +7386,7 @@ void MainWindow::on_diario_tab_cambiado(int index)
       ui->actionCambiar_cuenta_a_apunte->setVisible(true);
       ui->actionEdita_fecha_a_asiento->setVisible(true);
       ui->actionEdita_concepto_y_documento_en_pase->setVisible(true);
+      ui->actionCortar->setEnabled(true);
       ui->actionNuevo_Asiento->setEnabled(true);
       ui->actionAsientos_Predefinidos->setEnabled(true);
       ui->actionEjecutar_regul->setEnabled(true);

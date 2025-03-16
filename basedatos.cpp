@@ -7323,7 +7323,7 @@ void basedatos::insertpegaDiario (QString cadnumasiento, qlonglong pase,
                                   QString documento, QString ci,
                                   QString usuario, QString ejercicio) {
     QString cad1="INSERT into diario (asiento,pase,fecha,cuenta,debe,haber,concepto,"
-        "documento,diario,usuario,ci, ejercicio) VALUES(";
+        "documento,diario,usuario,ci, ejercicio, contabilizado) VALUES(";
     cad1 += cadnumasiento.left(-1).replace("'","''") +",";
     QString cadnumpase;
 	cadnumpase.setNum(pase);
@@ -7351,7 +7351,7 @@ void basedatos::insertpegaDiario (QString cadnumasiento, qlonglong pase,
     cad1+=ci.left(-1).replace("'","''");
     cad1+="','";
     cad1+=ejercicio;
-    cad1+="')";
+    cad1+="', false)";
     ejecutar(cad1);
 }
 
@@ -10063,7 +10063,13 @@ QSqlQuery basedatos::selectTodoTiposivanoclave (QString Clavedefecto) {
     QString cadquery = "SELECT clave,tipo,re,descripcion from tiposiva where clave != '";
     cadquery += Clavedefecto.left(-1).replace("'","''") +"'";
     return ejecutar(cadquery);
-} 
+}
+
+QSqlQuery basedatos::selectTodoTiposiva()
+{
+    QString cadquery = "SELECT clave,tipo,re,descripcion from tiposiva";
+    return ejecutar(cadquery);
+}
 
 
 // Devuelve datos de tiposiva ordenados por tipo
@@ -22571,12 +22577,12 @@ int basedatos::nuevacabecerafactura(QString serie,
                                     QString externo,
                                     QString concepto_sii,
                                     QString c_a_rol1, QString c_a_rol2, QString c_a_rol3,
-                                    QString suplidos, QString total_factura)
+                                    QString suplidos, QString total_factura, QString huella, QString huella_anterior)
 {
     QString cad1="INSERT into facturas (serie,numero,cuenta, fecha,fecha_fac,fecha_op,"
         "contabilizado,contabilizable, con_ret, con_re, tipo_ret, retencion, "
         "tipo_doc, notas, pie1, pie2, cta_anticipos, externo, concepto_sii, "
-        "c_a_rol1, c_a_rol2, c_a_rol3, suplidos, total_factura, pase_diario_cta ) VALUES(";
+        "c_a_rol1, c_a_rol2, c_a_rol3, suplidos, total_factura, huella, huella_anterior, pase_diario_cta ) VALUES(";
     cad1 += "'"+serie.left(-1).replace("'","''") +"', ";
     cad1 += numero + ", '";
     cad1 += cuenta + "', '";
@@ -22640,7 +22646,11 @@ cad1+=", ";
     cad1+=suplidos.left(-1).replace("'","''");
     cad1+=", ";
     cad1+=total_factura.left(-1).replace("'","''");
-    cad1+=", ";
+    cad1+=", '";
+    cad1+= huella;
+    cad1+="', '";
+    cad1+= huella_anterior;
+    cad1+="', ";
     cad1+=pase_diario_cta.left(-1).replace("'","''");
     cad1 += ")";
     ejecutar(cad1);
@@ -29488,6 +29498,16 @@ void basedatos::incrementa_num_serie(QString serie)
     cadena="update series_fact set proxnum=";
     cadena+=cadnum;
     cadena+=" where codigo='";
+    cadena+=serie;
+    cadena+="'";
+    ejecutar(cadena);
+}
+
+void basedatos::set_ult_huella_serie(QString serie, QString huella)
+{
+    QString cadena="update series_fact set ultima_huella='";
+    cadena+=huella;
+    cadena+="' where codigo='";
     cadena+=serie;
     cadena+="'";
     ejecutar(cadena);

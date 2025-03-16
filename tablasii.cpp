@@ -493,6 +493,7 @@ void tablaSII::carga_emitidas()
              {
               if (!query.value(22).toString().isEmpty())
                  ui->tableWidget->setItem(numorden,3,new QTableWidgetItem(query.value(22).toString())); //+ " - "+query.value(23).toString()));
+              else ui->tableWidget->setItem(numorden,3,new QTableWidgetItem(QString()));
              }
           // documento << query.value(0).toString();
 
@@ -2732,6 +2733,11 @@ bool tablaSII::fich_cons_sii_emitidas(QString nombrefich)
 
 
     return true;
+
+}
+
+bool tablaSII::check_documentos_vacios()
+{
 
 }
 
