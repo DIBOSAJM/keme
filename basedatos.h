@@ -1055,6 +1055,10 @@ class basedatos {
         // 
         qlonglong selectCountasientodiariofechascuenta(QDate inicial, QDate final, QString cuenta);
 
+        //
+        bool vacios_y_solo_apertura_fechas_cuenta(QDate inicial, QDate final, QString cuenta);
+
+
         // 
         QSqlQuery select5Diariofechascuentaorderfechapase(QDate inicial, QDate final, QString cuenta);
         QSqlQuery selectDiariofechascuentaorderfechapaseExterno (QDate inicial, QDate final, QString cuenta, QString externo);
@@ -2991,6 +2995,8 @@ class basedatos {
 
         bool es_euro_tipo_doc(QString codigo);
 
+        bool es_verifactu_tipo_doc(QString codigo);
+
         void msjs_tipo_doc(QString codigo,
                                        QString *documento,
                                        QString *cantidad,
@@ -3653,7 +3659,9 @@ class basedatos {
         void actualiza_config_sif_verifactu(QString sif_nif, QString sif_nombre_razon, QString sif_nombre_sif,
                                             QString sif_id_sistema_informatico, QString sif_numero_instalacion,
                                             bool sif_tipo_uso_verifactu, bool sif_posible_multi_ot,
-                                            bool sif_multi_ot, QString endpoint_verifactu);
+                                            bool sif_multi_ot, QString endpoint_verifactu, QString url_val_QR);
+
+        QString url_val_QR();
 
     private:
 

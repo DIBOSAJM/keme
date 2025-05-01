@@ -8406,6 +8406,7 @@ QString busca_nif(QString contenido, QString nif_propio) {
         if (palabra.startsWith("ES")) palabra=palabra.remove("ES");
         palabra=palabra.remove('-');
         palabra=palabra.remove('.');
+        palabra=palabra.remove(':');
         if (isNifCifNie(palabra)>0 && palabra!=nif_propio) return palabra;
     }
     return QString();
@@ -8451,26 +8452,33 @@ QDate busca_primera_fecha(QString contenido) {
     QStringList palabras=trabajo.split(' ');
     for (int i=0; i<palabras.count(); i++) {
         QString palabra=palabras.at(i);
+        if (palabra.startsWith(':')) palabra=palabra.remove(':');
         if (palabra.length()!=10 && palabra.length()!=8) continue;
         if (palabra[2]=='/' && palabra[5]=='/') {
             QDate fecha;
             if (palabra.length()==10)
               fecha=QDate::fromString(palabra,"dd/MM/yyyy");
-             else fecha=QDate::fromString(palabra,"dd/MM/yy");
+             else {fecha=QDate::fromString(palabra,"dd/MM/yy");
+                   if (fecha.year()<1950) fecha=fecha.addYears(100);
+             }
             return fecha;
         }
         if (palabra[2]=='-' && palabra[5]=='-') {
             QDate fecha;
             if (palabra.length()==10)
               fecha=QDate::fromString(palabra,"dd-MM-yyyy");
-             else fecha=QDate::fromString(palabra,"dd-MM-yy");
+             else {fecha=QDate::fromString(palabra,"dd-MM-yy");
+                if (fecha.year()<1950) fecha=fecha.addYears(100);
+             }
             return fecha;
         }
         if (palabra[2]=='.' && palabra[5]=='.') {
             QDate fecha;
             if (palabra.length()==10)
               fecha=QDate::fromString(palabra,"dd.MM.yyyy");
-             else fecha=QDate::fromString(palabra,"dd.MM.yy");
+             else {fecha=QDate::fromString(palabra,"dd.MM.yy");
+                if (fecha.year()<1950) fecha=fecha.addYears(100);
+             }
             return fecha;
         }
 

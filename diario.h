@@ -93,6 +93,7 @@ class diario: public QWidget {
            bool borrador();
            QString file_droped();
            void activa_tab(int qtab);
+           void actu_usuario();
            ~diario();
         private:
            Ui::diario ui;

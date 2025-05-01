@@ -265,11 +265,16 @@ bool cuadimprimayor::generalatexmayor( QString qsubcuentaini, QString qsubcuenta
            // imprimimos codigo de subcuenta, fecha inicial, fecha final
            // imprimimos fecha actual
            qlonglong num = basedatos::instancia()->selectCountasientodiariofechascuenta(fechainicial, fechafinal, subctaactual);
-           if (num==0 && ui.csaldocheckBox->isChecked() && !subctaactual.length()==0)
+           if (num==0 && ui.csaldocheckBox->isChecked() && !(subctaactual.length()==0))
              {
                indice++;
                if (indice<l.count()) subctaactual=l.at(indice);
                continue;
+             }
+           if (ui.saltar_apertura_checkBox->isChecked() && basedatos::instancia()->vacios_y_solo_apertura_fechas_cuenta(fechainicial, fechafinal, subctaactual)) {
+                 indice++;
+                 if (indice<l.count()) subctaactual=l.at(indice);
+                 continue;
              }
            stream << "\\begin{center}" << "\n";
            stream << "{\\Large \\textbf {" << filtracad(nombreempresa()) << "}}" << "\n";
@@ -669,6 +674,12 @@ bool cuadimprimayor::generalatexmayor_compacto( QString qsubcuentaini,
                   else break;
                continue;
              }
+           if (ui.saltar_apertura_checkBox->isChecked() && basedatos::instancia()->vacios_y_solo_apertura_fechas_cuenta(fechainicial, fechafinal, subctaactual)) {
+               indice++;
+               if (indice<l.count()) subctaactual=l.at(indice);
+               else break;
+               continue;
+           }
            if (lineas==0)
              {
               stream << "\\begin{center}" << "\n";
@@ -692,6 +703,7 @@ bool cuadimprimayor::generalatexmayor_compacto( QString qsubcuentaini,
            stream << "\\begin{center}\n";
            stream << "\\begin{tabular}{|l|r|p{7.5cm}|r|r|r|}\n";
            stream << "\\hline\n";
+           stream << "\\rowcolor{gray!30}\n";
            stream << "{\\textbf {\\scriptsize " << tr("FECHA") << "}} & {\\textbf {\\scriptsize " << tr("ASTO.") << "}} & {\\textbf {\\scriptsize " <<
              tr("CONCEPTO") << "}} & {\\textbf {\\scriptsize " << tr("DEBE") << "}} & {\\textbf {\\scriptsize " << tr("HABER") <<
              "}} & {\\textbf {\\scriptsize " << tr("SALDO") << "}} \\\\\n";
@@ -814,6 +826,7 @@ bool cuadimprimayor::generalatexmayor_compacto( QString qsubcuentaini,
                        stream << "\\begin{center}\n";
                        stream << "\\begin{tabular}{|l|r|p{7.5cm}|r|r|r|}\n";
                        stream << "\\hline\n";
+                       stream << "\\rowcolor{gray!30}\n";
                        stream << "{\\textbf {\\scriptsize " << tr("FECHA") << "}} & {\\textbf {\\scriptsize " << tr("ASTO.") <<
                         "}} & {\\textbf {\\scriptsize " << tr("CONCEPTO") << "}} & {\\textbf {\\scriptsize " << tr("DEBE") <<
                         "}} & {\\textbf {\\scriptsize " << tr("HABER") << "}} & {\\textbf {\\scriptsize " << tr("SALDO") << "}} \\\\\n";

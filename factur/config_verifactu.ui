@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>479</width>
-    <height>231</height>
+    <height>374</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Configuración Veri*factu</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -132,6 +132,20 @@
      </item>
      <item>
       <widget class="QLineEdit" name="endpoint_lineEdit"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Url validación QR:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="url_val_QR_lineEdit"/>
      </item>
     </layout>
    </item>

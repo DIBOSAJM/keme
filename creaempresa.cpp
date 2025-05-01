@@ -439,6 +439,7 @@ bool creaempresa::noejercicio(QTextStream *stream)
             }
          }
    if (!inicio_diario) return false;
+   QString guardaejercicio;
    while ( !stream->atEnd() ) {
         linea=stream->readLine();
         if (linea.isEmpty()) continue;
@@ -455,6 +456,16 @@ bool creaempresa::noejercicio(QTextStream *stream)
                                       fecha.toString("dd-MM-yyyy"));
             return true;
            }
+        if (guardaejercicio!=ejercicio) {
+               guardaejercicio=ejercicio;
+            if (ejerciciocerrado(ejercicio)) {
+                   QMessageBox::information( this,
+                                            tr("Importación"),
+                                            tr("ERROR: ejercicio cerrado para la fecha ") +
+                                                fecha.toString("dd-MM-yyyy"));
+                   return true;
+           }
+        }
 
     }
    return false;

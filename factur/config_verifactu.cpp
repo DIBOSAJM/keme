@@ -22,6 +22,7 @@ Config_Verifactu::Config_Verifactu(QWidget *parent)
             ui->posible_multi_obligados_checkBox->setChecked(q.value(6).toBool());
             ui->multiples_obligados_checkBox->setChecked(q.value(7).toBool());
             ui->endpoint_lineEdit->setText(q.value(8).toString());
+            ui->url_val_QR_lineEdit->setText(q.value(9).toString());
         }
 }
 
@@ -37,7 +38,7 @@ void Config_Verifactu::on_aceptar_pushButton_clicked()
                                                            ui->id_sistema_lineEdit->text(),
                                                            ui->numero_instalacion_lineEdit->text(), ui->solo_verifactu_checkBox->isChecked(),
                                                            ui->posible_multi_obligados_checkBox->isChecked(), ui->multiples_obligados_checkBox->isChecked(),
-                                                           ui->endpoint_lineEdit->text());
+                                                           ui->endpoint_lineEdit->text(), ui->url_val_QR_lineEdit->text());
 
     accept();
 }

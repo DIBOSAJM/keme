@@ -582,6 +582,8 @@ void facturas::informe (QString qserie, QString qnumero, bool pdf_novis) {
       {
         moneda=tr("€");
       }
+
+
     // obtenemos información de la cuenta cliente, para los datos de la factura
     if (externo.isEmpty())
       q=basedatos::instancia()->selectTodoDatossubcuentacuenta (cuenta);
@@ -621,6 +623,8 @@ void facturas::informe (QString qserie, QString qnumero, bool pdf_novis) {
          sumalineas+=suma;
         }
     double totalfactura=redond(sumalineas,2);
+
+
     q = basedatos::instancia()->select_iva_lin_doc (clave);
     QStringList listabase_iva, listatipo_iva, listatipo_re, listacuota_iva, listacuota_re;
     if (q.isActive())
@@ -645,12 +649,26 @@ void facturas::informe (QString qserie, QString qnumero, bool pdf_novis) {
            }
        }
 
+    double vtotal_factura=totalfactura-suplidos; // total factura sin tener en cuenta suplidos ni retenciones
     // ahora vamos a por la retención
+    QString cad_vtotal_factura; cad_vtotal_factura.setNum(vtotal_factura,'f',2);
 
     if (con_ret)
       {
         totalfactura -= redond(retencion.toDouble(),2);
       }
+
+    bool verifactu=basedatos::instancia()->es_verifactu_tipo_doc(tipo_doc);
+    QString url_qr_verifactu;
+    if (verifactu) url_qr_verifactu=basedatos::instancia()->url_val_QR();
+    url_qr_verifactu.append("&nif=");
+    url_qr_verifactu.append(cif);
+    url_qr_verifactu.append("&numserie=");
+    url_qr_verifactu.append(qserie+qnumero);
+    url_qr_verifactu.append("&fecha=");
+    url_qr_verifactu.append(fecha_fac.toString("dd-MM-yyyy"));
+    url_qr_verifactu.append("&importe=");
+    url_qr_verifactu.append(cad_vtotal_factura.trimmed());
 
     QStringList codigos,descripciones,descripcionsn,notasln,cantidades,precios,descuentos,totaleslin;
     q = basedatos::instancia()->select_lin_doc(clave);
@@ -689,6 +707,7 @@ void facturas::informe (QString qserie, QString qnumero, bool pdf_novis) {
 
     QString fileName;
     fileName =  ":/informes/factura.xml" ;
+    if (verifactu) fileName =  ":/informes/factura_verifactu.xml" ;
     if (suplidos>0.001 || suplidos<-0.001) fileName = ":/informes/factura_suplidos.xml" ;
 
     if (con_ret) fileName =  ":/informes/factura_ret.xml" ;
@@ -726,7 +745,7 @@ void facturas::informe (QString qserie, QString qnumero, bool pdf_novis) {
     //report->setBackgroundImageOpacity(1.0);
 
     QObject::connect(report, &QtRPT::setDSInfo,
-                     [&](DataSetInfo &dsInfo) {
+                     [=](DataSetInfo &dsInfo) {
         dsInfo.recordCount=codigos.count();
     });
 
@@ -738,7 +757,8 @@ void facturas::informe (QString qserie, QString qnumero, bool pdf_novis) {
             Q_UNUSED(reportPage);
             if (paramName == "LOGO") {
 
-                auto foto= new QImage();
+                //auto foto= new QImage();
+                QImage foto;
                 if (imagen.isEmpty()) imagen = logodefecto();
                 if (imagen.length()>0)
                    {
@@ -746,14 +766,15 @@ void facturas::informe (QString qserie, QString qnumero, bool pdf_novis) {
                     byteshexa.append ( imagen.toUtf8() );
                     QByteArray bytes;
                     bytes=bytes.fromHex ( byteshexa );
-                    foto->loadFromData( bytes, "PNG");
+                    foto.loadFromData( bytes, "PNG");
                    } else return;
 
-                paramValue = *foto;
+                paramValue = foto;
             }
         });
 
-    connect(report, &QtRPT::setValue, [&](const int recNo, const QString paramName, QVariant &paramValue,
+
+    connect(report, &QtRPT::setValue, [=](const int recNo, const QString paramName, QVariant &paramValue,
             const int reportPage) {
         // campos: descrip, nota, cifra1, cifra2
         // recordCount es una lista, añadir también segunda página
@@ -772,6 +793,8 @@ void facturas::informe (QString qserie, QString qnumero, bool pdf_novis) {
 
         if (paramName == "DOCUMENTO") paramValue = documento;
 
+        if (paramName == "URL_QR_VERIFACTU") paramValue = url_qr_verifactu;
+
         if (paramName == "EM_NOMBRE") paramValue = nombre_empresa;
 
         if (paramName == "EM_DIREC") paramValue = domicilio;
@@ -784,6 +807,7 @@ void facturas::informe (QString qserie, QString qnumero, bool pdf_novis) {
         if (paramName == "EM_PAIS") paramValue = pais_emisor;
 
         if (paramName == "NOMBRE") paramValue = razon;
+        if (paramName == "NOMBRE_COMERCIAL") paramValue = nombrecomercial;
         if (paramName == "DIREC") paramValue = domicilio2;
         if (paramName == "CP") paramValue = codigopostal;
         if (paramName == "POBLACION") paramValue = poblacion2;

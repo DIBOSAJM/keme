@@ -147,6 +147,7 @@
         <file>graf/oss-community-leader-white.svg</file>
         <file>graf/factur.png</file>
         <file>graf/trabajando.gif</file>
+        <file>graf/Logo-Verifactu.png</file>
     </qresource>
     <qresource prefix="/splash">
         <file>graf/splash.jpg</file>
@@ -226,5 +227,6 @@
         <file>informes/estado2p_desglose_principales.xml</file>
         <file>informes/estado1p_desglose_principales.xml</file>
         <file>informes/facturas_recibidas_ret.xml</file>
+        <file>informes/factura_verifactu.xml</file>
     </qresource>
 </RCC>

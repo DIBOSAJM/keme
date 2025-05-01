@@ -48,6 +48,7 @@ class calcestado : public QDialog {
                 QList<double> saldos;
                 QStringList auxiliares2;
                 QList<double> saldos2;
+                QStringList auxiliares2ejercicios;
                 // QStringList auxm1,auxm2,auxm3,auxm4,auxm5,auxm6,auxm7,auxm8,auxm9,auxm10,auxm11,auxm12;
                 // QList<double> saldosm1,saldosm2,saldosm3,saldosm4,saldosm5,saldosm6,saldosm7,saldosm8,saldosm9,saldosm10,
                 //              saldosm11,saldosm12;

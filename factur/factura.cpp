@@ -45,6 +45,7 @@ factura::factura() : QDialog() {
 
 coma=haycomadecimal();
 decimales=haydecimales();
+ui.verifactu_label->hide();
 
 ui.fechadateEdit->setDate(QDate::currentDate());
 ui.fechaopdateEdit->setDate(QDate::currentDate());
@@ -268,6 +269,8 @@ void factura::actudoc()
  ui.pie2lineEdit->setText(pie2);
  ui.textEdit->setText(notastex);
  ui.concepto_sii_lineEdit->setText(concepto_sii);
+ if (verifactu) ui.verifactu_label->show();
+ else ui.verifactu_label->hide();
  QPixmap foto;
  if (logo.length()>0)
        {
@@ -805,8 +808,9 @@ void factura::terminar(bool impri)
        basedatos::instancia()->set_ult_huella_serie(ui.serielineEdit->text(), huella);
     }
 
-   if (ui.facturalineEdit->text().isEmpty()) ui.facturalineEdit->setText(cadnum);
-   basedatos::instancia()->incrementa_num_serie(ui.serielineEdit->text());
+   if (ui.facturalineEdit->text().isEmpty()) { ui.facturalineEdit->setText(cadnum);
+       basedatos::instancia()->incrementa_num_serie(ui.serielineEdit->text());
+   }
 
    double bi_mas_cuota=convapunto(ui.bilineEdit->text()).toDouble()+convapunto(ui.cuotaIVAlineEdit->text()).toDouble();
    QString cad_bi_mas_cuota; cad_bi_mas_cuota.setNum(bi_mas_cuota,'f',2);

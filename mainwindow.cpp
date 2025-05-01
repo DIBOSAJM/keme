@@ -763,6 +763,7 @@ void MainWindow::procesar_inicio()
                 for (int veces=0; veces<NUMPRIVILEGIOS; veces++)
                   {
                     privilegios[veces]= privileg[veces]=='1' ? true : false;
+                    if (usuario=="admin") privilegios[veces]=true;
                     // privilegios_global[veces]=privilegios[veces];
                   }
                 // QMessageBox::warning( this, tr("TABLA DE ASIENTOS"), privileg);
@@ -1354,6 +1355,7 @@ bool MainWindow::cargausuario()
                  for (int veces=0; veces<NUMPRIVILEGIOS; veces++)
                     {
                      privilegios[veces]= privileg[veces]=='1' ? true : false;
+                     if (usuario=="admin") privilegios[veces]=true;
                      // privilegios_global[veces]=privilegios[veces];
                     }
                  // QMessageBox::warning( this, tr("TABLA DE ASIENTOS"), privileg);
@@ -1401,6 +1403,7 @@ void MainWindow::actuprivilegios()
              ed_preferencias,      importar_asientos,      import_contaplus,      importfich,
              marcar_cerrado_ej,    asignar_diario,         agrupar_tex_libro,     pconsolidacion,
              copia_segur,          utiles,                 activa_visor_local     activa_sii
+             contab_borrador
              }; */
 
 
@@ -1578,6 +1581,8 @@ void MainWindow::actuprivilegios()
     ui->menuUtilidades->setEnabled(privilegios[utiles]);
     ui->menuSII->setEnabled(privilegios[activa_sii]);
 
+    if (punterodiario!=NULL)
+        punterodiario->actu_usuario();
     // ui->actionRenumerar_Asientos
     // ui->actionIntercambiar_nmeros_de_asiento
     // ui->actionBorrar_Intervalo_de_asientos

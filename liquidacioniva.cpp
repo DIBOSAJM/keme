@@ -2728,11 +2728,13 @@ bool liquidacioniva::genfich303(QString qnombre)
    // tipo 5
    if (base75>-0.001) {
        contenido+=cadnum2dec_cadena_signo(base75,17);
-       contenido+="00750" ;//cadnum2dec_cadena_signo(7.5,5);
+       //contenido+="00750" ;//cadnum2dec_cadena_signo(7.5,5);
+       contenido+="00000" ;
        contenido+=cadnum2dec_cadena_signo(cuota75,17);
    } else {
      contenido+=cadnum2dec_cadena_signo(base5,17);
-     contenido+="00500"; //cadnum2dec_cadena_signo(5,5);
+     //contenido+="00500"; //cadnum2dec_cadena_signo(5,5);
+     contenido+="00000" ;
      contenido+=cadnum2dec_cadena_signo(cuota5,17);
    }
 
@@ -2842,7 +2844,8 @@ bool liquidacioniva::genfich303(QString qnombre)
 
    contenido+=cadnum2dec_cadena_signo(base1re,17);
    //contenido+=cadnum2dec_cadena_signo(tipo1re,5);
-   contenido+="00100"; //CORRECTO
+   //contenido+="00100"; //CORRECTO
+   contenido+="00000";
    contenido+=cadnum2dec_cadena_signo(cuota1re,17);
 
    contenido+=cadnum2dec_cadena_signo(base2re,17);
@@ -2957,7 +2960,8 @@ bool liquidacioniva::genfich303(QString qnombre)
 
    // línea en blanco
    contenido+=cadnum2dec_cadena_signo(0,17);
-   contenido+="00200";
+   // contenido+="00200";
+   contenido+="00000";
    contenido+=cadnum2dec_cadena_signo(0,17);
    // línea en blanco
    contenido+=cadnum2dec_cadena_signo(0,17);

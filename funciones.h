@@ -28,7 +28,7 @@
 #include <QtGui>
 #include <QSplashScreen>
 
-#define NUMPRIVILEGIOS 88
+#define NUMPRIVILEGIOS 89
 
 #define LINEASPAGINA 35
 

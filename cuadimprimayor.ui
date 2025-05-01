@@ -228,7 +228,14 @@
    <item>
     <widget class="QCheckBox" name="csaldocheckBox">
      <property name="text">
-      <string>Cuentas con saldo</string>
+      <string>Cuentas con movimientos</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="saltar_apertura_checkBox">
+     <property name="text">
+      <string>Saltar cuentas vacías y con solo asiento apertura</string>
      </property>
     </widget>
    </item>
@@ -322,7 +329,7 @@
           </property>
           <property name="icon">
            <iconset resource="keme.qrc">
-            <normaloff>:/iconos/graf/lupa.png</normaloff>:/iconos/graf/lupa.png</iconset>
+            <normaloff>:/iconos/graf/xmag.png</normaloff>:/iconos/graf/xmag.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -435,8 +442,15 @@
   <tabstop>subcuentapushButton</tabstop>
   <tabstop>finallineEdit</tabstop>
   <tabstop>finalpushButton</tabstop>
+  <tabstop>inicialdateEdit</tabstop>
+  <tabstop>finaldateEdit</tabstop>
+  <tabstop>csaldocheckBox</tabstop>
+  <tabstop>saltar_apertura_checkBox</tabstop>
+  <tabstop>compactocheckBox</tabstop>
   <tabstop>imprimepushButton</tabstop>
   <tabstop>previsualizapushButton</tabstop>
+  <tabstop>texpushButton</tabstop>
+  <tabstop>copiapushButton</tabstop>
   <tabstop>cancelarpushButton</tabstop>
  </tabstops>
  <resources>

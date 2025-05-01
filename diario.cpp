@@ -932,6 +932,12 @@ void diario::activa_tab(int qtab)
     ui.tabWidget->setCurrentIndex(qtab);
 }
 
+void diario::actu_usuario()
+{
+    ui.contabilizar_pushButton->setEnabled(privilegios[contab_borrador]);
+    ui.renum_borrador_pushButton->setEnabled(privilegios[contab_borrador]);
+}
+
 
 void diario::editafechaasien()
 {

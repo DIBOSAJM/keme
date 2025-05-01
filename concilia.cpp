@@ -507,6 +507,7 @@ void concilia::cargadatos()
      }
  if (ui.contabtableWidget->rowCount()<1) return;
  ui.contabtableWidget->setCurrentCell(0,0);
+
  check_botones_edicion();
  actualiza_saldos_conciliado();
 }
@@ -514,17 +515,11 @@ void concilia::cargadatos()
 
 void concilia::actucuenta()
 {
-    QProgressDialog progreso(tr("Actualizando información ..."), 0, 0, ui.contabtableWidget->rowCount()-1);
-     progreso.setMinimumDuration(100);
-     progreso.setValue(1);
-     progreso.show();
-     QCoreApplication::processEvents();
 
     QString cad;
     bool conciliado;
     for (int veces=0;veces<ui.contabtableWidget->rowCount();veces++)
     {
-        progreso.setValue(veces+1);
         if (ui.contabtableWidget->item(veces,7)->text()=="1") {
             cad="";
             conciliado = true;
@@ -604,7 +599,12 @@ void concilia::refrescar()
 {
   int fila=ui.contabtableWidget->currentRow();
 
+    ui.contabtableWidget->disconnect(SIGNAL(currentCellChanged(int,int,int,int)));
+    QProgressDialog progreso(tr("Procesando ..."), 0, 0, 0);
+    progreso.show();
+
   actucuenta();
+
   if (ctaexterna)
      grabactaext();
     else
@@ -616,22 +616,22 @@ void concilia::refrescar()
   ui.externatableWidget->clearContents();
   ui.externatableWidget->setRowCount(0);
 
-
   cargadatos();
 
-  QProgressDialog progreso(tr("Cargando cuenta externa ..."), 0, 0, 0);
-  progreso.setMinimumDuration(0);
-  progreso.show();
-
   QCoreApplication::processEvents();
+
 
   if (ctaexterna)
      cargadatosctaext();
     else
       cargadatosdifext();
 
-  if (fila<ui.contabtableWidget->rowCount())
+  connect(ui.contabtableWidget,SIGNAL( currentCellChanged(int, int, int,int) ),this,
+            SLOT(on_contabtableWidget_currentCellChanged(int, int, int, int)));
+
+  if (fila<ui.contabtableWidget->rowCount() && fila>=0)
      ui.contabtableWidget->setCurrentCell(fila,0);
+
 }
 
 bool concilia::cambiosdifconta()
@@ -921,9 +921,6 @@ void concilia::grabadifsext()
 
   // primero eliminamos información entre fechas antigua
 
-    QProgressDialog progreso(tr("Actualizando información ..."), 0, 0, ui.externatableWidget->rowCount());
-    progreso.setMinimumDuration(0);
-    progreso.show();
 
     QString fecha, dif;
     bool conci;
@@ -932,7 +929,6 @@ void concilia::grabadifsext()
 
   for (int veces=0;veces<ui.externatableWidget->rowCount();veces++)
    {
-      progreso.setValue(veces+1);
       QCoreApplication::processEvents();
         QDate fechat=fechat.fromString(ui.externatableWidget->item(veces,0)->text(),"dd.MM.yyyy");
         fecha = fechat.toString("yyyy-MM-dd");
@@ -1051,7 +1047,7 @@ void concilia::cargadatosctaext()
  bool haysaldo=false;
  while (query.next())
      {
-       QCoreApplication::processEvents();
+      QCoreApplication::processEvents();
       ui.externatableWidget->insertRow(fila);
       haysaldo=(query.value(6).toDouble()>0.001 || query.value(6).toDouble()<-0.001);
       for (int veces=0;veces<8;veces++)
@@ -1124,10 +1120,6 @@ void concilia::grabactaext()
   // se utiliza exclusivamente para actualizar la tabla con el fichero importado
   // de la cuenta externa
 
-    QProgressDialog progreso(tr("Actualizando información ..."), 0, 0, ui.externatableWidget->rowCount());
-    progreso.setMinimumDuration(0);
-    progreso.show();
-
     bool conciliado;
     QString dif;
 
@@ -1135,7 +1127,6 @@ void concilia::grabactaext()
 
   for (int veces=0;veces<ui.externatableWidget->rowCount();veces++)
      {
-        progreso.setValue(veces);
         QCoreApplication::processEvents();
         if (ui.externatableWidget->item(veces,5)->text()=="1")
             conciliado = true;
@@ -1147,7 +1138,6 @@ void concilia::grabactaext()
             dif=comboitem->currentText();
             if (dif=="- -") dif="";
         }
-
         basedatos::instancia()->updateCuenta_ext_conciconciliadodif_conciliacionnumero( conciliado, dif, ui.externatableWidget->item(veces,9)->text() );
 
      }

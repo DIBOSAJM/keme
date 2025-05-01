@@ -666,6 +666,7 @@ void basedatos::solotablas(bool segunda, QString qbase)
     cadena+="sif_posible_multi_ot varchar(40) default 'S', ";
     cadena+="sif_multi_ot varchar(40) default 'S', ";
     cadena+="endpoint_verifactu varchar(255) default '', ";
+    cadena+="url_val_QR varchar(255) default '', ";
 
 
     cadena+="moneda varchar(20) default '',";
@@ -11361,6 +11362,27 @@ qlonglong basedatos::selectCountasientodiariofechascuenta (QDate inicial, QDate 
         return query.value(0).toLongLong();
     }
     return -1;
+}
+
+bool basedatos::vacios_y_solo_apertura_fechas_cuenta(QDate inicial, QDate final, QString cuenta)
+{
+    QString cadena = "select count(asiento) from diario where fecha>='";
+    cadena += inicial.toString("yyyy-MM-dd");
+    cadena += "' and fecha<='";
+    cadena += final.toString("yyyy-MM-dd");
+    cadena += "' and cuenta='";
+    cadena += cuenta.left(-1).replace("'","''");
+    cadena += "' and diario!='";
+    cadena += diario_apertura();
+    cadena += "'";
+    QSqlQuery query = ejecutar(cadena);
+
+    if ( (query.isActive()) && (query.first()) )
+    {
+        return (query.value(0).toInt()==0);
+    }
+
+    return false;
 }
 
 // 
@@ -22408,6 +22430,9 @@ void basedatos::actualizade4002()
     cadena+="endpoint_verifactu varchar(255) default ''";
     ejecutar(cadena);
 
+    cadena="alter table configuracion add column ";
+    cadena+="url_val_QR varchar(255) default ''";
+    ejecutar(cadena);
 
     cadena="alter table facturas add column ";
     cadena+="huella_anterior varchar(254) default ''";
@@ -28549,6 +28574,19 @@ bool basedatos::es_euro_tipo_doc(QString codigo)
   return false;
 }
 
+bool basedatos::es_verifactu_tipo_doc(QString codigo)
+{
+    QString cadquery="select verifactu from tipos_doc where codigo='";
+    cadquery+=codigo;
+    cadquery+="'";
+    QSqlQuery query = ejecutar(cadquery);
+    if ( (query.isActive()) && (query.first()) )
+      {
+       return (query.value(0).toBool());
+      }
+    return false;
+}
+
 void basedatos::msjs_tipo_doc(QString codigo,
                                QString *documento,
                                QString *cantidad,
@@ -32330,20 +32368,20 @@ QSqlQuery basedatos::consulta_conciliacion_ci_tabla(QString ejercicio)
 QSqlQuery basedatos::config_sif_verifactu()
 {
     QString cad="select sif_nif, sif_nombre_razon, sif_nombre_sif, sif_id_sistema_informatico,sif_numero_instalacion, "
-                "sif_tipo_uso_verifactu, sif_posible_multi_ot, sif_multi_ot, endpoint_verifactu from configuracion";
+                "sif_tipo_uso_verifactu, sif_posible_multi_ot, sif_multi_ot, endpoint_verifactu, url_val_QR from configuracion";
 
     return ejecutar(cad);
 }
 
 void basedatos::actualiza_config_sif_verifactu(QString sif_nif, QString sif_nombre_razon, QString sif_nombre_sif, QString sif_id_sistema_informatico,
                                                QString sif_numero_instalacion, bool sif_tipo_uso_verifactu,
-                                               bool sif_posible_multi_ot, bool sif_multi_ot, QString endpoint_verifactu)
+                                               bool sif_posible_multi_ot, bool sif_multi_ot, QString endpoint_verifactu, QString url_val_QR)
 {
     QSqlQuery query;
     query.prepare("update configuracion set sif_nif= :sif_nif, sif_nombre_razon=:sif_nombre_razon  ,sif_nombre_sif= :sif_nombre_sif, "
                   "sif_id_sistema_informatico= :sif_id_sistema_informatico, sif_numero_instalacion= :sif_numero_instalacion, "
                   "sif_tipo_uso_verifactu= :sif_tipo_uso_verifactu, sif_posible_multi_ot= :sif_posible_multi_ot, "
-                  "sif_multi_ot= :sif_multi_ot, endpoint_verifactu= :endpoint_verifactu");
+                  "sif_multi_ot= :sif_multi_ot, endpoint_verifactu= :endpoint_verifactu, url_val_QR= :url_val_QR");
     query.bindValue(":sif_nif",sif_nif);
     query.bindValue(":sif_nombre_sif",sif_nombre_sif);
     query.bindValue(":sif_nombre_razon",sif_nombre_razon);
@@ -32353,6 +32391,18 @@ void basedatos::actualiza_config_sif_verifactu(QString sif_nif, QString sif_nomb
     query.bindValue(":sif_posible_multi_ot",sif_posible_multi_ot);
     query.bindValue(":sif_multi_ot",sif_multi_ot);
     query.bindValue(":endpoint_verifactu",endpoint_verifactu);
+    query.bindValue(":url_val_QR",url_val_QR);
     query=ejecuta(std::move(query));
+}
+
+QString basedatos::url_val_QR()
+{
+    QString cad="select url_val_QR from configuracion";
+    QSqlQuery query = ejecutar(cad);
+    if ( (query.isActive()) && (query.first()) )
+    {
+       return query.value(0).toString();
+    }
+    return QString();
 }
 

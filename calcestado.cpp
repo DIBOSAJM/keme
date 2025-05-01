@@ -277,9 +277,9 @@ void calcestado::cargaestado( QString titulo )
                     condesglosectas=true;
                     ui.desgloselabel->setText("DETALLE CUENTAS");
                    }
-                ui.Ejercicio2comboBox->setEnabled(false);
-                ui.ejercicio2textLabel->setEnabled(false);
-                ui.fechas_ej2_groupBox->setEnabled(false);
+                //ui.Ejercicio2comboBox->setEnabled(false);
+                //ui.ejercicio2textLabel->setEnabled(false);
+                //ui.fechas_ej2_groupBox->setEnabled(false);
                }
                else
                     {
@@ -1114,6 +1114,13 @@ void calcestado::cargarinfo()
             auxiliares2 << q.value(0).toString();
             saldos2 << q.value(1).toDouble();
           }
+    if (condesglosectas || condesglose) {
+        auxiliares2ejercicios.clear();
+        auxiliares2ejercicios = auxiliares + auxiliares2;
+        auxiliares2ejercicios.removeDuplicates();
+        auxiliares2ejercicios.sort();
+
+    }
    } // fin ejercicio 2
 
     // cargamos saldos mensuales si procede
@@ -2565,7 +2572,7 @@ void calcestado::imprime()
 
 void calcestado::copia()
 {
-   if (condesglose) { copia2(); return; }
+   if (condesglose || condesglosectas) { copia2(); return; }
 
    QClipboard *cb = QApplication::clipboard();
    QString global;
@@ -3266,7 +3273,7 @@ void calcestado::generalatex2()
 void calcestado::copia2()
 {
     if (auxiliares.count()==0) calculaestado();
-    QString ejercicio1="";
+    QString ejercicio1, ejercicio2;
     QString parte1="";
     QString parte2="";
     QString observaciones;
@@ -3283,6 +3290,7 @@ void calcestado::copia2()
            parte1=query.value(0).toString();
 	   parte2=query.value(1).toString();
 	   ejercicio1=query.value(2).toString();
+       if (ui.Ejercicio2comboBox->currentIndex()>0) ejercicio2=query.value(3).toString();
        // estadosmedios=query.value(4).toBool();
 	   observaciones=query.value(8).toString();
            analitica=query.value(9).toBool();
@@ -3292,6 +3300,7 @@ void calcestado::copia2()
            despie=query.value(15).toString();
        } else return;
 
+    bool segundo_ejercicio=(ui.Ejercicio2comboBox->currentIndex()>0 && !ui.desglose_mes_checkBox->isChecked());
 
     QProgressDialog progreso(tr("Generando Informe ..."), 0, 0, 3);
     progreso.setWindowTitle("Estados Contables");
@@ -3317,7 +3326,7 @@ void calcestado::copia2()
          global+=ci;
          global+="\n";
          QString codigo=ci;
-         QString cadena,descripcion;
+         QString descripcion;
          QString qnivel=0;
 
 
@@ -3359,35 +3368,50 @@ void calcestado::copia2()
     // ---------------------------------------------------------------------------------------
 
     global+= parte1;
-    global+= "\t";;
+    global+= "\t";
     global+=tr("DETALLE");
+    if (segundo_ejercicio) {global+= "\t"; global+=tr("DETALLE2");}
     global+= "\t";
     global+= tr("CUENTAS");
+    if (segundo_ejercicio) {global+= "\t"; global+=tr("CUENTAS2");}
     global+= "\t";
     global+=ejercicio1;
+    if (segundo_ejercicio) {global+= "\t"; global+=ejercicio2;}
     global+="\n";
     
     QSqlQuery query2 = basedatos::instancia()->select6Estadostituloparte1ordernodo( ui.titulolabel->text() , true);
     int veces;
     if ( query2.isActive() ) {
-             while ( query2.next() ) {
-	       if (query2.value(0).toString().contains("LINEA")>0)
-		 {
-		   continue;
-	         }
+          while ( query2.next() ) {
+           if (query2.value(0).toString().contains("LINEA")>0) continue;
                // ----------------------------------------------------------------------
                if (ui.importescheckBox->isChecked()
                     && query2.value(2).toDouble()<0.0001 
                     && query2.value(2).toDouble()>-0.0001
+                       && segundo_ejercicio
+                       && query2.value(3).toDouble()<0.0001
+                       && query2.value(3).toDouble()>-0.0001
                     ) continue;
-	       for (veces=1;veces<=query2.value(0).toString().count('.');veces++)
-		   global+= "  ";
+               if (ui.importescheckBox->isChecked()
+                    && query2.value(2).toDouble()<0.0001
+                    && query2.value(2).toDouble()>-0.0001
+                       && !segundo_ejercicio
+                    ) continue;
+           for (veces=1;veces<=query2.value(0).toString().count('.');veces++) global+= "  ";
 	       global+=filtracad(query2.value(1).toString());
-               global+= "\t";
+           global+= "\t\t";
+           if (segundo_ejercicio) global+= "\t";
  	       global+= "\t";
- 	       global+= "\t";
-	       if (query2.value(2).toDouble()>0.001 || query2.value(2).toDouble()<-0.001)
+           if (segundo_ejercicio) global+= "\t";
+           if (query2.value(2).toDouble()>0.001 || query2.value(2).toDouble()<-0.001 ||
+                   (segundo_ejercicio && (query2.value(3).toDouble()>0.001 || query2.value(3).toDouble()<-0.001)) ) {
 	             global+=formateanumero(query2.value(2).toDouble(),comadecimal,decimales);
+                 if (segundo_ejercicio) {
+                   global+= "\t";
+                   global+=formateanumero(query2.value(3).toDouble(),comadecimal,decimales);
+                 }
+
+           }
            // -------------------------------------------------------------------------------------------
            if (ui.desglose_mes_checkBox->isChecked())
              {
@@ -3427,8 +3451,19 @@ void calcestado::copia2()
                bool acotado=ui.fechas_ej1_groupBox->isChecked();
                QDate fecha1=ui.ini_ej1_dateEdit->date();
                QDate fecha2=ui.fin_ej1_dateEdit->date();
+               QString ejercicio2;
+               bool acotado2=false;
+               QDate fecha1_2;
+               QDate fecha2_2;
+               if (segundo_ejercicio) {
+                   ejercicio2=ui.Ejercicio2comboBox->currentText();
+                   acotado2=ui.fechas_ej2_groupBox->isChecked();
+                   fecha1_2=ui.ini_ej2_dateEdit->date();
+                   fecha2_2=ui.fin_ej2_dateEdit->date();
+               }
                bool estadosmedios=consaldosmedios;
-               double valor;
+               double valor=0;
+               double valor2=0;
                QString extract;
                while (indice<cadpru.length())
                    {
@@ -3443,15 +3478,21 @@ void calcestado::copia2()
                         // habría que calcular el valor de la cuenta
                         // QMessageBox::warning( this, tr("Estados Contables"),extract);
                         // -------------------------------------------------------------------------------------
-                        if (extract.contains(':')==1) valor=cuentaespec(extract,ejercicio,acotado,fecha1,fecha2);
-                           else
+                        if (extract.contains(':')==1) {
+                            valor=cuentaespec(extract,ejercicio,acotado,fecha1,fecha2);
+                            if (segundo_ejercicio) valor2=cuentaespec(extract,ejercicio2,acotado2,fecha1_2,fecha2_2);
+                        }
+                         else
 	                      {
-                            if (!estadosmedios) valor=saldo_cuenta_lista_ej1(extract);
-	                         else
+                            if (!estadosmedios) {
+                                valor=saldo_cuenta_lista_ej1(extract);
+                                if (segundo_ejercicio) valor2=saldo_cuenta_lista_ej2(extract);
+                            }
+                             else
 		                      valor=calculamediacuenta(extract,true);
 	                      }
 	                // if (valor>-0.004 && valor < 0.005) continue;
-                        if (inicio-1>=0 && cadpru[inicio-1]=='-') valor=-1*valor;
+                        if (inicio-1>=0 && cadpru[inicio-1]=='-') {valor=-1*valor; valor2=-1*valor2;}
                         // imprimimos cadena formada por código de cuenta y descripción
                         bool positivo=false;
                         bool negativo=false;
@@ -3459,14 +3500,19 @@ void calcestado::copia2()
                         negativo=extract.contains('-');
                         //extract.remove('+');
                         //extract.remove('-');
-     	                if (valor>0.001 || valor<-0.001)
+                        if (valor>0.001 || valor<-0.001 || valor2>0.001 || valor2<-0.001)
                            {
                             global+=extract;
                             global+=" ";
                             global+= descripcioncuenta(extract);
                             global+= "\t\t";
+                            if (segundo_ejercicio) global+="\t";
                             global+=formateanumero(valor,comadecimal,decimales);
                             global+= "\t";
+                            if (segundo_ejercicio) {
+                                global+=formateanumero(valor2,comadecimal,decimales);
+                                global+= "\t";
+                            }
 
                             // -----------------------------------------------------------------------------
                             // repetimos esto para cada mes
@@ -3475,7 +3521,7 @@ void calcestado::copia2()
                            double m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12;
                            m1=m2=m3=m4=m5=m6=m7=m8=m9=m10=m11=m12=0;
                            int anyo=inicioejercicio(ui.Ejercicio1comboBox->currentText()).year();
-                            if (ui.desglose_mes_checkBox->isChecked())
+                           if (ui.desglose_mes_checkBox->isChecked())
                             {
 
                             finicio.setDate(anyo,1,1);
@@ -3601,29 +3647,36 @@ void calcestado::copia2()
                             }
                             // -----------------------------------------------------------------------------
                             global+= "\n";
+
                             // seguimos aquí con el desglose de todas las cuentas
                             QSqlQuery q;
                             if (!cod_longitud_variable())
                                {
-                                q = basedatos::instancia()->selectCodigoplancontablecodigolength(extract);
+                                if (condesglose) q = basedatos::instancia()->selectCodigoplancontablecodigolength(extract);
                                }
                                else
                                    {
-                                    q = basedatos::instancia()->selectCodigoplancontablecodigoauxiliar(extract);
+                                    if (condesglose) q = basedatos::instancia()->selectCodigoplancontablecodigoauxiliar(extract);
                                    }
-                            while (q.next())
+                            if (condesglose)
+                              while (q.next())
                                  {
                                    QString extract2=q.value(0).toString();
                                    QString extract2sig=extract2;
                                    if (positivo) extract2sig.append('+');
                                    if (negativo) extract2sig.append('-');
-                                   if (extract.contains(':')==1) valor=cuentaespec_aux(extract2sig,ejercicio,
-                                                                                  acotado,fecha1,fecha2);
+                                   if (extract.contains(':')==1) {
+                                       valor=cuentaespec_aux(extract2sig,ejercicio,acotado,fecha1,fecha2);
+                                       if (segundo_ejercicio) valor2=cuentaespec_aux(extract2sig,ejercicio2,acotado2,fecha1_2,fecha2_2);
+                                   }
                                    else
                                      {
-                                     if (!estadosmedios) valor=saldo_cuenta_lista_ej1(extract2sig);
+                                     if (!estadosmedios) {
+                                         valor=saldo_cuenta_lista_ej1(extract2sig);
+                                         if (segundo_ejercicio) valor2=saldo_cuenta_lista_ej2(extract2sig);
+                                      }
                                       else
-                                        valor=calculamediacuenta_aux(extract2sig,true);
+                                        valor=calculamediacuenta_aux(extract2sig,true);                                        
                                      }
                                    // --------------------------------------------------------------------------
                                    if (ui.desglose_mes_checkBox->isChecked())
@@ -3722,12 +3775,13 @@ void calcestado::copia2()
                                           m12=saldo_cuenta_lista_mes(extract2sig,12);
 
                                    }
-                                   if (valor>0.001 || valor <-0.001)
+                                   if (valor>0.001 || valor <-0.001 || valor2>0.001 || valor2 < -0.001)
                                        {
                                          global += extract2 + " " +
                                              filtracad(descripcioncuenta(extract2)) + "\t";
-                                         if (inicio-1>=0 && cadpru[inicio-1]=='-') valor=-1*valor;
+                                         if (inicio-1>=0 && cadpru[inicio-1]=='-') {valor=-1*valor; valor2=-1*valor2;}
                                          global += formateanumerosep(valor,comadecimal,decimales) + "\t ";
+                                         if (segundo_ejercicio) global += formateanumerosep(valor2,comadecimal,decimales) + "\t ";
                                          // ahora todos los meses
                                          if (ui.desglose_mes_checkBox->isChecked())
                                          {
@@ -3781,10 +3835,13 @@ void calcestado::copia2()
     global+= parte2;
     global+= "\t";
     global+=tr("DETALLE");
+    if (segundo_ejercicio) {global+= "\t"; global+=tr("DETALLE2");}
     global+="\t";
     global+=tr("CUENTAS");
+    if (segundo_ejercicio) {global+= "\t"; global+=tr("CUENTAS2");}
     global+="\t";
     global+= ejercicio1;
+    if (segundo_ejercicio) {global+= "\t"; global+=ejercicio2;}
     global+="\n";
     
     QSqlQuery query2 = basedatos::instancia()->select6Estadostituloparte1ordernodo( ui.titulolabel->text() , false);
@@ -3796,18 +3853,34 @@ void calcestado::copia2()
               continue;
 	         }
                // ----------------------------------------------------------------------
-               if (ui.importescheckBox->isChecked()
+             if (ui.importescheckBox->isChecked()
                     && query2.value(2).toDouble()<0.0001 
                     && query2.value(2).toDouble()>-0.0001
+                    && segundo_ejercicio
+                       && query2.value(3).toDouble()<0.0001
+                       && query2.value(3).toDouble()>-0.0001
                    ) continue;
+             if (ui.importescheckBox->isChecked()
+                  && query2.value(2).toDouble()<0.0001
+                  && query2.value(2).toDouble()>-0.0001
+                  && !segundo_ejercicio
+                 ) continue;
+
 	       for (veces=1;veces<=query2.value(0).toString().count('.');veces++)
 		   global+="  ";
 	       global+=filtracad(query2.value(1).toString());
-               global+="\t";
+           global+="\t\t";
+           if (segundo_ejercicio) global+="\t";
  	       global+="\t";
- 	       global+="\t";
-	       if (query2.value(2).toDouble()>0.001 || query2.value(2).toDouble()<-0.001)
+           if (segundo_ejercicio) global+="\t";
+           if (query2.value(2).toDouble()>0.001 || query2.value(2).toDouble()<-0.001 ||
+                   (segundo_ejercicio && (query2.value(3).toDouble()>0.001 || query2.value(3).toDouble()<-0.001))) {
 	             global+=formateanumero(query2.value(2).toDouble(),comadecimal,decimales);
+                 if (segundo_ejercicio) {
+                    global+= "\t";
+                    global+=formateanumero(query2.value(3).toDouble(),comadecimal,decimales);
+                 }
+           }
            // -----------------------------------------------------------------------------------------
            if (ui.desglose_mes_checkBox->isChecked())
              {
@@ -3848,8 +3921,12 @@ void calcestado::copia2()
                bool acotado=ui.fechas_ej1_groupBox->isChecked();
                QDate fecha1=ui.ini_ej1_dateEdit->date();
                QDate fecha2=ui.fin_ej1_dateEdit->date();
+               bool acotado2=ui.fechas_ej2_groupBox->isChecked();
+               QDate fecha1_2=ui.ini_ej2_dateEdit->date();
+               QDate fecha2_2=ui.fin_ej2_dateEdit->date();
                bool estadosmedios=consaldosmedios;
-               double valor;
+               double valor=0;
+               double valor2=0;
                QString extract;
                while (indice<cadpru.length())
                    {
@@ -3863,13 +3940,19 @@ void calcestado::copia2()
                         // habría que calcular el valor de la cuenta
                         // QMessageBox::warning( this, tr("Estados Contables"),extract);
                         // -------------------------------------------------------------------------------------
-                        if (extract.contains(':')==1) valor=cuentaespec(extract,ejercicio,
+                        if (extract.contains(':')==1) {
+                            valor=cuentaespec(extract,ejercicio,
                                                                     acotado,fecha1,fecha2);
-                           else
+                            if (segundo_ejercicio) valor2=cuentaespec(extract,ejercicio2,acotado2,fecha1_2,fecha2_2);
+                          }
+                        else
 	                      {
-                               if (!estadosmedios) valor=saldo_cuenta_lista_ej1(extract);
-	                         else
-                                      valor=calculamediacuenta(extract,true);
+                               if (!estadosmedios) {
+                                   valor=saldo_cuenta_lista_ej1(extract);
+                                   if (segundo_ejercicio) valor2=saldo_cuenta_lista_ej2(extract);
+                               }
+                                else
+                                    valor=calculamediacuenta(extract,true);
 	                      }
                         if (inicio-1>=0 && cadpru[inicio-1]=='-') valor=-1*valor;
                         bool positivo=false;
@@ -3878,14 +3961,19 @@ void calcestado::copia2()
                         negativo=extract.contains('-');
                         //extract.remove('+');
                         //extract.remove('-');
-     	                if (valor>0.001 || valor<-0.001)
+                        if (valor>0.001 || valor<-0.001 || valor2>0.001 || valor2<-0.001)
                            {
                             global+=  extract;
                             global+= " ";
                             global+=  descripcioncuenta(extract);
                             global+= "\t\t";
+                            if (segundo_ejercicio) global+="\t";
                             global+= formateanumero(valor,comadecimal,decimales);
                             global+= "\t";
+                            if (segundo_ejercicio) {
+                                global+=formateanumero(valor2,comadecimal,decimales);
+                                global+= "\t";
+                            }
                             // -----------------------------------------------------------------------------
 
                             // -----------------------------------------------------------------------------
@@ -4036,23 +4124,30 @@ void calcestado::copia2()
                             QSqlQuery q;
                             if (!cod_longitud_variable())
                                {
-                                q = basedatos::instancia()->selectCodigoplancontablecodigolength(extract);
+                                if (condesglose) q = basedatos::instancia()->selectCodigoplancontablecodigolength(extract);
                                }
                                 else
                                      {
-                                   q = basedatos::instancia()->selectCodigoplancontablecodigoauxiliar(extract);
+                                       if (condesglose) q = basedatos::instancia()->selectCodigoplancontablecodigoauxiliar(extract);
                                      }
-                            while (q.next())
+                            if (condesglose)
+                              while (q.next())
                                  {
                                    QString extract2=q.value(0).toString();
                                    QString extract2sig=extract2;
                                    if (positivo) extract2sig.append('+');
                                    if (negativo) extract2sig.append('-');
-                                   if (extract.contains(':')==1) valor=cuentaespec_aux(extract2sig,ejercicio,
+                                   if (extract.contains(':')==1) {
+                                       valor=cuentaespec_aux(extract2sig,ejercicio,
                                                                         acotado,fecha1,fecha2);
+                                    if (segundo_ejercicio) valor2=cuentaespec_aux(extract2sig,ejercicio2,acotado2,fecha1_2,fecha2_2);
+                                   }
                                    else
                                      {
-                                      if (!estadosmedios) valor=saldo_cuenta_lista_ej1(extract2sig);
+                                      if (!estadosmedios) {
+                                          valor=saldo_cuenta_lista_ej1(extract2sig);
+                                          if (segundo_ejercicio) valor2=saldo_cuenta_lista_ej2(extract2sig);
+                                      }
                                        else
                                          valor=calculamediacuenta_aux(extract2sig,true);
                                      }
@@ -4156,12 +4251,13 @@ void calcestado::copia2()
                                           m12=saldo_cuenta_lista_mes(extract2sig,12);
 
                                    }
-                                   if (valor>0.001 || valor <-0.001)
+                                   if (valor>0.001 || valor <-0.001 || valor2>0.001 || valor2 < -0.001)
                                        {
                                          global += extract2 + " " +
                                              filtracad(descripcioncuenta(extract2)) + "\t";
-                                         if (inicio-1>=0 && cadpru[inicio-1]=='-') valor=-1*valor;
+                                         if (inicio-1>=0 && cadpru[inicio-1]=='-') { valor=-1*valor; valor2=-1*valor2;}
                                          global += formateanumerosep(valor,comadecimal,decimales) + "\t ";
+                                         if (segundo_ejercicio) global += formateanumerosep(valor2,comadecimal,decimales) + "\t ";
                                          // ahora todos los meses
                                          if (ui.desglose_mes_checkBox->isChecked())
                                          {
