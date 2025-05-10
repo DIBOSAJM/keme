@@ -25,6 +25,7 @@ private:
     QString pyg_pymes_oficial;
     QString balance_situacion(QString anyo_cierre, int pos);
     QString pyg(QString anyo_cierre, int pos);
+    QString idEmpresaTupla();
     QString ecpn(QString anyo_actual, QString anyo_anterior);
     QString varpat_instante(int fila, QString etiqueta, QString periodo, patrimonio *p);
     QString dimensiones_ecpn(QString anyo_cierre_actual, QString anyo_cierre_anterior,

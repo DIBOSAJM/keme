@@ -144,8 +144,13 @@ QString xbrlpymes::generar_contenido()
  /*  "<xbrli:xbrl xmlns:pgc07pymes=\"http://www.icac.meh.es/es/fr/gaap/pgc07/modelo-pymes/2009-01-01\" xmlns:xbrldi=\"http://xbrl.org/2006/xbrldi\" xmlns:dgi-gen-bas=\"http://www.xbrl.org.es/es/2008/dgi/gp/gen-bas/2011-01-30\" xmlns:pgc07m-roles=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/roles/2009-01-01\" xmlns:pgc07mp-d-sf=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/SituacionFiscal/Dimension/2009-01-01\" xmlns:pgc-07-c-bs=\"http://www.icac.meh.es/es/fr/gaap/pgc07/comun-base/2009-01-01\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:pgc07mp-apdo12=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado12/OperacionesPartesVinculadas/2009-01-01\" xmlns:pgc07mp-apdo3=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado3/AplicacionResultados/2009-01-01\" xmlns:pgc07cbs-dvs=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/comunbase/EstadoTotalCambiosPatrimonioNeto/VariacionSaldo/Dimension/2009-01-01\" xmlns:pgc07mp-apdo2=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado2/BasesPresentacionCuentasAnuales/2009-01-01\" xmlns:pgc07mp-apdo4=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado4/NormasRegistroValoracion/2009-01-01\" xmlns:iso4217=\"http://www.xbrl.org/2003/iso4217\" xmlns:pgc-07-ref=\"http://www.icac.meh.es/es/fr/gaap/pgc07/referenceParts/2009-01-01\" xmlns:pgc07cbs-dpn=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/comunbase/EstadoTotalCambiosPatrimonioNeto/PatrimonioNeto/Dimension/2009-01-01\" xmlns:dgi-gen-ex=\"http://www.xbrl.org.es/es/2008/dgi/gp/gen-ex/2011-01-30\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dgi-rel=\"http://www.xbrl.org.es/es/2008/dgi/gp/rel/2011-01-30\" xmlns:pgc07mp-apdo13=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado13/OtraInformacion/2009-01-01\" xmlns:pgc07mc-apdo0=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/apartado0/IdentificacionGeneral/2009-01-01\" xmlns:pgc07mp-apdo7=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado7/PasivosFinancieros/2009-01-01\" xmlns:dgi-lc-int=\"http://www.xbrl.org.es/es/2008/dgi/gp/lc-int/2011-01-30\" xmlns:pgc07p-etcpn=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/pymes/patrimonioNeto/B/EstadoTotalCambiosPatrimonioNeto/2009-01-01\" xmlns:pgc07mp-apdo11=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado11/SubvencionesDonancionesLegados/2009-01-01\" xmlns:pgc07mp-apdo9=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado9/SituacionFiscal/2009-01-01\" xmlns:link=\"http://www.xbrl.org/2003/linkbase\" xmlns:dgi-eco-bas=\"http://www.xbrl.org.es/es/2008/dgi/gp/eco-bas/2011-01-30\" xmlns:dgi-dat-inf=\"http://www.xbrl.org.es/es/2008/dgi/gp/dat-inf/2011-01-30\" xmlns:pgc07d-aplaz=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/AplazamientosPagoPagosRealizadosPendientes/Dimension/2009-01-01\" xmlns:pgc07d-reclsf=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/ReclasificacionInstrumentosFinancieros/Dimension/2009-01-01\" xmlns:pgc07mp-rsm=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/resumen/2009-01-01\" xmlns:pgc07m-d-pv=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/PartesVinculadas/Dimension/2009-01-01\" xmlns:pgc-07-p-pyg=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/pymes/PerdidasGanancias/2009-01-01\" xmlns:pgc07mc-bs=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/base/2009-01-01\" xmlns:pgc07ma-apdo15=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado15/AplazamientosPago/2009-01-01\" xmlns:pgc07d-plzven=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/PlazoVencimientoInstrumentosFinancieros/Dimension/2009-01-01\" xmlns:pgc07pm=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/ModeloPymes/2009-01-01\" xmlns:pgc07p=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/pymes/2009-01-01\" xmlns:pgc-07-p=\"http://www.icac.meh.es/es/fr/gaap/pgc07/pymes/2009-01-01\" xmlns:pgc07mp-d-inm=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/InmovilizadoMaterialIntangibleInversionesInmobiliarias/Dimension/2009-01-01\" xmlns:pgc-07-types=\"http://www.icac.meh.es/es/fr/gaap/pgc07/types/2009-01-01\" xmlns:xbrli=\"http://www.xbrl.org/2003/instance\" xmlns:pgc07mp-apdo5=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado5/InmovilizadoMaterialIntangibleInversionesInmobiliarias/2009-01-01\" xmlns:dgi-est-gen=\"http://www.xbrl.org.es/es/2008/dgi/gp/est-gen/2011-01-30\" xmlns:pgc07mp-apdo0=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado0/IdentificacionGeneral/2009-01-01\" xmlns:pgc07mc-ap=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/abreviadoPymes/2009-01-01\" xmlns:pgc07d-clase=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/ClasesInstrumentosFinancieros/Dimension/2009-01-01\" xmlns:pgc07m-d-cp=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/CategoriasProfesionales/Dimension/2009-01-01\" xmlns:pgc07mp-apdo8=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado8/FondosPropios/2009-01-01\" xmlns:pgc-07-roles=\"http://www.icac.meh.es/es/fr/gaap/pgc07/roles/2009-01-01\" xmlns:pgc07p-d-vs=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/pymes/EstadoTotalCambiosPatrimonioNeto/VariacionSaldo/Dimension/2009-01-01\" xmlns:pgc07p-d-pn=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/pymes/EstadoTotalCambiosPatrimonioNeto/PatrimonioNeto/Dimension/2009-01-01\" xmlns:dgi-lc-es=\"http://www.xbrl.org.es/es/2008/dgi/gp/lc-es/2011-01-30\" xmlns:xbrldt=\"http://xbrl.org/2005/xbrldt\" xmlns:dgi-types=\"http://www.xbrl.org.es/es/2008/dgi/gp/types/2011-01-30\" xmlns:pgc07mc-na=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/normalAbreviado/2009-01-01\" xmlns:pgc07mp-apdo14=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado14/InformacionMedioAmbiente/2009-01-01\" xmlns:pgc-07-p-bal=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/pymes/balance/2009-01-01\" xmlns:dgi-cnae-09=\"http://www.xbrl.org.es/es/2008/dgi/gp/lc-cnae-2009/2011-01-30\" xmlns:ref=\"http://www.xbrl.org/2004/ref\" xmlns:pgc-07-c-ap=\"http://www.icac.meh.es/es/fr/gaap/pgc07/comun-abreviadopymes/2009-01-01\" xmlns:pgc07mp-apdo10=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado10/IngresosGastos/2009-01-01\" xmlns:pgc07mp-apdo6=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado6/ActivosFinancieros/2009-01-01\" xmlns:pgc07mp=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/2009-01-01\">\n"
    " <link:schemaRef xlink:type=\"simple\" xlink:href=\"http://www.icac.meh.es/taxonomia/pgc-2010-01-01/pgc07-pymes-completo.xsd\"/>\n";
 */
+/*
    "<xbrli:xbrl xmlns:pgc07p=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/pymes/2018-01-01\" xmlns:pgc07mp=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/2018-01-01\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:pgc07m-roles=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/roles/2018-01-01\" xmlns:pgc-07-c-bs=\"http://www.icac.meh.es/es/fr/gaap/pgc07/comun-base/2018-01-01\" xmlns:iso4217=\"http://www.xbrl.org/2003/iso4217\" xmlns:dgi-gen-ex=\"http://www.xbrl.org.es/es/2008/dgi/gp/gen-ex/2016-01-01\" xmlns:pgc-07-ref=\"http://www.icac.meh.es/es/fr/gaap/pgc07/referenceParts/2018-01-01\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dgi-rel=\"http://www.xbrl.org.es/es/2008/dgi/gp/rel/2016-01-01\" xmlns:dgi-lc-int=\"http://www.xbrl.org.es/es/2008/dgi/gp/lc-int/2016-01-01\" xmlns:pgc07mc-apdo0=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/apartado0/IdentificacionGeneral/2018-01-01\" xmlns:link=\"http://www.xbrl.org/2003/linkbase\" xmlns:dgi-eco-bas=\"http://www.xbrl.org.es/es/2008/dgi/gp/eco-bas/2016-01-01\" xmlns:dgi-dat-inf=\"http://www.xbrl.org.es/es/2008/dgi/gp/dat-inf/2016-01-01\" xmlns:pgc-07-p-pyg=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/pymes/PerdidasGanancias/2018-01-01\" xmlns:pgc07d-reclsf=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/ReclasificacionInstrumentosFinancieros/Dimension/2018-01-01\" xmlns:pgc07mc-bs=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/base/2018-01-01\" xmlns:pgc07m-d-pv=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/PartesVinculadas/Dimension/2018-01-01\" xmlns:dgi-est-gen=\"http://www.xbrl.org.es/es/2008/dgi/gp/est-gen/2016-01-01\" xmlns:xbrli=\"http://www.xbrl.org/2003/instance\" xmlns:pgc07d-plzven=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/PlazoVencimientoInstrumentosFinancieros/Dimension/2018-01-01\" xmlns:pgc-07-p=\"http://www.icac.meh.es/es/fr/gaap/pgc07/pymes/2018-01-01\" xmlns:dgi-lc-es=\"http://www.xbrl.org.es/es/2008/dgi/gp/lc-es/2016-01-01\" xmlns:pgc07mp-apdo0=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado0/IdentificacionGeneral/2018-01-01\" xmlns:pgc07mc-ap=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/abreviadoPymes/2018-01-01\" xmlns:pgc-07-types=\"http://www.icac.meh.es/es/fr/gaap/pgc07/types/2018-01-01\" xmlns:pgc07d-clase=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/ClasesInstrumentosFinancieros/Dimension/2018-01-01\" xmlns:dgi-types=\"http://www.xbrl.org.es/es/2008/dgi/gp/types/2016-01-01\" xmlns:xbrldt=\"http://xbrl.org/2005/xbrldt\" xmlns:pgc-07-roles=\"http://www.icac.meh.es/es/fr/gaap/pgc07/roles/2018-01-01\" xmlns:dgi-cnae-09=\"http://www.xbrl.org.es/es/2008/dgi/gp/lc-cnae-2009/2016-01-01\" xmlns:ref=\"http://www.xbrl.org/2004/ref\" xmlns:pgc-07-p-bal=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/pymes/balance/2018-01-01\" xmlns:dgi-gen-bas=\"http://www.xbrl.org.es/es/2008/dgi/gp/gen-bas/2016-01-01\" xmlns:pgc-07-c-ap=\"http://www.icac.meh.es/es/fr/gaap/pgc07/comun-abreviadopymes/2018-01-01\">"
    "<link:schemaRef xlink:type=\"simple\" xlink:href=\"http://www.icac.meh.es/taxonomia/pgc-2018-01-01/pgc07-pymes.xsd\" />";
+*/
+
+   "<xbrli:xbrl xmlns:pgc07p=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/pymes/2024-01-01\" xmlns:pgc-07-p-bal=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/pymes/balance/2024-01-01\" xmlns:dgi-gen-bas=\"http://www.xbrl.org.es/es/2008/dgi/gp/gen-bas/2024-01-01\" xmlns:pgc-07-c-ap=\"http://www.icac.meh.es/es/fr/gaap/pgc07/comun-abreviadopymes/2024-01-01\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:pgc07mp=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/2024-01-01\" xmlns:iso4217=\"http://www.xbrl.org/2003/iso4217\" xmlns:pgc07m-roles=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/roles/2024-01-01\" xmlns:pgc-07-c-bs=\"http://www.icac.meh.es/es/fr/gaap/pgc07/comun-base/2024-01-01\" xmlns:dgi-gen-ex=\"http://www.xbrl.org.es/es/2008/dgi/gp/gen-ex/2024-01-01\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:pgc-07-ref=\"http://www.icac.meh.es/es/fr/gaap/pgc07/referenceParts/2024-01-01\" xmlns:dgi-rel=\"http://www.xbrl.org.es/es/2008/dgi/gp/rel/2024-01-01\" xmlns:dgi-lc-int=\"http://www.xbrl.org.es/es/2008/dgi/gp/lc-int/2024-01-01\" xmlns:pgc07mc-apdo0=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/apartado0/IdentificacionGeneral/2024-01-01\" xmlns:link=\"http://www.xbrl.org/2003/linkbase\" xmlns:dgi-eco-bas=\"http://www.xbrl.org.es/es/2008/dgi/gp/eco-bas/2024-01-01\" xmlns:dgi-dat-inf=\"http://www.xbrl.org.es/es/2008/dgi/gp/dat-inf/2024-01-01\" xmlns:xbrli=\"http://www.xbrl.org/2003/instance\" xmlns:pgc-07-p-pyg=\"http://www.icac.meh.es/es/fr/gaap/pgc07/cuentas/pymes/PerdidasGanancias/2024-01-01\" xmlns:pgc07d-reclsf=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/ReclasificacionInstrumentosFinancieros/Dimension/2024-01-01\" xmlns:pgc07m-d-pv=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/PartesVinculadas/Dimension/2024-01-01\" xmlns:dgi-est-gen=\"http://www.xbrl.org.es/es/2008/dgi/gp/est-gen/2024-01-01\" xmlns:pgc07mc-bs=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/base/2024-01-01\" xmlns:pgc07d-plzven=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/PlazoVencimientoInstrumentosFinancieros/Dimension/2024-01-01\" xmlns:xbrldt=\"http://xbrl.org/2005/xbrldt\" xmlns:pgc-07-p=\"http://www.icac.meh.es/es/fr/gaap/pgc07/pymes/2024-01-01\" xmlns:pgc-07-types=\"http://www.icac.meh.es/es/fr/gaap/pgc07/types/2024-01-01\" xmlns:dgi-lc-es=\"http://www.xbrl.org.es/es/2008/dgi/gp/lc-es/2024-01-01\" xmlns:pgc07d-clase=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/ClasesInstrumentosFinancieros/Dimension/2024-01-01\" xmlns:pgc07mp-apdo0=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/pymes/apartado0/IdentificacionGeneral/2024-01-01\" xmlns:dgi-types=\"http://www.xbrl.org.es/es/2008/dgi/gp/types/2024-01-01\" xmlns:pgc07mc-ap=\"http://www.icac.meh.es/es/fr/gaap/pgc07/memoria/comun/abreviadoPymes/2024-01-01\" xmlns:pgc-07-roles=\"http://www.icac.meh.es/es/fr/gaap/pgc07/roles/2024-01-01\" xmlns:ref=\"http://www.xbrl.org/2004/ref\" xmlns:dgi-cnae-09=\"http://www.xbrl.org.es/es/2008/dgi/gp/lc-cnae-2009/2024-01-01\">"
+   "<link:schemaRef xlink:type=\"simple\" xlink:href=\"https://www.icac.gob.es/sites/default/files/pgc2007/v170/pgc07-pymes.xsd\" />";
 
    QString entity="  <xbrli:entity>\n";
    entity+=       "    <xbrli:identifier scheme=\"http://www.icac.meh.es/xbrl\">";
@@ -161,14 +166,14 @@ QString xbrlpymes::generar_contenido()
                   "  </xbrli:period>\n";
 
 
-   cad_xml+=abrecontex.arg("Y1_"+anyo_cierre_actual+"_Balance");
+   cad_xml+=abrecontex.arg("I.ACTUAL");
    cad_xml+=entity;
    cad_xml+=period.arg(cierre_actual.toString("yyyy-MM-dd"));
    cad_xml+=cierracontex;
 
    if (!anyo_cierre_anterior.isEmpty())
      {
-      cad_xml+=abrecontex.arg("Y1_"+anyo_cierre_anterior+"_Balance");
+      cad_xml+=abrecontex.arg("I.ANTERIOR");
       cad_xml+=entity;
       cad_xml+=period.arg(cierre_anterior.toString("yyyy-MM-dd"));
       cad_xml+=cierracontex;
@@ -179,14 +184,14 @@ QString xbrlpymes::generar_contenido()
                    "    <xbrli:endDate>%2</xbrli:endDate>\n"
                    "  </xbrli:period>\n";
 
-   cad_xml+=abrecontex.arg("Y1_"+anyo_cierre_actual+"_PYG");
+   cad_xml+=abrecontex.arg("D.ACTUAL");
    cad_xml+=entity;
    cad_xml+=period2.arg(apertura_actual.toString("yyyy-MM-dd"),cierre_actual.toString("yyyy-MM-dd"));
    cad_xml+=cierracontex;
 
  if (!anyo_cierre_anterior.isEmpty())
    {
-    cad_xml+=abrecontex.arg("Y1_"+anyo_cierre_anterior+"_PYG");
+    cad_xml+=abrecontex.arg("D.ANTERIOR");
     cad_xml+=entity;
     cad_xml+=period2.arg(apertura_anterior.toString("yyyy-MM-dd"),cierre_anterior.toString("yyyy-MM-dd"));
     cad_xml+=cierracontex;
@@ -216,10 +221,24 @@ QString xbrlpymes::generar_contenido()
   cad_xml+="  <xbrli:measure>iso4217:EUR</xbrli:measure>\n";
   cad_xml+="</xbrli:unit>\n";
 
+
+  cad_xml+="<xbrli:unit id=\"shares\">";
+  cad_xml+="    <xbrli:measure>xbrli:shares</xbrli:measure>";
+  cad_xml+="</xbrli:unit>";
+  cad_xml+="<xbrli:unit id=\"pure\">";
+  cad_xml+="    <xbrli:measure>xbrli:pure</xbrli:measure>";
+  cad_xml+="</xbrli:unit>";
+
+  cad_xml.append(idEmpresaTupla());
   // ---------------------------------------------------------------------------------------
+  /*
   cad_xml+="<pgc-07-c-bs:BalanceSituacionVariable decimals=\"0\" contextRef=\"Y1_";
   cad_xml+=anyo_cierre_actual;
   cad_xml+="_Balance\" unitRef=\"euro\">0</pgc-07-c-bs:BalanceSituacionVariable>\n";
+
+
+
+
 
   if (!anyo_cierre_anterior.isEmpty())
   {
@@ -227,6 +246,7 @@ QString xbrlpymes::generar_contenido()
    cad_xml+=anyo_cierre_anterior;
    cad_xml+="_Balance\" unitRef=\"euro\">0</pgc-07-c-bs:BalanceSituacionVariable>\n";
   }
+*/
 
   // ui->procesolabel->setText(tr("Generando balance de situación ...."));
   ui->progressBar->setValue(3);
@@ -243,10 +263,10 @@ QString xbrlpymes::generar_contenido()
 
   delete(c);
 
-  cad_xml+=balance_situacion(anyo_cierre_actual, 2);
+  cad_xml+=balance_situacion("I.ACTUAL", 2);
 
   if (!anyo_cierre_anterior.isEmpty())
-    cad_xml+=balance_situacion(anyo_cierre_anterior, 3);
+    cad_xml+=balance_situacion("I.ANTERIOR", 3);
 
   calcestado *cc = new calcestado;
   cc->cargaestado(pyg_pymes_oficial);
@@ -262,13 +282,13 @@ QString xbrlpymes::generar_contenido()
   ui->progressBar->setValue(6);
   QApplication::processEvents();
 
-  cad_xml+=pyg(anyo_cierre_actual, 2);
+  cad_xml+=pyg("I.ACTUAL", 2);
 
   if (!anyo_cierre_anterior.isEmpty())
-     cad_xml+=pyg(anyo_cierre_anterior, 3);
+     cad_xml+=pyg("I.ANTERIOR", 3);
 
 
-  ui->procesolabel->setText(tr("Generando estado cambios patrimonio ...."));
+  // ui->procesolabel->setText(tr("Generando estado cambios patrimonio ...."));
   ui->progressBar->setValue(8);
   QApplication::processEvents();
 
@@ -376,8 +396,8 @@ QString cad_xml;
 QSqlQuery q = basedatos::instancia()->select5Estadostituloparte1ordernodo(
                       bal_pymes_oficial , true ); // parte I
 QString linea_bs, linea_ap;
-linea_bs="<pgc-07-c-bs:%1 decimals=\"0\" contextRef=\"Y1_%2_Balance\" unitRef=\"euro\">%3</pgc-07-c-bs:%1>\n";
-linea_ap="<pgc-07-c-ap:%1 decimals=\"0\" contextRef=\"Y1_%2_Balance\" unitRef=\"euro\">%3</pgc-07-c-ap:%1>\n";
+linea_bs="<pgc-07-c-bs:%1 decimals=\"2\" contextRef=\"%2\" unitRef=\"euro\">%3</pgc-07-c-bs:%1>\n";
+linea_ap="<pgc-07-c-ap:%1 decimals=\"2\" contextRef=\"%2\" unitRef=\"euro\">%3</pgc-07-c-ap:%1>\n";
 if ( q.isActive() )
    {
      if  (q.next() && (q.value(pos).toDouble()>0.001 || q.value(pos).toDouble()<-0.001))
@@ -496,15 +516,22 @@ if ( q.isActive() )
          cad_xml+=linea_bs.arg("PatrimonioNetoFondosPropiosPrimaEmision",
                                           anyo_cierre,
                                           formatea_redondeado(q.value(pos).toDouble(),false,true));
-     if  (q.next() && (q.value(pos).toDouble()>0.001 || q.value(pos).toDouble()<-0.001)) {
-
+     if  (q.next() && (q.value(pos).toDouble()>0.001 || q.value(pos).toDouble()<-0.001))
          cad_xml+=linea_bs.arg("PatrimonioNetoFondosPropiosReservas",
                                           anyo_cierre,
                                           formatea_redondeado(q.value(pos).toDouble(),false,true));
+
+
+     if  (q.next() && (q.value(pos).toDouble()>0.001 || q.value(pos).toDouble()<-0.001))
+         cad_xml+=linea_bs.arg("PatrimonioNetoFondosPropiosReservasReservaCapitalizacion",
+                                 anyo_cierre,
+                                 formatea_redondeado(q.value(pos).toDouble(),false,true));
+
+     if  (q.next() && (q.value(pos).toDouble()>0.001 || q.value(pos).toDouble()<-0.001))
          cad_xml+=linea_bs.arg("PatrimonioNetoFondosPropiosReservasOtrasReservas",
-                                      anyo_cierre,
-                                      formatea_redondeado(q.value(pos).toDouble(),false,true));
-     }
+                                 anyo_cierre,
+                                 formatea_redondeado(q.value(pos).toDouble(),false,true));
+
      if  (q.next() && (q.value(pos).toDouble()>0.001 || q.value(pos).toDouble()<-0.001))
          cad_xml+=linea_bs.arg("PatrimonioNetoFondosPropiosAccionesParticipacionesPatrimonioPropias",
                                           anyo_cierre,
@@ -650,8 +677,8 @@ QString cad_xml;
 QSqlQuery q = basedatos::instancia()->select5Estadostituloparte1ordernodo(
                       pyg_pymes_oficial , true ); // parte I
 QString linea_bs, linea_ap;
-linea_bs="<pgc-07-c-bs:%1 decimals=\"0\" contextRef=\"Y1_%2_PYG\" unitRef=\"euro\">%3</pgc-07-c-bs:%1>\n";
-linea_ap="<pgc-07-c-ap:%1 decimals=\"0\" contextRef=\"Y1_%2_PYG\" unitRef=\"euro\">%3</pgc-07-c-ap:%1>\n";
+linea_bs="<pgc-07-c-bs:%1 decimals=\"2\" contextRef=\"%2\" unitRef=\"euro\">%3</pgc-07-c-bs:%1>\n";
+linea_ap="<pgc-07-c-ap:%1 decimals=\"2\" contextRef=\"%2\" unitRef=\"euro\">%3</pgc-07-c-ap:%1>\n";
 // formatea_redondeado(q.value(2).toDouble(),false,true)
 if ( q.isActive() )
    {
@@ -755,6 +782,47 @@ if ( q.isActive() )
    }
 
   return cad_xml;
+}
+
+QString xbrlpymes::idEmpresaTupla()
+{
+    QString cad_xml;
+    cad_xml="<pgc07mc-apdo0:IdentificacionEmpresaTupla>";
+    cad_xml.append("  <dgi-lc-es:Xcode_IDC.NIF contextRef=\"D.ACTUAL\">NIF</dgi-lc-es:Xcode_IDC.NIF>\n");
+    cad_xml.append("<dgi-est-gen:IdentifierValue contextRef=\"D.ACTUAL\">\n");
+    cad_xml.append(basedatos::instancia()->cif());
+    cad_xml.append("</dgi-est-gen:IdentifierValue>");
+    cad_xml.append("  <dgi-lc-es:Xcode_LFC.023 contextRef=\"D.ACTUAL\">023</dgi-lc-es:Xcode_LFC.023>\n");
+    cad_xml.append("  <dgi-lc-es:Xcode_NMT.DS contextRef=\"D.ACTUAL\">DS</dgi-lc-es:Xcode_NMT.DS>\n");
+    cad_xml.append("  <dgi-est-gen:LegalNameValue contextRef=\"D.ACTUAL\">");
+    cad_xml.append(basedatos::instancia()->selectEmpresaconfiguracion());
+    cad_xml.append("</dgi-est-gen:LegalNameValue>\n");
+    cad_xml.append("  <dgi-lc-es:Xcode_ADL.01 contextRef=\"D.ACTUAL\">01</dgi-lc-es:Xcode_ADL.01>\n");
+    cad_xml.append("  <dgi-est-gen:AddressLine contextRef=\"D.ACTUAL\">");
+    cad_xml.append(basedatos::instancia()->domicilio());
+    cad_xml.append("</dgi-est-gen:AddressLine>\n");
+    cad_xml.append("  <dgi-est-gen:MunicipalityName contextRef=\"D.ACTUAL\">");
+    cad_xml.append(basedatos::instancia()->ciudad());
+    cad_xml.append("</dgi-est-gen:MunicipalityName>\n");
+    QString cod_postal=basedatos::instancia()->cpostal();
+    if (!cod_postal.isEmpty()) {
+        cad_xml.append("  <dgi-lc-es:Xcode_RCI.");
+        cad_xml.append(cod_postal.left(2));
+        cad_xml.append(" contextRef=\"D.ACTUAL\">");
+        cad_xml.append(cod_postal.left(2));
+        cad_xml.append("</dgi-lc-es:Xcode_RCI.");
+        cad_xml.append(cod_postal.left(2));
+        cad_xml.append(">\n");
+        cad_xml.append("  <dgi-est-gen:ZipPostalCode contextRef=\"D.ACTUAL\">");
+        cad_xml.append(cod_postal);
+        cad_xml.append("</dgi-est-gen:ZipPostalCode>\n");
+    }
+    cad_xml.append("  <dgi-lc-int:Xcode_UN3155.EM contextRef=\"D.ACTUAL\">EM</dgi-lc-int:Xcode_UN3155.EM>\n");
+    cad_xml.append("  <pgc07mc-apdo0:CommunicationValueEMail contextRef=\"D.ACTUAL\">");
+    cad_xml.append(basedatos::instancia()->email());
+    cad_xml.append("</pgc07mc-apdo0:CommunicationValueEMail>\n");
+    cad_xml.append("</pgc07mc-apdo0:IdentificacionEmpresaTupla>\n");
+    return cad_xml;
 }
 
 
