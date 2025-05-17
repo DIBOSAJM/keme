@@ -14,7 +14,7 @@
   <property name="windowTitle">
    <string>Diario</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
+  <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
@@ -157,157 +157,167 @@
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QPushButton" name="iniciopushButton">
-         <property name="maximumSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinimumSize</enum>
          </property>
-         <property name="toolTip">
-          <string>Ir al primer registro</string>
-         </property>
-         <property name="statusTip">
-          <string extracomment="Ir al primer registro"/>
-         </property>
-         <property name="whatsThis">
-          <string extracomment="Ir al primer registro"/>
-         </property>
-         <property name="text">
-          <string comment="Ir al primer registro" extracomment="Ir al primer registro"/>
-         </property>
-         <property name="icon">
-          <iconset resource="keme.qrc">
-           <normaloff>:/iconos/graf/go-first-view.png</normaloff>:/iconos/graf/go-first-view.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="finpushButton">
-         <property name="maximumSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>Ir al último registro</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="keme.qrc">
-           <normaloff>:/iconos/graf/go-last-view.png</normaloff>:/iconos/graf/go-last-view.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="fecha_pushButton">
-         <property name="maximumSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>Cambiar fecha de asiento</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="keme.qrc">
-           <normaloff>:/iconos/graf/calendario.png</normaloff>:/iconos/graf/calendario.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="concepto_pushButton">
-         <property name="maximumSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>Cambiar concepto/documento</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="keme.qrc">
-           <normaloff>:/iconos/graf/concepto.png</normaloff>:/iconos/graf/concepto.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="cuenta_pushButton">
-         <property name="maximumSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>Cambiar cuenta a apunte</string>
-         </property>
-         <property name="text">
-          <string extracomment="Cuenta a apunte"/>
-         </property>
-         <property name="icon">
-          <iconset resource="keme.qrc">
-           <normaloff>:/iconos/graf/mayor2.png</normaloff>:/iconos/graf/mayor2.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="iva_pushButton">
-         <property name="maximumSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>Editar registro de IVA</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="keme.qrc">
-           <normaloff>:/iconos/graf/AEAT_iva.png</normaloff>:/iconos/graf/AEAT_iva.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="ret_pushButton">
-         <property name="maximumSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>Editar registro de retención</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="keme.qrc">
-           <normaloff>:/iconos/graf/AEAT_RET.png</normaloff>:/iconos/graf/AEAT_RET.png</iconset>
-         </property>
-        </widget>
+         <item>
+          <widget class="QPushButton" name="iniciopushButton">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Ir al primer registro</string>
+           </property>
+           <property name="statusTip">
+            <string extracomment="Ir al primer registro"/>
+           </property>
+           <property name="whatsThis">
+            <string extracomment="Ir al primer registro"/>
+           </property>
+           <property name="text">
+            <string comment="Ir al primer registro" extracomment="Ir al primer registro"/>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/go-first-view.png</normaloff>:/iconos/graf/go-first-view.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="finpushButton">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Ir al último registro</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/go-last-view.png</normaloff>:/iconos/graf/go-last-view.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="fecha_pushButton">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Cambiar fecha de asiento</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/calendario.png</normaloff>:/iconos/graf/calendario.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="concepto_pushButton">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Cambiar concepto/documento</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/concepto.png</normaloff>:/iconos/graf/concepto.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cuenta_pushButton">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Cambiar cuenta a apunte</string>
+           </property>
+           <property name="text">
+            <string extracomment="Cuenta a apunte"/>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/mayor2.png</normaloff>:/iconos/graf/mayor2.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="iva_pushButton">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Editar registro de IVA</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/AEAT_iva.png</normaloff>:/iconos/graf/AEAT_iva.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="ret_pushButton">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Editar registro de retención</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/AEAT_RET.png</normaloff>:/iconos/graf/AEAT_RET.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
-          <enum>Qt::Orientation::Vertical</enum>
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -388,9 +398,6 @@
          <pointsize>8</pointsize>
         </font>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignRight</set>
-       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -415,9 +422,6 @@
         <font>
          <pointsize>8</pointsize>
         </font>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignRight</set>
        </property>
        <property name="readOnly">
         <bool>true</bool>
