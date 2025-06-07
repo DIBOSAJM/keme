@@ -87,6 +87,7 @@ void Check_herramientas::evalua()
     loop.exec();
 
     cadexec="pdfimages";
+    if (es_os_x()) cadexec="/opt/homebrew/bin/pdfimages";
     myProcess = new QProcess(parent);
     myProcess->start(cadexec,arguments);
     if (!myProcess->waitForStarted ())
@@ -101,6 +102,7 @@ void Check_herramientas::evalua()
     loop.exec();
 
     cadexec="tesseract";
+    if (es_os_x()) cadexec="/opt/homebrew/bin/tesseract";
     myProcess = new QProcess(parent);
     myProcess->start(cadexec,arguments);
     if (!myProcess->waitForStarted ())

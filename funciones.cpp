@@ -7570,6 +7570,7 @@ bool genera_pdf_latex(QString qfichero)
      arguments << adapta(cadarg);
 
      QString cadexec="pdflatex";
+     if (es_os_x()) cadexec="/Library/TeX/texbin/xelatex";
      QProcess *myProcess = new QProcess(parent);
 
      int pos=qfichero.lastIndexOf(QDir::separator());
@@ -8664,6 +8665,7 @@ QString pdfgraf_a_qstring(QString nfichero) {
     arguments << adapta(nfichero);
 
     QString cadexec="pdfimages";
+    if (es_os_x()) cadexec="/opt/homebrew/bin/pdfimages";
     QProcess *myProcess = new QProcess(parent);
 
     myProcess-> setWorkingDirectory(adapta(dirtrabajo()));
@@ -8726,6 +8728,7 @@ QString graf_a_qstring(QString nfichero) {
     arguments << "-l" << "spa";
 
     QString cadexec="tesseract";
+    if (es_os_x()) cadexec="/opt/homebrew/bin/tesseract";
     QProcess *myProcess = new QProcess(parent);
 
     myProcess-> setWorkingDirectory(adapta(dirtrabajo()));
