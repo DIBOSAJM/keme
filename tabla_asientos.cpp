@@ -319,6 +319,8 @@ tabla_asientos::tabla_asientos(bool concomadecimal, bool condecimales, QString q
       ui.quita_externo_pushButton->hide();
       ui.descrip_externo_lineEdit->hide();
      }
+
+ ui.actividad_comboBox->addItems(basedatos::instancia()->activ_ecas());
 }
 
 void tabla_asientos::evita_msj_recepcion()
@@ -2476,13 +2478,16 @@ void tabla_asientos::incorporar()
         QString qexterno=ui.externo_lineEdit->text();
         if (!qexterno.isEmpty())
             if (!basedatos::instancia()->existe_externo(qexterno)) qexterno.clear();
+        QString cod_actividad;
+        if (ui.actividad_comboBox->count()>0)
+           cod_actividad=ui.actividad_comboBox->currentText().section('-',0,0).trimmed();
         basedatos::instancia()->insertDiario(cadnumasiento, pase,
              ui.FechaApunte->date().toString("yyyy-MM-dd"), ui.Tablaapuntes->item(fila,0)->text(),
              ddebe, dhaber, ui.Tablaapuntes->item(fila,1)->text(),
              ui.Tablaapuntes->item(fila,4)->text(),
              diario, ui.Tablaapuntes->item(fila,16)->text(),elusuario, cadproxci,
              zejercicio, cadnumrecibidas,hay_fecha_factura, fecha_factura, qexterno,
-                                             ui.concepto_sii_lineEdit->text(),borrador);
+                                             ui.concepto_sii_lineEdit->text(),borrador,cod_actividad);
         if (basedatos::instancia()->hayvenciasociado(ui.Tablaapuntes->item(fila,0)->text()) ||
            basedatos::instancia()->hay_venci_cta_asociado_ver(ui.Tablaapuntes->item(fila,0)->text()) ||
            (!ui.externo_lineEdit->text().isEmpty() &&
@@ -3836,7 +3841,7 @@ void tabla_asientos::soportadoautonomo()
             }
    if (resultado==QDialog::Accepted)
             {
-	     QString qclaveiva,qtipoiva,qctafra,qctaiva,qcuentabase,qbase,qcuotaiva,qprorrata;
+             QString qclaveiva,qtipoiva,qctafra,qctaiva,qcuentabase,qbase,qcuotaiva,qprorrata;
              QString qdocumento, qclaveop;
              QString qclaveiva2,qtipoiva2,qctaiva2,qcuentabase2,qbase2,qcuotaiva2;
              QString qclaveiva3,qtipoiva3,qctaiva3,qcuentabase3,qbase3,qcuotaiva3;
@@ -3851,6 +3856,7 @@ void tabla_asientos::soportadoautonomo()
              QString cta_base_exento;
              QString base_imponible_exento;
              QString externo;
+             QString cod_actividad;
              /*
 	     qIVAsoportado->recuperadatos(&qcuentabase,&qbase,&qclaveiva,
 					&qtipoiva,&qctaiva, &qcuota,&qctafra,
@@ -3866,11 +3872,14 @@ void tabla_asientos::soportadoautonomo()
                       &rectificada, &nfacturas, &finicial, &ffinal,
                       &verifica, &binversion, &afectacion, &agrario, &nombre, &cif, &import,
                       &cajaiva, &cuenta_ret, &tipo_ret, &qretencion, &clave_ret,&ret_arrendamiento,
-                        &iva_exento, &cta_base_exento, &base_imponible_exento, &externo);
+                        &iva_exento, &cta_base_exento, &base_imponible_exento, &externo, &cod_actividad);
              hay_fecha_factura=true;
              fecha_factura=qfechafra;
              ui.fichdoclineEdit->setText(qIVAsoportado->fichdocumento());
              ui.externo_lineEdit->setText(externo);
+             for (int veces=0; veces<ui.actividad_comboBox->count(); veces++)
+                 if (ui.actividad_comboBox->itemText(veces).section('-',0,0).trimmed()==cod_actividad)
+                     ui.actividad_comboBox->setCurrentIndex(veces);
 	     QString concepto;
 	     concepto=descripcioncuenta(qctafra);
          QString concepto_plantilla=qIVAsoportado->concepto();
@@ -4335,6 +4344,7 @@ void tabla_asientos::repercutidoautonomo()
           bool rectificativa;
           bool verifica,cajaiva;
           QString nombre,cif,qexterno;
+          QString cod_actividad;
           qIVArepercutido->recuperadatos(&qcuentabase,&qbase,&qclaveiva,
 					&qtipoiva,&qtipore,&qctaiva, &qcuota,
 
@@ -4348,11 +4358,14 @@ void tabla_asientos::repercutidoautonomo()
                                         &qfechafact,&qfechacont,&qdoc,
                                         &qfechaop, &qclaveop, &rectificativa,
                                         &rectificada, &nfacturas, &finicial, &ffinal,
-                                        &verifica, &nombre, &cif, &cajaiva, &qexterno);
+                                        &verifica, &nombre, &cif, &cajaiva, &qexterno, &cod_actividad);
          hay_fecha_factura=true;
          fecha_factura=qfechafact;
          ui.fichdoclineEdit->setText(qIVArepercutido->fichdocumento());
          ui.externo_lineEdit->setText(qexterno);
+         for (int veces=0; veces<ui.actividad_comboBox->count(); veces++)
+             if (ui.actividad_comboBox->itemText(veces).section('-',0,0).trimmed()==cod_actividad)
+                 ui.actividad_comboBox->setCurrentIndex(veces);
          QString concepto;
          QString concepto_plantilla=qIVArepercutido->concepto();
          concepto=descripcioncuenta(qctafra);
@@ -4657,6 +4670,10 @@ void tabla_asientos::aibautonomo()
      if (!datos->navegar_anterior()) break;
    }
 
+   for (int veces=0; veces<ui.actividad_comboBox->count(); veces++)
+       if (ui.actividad_comboBox->itemText(veces).section('-',0,0).trimmed()==datos->actividad())
+           ui.actividad_comboBox->setCurrentIndex(veces);
+
    ui.externo_lineEdit->setText(a->externo());
    hay_fecha_factura=true;
    fecha_factura=qfechafact;
@@ -4937,6 +4954,10 @@ void tabla_asientos::eibautonomo()
     if (!datos->navegar_anterior()) break;
 
    }
+
+         for (int veces=0; veces<ui.actividad_comboBox->count(); veces++)
+           if (ui.actividad_comboBox->itemText(veces).section('-',0,0).trimmed()==datos->actividad())
+            ui.actividad_comboBox->setCurrentIndex(veces);
 
          ui.externo_lineEdit->setText(e->externo());
              // empezamos línea con ctafra
@@ -7505,6 +7526,16 @@ void tabla_asientos::pasa_concepto_sii(QString codigo)
 void tabla_asientos::predefinido()
 {
     espredefinido=true;
+}
+
+void tabla_asientos::pasa_cod_actividad(QString actividad)
+{
+  if (!cod_actividad_imp.isEmpty()) return;
+  cod_actividad_imp=actividad;
+  for (int veces=0; veces<ui.actividad_comboBox->count(); veces++)
+      if (ui.actividad_comboBox->itemText(veces).section('-',0,0).trimmed()==actividad)
+          ui.actividad_comboBox->setCurrentIndex(veces);
+
 }
 
 

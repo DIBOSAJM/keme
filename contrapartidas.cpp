@@ -4,6 +4,7 @@
 #include "aux_express.h"
 #include "buscasubcuenta.h"
 #include <QMessageBox>
+#include "busca_cta_diario.h"
 
 contrapartidas::contrapartidas(QWidget *parent) :
     QDialog(parent),
@@ -298,3 +299,24 @@ void contrapartidas::boton_aceptar()
 
     accept();
 }
+
+void contrapartidas::on_busca_diario_pushButton_clicked()
+{
+    Busca_cta_diario *b = new Busca_cta_diario();
+    if (b->exec()==QDialog::Accepted) {
+        ui->auxiliarlineEdit->setText(b->cuenta_seleccionada());
+    }
+    delete (b);
+}
+
+
+void contrapartidas::on_buscapush_diario2_pushButton_clicked()
+{
+    Busca_cta_diario *b = new Busca_cta_diario();
+    if (b->exec()==QDialog::Accepted) {
+        ui->auxiliarlineEdit_2->setText(b->cuenta_seleccionada());
+    }
+    delete (b);
+
+}
+

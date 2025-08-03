@@ -353,7 +353,7 @@
      <item row="1" column="9">
       <widget class="QPushButton" name="imp_documento_pushButton">
        <property name="text">
-        <string>Gen- Doc.</string>
+        <string>&amp;Gen- Doc.</string>
        </property>
        <property name="icon">
         <iconset resource="../keme.qrc">
@@ -381,7 +381,7 @@
      <item row="1" column="7">
       <widget class="QPushButton" name="edtexpushButton">
        <property name="text">
-        <string>Editar &amp;TEX</string>
+        <string>Editar TE&amp;X</string>
        </property>
        <property name="icon">
         <iconset resource="../keme.qrc">
@@ -403,7 +403,7 @@
      <item row="0" column="3">
       <widget class="QPushButton" name="facturae_pushButton">
        <property name="text">
-        <string>FACTURAe</string>
+        <string>&amp;FACTURAe</string>
        </property>
        <property name="icon">
         <iconset resource="../keme.qrc">
@@ -436,7 +436,7 @@
      <item row="1" column="8">
       <widget class="QPushButton" name="imprimirpushButton">
        <property name="text">
-        <string>Ver &amp;PDF (TEX)</string>
+        <string>Ver &amp;PDF &amp;(TEX)</string>
        </property>
        <property name="icon">
         <iconset resource="../keme.qrc">
@@ -503,20 +503,20 @@
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QPushButton" name="xmlpushButton">
+      <widget class="QPushButton" name="email_pushButton">
        <property name="text">
-        <string>&amp;XML</string>
+        <string>E&amp;mail</string>
        </property>
        <property name="icon">
         <iconset resource="../keme.qrc">
-         <normaloff>:/iconos/graf/XML.png</normaloff>:/iconos/graf/XML.png</iconset>
+         <normaloff>:/iconos/graf/icon-email.png</normaloff>:/iconos/graf/icon-email.png</iconset>
        </property>
       </widget>
      </item>
      <item row="1" column="2">
       <widget class="QPushButton" name="copia_informe_pushButton">
        <property name="text">
-        <string>Copiar</string>
+        <string>Co&amp;piar</string>
        </property>
        <property name="icon">
         <iconset resource="../keme.qrc">
@@ -550,7 +550,7 @@
   <tabstop>quita_externo_pushButton</tabstop>
   <tabstop>externo_lineEdit</tabstop>
   <tabstop>descrip_externo_lineEdit</tabstop>
-  <tabstop>xmlpushButton</tabstop>
+  <tabstop>email_pushButton</tabstop>
   <tabstop>informepushButton</tabstop>
   <tabstop>facturae_pushButton</tabstop>
   <tabstop>consultapushButton</tabstop>

@@ -157,6 +157,7 @@ class tabla_asientos  : public QDialog {
                 void pasa_externo(QString codigo);
                 void pasa_concepto_sii(QString codigo);
                 void predefinido();
+                void pasa_cod_actividad(QString actividad);
         private:
                 Ui::tabla_asientos ui;
                 QString cadasientoreal;
@@ -176,6 +177,7 @@ class tabla_asientos  : public QDialog {
                 bool evitar_pregunta_venci;
                 bool espredefinido;
                 QString gprorrata;
+                QString cod_actividad_imp;
                 QString cverdadero,cfalso;
                 QStringList pasesvto;
                 // Estas variables guardan el contenido de la línea de IVA exento

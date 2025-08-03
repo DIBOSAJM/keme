@@ -102,7 +102,9 @@ ivasop_aut::ivasop_aut(bool concomadecimal, bool condecimales) : QDialog() {
  comboivacambiado3();
  cargacombooperaciones();
 
- ui.clavecomboBox->addItems(basedatos::instancia()->listaoperaciones_ret());;
+ ui.clavecomboBox->addItems(basedatos::instancia()->listaoperaciones_ret());
+ ui.actividad_comboBox->addItems(basedatos::instancia()->activ_ecas());
+
 
  connect(ui.ClaveivacomboBox,SIGNAL(activated(int)),this,SLOT(comboivacambiado()));
  connect(ui.ClaveivacomboBox2,SIGNAL(activated(int)),this,SLOT(comboivacambiado2()));
@@ -1212,19 +1214,19 @@ if (ui.groupBox3->isChecked())
 
 
 void ivasop_aut::recuperadatos(QString *cuentabase, QString *baseimponible, QString *qclaveiva, QString *qtipoiva,
-   QString *cuentaiva, QString *cuotaiva,
- QString *cuentabase2, QString *baseimponible2, QString *qclaveiva2, QString *qtipoiva2,
-   QString *cuentaiva2, QString *cuotaiva2,
- QString *cuentabase3, QString *baseimponible3, QString *qclaveiva3, QString *qtipoiva3,
-   QString *cuentaiva3, QString *cuotaiva3,
- QString *ctafra, QString *qprorrata, QDate *qfechafra, QDate *qfechacontable,
- QString *qdocumento,
- QDate *qfechaop, QString *qclaveop, bool *rectificativa,
- QString *rectificada, QString *nfacturas, QString *finicial, QString *ffinal,
- bool *verifica, QString *binversion, QString *afectacion, bool *agrario,
- QString *nombre, QString *cif, QString *import, QString *cajaiva,
- QString *cuenta_ret, QString *tipo_ret, QString *retencion, QString *clave_ret, bool *ret_arrendamiento,
- bool *iva_exento, QString *cta_base_exento, QString *base_imponible_exento, QString *externo)
+                               QString *cuentaiva, QString *cuotaiva,
+                               QString *cuentabase2, QString *baseimponible2, QString *qclaveiva2, QString *qtipoiva2,
+                               QString *cuentaiva2, QString *cuotaiva2,
+                               QString *cuentabase3, QString *baseimponible3, QString *qclaveiva3, QString *qtipoiva3,
+                               QString *cuentaiva3, QString *cuotaiva3,
+                               QString *ctafra, QString *qprorrata, QDate *qfechafra, QDate *qfechacontable,
+                               QString *qdocumento,
+                               QDate *qfechaop, QString *qclaveop, bool *rectificativa,
+                               QString *rectificada, QString *nfacturas, QString *finicial, QString *ffinal,
+                               bool *verifica, QString *binversion, QString *afectacion, bool *agrario,
+                               QString *nombre, QString *cif, QString *import, QString *cajaiva,
+                               QString *cuenta_ret, QString *tipo_ret, QString *retencion, QString *clave_ret, bool *ret_arrendamiento,
+                               bool *iva_exento, QString *cta_base_exento, QString *base_imponible_exento, QString *externo, QString *cod_actividad)
 {
     if (ui.groupBox->isChecked()) {
        *cuentabase=ui.CtabaselineEdit->text();
@@ -1330,6 +1332,7 @@ if (convapunto(ui.retencionlineEdit->text()).toDouble()>0.001)
  *cta_base_exento=ui.Ctabase_exenta_lineEdit->text();
  *base_imponible_exento=ui.base_exentalineEdit->text();
 *externo=ui.externo_lineEdit->text();
+ *cod_actividad=ui.actividad_comboBox->currentText().section('-',0,0).trimmed();
 }
 
 

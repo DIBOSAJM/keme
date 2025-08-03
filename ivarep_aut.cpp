@@ -23,7 +23,6 @@
 #include "funciones.h"
 #include "basedatos.h"
 #include "aux_express.h"
-#include "directorio.h"
 #include "busca_externo.h"
 #include <QMessageBox>
 #include <QFileDialog>
@@ -84,7 +83,8 @@ ivarep_aut::ivarep_aut(bool concomadecimal, bool condecimales) : QDialog() {
     // ahora cargamos el resto de los tipos de IVA
     
  QSqlQuery query = basedatos::instancia()->selectClavetiposivanoclave(Clavedefecto);
- 
+ ui.actividad_comboBox->addItems(basedatos::instancia()->activ_ecas());
+
  if ( query.isActive() )
     {
       while (query.next())
@@ -1092,7 +1092,7 @@ void ivarep_aut::recuperadatos(QString *cuentabase, QString *baseimponible, QStr
   QString *ctafra, QDate *qfechafra, QDate *qfechacont, QString *qdoc,
   QDate *qfechaop, QString *qclaveop, bool *rectificativa,
   QString *rectificada, QString *nfacturas, QString *finicial, QString *ffinal,
-  bool *verifica, QString *nombre, QString *cif, bool *cajaiva , QString *externo)
+  bool *verifica, QString *nombre, QString *cif, bool *cajaiva , QString *externo,QString *cod_actividad)
 {
 
 *cuentabase=ui.CtabaselineEdit->text();
@@ -1152,6 +1152,8 @@ QString extracto=cadenaclave.section(' ',0,0);
 *cif=ui.ciflineEdit->text();
 *cajaiva=ui.cajacheckBox->isChecked();
 *externo=ui.externo_lineEdit->text();
+*cod_actividad=ui.actividad_comboBox->currentText().section('-',0,0).trimmed();
+
 }
 
 

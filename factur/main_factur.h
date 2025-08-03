@@ -70,6 +70,8 @@ class main_factur : public QMainWindow {
 
                   void on_actionConfiguraci_n_Veri_Factu_triggered();
 
+                  void on_actionContenido_Email_Facturas_triggered();
+
               public:
                   bool oknosalir();
 

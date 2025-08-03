@@ -118,7 +118,7 @@ p, li { white-space: pre-wrap; }
           </sizepolicy>
          </property>
          <property name="text">
-          <string>(c) José Manuel Díez Botella 2006 - 2024</string>
+          <string>(c) José Manuel Díez Botella 2006 - 2025</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignmentFlag::AlignCenter</set>

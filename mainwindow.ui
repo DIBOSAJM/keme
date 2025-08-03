@@ -63,6 +63,7 @@
      <addaction name="actionTipos_de_proveedor"/>
      <addaction name="actionHomologacin"/>
      <addaction name="actionActividades"/>
+     <addaction name="actionActividades_economicas"/>
     </widget>
     <addaction name="actionConfiguraci_n"/>
     <addaction name="actionEjercicios"/>
@@ -1409,7 +1410,7 @@
   </action>
   <action name="actionActividades">
    <property name="text">
-    <string>&amp;Actividades</string>
+    <string>&amp;Actividades homologación</string>
    </property>
   </action>
   <action name="actionModelo_182_registro_donaciones">
@@ -1435,6 +1436,11 @@
   <action name="actionVerificar_cuadre_analitica_tabla">
    <property name="text">
     <string>&amp;Verificar cuadre en analitica tabla</string>
+   </property>
+  </action>
+  <action name="actionActividades_economicas">
+   <property name="text">
+    <string>Actividades económicas</string>
    </property>
   </action>
  </widget>

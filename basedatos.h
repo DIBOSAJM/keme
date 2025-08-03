@@ -414,7 +414,7 @@ class basedatos {
                           QString ci, QString usuario, QString clave_ci, QString ejercicio,
                           QString nrecepcion, bool hay_fecha_factura=false,
                           QDate fecha_factura=QDate::currentDate(), QString externo="",
-                          QString concepto_sii="", bool borrador=false);
+                          QString concepto_sii="", bool borrador=false, QString actividad="");
 
         void insertDiario_imp (QString cadnumasiento, qlonglong pase, QString cadfecha,
                                       QString cuentagasto, double debe, double haber,
@@ -628,6 +628,10 @@ class basedatos {
         QString email();
 
         QString tfno();
+
+        void campos_email_cli(QString *email_from, QString *email_to, QString *email_subject, QString *email_content);
+
+        void actu_campos_email_cli(QString email_from, QString email_to, QString email_subject, QString email_content);
 
         bool select_curl_sii();
 
@@ -1883,6 +1887,8 @@ class basedatos {
 
         QString cif_externo(QString codigo);
 
+        QString email_externo(QString codigo);
+
         QString select_codigo_cif_externo(QString cif);
 
         bool hayivaasociado_externo(QString codigo, QString &cuentaiva, QString &tipoiva, QString &cta_base_iva);
@@ -2414,6 +2420,10 @@ class basedatos {
 
         void actualizade4002();
 
+        void actualizade4010();
+
+        void actualizade4020();
+
         void introclave_op_retenciones();
 
         void intro_provincias();
@@ -2623,6 +2633,8 @@ class basedatos {
                                 QString *sufijo);
         QString bic_cuenta_banco(QString cuenta);
         QString iban_cuenta_banco(QString cuenta);
+
+        QString email_cuenta(QString cuenta);
 
         bool cargadatospase(QString pase, QString &cuenta,QDate &fecha,
                             QString &importedebe,
@@ -3613,7 +3625,7 @@ class basedatos {
         QStringList tipos_proveedor();
         QStringList homologaciones();
         QStringList actividades();
-
+        QStringList activ_ecas();
         QSqlQuery asientos_cuenta_libroiva(QString cuenta );
 
         QString cod_homol_pruebas_config();
@@ -3662,6 +3674,8 @@ class basedatos {
                                             bool sif_multi_ot, QString endpoint_verifactu, QString url_val_QR);
 
         QString url_val_QR();
+
+        QSqlQuery selec_diario_extract(QString concepto, QString documento, bool hay_fecha, QDate fecha, QString debe, QString haber);
 
     private:
 

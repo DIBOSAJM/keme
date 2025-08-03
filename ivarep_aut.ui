@@ -11,7 +11,7 @@
     <x>0</x>
     <y>0</y>
     <width>765</width>
-    <height>704</height>
+    <height>785</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,10 +29,10 @@
         <x>0</x>
         <y>0</y>
         <width>731</width>
-        <height>826</height>
+        <height>828</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
@@ -1491,23 +1491,48 @@
         </widget>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
          <item>
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>CLAVE OPERACIÓN:</string>
-           </property>
-          </widget>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>CLAVE OPERACIÓN:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="claveoperacioncomboBox">
+             <property name="maximumSize">
+              <size>
+               <width>635</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QComboBox" name="claveoperacioncomboBox">
-           <property name="maximumSize">
-            <size>
-             <width>635</width>
-             <height>16777215</height>
-            </size>
-           </property>
-          </widget>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>ACTIVIDAD ECONÓMICA:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="actividad_comboBox">
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
@@ -1733,6 +1758,7 @@
   <tabstop>nombrelineEdit</tabstop>
   <tabstop>ciflineEdit</tabstop>
   <tabstop>claveoperacioncomboBox</tabstop>
+  <tabstop>actividad_comboBox</tabstop>
   <tabstop>nfacturaslineEdit</tabstop>
   <tabstop>iniciallineEdit</tabstop>
   <tabstop>finallineEdit</tabstop>
@@ -1741,9 +1767,9 @@
   <tabstop>rectificada_lineEdit</tabstop>
   <tabstop>verificarcheckBox</tabstop>
   <tabstop>cajacheckBox</tabstop>
-  <tabstop>scrollArea</tabstop>
   <tabstop>CancelarButton</tabstop>
   <tabstop>AceptarButton</tabstop>
+  <tabstop>scrollArea</tabstop>
  </tabstops>
  <includes>
   <include location="local">funciones.h</include>

@@ -63,6 +63,7 @@ class facturas : public QDialog {
                 int numero_de_filas();
                 bool comadecimal, decimales;
                 void informe (QString qserie, QString qnumero, bool pdf_novis=false);
+                void gen_email(QString qserie, QString qnumero);
 
 
       private slots:
@@ -94,6 +95,7 @@ class facturas : public QDialog {
                 void on_quita_externo_pushButton_clicked();
                 void on_copia_informe_pushButton_clicked();
                 void on_habilitar_doc_pushButton_clicked();
+                void on_email_pushButton_clicked();
 };
 
 

@@ -42,20 +42,19 @@ class ivarep_aut : public QDialog {
                 CustomQLabel *etiqueta;
 
         public:
-                void recuperadatos(
-                  QString *cuentabase, QString *baseimponible, QString *qclaveiva, QString *qtipoiva,
-                  QString *qtipore, QString *cuentaiva, QString *cuotaiva,
+                void recuperadatos(QString *cuentabase, QString *baseimponible, QString *qclaveiva, QString *qtipoiva,
+                                   QString *qtipore, QString *cuentaiva, QString *cuotaiva,
 
-                  QString *cuentabase2, QString *baseimponible2, QString *qclaveiva2, QString *qtipoiva2,
-                  QString *qtipore2, QString *cuentaiva2, QString *cuotaiva2,
+                                   QString *cuentabase2, QString *baseimponible2, QString *qclaveiva2, QString *qtipoiva2,
+                                   QString *qtipore2, QString *cuentaiva2, QString *cuotaiva2,
 
-                  QString *cuentabase3, QString *baseimponible3, QString *qclaveiva3, QString *qtipoiva3,
-                  QString *qtipore3, QString *cuentaiva3, QString *cuotaiva3,
+                                   QString *cuentabase3, QString *baseimponible3, QString *qclaveiva3, QString *qtipoiva3,
+                                   QString *qtipore3, QString *cuentaiva3, QString *cuotaiva3,
 
-                  QString *ctafra, QDate *qfechafra, QDate *qfechacont, QString *qdoc,
-                  QDate *qfechaop, QString *qclaveop, bool *rectificativa,
-                  QString *rectificada, QString *nfacturas, QString *finicial, QString *ffinal,
-                  bool *verifica, QString *nombre, QString *cif, bool *cajaiva, QString *externo );
+                                   QString *ctafra, QDate *qfechafra, QDate *qfechacont, QString *qdoc,
+                                   QDate *qfechaop, QString *qclaveop, bool *rectificativa,
+                                   QString *rectificada, QString *nfacturas, QString *finicial, QString *ffinal,
+                                   bool *verifica, QString *nombre, QString *cif, bool *cajaiva, QString *externo , QString *cod_actividad);
                   QString fichdocumento();
                   void pasa_fecha(QDate fecha);
                   QString concepto();

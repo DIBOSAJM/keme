@@ -37,6 +37,7 @@ TRANSLATIONS = keme4_eng.ts \
 
 SOURCES += main.cpp\
     actividad_edicion.cpp \
+    busca_cta_diario.cpp \
     check_herramientas.cpp \
         mainwindow.cpp\
         arbol.cpp \
@@ -235,6 +236,7 @@ HEADERS  += mainwindow.h\
     actividad_edicion.h \
          aritmetica.h\
          arbol.h \
+    busca_cta_diario.h \
     check_herramientas.h \
          funciones.h\
          basedatos.h\
@@ -430,6 +432,7 @@ HEADERS  += mainwindow.h\
 
 FORMS    += mainwindow.ui\
     actividad_edicion.ui \
+    busca_cta_diario.ui \
     check_herramientas.ui \
           conexion.ui\
           diario.ui \

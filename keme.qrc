@@ -148,6 +148,8 @@
         <file>graf/factur.png</file>
         <file>graf/trabajando.gif</file>
         <file>graf/Logo-Verifactu.png</file>
+        <file>graf/icon-email.png</file>
+        <file>graf/libro_abierto.png</file>
     </qresource>
     <qresource prefix="/splash">
         <file>graf/splash.jpg</file>

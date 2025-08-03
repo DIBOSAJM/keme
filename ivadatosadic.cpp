@@ -24,6 +24,7 @@
 #include "directorio.h"
 #include <QFileDialog>
 #include <QMessageBox>
+#include "basedatos.h"
 
 ivadatosadic::ivadatosadic() : QDialog() {
     ui.setupUi(this);
@@ -37,6 +38,8 @@ ivadatosadic::ivadatosadic() : QDialog() {
     ui.verticalLayout->addWidget(etiqueta);
 
     anterior=false;
+
+ui.actividad_comboBox->addItems(basedatos::instancia()->activ_ecas());
 
 connect(ui.fichdocpushButton ,SIGNAL(clicked()),SLOT(buscacopiadoc()));
 connect(ui.visdocpushButton ,SIGNAL(clicked()),SLOT(visdoc()));
@@ -162,6 +165,11 @@ void ivadatosadic::doc_cambiado()
 QString ivadatosadic::recuperaconcepto()
 {
     return ui.conceptolineEdit->text();
+}
+
+QString ivadatosadic::actividad()
+{
+ return ui.actividad_comboBox->currentText().section('-',0,0).trimmed();
 }
 
 

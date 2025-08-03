@@ -145,8 +145,8 @@ connect(ui.cuentafinlineEdit,SIGNAL(editingFinished()),this,SLOT(cuentafin_fined
 
 connect(ui.refrescarpushButton, SIGNAL(clicked()), this, SLOT(boton_refrescar()));
 
-connect(ui.xmlpushButton , SIGNAL(clicked()), this,
-          SLOT (xmldoc()));
+//connect(ui.xmlpushButton , SIGNAL(clicked()), this,
+//          SLOT (xmldoc()));
 
 connect(ui.informepushButton , SIGNAL(clicked()), this,
           SLOT (consultainforme()));
@@ -898,6 +898,128 @@ void facturas::informe (QString qserie, QString qnumero, bool pdf_novis) {
 
 }
 
+void facturas::gen_email(QString qserie, QString qnumero)
+{
+    QString email_from, email_to, email_subject, email_content;
+    basedatos::instancia()->campos_email_cli(&email_from, &email_to, &email_subject, &email_content);
+
+    QSqlQuery q;
+    q = basedatos::instancia()->select_cabecera_doc (qserie, qnumero);
+    QString tipo_doc, cuenta, externo, tipo_ret, retencion, notas, pie1, pie2;
+    bool con_ret=false, con_re=false;
+    QDate fecha, fecha_fac, fecha_op;
+    int clave=0;
+    if (q.isActive())
+    {
+        if (q.next())
+        {
+            // "select serie, numero, cuenta, fecha, fecha_fac, fecha_op, "
+            // "contabilizado,contabilizable, con_ret, con_re, tipo_ret, retencion, "
+            // "tipo_doc, notas, pie1, pie2, pase_diario_cta, clave "
+            cuenta=q.value(2).toString();
+            fecha=q.value(3).toDate();
+            fecha_fac=q.value(4).toDate();
+            fecha_op=q.value(5).toDate();
+            con_ret=q.value(8).toBool();
+            con_re=q.value(9).toBool();
+            tipo_ret=q.value(10).toString();
+            retencion=q.value(11).toString();
+            tipo_doc=q.value(12).toString();
+            notas=q.value(13).toString();
+            pie1=q.value(14).toString();
+            pie2=q.value(15).toString();
+            clave=q.value(17).toInt();
+            externo=q.value(20).toString();
+        } else return;
+    }
+
+    if (!externo.isEmpty()) {
+        QString email_externo=basedatos::instancia()->email_externo(externo);
+        if (!email_externo.isEmpty()) email_to=email_externo;
+    } else {
+        // consultamos email de cuenta
+        QString email_externo=basedatos::instancia()->email_cuenta(cuenta);
+        if (!email_externo.isEmpty()) email_to=email_externo;
+    }
+
+    /*
+From: remitente@dominio.com
+To: destinatario@dominio.com
+Subject: Factura emitida
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="limite123"
+
+--limite123
+Content-Type: text/plain; charset="UTF-8"
+
+Adjunto encontrará su factura en PDF.
+
+--limite123
+Content-Type: application/pdf; name="factura.pdf"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="factura.pdf"
+
+JVBERi0xLjQKJcfs... (contenido PDF en base64)
+--limite123--
+     */
+    QString qfichero=dirtrabajodocs(tipo_doc); // el directorio será dirtrabajo() + ruta tipo doc
+    qfichero.append(QDir::separator());
+    QString cadfich=qserie+qnumero+".pdf";
+    qfichero.append(cadfich);
+
+    QString cad_email;
+    cad_email="FROM: ";
+    cad_email.append(email_from);
+    cad_email.append("\n");
+    cad_email.append("To: ");
+    cad_email.append(email_to);
+    cad_email.append("\n");
+    cad_email.append("Subject: Factura emitida - ");
+    cad_email.append(basedatos::instancia()->selectEmpresaconfiguracion());
+    cad_email.append("\n");
+    cad_email.append("MIME-Version: 1.0\n");
+    cad_email.append("Content-Type: multipart/mixed; boundary=""limite123""\n");
+    cad_email.append("\n");
+    cad_email.append("--limite123\n");
+    cad_email.append("Content-Type: text/plain; charset=""UTF-8""\n");
+    cad_email.append("\n");
+    cad_email.append("Adjunto encontrará su factura en PDF.\n");
+    cad_email.append("\n");
+    cad_email.append("--limite123\n");
+    cad_email.append("Content-Type: application/pdf; name=""");
+    cad_email.append(cadfich);
+    cad_email.append("""\n");
+    cad_email.append("Content-Transfer-Encoding: base64\n");
+    cad_email.append("Content-Disposition: attachment; filename=""");
+    cad_email.append(cadfich);
+    cad_email.append("""\n");
+    cad_email.append("\n");
+    QFile pdfFile(qfichero);
+    if (pdfFile.open(QIODevice::ReadOnly)) {
+        QByteArray pdfData = pdfFile.readAll();
+        QByteArray base64Data = pdfData.toBase64();
+        pdfFile.close();
+        cad_email.append(QString::fromLatin1(base64Data));
+    }
+    cad_email.append("\n--limite123\n");
+
+    qfichero=dirtrabajodocs(tipo_doc); // el directorio será dirtrabajo() + ruta tipo doc
+    qfichero.append(QDir::separator());
+    cadfich=qserie+qnumero+".eml";
+    qfichero.append(cadfich);
+
+    QFile fichero(qfichero);
+    if (! fichero.open( QIODevice::WriteOnly ) ) return;
+    QTextStream stream( &fichero );
+    stream.setEncoding(QStringConverter::Utf8);
+    stream << cad_email;
+    fichero.close();
+
+    QString url=qfichero;
+    QDesktopServices::openUrl(QUrl(url.prepend("file:"),QUrl::TolerantMode));
+
+}
+
 void facturas::carga_combos_series()
 {
     ui.serieinicialcomboBox->addItems(basedatos::instancia()->listacodseries());
@@ -1576,5 +1698,36 @@ void facturas::on_habilitar_doc_pushButton_clicked()
       QMessageBox::information( this, tr("KEME-FACTUR"),tr("Operación realizada"));
    refresca();
   }
+}
+
+
+void facturas::on_email_pushButton_clicked()
+{
+    if (!ui.facstableView->currentIndex().isValid())
+    {
+        QMessageBox::warning( this, tr("Envío de documentos"),
+                             tr("Para generar un email hay que seleccionarlo de la lista"));
+        return;
+    }
+
+    QItemSelectionModel *seleccion;
+    seleccion=ui.facstableView->selectionModel();
+    if (seleccion->hasSelection())
+        if (seleccion->selectedRows().count()>1) {
+            QList<QModelIndex> lista_serie=seleccion->selectedRows(0);
+            QList<QModelIndex> lista_numero=seleccion->selectedRows(1);
+            for (int i=0; i<lista_serie.count(); i++) {
+                QString qserie=model->datagen(lista_serie.at(i),Qt::DisplayRole).toString();
+                QString qnumero=model->datagen(lista_numero.at(i),Qt::DisplayRole).toString();
+                informe(qserie,qnumero,true);
+                // generamos ahora archivo de texto con email
+            }
+            QMessageBox::information(this,tr("Informe documento"),tr("Se han generado los documentos"));
+            return;
+        }
+
+    informe(serie(),numero(),true);
+    // generamos ahora archivo de texto con email
+    gen_email(serie(), numero());
 }
 

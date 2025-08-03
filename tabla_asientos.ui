@@ -4,7 +4,7 @@
  <class>tabla_asientos</class>
  <widget class="QDialog" name="tabla_asientos">
   <property name="windowModality">
-   <enum>Qt::NonModal</enum>
+   <enum>Qt::WindowModality::NonModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -2149,7 +2149,7 @@
        <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -2169,7 +2169,6 @@
       <widget class="QCheckBox" name="aibcheckBox">
        <property name="font">
         <font>
-         <weight>50</weight>
          <bold>false</bold>
         </font>
        </property>
@@ -2182,7 +2181,6 @@
       <widget class="QCheckBox" name="eibcheckBox">
        <property name="font">
         <font>
-         <weight>50</weight>
          <bold>false</bold>
         </font>
        </property>
@@ -2195,7 +2193,6 @@
       <widget class="QCheckBox" name="exentacheckBox">
        <property name="font">
         <font>
-         <weight>50</weight>
          <bold>false</bold>
         </font>
        </property>
@@ -2215,7 +2212,6 @@
       <widget class="QCheckBox" name="copiadoccheckBox">
        <property name="font">
         <font>
-         <weight>50</weight>
          <bold>false</bold>
         </font>
        </property>
@@ -2237,7 +2233,7 @@
      <item>
       <spacer>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -2271,7 +2267,7 @@
         <bool>false</bool>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight</set>
+        <set>Qt::AlignmentFlag::AlignRight</set>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -2345,6 +2341,16 @@
       <widget class="QLineEdit" name="descrip_externo_lineEdit">
        <property name="readOnly">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="actividad_comboBox">
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>0</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -2738,7 +2744,7 @@
              </palette>
             </property>
             <property name="alignment">
-             <set>Qt::AlignRight</set>
+             <set>Qt::AlignmentFlag::AlignRight</set>
             </property>
             <property name="readOnly">
              <bool>true</bool>
@@ -2987,7 +2993,7 @@
          <number>4</number>
         </property>
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Orientation::Vertical</enum>
         </property>
        </widget>
       </item>
@@ -3027,7 +3033,7 @@
          <number>4</number>
         </property>
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Orientation::Vertical</enum>
         </property>
        </widget>
       </item>
@@ -3151,7 +3157,7 @@
            <number>4</number>
           </property>
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
          </widget>
         </item>
@@ -3163,7 +3169,7 @@
          <number>4</number>
         </property>
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Orientation::Vertical</enum>
         </property>
        </widget>
       </item>
@@ -3273,7 +3279,7 @@
            <number>16</number>
           </property>
           <property name="segmentStyle">
-           <enum>QLCDNumber::Flat</enum>
+           <enum>QLCDNumber::SegmentStyle::Flat</enum>
           </property>
          </widget>
         </item>
@@ -3385,7 +3391,7 @@
            <number>16</number>
           </property>
           <property name="segmentStyle">
-           <enum>QLCDNumber::Flat</enum>
+           <enum>QLCDNumber::SegmentStyle::Flat</enum>
           </property>
          </widget>
         </item>
@@ -3497,7 +3503,7 @@
            <number>16</number>
           </property>
           <property name="segmentStyle">
-           <enum>QLCDNumber::Flat</enum>
+           <enum>QLCDNumber::SegmentStyle::Flat</enum>
           </property>
          </widget>
         </item>
@@ -3511,7 +3517,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -3669,7 +3675,7 @@
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>

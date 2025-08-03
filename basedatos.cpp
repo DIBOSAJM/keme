@@ -23,7 +23,7 @@
 
 #include "funciones.h"
 
-#define VERSION "4.0.1.0"
+#define VERSION "4.0.3.0"
 
 #include <QMessageBox>
 #include <QApplication>
@@ -668,6 +668,10 @@ void basedatos::solotablas(bool segunda, QString qbase)
     cadena+="endpoint_verifactu varchar(255) default '', ";
     cadena+="url_val_QR varchar(255) default '', ";
 
+    cadena+="email_from varchar(255) default '', ";
+    cadena+="email_to varchar(255) default '', ";
+    cadena+="email_subject varchar(255) default '', ";
+    cadena+="email_content text,";
 
     cadena+="moneda varchar(20) default '',";
     cadena+="fecha_monedas date,";
@@ -683,6 +687,9 @@ void basedatos::solotablas(bool segunda, QString qbase)
     cadena+="imagen text )";
     if (segunda) cadena = anadirMotor(cadena,qbase); else cadena = anadirMotor(cadena);
     if (segunda) ejecutar(cadena,qbase); else ejecutar(cadena);
+
+    if (segunda) ejecutar("update configuracion set email_content=''",qbase);
+      else ejecutar("update configuracion set email_content=''");
 
     progreso.setValue(progreso.value()+1);
     QApplication::processEvents();
@@ -824,7 +831,13 @@ void basedatos::solotablas(bool segunda, QString qbase)
     if (segunda) ejecutar(cadena,qbase); else ejecutar(cadena);
 
     // actividades
-    cadena = "CREATE TABLE actividades ("
+        cadena = "CREATE TABLE actividades ("
+                 "codigo         varchar(40),"
+                 "descripcion    varchar(254),"
+                 "PRIMARY KEY (codigo) )";
+
+    // actividades
+    cadena = "CREATE TABLE activ_ecas ("
              "ref         varchar(40),"
              "descripcion varchar(254),"
              "codigo      varchar(40),"
@@ -937,6 +950,7 @@ void basedatos::solotablas(bool segunda, QString qbase)
               "externo          varchar(255) default '',"
               "apunte_origen    bigint,"
               "codfactura       varchar(80) default '',"
+              "cod_actividad    varchar(40) default '',"
               "nrecepcion       bigint default 0,";
               if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
                   cadena += "revisado       bool default 0,";
@@ -6376,7 +6390,7 @@ void basedatos::inserttabla (QString tabla,QString codigo,QString descripcion) {
 
 void basedatos::inserttabla_actividades(QString ref, QString descripcion, QString codigo, QString tipo, QString epigrafe, QString cnae)
 {
-    QString cadquery = "INSERT INTO actividades";
+    QString cadquery = "INSERT INTO activ_ecas";
     cadquery+=" (ref, descripcion, codigo, tipo, epigrafe, cnae) VALUES ('";
     cadquery += ref.left(-1).replace("'","''");
     cadquery += "','";
@@ -6715,7 +6729,7 @@ void basedatos::insertDiario10 (QString cadnumasiento, QString cadnumpase, QStri
     cad2 += "','";
     cad2+= externo.replace("'","''");
     cad2+="' ";
-    if (!usuario.isEmpty()) cad2 += ",'"+ usuario.replace("'","''") +"')";
+    if (!usuario.isEmpty()) cad2 += ",'"+ usuario.replace("'","''") +"'";
       else
          {
            if (cualControlador() == SQLITE) {
@@ -7445,10 +7459,10 @@ void basedatos::insertDiario (QString cadnumasiento, qlonglong pase, QString cad
                               QString concepto, QString documento, QString diario,
                               QString ci, QString usuario, QString clave_ci,
                               QString ejercicio, QString nrecepcion, bool hay_fecha_factura,
-                              QDate fecha_factura, QString externo, QString concepto_sii, bool borrador) {
+                              QDate fecha_factura, QString externo, QString concepto_sii, bool borrador, QString actividad) {
     QString cad1="INSERT into diario (asiento,pase,fecha, cuenta,debe, haber,concepto,"
         "documento, codfactura,diario,usuario,ci, clave_ci, ejercicio, nrecepcion, "
-        "fecha_factura, externo, concepto_sii, contabilizado, registro";
+        "fecha_factura, externo, cod_actividad, concepto_sii, contabilizado, registro";
     if (!borrador) cad1+=", contabilizacion";
     cad1+=") VALUES(";
     cad1 += cadnumasiento.left(-1).replace("'","''") +",";
@@ -7499,6 +7513,8 @@ void basedatos::insertDiario (QString cadnumasiento, qlonglong pase, QString cad
       else cad1+=cadfecha;
     cad1+="','";
     cad1+=externo;
+    cad1+="','";
+    cad1+=actividad;
     cad1+="','";
     cad1+=concepto_sii;
     cad1+="', ";
@@ -7560,7 +7576,7 @@ void basedatos::insertDiario_imp (QString cadnumasiento, qlonglong pase, QString
     cad1 += ejercicio.left(-1).replace("'","''");
     cad1 += "','";
     cad1 += codfactura;
-    cad1 += "',true)";
+    cad1 += "',false)";
     ejecutar(cad1);
 }
 
@@ -9249,6 +9265,37 @@ QString basedatos::tfno() {
         return query.value(0).toString();
     }
     return "";
+}
+
+void basedatos::campos_email_cli(QString *email_from, QString *email_to, QString *email_subject, QString *email_content)
+{
+    QSqlQuery query = ejecutar("select email_from, email_to, email_subject, email_content from configuracion");
+    if ( (query.isActive()) && (query.first()) ) {
+        *email_from=query.value(0).toString();
+        *email_to=query.value(1).toString();
+        *email_subject=query.value(2).toString();
+        *email_content=query.value(3).toString();
+        return;
+    }
+    (*email_from).clear();
+    (*email_to).clear();
+    (*email_subject).clear();
+    (*email_content).clear();
+}
+
+void basedatos::actu_campos_email_cli(QString email_from, QString email_to, QString email_subject, QString email_content)
+{
+    QString cadena = "update configuracion set email_from='";
+    cadena+=email_from;
+    cadena+="', email_to='";
+    cadena+=email_to;
+    cadena+="', email_subject='";
+    cadena+=email_subject;
+    cadena+="', email_content='";
+    cadena+=email_content;
+    cadena+="'";
+    ejecutar(cadena);
+
 }
 
 // Devuelve si empleamos curl para sii
@@ -11738,7 +11785,7 @@ QSqlQuery basedatos::selectCodigodescripcionplancontableordercodigo () {
 // 
 QSqlQuery basedatos::select10Diariodiarioasientoorderpase (QString elasiento, QString ejercicio) {
     QString consulta = "SELECT cuenta,concepto,debe,haber, documento,"
-                       "asiento,fecha,pase,ci,diario, clave_ci, nrecepcion, externo, concepto_sii ";
+                       "asiento,fecha,pase,ci,diario, clave_ci, nrecepcion, externo, concepto_sii, cod_actividad ";
     consulta += "FROM diario where asiento=";
     consulta += elasiento.left(-1).replace("'","''");
     consulta += " and ejercicio='";
@@ -14909,7 +14956,7 @@ void basedatos::updatetabladescripcionclave (QString tabla, QString codigo,QStri
 
 void basedatos::update_atividades(QString ref, QString descripcion, QString codigo, QString tipo, QString epigrafe, QString cnae)
 {
-    QString cadquery = "UPDATE actividades ";
+    QString cadquery = "UPDATE activ_ecas ";
     cadquery+=" SET descripcion='";
     cadquery += descripcion.left(-1).replace("'","''");
     cadquery += "', codigo='";
@@ -16458,6 +16505,15 @@ QString basedatos::cif_externo(QString codigo)
     return QString();
 }
 
+QString basedatos::email_externo(QString codigo)
+{
+    QString cadquery = "SELECT email from externos where codigo = '";
+    cadquery += codigo.left(-1).replace("'","''") + "'";
+    QSqlQuery query = ejecutar(cadquery);
+    if ( (query.isActive()) && (query.first()) ) return query.value(0).toString();
+    return QString();
+}
+
 
 QString basedatos::cuenta_externo(QString codigo)
 {
@@ -17826,7 +17882,7 @@ bool basedatos::existecodigotabla (QString tabla, QString cadena, QString *qdesc
 
 bool basedatos::existecodigotabla_actividades(QString ref, QString *descripcion, QString *codigo, QString *tipo, QString *epigrafe, QString *cnae)
 {
-    QString cadquery = "SELECT ref,descripcion, codigo, tipo, epigrafe, cnae from actividades";
+    QString cadquery = "SELECT ref,descripcion, codigo, tipo, epigrafe, cnae from activ_ecas";
     cadquery+=" where ref = '"+ ref.left(-1).replace("'","''") +"'";
     QSqlQuery query = ejecutar(cadquery);
     if ( (query.isActive()) && (query.first()) )
@@ -19607,7 +19663,7 @@ void basedatos::actualizade221 ()
      ejecutar("update datossubcuenta set imagen=''");
     }
     else
-       ejecutar("alter table datossubcuenta add column imagen text default ''");
+       ejecutar("alter table datossubcuenta add column imagen text");
  ejecutar("alter table configuracion add column fecha_constitucion date");
  ejecutar("alter table configuracion add column objeto varchar(255) default ''");
  ejecutar("alter table configuracion add column actividad varchar(255) default ''");
@@ -22377,17 +22433,6 @@ void basedatos::actualizade4000()
     else cadena += "prorrata bool default false";
     ejecutar(cadena);
 
-    cadena = "CREATE TABLE actividades ("
-             "ref         varchar(40),"
-             "descripcion varchar(254),"
-             "codigo      varchar(40),"
-             "tipo        varchar(40),"
-             "epigrafe    varchar(40),"
-             "cnae        varchar(40),"
-             "PRIMARY KEY (ref) )";
-    cadena = anadirMotor(cadena);
-    ejecutar("drop table actividades");
-    ejecutar(cadena);
 
     ejecutar("update configuracion set version='4.0.0.2'");
 }
@@ -22460,7 +22505,36 @@ void basedatos::actualizade4002()
     ejecutar("update configuracion set version='4.0.1.0'");
 }
 
+void basedatos::actualizade4010() {
 
+    QString cadena = "CREATE TABLE activ_ecas ("
+             "ref         varchar(40),"
+             "descripcion varchar(254),"
+             "codigo      varchar(40),"
+             "tipo        varchar(40),"
+             "epigrafe    varchar(40),"
+             "cnae        varchar(40),"
+             "PRIMARY KEY (ref) )";
+    cadena = anadirMotor(cadena);
+    ejecutar(cadena);
+
+    cadena="alter table diario add column cod_actividad varchar(40) default ''";
+    ejecutar(cadena);
+    ejecutar("update configuracion set version='4.0.2.0'");
+}
+
+void basedatos::actualizade4020()
+{
+   ejecutar("alter table configuracion add column email_from varchar(255) default ''");
+   ejecutar("alter table configuracion add column email_to varchar(255) default ''");
+   ejecutar("alter table configuracion add column email_subject varchar(255) default ''");
+   ejecutar("alter table configuracion add column email_content text");
+
+   ejecutar("update configuracion set email_content='';");
+
+   ejecutar("update configuracion set version='4.0.3.0'");
+
+}
 
 void basedatos::actualizade2977()
 {
@@ -24390,7 +24464,8 @@ bool basedatos::comprobarVersion () {
                 && laversion !="3.2.2.1" && laversion !="3.2.2.2"
                 && laversion !="3.2.2.3" && laversion !="3.2.2.4"
                 && laversion !="3.2.2.5" && laversion !="3.2.2.6"
-                && laversion !="4.0.0.0" && laversion !="4.0.0.2") {
+                && laversion !="4.0.0.0" && laversion !="4.0.0.2"
+                && laversion !="4.0.1.0" && laversion !="4.0.2.0") {
             if (!(splash==NULL))
              {
               splash->finish( 0 );
@@ -24503,7 +24578,9 @@ bool basedatos::comprobarVersion () {
                 if (versionbd()=="3.2.2.5") actualizade3225();
                 if (versionbd()=="3.2.2.6") actualizade3226();
                 if (versionbd()=="4.0.0.0") actualizade4000();
-                actualizade4002();
+                if (versionbd()=="4.0.0.2") actualizade4002();
+                if (versionbd()=="4.0.1.0") actualizade4010();
+                actualizade4020();
 
               }
             else {
@@ -25849,6 +25926,20 @@ QString basedatos::iban_cuenta_banco(QString cuenta)
 
     QSqlQuery query;
     query.prepare("select iban "
+                  "from datossubcuenta where cuenta= :cuenta");
+    query.bindValue(":cuenta",cuenta);
+    query=ejecuta(query);
+    if ( (query.isActive()) && (query.first()) )
+       {
+        return query.value(0).toString();
+       }
+    return QString();
+}
+
+QString basedatos::email_cuenta(QString cuenta)
+{
+    QSqlQuery query;
+    query.prepare("select email "
                   "from datossubcuenta where cuenta= :cuenta");
     query.bindValue(":cuenta",cuenta);
     query=ejecuta(query);
@@ -32167,6 +32258,18 @@ QStringList basedatos::actividades () {
     return lista;
 }
 
+QStringList basedatos::activ_ecas () {
+    QStringList lista;
+    QString cadquery = "SELECT ref, descripcion from activ_ecas order by ref";
+    QSqlQuery query = ejecutar(cadquery);
+    if (query.isActive())
+        while (query.next())
+           {
+             lista << query.value(0).toString()+"-"+query.value(1).toString();
+           }
+    return lista;
+}
+
 QSqlQuery basedatos::asientos_cuenta_libroiva(QString cuenta ) {
     QString cadquery = "SELECT l.cuenta_fra,  d.asiento from diario d, libroiva l where "
             "l.pase=d.pase and l.cuenta_fra='";
@@ -32404,5 +32507,59 @@ QString basedatos::url_val_QR()
        return query.value(0).toString();
     }
     return QString();
+}
+
+QSqlQuery basedatos::selec_diario_extract(QString concepto, QString documento, bool hay_fecha, QDate fecha, QString debe, QString haber)
+{
+  QString cad="select cuenta, fecha, asiento, concepto, debe, haber, documento from diario where ";
+  QString cad2;
+  if (!concepto.isEmpty()) {
+      if (cualControlador() == SQLITE) {
+         cad2.append("concepto like '%");
+         cad2.append(concepto);
+         cad2.append("%' ");
+      }
+      else {
+          cad2+="position('";
+          cad2.append(concepto);
+          cad2.append("' in concepto)>0 ");
+      }
+  }
+  if (!documento.isEmpty()) {
+      if (!cad2.isEmpty()) cad2.append("and ");
+      if (cualControlador() == SQLITE) {
+         cad2.append("documento like '%");
+         cad2.append(documento);
+         cad2.append("%' ");
+      }
+      else {
+          cad2+="position('";
+          cad2.append(documento);
+          cad2.append("' in documento)>0 ");
+      }
+  }
+  if (hay_fecha) {
+      if (!cad2.isEmpty()) cad2.append("and ");
+      cad2.append("fecha='");
+      cad2.append(fecha.toString("yyyy-MM-dd"));
+      cad2.append("'");
+  }
+
+  if (!debe.isEmpty()) {
+      if (!cad2.isEmpty()) cad2.append("and ");
+      cad2.append("debe=");
+      cad2.append(convapunto(debe));
+      cad2.append(" ");
+  }
+
+  if (!haber.isEmpty()) {
+      if (!cad2.isEmpty()) cad2.append("and ");
+      cad2.append("haber=");
+      cad2.append(convapunto(haber));
+  }
+
+  if (!cad2.isEmpty()) cad2.append(" order by fecha limit 1000");
+
+  return ejecutar(cad+cad2);
 }
 

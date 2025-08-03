@@ -40,7 +40,6 @@
     <addaction name="actionFacturacion_predefinida"/>
     <addaction name="actionLotes_facturas"/>
     <addaction name="actionCuenta_anticipos"/>
-    <addaction name="actionConfiguraci_n_Veri_Factu"/>
    </widget>
    <widget class="QMenu" name="menuFacturaci_n">
     <property name="title">
@@ -51,8 +50,16 @@
     <addaction name="actionConexion"/>
     <addaction name="actionSalir"/>
    </widget>
+   <widget class="QMenu" name="menu_Configuraci_n">
+    <property name="title">
+     <string>&amp;Configuración</string>
+    </property>
+    <addaction name="actionConfiguraci_n_Veri_Factu"/>
+    <addaction name="actionContenido_Email_Facturas"/>
+   </widget>
    <addaction name="menuFacturaci_n"/>
    <addaction name="menuRegistros"/>
+   <addaction name="menu_Configuraci_n"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -190,6 +197,11 @@
   <action name="actionConfiguraci_n_Veri_Factu">
    <property name="text">
     <string>Configuración Veri*Factu</string>
+   </property>
+  </action>
+  <action name="actionContenido_Email_Facturas">
+   <property name="text">
+    <string>Contenido Email Facturas</string>
    </property>
   </action>
  </widget>

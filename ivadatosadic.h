@@ -38,6 +38,7 @@ class ivadatosadic : public QDialog {
                 bool esverificar();
                 void pasaconcepto(QString concepto);
                 QString recuperaconcepto();
+                QString actividad();
                 bool navegar_anterior();
 
          private slots:

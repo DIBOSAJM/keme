@@ -45,6 +45,8 @@
 #include "lotes_fact.h"
 #include "pidecuenta.h"
 #include "config_verifactu.h"
+#include "contenido_mail_factur.h"
+
 #include <QSplashScreen>
 #include <QMessageBox>
 
@@ -596,6 +598,14 @@ void main_factur::gest_externos()
 void main_factur::on_actionConfiguraci_n_Veri_Factu_triggered()
 {
     Config_Verifactu *c = new Config_Verifactu;
+    c->exec();
+    delete(c);
+}
+
+
+void main_factur::on_actionContenido_Email_Facturas_triggered()
+{
+    Contenido_mail_factur *c = new Contenido_mail_factur;
     c->exec();
     delete(c);
 }

@@ -41,6 +41,8 @@ private slots :
          void check_concepto();
 
          void boton_aceptar();
+         void on_busca_diario_pushButton_clicked();
+         void on_buscapush_diario2_pushButton_clicked();
 };
 
 #endif // CONTRAPARTIDAS_H

@@ -26,6 +26,7 @@ include(./QtRptProject/3rdparty/zint-2.4.4/backend_qt4/Zint.pri)
 
 HEADERS += factur/main_factur.h \
     factur/config_verifactu.h \
+    factur/contenido_mail_factur.h \
            factur/listaseries.h \
            funciones.h \
            basedatos.h \
@@ -101,10 +102,12 @@ HEADERS += factur/main_factur.h \
     edit_conc_doc.h \
     cambiacuentapase.h \
     network_connections.h \
-    mensaje_url.h
+    mensaje_url.h \
+    busca_cta_diario.h
 
 SOURCES += factur/amain.cpp \
     factur/config_verifactu.cpp \
+    factur/contenido_mail_factur.cpp \
     factur/main_factur.cpp \
     factur/listaseries.cpp \
     funciones.cpp \
@@ -181,11 +184,13 @@ SOURCES += factur/amain.cpp \
     edit_conc_doc.cpp \
     cambiacuentapase.cpp \
     network_connections.cpp \
-    mensaje_url.cpp
+    mensaje_url.cpp \
+    busca_cta_diario.cpp
 
 
 FORMS += factur/main_factur.ui \
     factur/config_verifactu.ui \
+    factur/contenido_mail_factur.ui \
          factur/listaseries.ui \
          factur/inicio.ui \
          factur/inicial.ui \
@@ -254,4 +259,5 @@ FORMS += factur/main_factur.ui \
     edit_conc_doc.ui \
     cambiacuentapase.ui \
     pide_info_unif.ui \
-    mensaje_url.ui
+    mensaje_url.ui \
+    busca_cta_diario.ui

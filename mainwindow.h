@@ -338,6 +338,7 @@ private slots:
     void on_diario_tab_cambiado(int index);
     void on_actionChequea_Herramientas_triggered();
     void on_actionVerificar_cuadre_analitica_tabla_triggered();
+    void on_actionActividades_economicas_triggered();
 };
 
 #endif // MAINWINDOW_H

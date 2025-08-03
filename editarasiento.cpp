@@ -228,6 +228,7 @@ bool edasiento(QString elasiento, QString usuario, bool modoconsulta, QString ej
                        }
                     t->pasa_externo(query.value(12).toString());
                     t->pasa_concepto_sii(query.value(13).toString());
+                    t->pasa_cod_actividad(query.value(14).toString());
                     if ((esaib || esautofactura || autofactura_no_ue || isp_op_interiores)
                         && escuentadeivasoportado(query.value(0).toString()))
                        {

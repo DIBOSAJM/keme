@@ -2817,10 +2817,9 @@ void MainWindow::tabla_homologacion()
 
 void MainWindow::tabla_actividades()
 {
- edtabla *e = new edtabla("actividades");
- e->prepara_actividades();
- e->exec();
- delete(e);
+    edtabla *e = new edtabla("actividades");
+    e->exec();
+    delete(e);
 }
 
 void MainWindow::contenido347()
@@ -7448,5 +7447,14 @@ void MainWindow::on_actionVerificar_cuadre_analitica_tabla_triggered()
         QMessageBox::warning(this,tr("Descuadres Anlítica"),respuesta_txt);
     else
         QMessageBox::information(this,tr("Comprobación analítica"),tr("No hay descuadres"));
+}
+
+
+void MainWindow::on_actionActividades_economicas_triggered()
+{
+    edtabla *e = new edtabla("activ_ecas");
+    e->prepara_actividades();
+    e->exec();
+    delete(e);
 }
 
