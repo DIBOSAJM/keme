@@ -68,6 +68,7 @@ private slots:
     void on_doc_ini_lineEdit_textChanged(const QString &arg1);
     void on_consulta_pruebas_pushButton_clicked();
     void on_consulta_real_pushButton_clicked();
+    void on_tableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 };
 
 #endif // TABLASII_H

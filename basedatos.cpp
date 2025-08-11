@@ -835,6 +835,8 @@ void basedatos::solotablas(bool segunda, QString qbase)
                  "codigo         varchar(40),"
                  "descripcion    varchar(254),"
                  "PRIMARY KEY (codigo) )";
+        if (segunda) cadena = anadirMotor(cadena,qbase); else cadena = anadirMotor(cadena);
+        if (segunda) ejecutar(cadena,qbase); else ejecutar(cadena);
 
     // actividades
     cadena = "CREATE TABLE activ_ecas ("
@@ -12687,7 +12689,7 @@ QSqlQuery basedatos::registros_recibidas_prorrata(QString ejercicio, bool fechac
 	    "l.base_iva,l.tipo_iva,l.cuota_iva,l.base_iva+l.cuota_iva,"
             "l.prorrata,l.cuota_iva*l.prorrata*l.afecto, l.fecha_fra,l.autofactura, "
             "l.autofactura_no_ue, l.afecto, l.nombre, l.cif, d.pase, d.nrecepcion, " // nrecepción campo 18
-            "l.isp_op_interiores, l.importacion, l.caja_iva, d.cuenta, d.externo, l.enviado_sii, d.concepto_sii, l.aib "
+            "l.isp_op_interiores, l.importacion, l.caja_iva, d.cuenta, d.externo, l.enviado_sii, d.concepto_sii, l.aib, d.contabilizado "
             "from diario d, libroiva l, plancontable p "
             "where d.pase=l.pase and ";
 
@@ -13061,7 +13063,7 @@ QSqlQuery basedatos::registros_emitidas(QString ejercicio, bool fechacontable, Q
             "l.base_iva,l.tipo_iva, l.cuota_iva-l.tipo_re*l.base_iva/100, l.tipo_re,"
             "l.tipo_re*l.base_iva/100, l.base_iva+l.cuota_iva, l.fecha_fra, l.cta_base_iva, "
             "l.nombre, l.cif, l.pase, l.caja_iva, d.externo, l.enviado_sii, l.isp_op_interiores, "
-            "l.clave_operacion, l.nfacturas, l.finicial, l.ffinal, d.concepto_sii, d.copia_doc "
+            "l.clave_operacion, l.nfacturas, l.finicial, l.ffinal, d.concepto_sii, d.copia_doc, d.contabilizado "
 	    "from diario d, libroiva l, plancontable p "
             "where d.pase=l.pase and ";
 
@@ -14810,7 +14812,7 @@ QSqlQuery basedatos::select9Vencimientospase_diario_operacion (QString qpase) {
 QSqlQuery basedatos::select11Diariofiltro (QString filtro) {
     QString cadena="SELECT cuenta, fecha, asiento, concepto, debe, "
         "haber, documento, diario, usuario, pase,ci, clave_ci, copia_doc,"
-        "ejercicio, nrecepcion, revisado, externo from diario ";
+        "ejercicio, nrecepcion, revisado, externo, cod_actividad as actividad from diario ";
     if (filtro.length()>0) cadena += filtro;
     filtro+= " limit 50000";
     return ejecutar(cadena);
@@ -14820,7 +14822,7 @@ QSqlQuery basedatos::select11Diariofiltro (QString filtro) {
 QSqlQuery basedatos::selectDiariofiltro_nomsj_error (QString filtro, bool *correcto) {
     QString cadena="SELECT cuenta, fecha, asiento, concepto, debe, "
         "haber, documento, diario, usuario, pase,ci, clave_ci, copia_doc,"
-        "ejercicio, nrecepcion, revisado, externo from diario ";
+        "ejercicio, nrecepcion, revisado, externo, cod_actividad from diario ";
     if (filtro.length()>0) cadena += filtro;
     /*if (filtro.length()>0) {
        if (borrador) cadena+= " and not contabilizado";
@@ -29946,7 +29948,7 @@ QSqlQuery basedatos::listaret (QDate fechaini, QDate fechafin,
     // clave, base, retención, ing_cta, ing_cta_repercutido, nombre, cif, provincia
     QString cadquery = "select d.pase, d.cuenta, r.cta_retenido, r.arrendamiento, "
                        "r.clave_ret, r.base_ret, "
-                       "r.retencion, r.ing_cta, r.ing_cta_rep, r.nombre, r.cif, r.provincia, r.tipo_ret, d.externo "
+                       "r.retencion, r.ing_cta, r.ing_cta_rep, r.nombre, r.cif, r.provincia, r.tipo_ret, d.externo, d.contabilizado "
                        "from retenciones r, diario d "
                        "where d.pase= r.pase and d.fecha>='";
     cadquery+=fechaini.toString("yyyy-MM-dd");
@@ -32431,6 +32433,32 @@ bool basedatos::borrador_con_contenido()
     return false;
 }
 
+QString basedatos::cod_actividad_apunte(QString apunte)
+{
+    QString cad="select cod_actividad from diario where pase=";
+    cad.append(apunte);
+    QSqlQuery query = ejecutar(cad);
+    if ( (query.isActive()) && (query.first()) )
+    {
+        return query.value(0).toString();
+    }
+    return QString();
+
+}
+
+void basedatos::actualiza_cod_actividad_asiento(QString asiento, QString ejercicio, QString actividad)
+{
+    QString cad2 = "update diario set cod_actividad='";
+    cad2+=actividad;
+    cad2+="'";
+    cad2+=" where asiento=";
+    cad2.append(asiento);
+    cad2.append(" and ejercicio='");
+    cad2.append(ejercicio);
+    cad2.append("'");
+    ejecutar(cad2);
+}
+
 
 void basedatos::update_ejercicio_fechas(QDate fecha_inicial, QDate fecha_final, QString ejercicio) {
    QString cad="update diario set ejercicio='";
@@ -32515,14 +32543,14 @@ QSqlQuery basedatos::selec_diario_extract(QString concepto, QString documento, b
   QString cad2;
   if (!concepto.isEmpty()) {
       if (cualControlador() == SQLITE) {
-         cad2.append("concepto like '%");
+         cad2.append("concepto ilike '%");
          cad2.append(concepto);
          cad2.append("%' ");
       }
       else {
-          cad2+="position('";
+          cad2+="position(upper('";
           cad2.append(concepto);
-          cad2.append("' in concepto)>0 ");
+          cad2.append("') in upper(concepto))>0 ");
       }
   }
   if (!documento.isEmpty()) {

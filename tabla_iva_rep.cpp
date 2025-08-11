@@ -304,6 +304,15 @@ void tabla_iva_rep::refrescar()
        ui.tableWidget->setItem(numorden,14,newItem71);
        total << formateanumerosep(query.value(10).toDouble(),comadecimal,decimales);
 
+       if (! query.value(26).toBool()) {
+           for (int v=0; v<11; v++) {
+               bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
+               QTableWidgetItem* item = ui.tableWidget->item(numorden, v);
+               item->setBackground(background_alt(darkMode));
+           }
+       }
+
+
        numorden++;
       }
      }
@@ -820,3 +829,22 @@ QList<double> tabla_iva_rep::qselcuota_liquidada()
 {
   return selcuota_liquidada;
 }
+
+void tabla_iva_rep::on_tableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
+{
+    Q_UNUSED(previousRow);
+    Q_UNUSED(previousColumn);
+    Q_UNUSED(currentColumn);
+    Q_UNUSED(currentRow);
+    int fcurrentRow=ui.tableWidget->currentRow();
+    if (fcurrentRow>0 || fcurrentRow+1<ui.tableWidget->rowCount()) {
+        QColor fondo= ui.tableWidget->item(fcurrentRow,0)->background().color();
+        bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
+        if (fondo==background_alt(darkMode)) {
+            ui.edasientopushButton->setEnabled(true);
+            return;
+        }
+    }
+    ui.edasientopushButton->setEnabled(false);
+}
+

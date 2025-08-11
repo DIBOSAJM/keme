@@ -23,9 +23,14 @@ private slots:
 
     void on_diario_tableWidget_cellClicked(int row, int column);
 
+    void on_debe_lineEdit_editingFinished();
+
+    void on_haber_lineEdit_editingFinished();
+
 private:
     Ui::Busca_cta_diario *ui;
     QString cuenta_sel;
+    bool comadecimal;
 };
 
 #endif // BUSCA_CTA_DIARIO_H

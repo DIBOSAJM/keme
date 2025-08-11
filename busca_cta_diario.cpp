@@ -10,6 +10,7 @@ Busca_cta_diario::Busca_cta_diario(QWidget *parent)
     ui->setupUi(this);
     ui->fecha_dateEdit->setDate(QDate().currentDate());
     ui->diario_tableWidget->setColumnWidth(3,300);
+    comadecimal=haycomadecimal();
 }
 
 Busca_cta_diario::~Busca_cta_diario()
@@ -68,5 +69,22 @@ void Busca_cta_diario::on_diario_tableWidget_cellClicked(int row, int column)
 {
     if (ui->diario_tableWidget->item(row,0)!=NULL) cuenta_sel=ui->diario_tableWidget->item(row,0)->text();
     accept();
+}
+
+
+void Busca_cta_diario::on_debe_lineEdit_editingFinished()
+{
+    if (comadecimal) ui->debe_lineEdit->setText(convacoma(ui->debe_lineEdit->text()));
+      else
+        ui->debe_lineEdit->setText(convapunto(ui->debe_lineEdit->text()));
+}
+
+
+void Busca_cta_diario::on_haber_lineEdit_editingFinished()
+{
+    if (comadecimal) ui->haber_lineEdit->setText(convacoma(ui->haber_lineEdit->text()));
+    else
+        ui->haber_lineEdit->setText(convapunto(ui->haber_lineEdit->text()));
+
 }
 

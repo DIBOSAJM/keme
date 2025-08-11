@@ -99,6 +99,7 @@ class tabla_iva_rep : public QDialog {
                 void desglose();
                 void solo_ptes_criterio_caja();
 
+                void on_tableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 };
 
 

@@ -174,6 +174,7 @@
     <addaction name="actionConsulta_Asiento_N_mero"/>
     <addaction name="actionChequear_Revisado"/>
     <addaction name="actionAsigna_Fichero_a_Asiento"/>
+    <addaction name="actionCambiar_Actividad_a_apunte"/>
     <addaction name="actionBorrar_Asiento"/>
     <addaction name="actionPapelera"/>
     <addaction name="menuPortapapeles"/>
@@ -429,7 +430,7 @@
    <addaction name="actionVencimientos_a_partir_diario"/>
    <addaction name="actionProcesar_vencimientos"/>
    <addaction name="separator"/>
-   <addaction name="actionAsignar_Concepto_a_apuntes"/>
+   <addaction name="actionCambiar_Actividad_a_apunte"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionConexion">
@@ -1441,6 +1442,15 @@
   <action name="actionActividades_economicas">
    <property name="text">
     <string>Actividades económicas</string>
+   </property>
+  </action>
+  <action name="actionCambiar_Actividad_a_apunte">
+   <property name="icon">
+    <iconset resource="keme.qrc">
+     <normaloff>:/iconos/graf/factory.png</normaloff>:/iconos/graf/factory.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cambiar Acti&amp;vidad a asiento</string>
    </property>
   </action>
  </widget>

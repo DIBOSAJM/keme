@@ -905,10 +905,8 @@ void facturas::gen_email(QString qserie, QString qnumero)
 
     QSqlQuery q;
     q = basedatos::instancia()->select_cabecera_doc (qserie, qnumero);
-    QString tipo_doc, cuenta, externo, tipo_ret, retencion, notas, pie1, pie2;
-    bool con_ret=false, con_re=false;
-    QDate fecha, fecha_fac, fecha_op;
-    int clave=0;
+    QString cuenta, externo, tipo_doc;
+    QDate fecha_fac;
     if (q.isActive())
     {
         if (q.next())
@@ -917,19 +915,9 @@ void facturas::gen_email(QString qserie, QString qnumero)
             // "contabilizado,contabilizable, con_ret, con_re, tipo_ret, retencion, "
             // "tipo_doc, notas, pie1, pie2, pase_diario_cta, clave "
             cuenta=q.value(2).toString();
-            fecha=q.value(3).toDate();
             fecha_fac=q.value(4).toDate();
-            fecha_op=q.value(5).toDate();
-            con_ret=q.value(8).toBool();
-            con_re=q.value(9).toBool();
-            tipo_ret=q.value(10).toString();
-            retencion=q.value(11).toString();
-            tipo_doc=q.value(12).toString();
-            notas=q.value(13).toString();
-            pie1=q.value(14).toString();
-            pie2=q.value(15).toString();
-            clave=q.value(17).toInt();
             externo=q.value(20).toString();
+            tipo_doc=q.value(12).toString();
         } else return;
     }
 
@@ -974,8 +962,11 @@ JVBERi0xLjQKJcfs... (contenido PDF en base64)
     cad_email.append("To: ");
     cad_email.append(email_to);
     cad_email.append("\n");
-    cad_email.append("Subject: Factura emitida - ");
-    cad_email.append(basedatos::instancia()->selectEmpresaconfiguracion());
+    cad_email.append("Subject: ");
+    cad_email.append(email_subject.replace("{empresa}",basedatos::instancia()->selectEmpresaconfiguracion())
+                         .replace("{fecha_fac}",fecha_fac.toString("dd-MM-yyyy")).replace("{factura}",qserie+qnumero));
+
+
     cad_email.append("\n");
     cad_email.append("MIME-Version: 1.0\n");
     cad_email.append("Content-Type: multipart/mixed; boundary=""limite123""\n");
@@ -983,8 +974,9 @@ JVBERi0xLjQKJcfs... (contenido PDF en base64)
     cad_email.append("--limite123\n");
     cad_email.append("Content-Type: text/plain; charset=""UTF-8""\n");
     cad_email.append("\n");
-    cad_email.append("Adjunto encontrará su factura en PDF.\n");
-    cad_email.append("\n");
+    cad_email.append(email_content.replace("{empresa}",basedatos::instancia()->selectEmpresaconfiguracion())
+                         .replace("{fecha_fac}",fecha_fac.toString("dd-MM-yyyy")).replace("{factura}",qserie+qnumero));
+    cad_email.append("\n\n");
     cad_email.append("--limite123\n");
     cad_email.append("Content-Type: application/pdf; name=""");
     cad_email.append(cadfich);
@@ -1721,6 +1713,7 @@ void facturas::on_email_pushButton_clicked()
                 QString qnumero=model->datagen(lista_numero.at(i),Qt::DisplayRole).toString();
                 informe(qserie,qnumero,true);
                 // generamos ahora archivo de texto con email
+                gen_email(qserie,qnumero);
             }
             QMessageBox::information(this,tr("Informe documento"),tr("Se han generado los documentos"));
             return;

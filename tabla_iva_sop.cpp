@@ -341,9 +341,19 @@ void tabla_iva_sop::refrescar()
        ui.tableWidget->setItem(numorden,16,newItem913);
        recepcion << query.value(18).toString();
 
+       if (! query.value(27).toBool()) {
+           for (int v=0; v<11; v++) {
+               bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
+               QTableWidgetItem* item = ui.tableWidget->item(numorden, v);
+               item->setBackground(background_alt(darkMode));
+           }
+       }
+
+
        numorden++;
       }
      }
+
    // cargamos ahora info para de cuota liquidada para cada línea
    ui.tableWidget->setVerticalHeaderLabels(lfilas);
    for (int veces=0; veces<ui.tableWidget->rowCount(); veces++)
@@ -885,3 +895,23 @@ QList<double> tabla_iva_sop::qselcuota_liquidada()
 {
   return selcuota_liquidada;
 }
+
+void tabla_iva_sop::on_tableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
+{
+    Q_UNUSED(previousRow);
+    Q_UNUSED(previousColumn);
+    Q_UNUSED(currentColumn);
+    Q_UNUSED(currentRow);
+    int fcurrentRow=ui.tableWidget->currentRow();
+    if (fcurrentRow>0 || fcurrentRow+1<ui.tableWidget->rowCount()) {
+        QColor fondo= ui.tableWidget->item(fcurrentRow,0)->background().color();
+        bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
+        if (fondo==background_alt(darkMode)) {
+            ui.edasientopushButton->setEnabled(true);
+            return;
+        }
+    }
+    ui.edasientopushButton->setEnabled(false);
+
+}
+

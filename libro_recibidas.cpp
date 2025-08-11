@@ -2758,3 +2758,208 @@ void libro_recibidas::on_documentos_pushButton_clicked()
     }
 
 }
+
+void libro_recibidas::on_hoja_pushButton_clicked()
+{
+    // activamos todos los checks necesarios
+    ui.interiorescheckBox->setChecked(true);
+    ui.aibcheckBox->setChecked(true);
+    ui.autofacturascheckBox->setChecked(true); // servicios UE
+    ui.autofacturasnouecheckBox->setChecked(true);
+    ui.isp_op_interiorescheckBox->setChecked(true);
+    ui.importacionescheckBox->setChecked(true);
+    ui.agrariocheckBox->setChecked(true);
+    ui.rectificativascheckBox->setChecked(true);
+
+    QString ejercicio=ui.ejerciciocomboBox->currentText();
+    bool fechacontable=true;
+
+    QString global;
+
+    global=filtracad(nombreempresa());
+    global+="\n\n";
+    QString cadena=ui.cabeceralineEdit->text();
+    // --------------------------------------------------------------------------------------
+    global+=cadena;
+    global+="\n\n";
+    // -------------------------------------------------------------------------------------
+    if (ordenrecepcion) global+=tr("Orden")+"\t";
+    else global+=tr("Recep.")+"\t";
+    global+=tr("Factura")+"\t";
+    global+=tr("Fecha Fra.")+"\t";
+    global+=tr("Contab.")+"\t";
+    global+=tr("Cuenta")+"\t";
+    global+=tr("Proveedor/acreedor")+"\t";
+    global+=tr("CIF/NIF")+"\t";
+    global+=tr("Asto.")+"\t";
+    global+=tr("Base Imp.")+"\t";
+    global+=tr("Tipo")+"\t";
+    global+=tr("Cuota")+"\t";
+    global+=tr("Total")+"\t";
+    global+=tr("Prorrata")+"\t";
+    global+=tr("Afectación")+"\t";
+    global+=tr("Cuota ef.")+"\n";
+
+    if (ui.fechasgroupBox->isChecked())
+    {
+        ejercicio.clear();
+        if (ui.fcontableradioButton->isChecked()) fechacontable=true;
+    }
+
+    QString cuenta;
+    if (ui.cuentagroupBox->isChecked()) cuenta=ui.cuentalineEdit->text();
+
+    int registros = basedatos::instancia()->num_registros_recibidas( ejercicio,
+                                                                    fechacontable,ui.inicialdateEdit->date(),ui.finaldateEdit->date(),
+                                                                    ui.interiorescheckBox->isChecked(),
+                                                                    ui.aibcheckBox->isChecked(),
+                                                                    ui.autofacturascheckBox->isChecked(),
+                                                                    ui.autofacturasnouecheckBox->isChecked(),
+                                                                    ui.rectificativascheckBox->isChecked(),
+                                                                    ui.seriesgroupBox->isChecked(),
+                                                                    ui.serieiniciallineEdit->text(),
+                                                                    ui.seriefinallineEdit->text(),
+                                                                    ui.binversiongroupBox->isChecked(),
+                                                                    ui.solobiradioButton->isChecked(),
+                                                                    ui.sinbiradioButton->isChecked(),
+                                                                    ui.sujeciongroupBox->isChecked(),
+                                                                    ui.solonosujetasradioButton->isChecked(),
+                                                                    ui.excluirnosujetasradioButton->isChecked(),
+                                                                    ui.agrariocheckBox->isChecked(),
+                                                                    ui.isp_op_interiorescheckBox->isChecked(),
+                                                                    ui.importacionescheckBox->isChecked(),false, cuenta,ui.externo_lineEdit->text());
+
+    QSqlQuery query =
+        basedatos::instancia()->registros_recibidas_prorrata(ejercicio,
+                                                             fechacontable,ui.inicialdateEdit->date(),ui.finaldateEdit->date(),
+                                                             ui.interiorescheckBox->isChecked(),
+                                                             ui.aibcheckBox->isChecked(),
+                                                             ui.autofacturascheckBox->isChecked(),
+                                                             ui.autofacturasnouecheckBox->isChecked(),
+                                                             ui.rectificativascheckBox->isChecked(),
+                                                             ui.seriesgroupBox->isChecked(),
+                                                             ui.serieiniciallineEdit->text(),
+                                                             ui.seriefinallineEdit->text(),
+                                                             ui.binversiongroupBox->isChecked(),
+                                                             ui.solobiradioButton->isChecked(),
+                                                             ui.sinbiradioButton->isChecked(),
+                                                             ui.sujeciongroupBox->isChecked(),
+                                                             ui.solonosujetasradioButton->isChecked(),
+                                                             ui.excluirnosujetasradioButton->isChecked(),
+                                                             ui.agrariocheckBox->isChecked(),
+                                                             ui.isp_op_interiorescheckBox->isChecked(),
+                                                             ui.importacionescheckBox->isChecked(),false, cuenta, ui.externo_lineEdit->text());
+
+    ui.progressBar->setMaximum(registros);
+    int numorden=0;
+    int numprog=1;
+    QString cadnum,guardadoc,guardaprov;
+    double base=0;
+    double cuota=0;
+    double cuotaefectiva=0;
+    if ( query.isActive() ) {
+        while ( query.next() ) {
+            bool esautofactura= query.value(13).toBool();
+            QString externo=query.value(23).toString();
+            bool hayexterno=!externo.isEmpty();
+            ui.progressBar->setValue(numprog);
+            if (guardadoc!=query.value(0).toString() || query.value(0).toString().length()==0
+                || numprog==1 || guardaprov!=query.value(2).toString()) numorden++;
+            guardadoc=query.value(0).toString();
+            guardaprov=query.value(2).toString();
+            global+=(ordenrecepcion ? query.value(18).toString() : cadnum.setNum(numorden))+ "\t";
+            global+=filtracad(query.value(0).toString()) + "\t"; // fra.
+            global+=query.value(11).toDate().toString("dd.MM.yyyy") + "\t"; // fecha fra
+            global+=query.value(1).toDate().toString("dd.MM.yyyy") + "\t"; // fecha contable
+            if (!esautofactura)
+            {
+                QString razon,nif;
+                if (!hayexterno)
+                    basedatos::instancia()->razon_nif_datos(query.value(2).toString(), &razon, &nif);
+                else
+                {
+                    razon=basedatos::instancia()->razon_externo(externo);
+                    nif=basedatos::instancia()->cif_externo(externo);
+                }
+                if (razon.trimmed().isEmpty()) razon=query.value(3).toString();
+                global+=query.value(2).toString() + "\t"; // cuenta
+                global+= ( query.value(15).toString().isEmpty() ?
+                               filtracad(razon) :
+                               filtracad(query.value(15).toString()) ) + "\t"; // proveedor
+                global+=( query.value(16).toString().isEmpty() ?
+                               nif :
+                               filtracad(query.value(16).toString()) )+ "\t"; // cif
+            }
+            else
+            {
+                global+="\t"; // cuenta
+                global+=filtracad(nombreempresa()) + "\t"; // proveedor
+                global+= basedatos::instancia()->cif() + "\t"; // cif
+            }
+            global+=query.value(4).toString() + "\t"; // asiento
+            global+=formatea_redondeado_sep(query.value(5).toDouble(),comadecimal,decimales)+"\t"; // base iva
+            global+=formatea_redondeado_sep(query.value(6).toDouble(),comadecimal,decimales)+"\t"; // tipo
+            global+=formatea_redondeado_sep(query.value(7).toDouble(),comadecimal,decimales)+"\t"; // cuota
+            if (query.value(12).toBool() || query.value(13).toBool() || query.value(19).toBool() || query.value(26).toBool())
+                global+=formatea_redondeado_sep(query.value(5).toDouble(),comadecimal,decimales)+"\t"; // total
+            else
+                global+=formatea_redondeado_sep(query.value(8).toDouble(),comadecimal,decimales)+"\t"; // total
+            global+=formatea_redondeado_sep(query.value(9).toDouble(),comadecimal,decimales)+"\t"; // prorrata
+            global+=formatea_redondeado_sep(query.value(14).toDouble(),comadecimal,decimales)+"\t"; // prorrata
+            global+=formatea_redondeado_sep(query.value(10).toDouble(),comadecimal,decimales)+"\n"; // cuota corregida prorrata
+            if (query.value(21).toBool())
+            {
+                // criterio de caja
+                QSqlQuery q=basedatos::instancia()->datos_venci_apunte_iva_caja_liquidados(
+                    query.value(17).toString());
+                // v.fecha_vencimiento, v.liq_iva_fecha, v.forzar_liq_iva, v.importe,
+                // v.num, v.medio_realizacion, v.cuenta_bancaria
+                bool vacio=true;
+                if (q.isActive())
+                    while (q.next())
+                    {
+                        vacio=false;
+                        global+= "\t\t";
+                        global+= tr("Importe pago");
+                        global+= "\t";
+                        global+= formatea_redondeado_sep(q.value(3).toDouble(),comadecimal,decimales);
+                        global+= "\t";
+                        global+= tr("FECHA:");
+                        global+= "\t";
+                        global+= q.value(1).toDate().toString("dd-MM-yyyy");
+                        global+= "\t";
+                        global+= q.value(5).toString();
+                        global+= "\t\t";
+                        global+= tr("Cuenta:");
+                        global+= "\t";
+                        global+= q.value(6).toString();
+                        global+= "\n  ";
+                    }
+                if (vacio)
+                {
+                    global+= "\t\t";
+                    global+= tr("Importe pago");
+                    global+= "\t";
+                    global+= "\t";
+                    global+= tr("FECHA:");
+                    global+= "\t";
+                    global+= "\t";
+                    global+= "\t\t";
+                    global+= tr("Cuenta:");
+                    global+= "\t";
+                    global+= "\n  ";
+                }
+            }
+            numprog++;
+            base+=query.value(5).toDouble();
+            cuota+=query.value(7).toDouble();
+            cuotaefectiva+=query.value(10).toDouble();
+        }
+    }
+    QClipboard *cb = QApplication::clipboard();
+    cb->setText(global);
+    QMessageBox::information( this, tr("Libro de Facturas"),
+                             tr("Se ha pasado el contenido al portapapeles") );
+
+}
+

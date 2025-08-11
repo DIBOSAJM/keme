@@ -57,6 +57,9 @@
          </item>
          <item>
           <widget class="QTableView" name="latabladiario">
+           <property name="alternatingRowColors">
+            <bool>false</bool>
+           </property>
            <attribute name="verticalHeaderShowSortIndicator" stdset="0">
             <bool>false</bool>
            </attribute>
@@ -112,45 +115,7 @@
           </layout>
          </item>
          <item>
-          <widget class="QTableView" name="borrador_tableView">
-           <property name="palette">
-            <palette>
-             <active>
-              <colorrole role="AlternateBase">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>247</red>
-                 <green>224</green>
-                 <blue>230</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </active>
-             <inactive>
-              <colorrole role="AlternateBase">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>247</red>
-                 <green>224</green>
-                 <blue>230</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </inactive>
-             <disabled>
-              <colorrole role="AlternateBase">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>247</red>
-                 <green>224</green>
-                 <blue>230</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </disabled>
-            </palette>
-           </property>
-          </widget>
+          <widget class="QTableView" name="borrador_tableView"/>
          </item>
         </layout>
        </widget>

@@ -188,7 +188,7 @@ void tablaSII::refrescar()
 void tablaSII::carga_recibidas()
 {
     int registros=0;
-
+    ui->edasientopushButton->setEnabled(false);
     ui->tableWidget->clearContents();
     ui->tableWidget->setRowCount(0);
 
@@ -387,6 +387,14 @@ void tablaSII::carga_recibidas()
           QTableWidgetItem *newItem915 = new QTableWidgetItem(query.value(25).toString());
           ui->tableWidget->setItem(numorden,21,newItem915);
 
+          if (! query.value(27).toBool()) {
+              for (int v=0; v<ui->tableWidget->columnCount(); v++) {
+                  bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
+                  QTableWidgetItem* item = ui->tableWidget->item(numorden, v);
+                  if (item!=NULL)
+                     item->setBackground(background_alt(darkMode));
+              }
+          }
 
           numorden++;
           QApplication::processEvents();
@@ -405,6 +413,7 @@ void tablaSII::carga_recibidas()
 void tablaSII::carga_emitidas()
 {
     int registros=0;
+    ui->edasientopushButton->setEnabled(false);
 
     ui->tableWidget->clearContents();
     ui->tableWidget->setRowCount(0);
@@ -604,6 +613,15 @@ void tablaSII::carga_emitidas()
 
           QTableWidgetItem *newItem915 = new QTableWidgetItem(query.value(24).toString());
           ui->tableWidget->setItem(numorden,21,newItem915);
+
+          if (! query.value(26).toBool()) {
+              for (int v=0; v<ui->tableWidget->columnCount(); v++) {
+                  bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
+                  QTableWidgetItem* item = ui->tableWidget->item(numorden, v);
+                  if (item!=NULL)
+                      item->setBackground(background_alt(darkMode));
+              }
+          }
 
           numorden++;
          }
@@ -3086,3 +3104,23 @@ void tablaSII::on_consulta_real_pushButton_clicked()
       }
 
 }
+
+void tablaSII::on_tableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
+{
+    Q_UNUSED(previousRow);
+    Q_UNUSED(previousColumn);
+    Q_UNUSED(currentColumn);
+    Q_UNUSED(currentRow);
+    int fcurrentRow=ui->tableWidget->currentRow();
+    if (fcurrentRow>0 || fcurrentRow+1<ui->tableWidget->rowCount()) {
+        QColor fondo= ui->tableWidget->item(fcurrentRow,0)->background().color();
+        bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
+        if (fondo==background_alt(darkMode)) {
+            ui->edasientopushButton->setEnabled(true);
+            return;
+        }
+    }
+    ui->edasientopushButton->setEnabled(false);
+
+}
+

@@ -3660,6 +3660,9 @@ class basedatos {
 
         bool borrador_con_contenido();
 
+        QString cod_actividad_apunte(QString apunte);
+        void actualiza_cod_actividad_asiento(QString asiento, QString ejercicio, QString actividad);
+
         void update_ejercicio_fechas(QDate fecha_inicial, QDate fecha_final, QString ejercicio);
 
         QString cod_iva(double tipo);

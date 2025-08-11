@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>703</width>
-    <height>670</height>
+    <width>744</width>
+    <height>703</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,6 @@
      <property name="font">
       <font>
        <pointsize>18</pointsize>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -28,7 +27,7 @@
       <string>LIBRO DE FACTURAS RECIBIDAS</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>
@@ -260,6 +259,36 @@
             </item>
             <item>
              <widget class="QDateEdit" name="finaldateEdit"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Periodos</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <item>
+             <widget class="QRadioButton" name="trimestres_radioButton">
+              <property name="text">
+               <string>TRIMESTRES</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="meses_radioButton">
+              <property name="text">
+               <string>MESES</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -526,7 +555,7 @@
       <number>0</number>
      </property>
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -535,7 +564,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -544,6 +573,17 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="hoja_pushButton">
+       <property name="text">
+        <string>Hoja</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/view_choose.png</normaloff>:/iconos/graf/view_choose.png</iconset>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="imprimirpushButton">

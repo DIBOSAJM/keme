@@ -339,6 +339,7 @@ private slots:
     void on_actionChequea_Herramientas_triggered();
     void on_actionVerificar_cuadre_analitica_tabla_triggered();
     void on_actionActividades_economicas_triggered();
+    void on_actionCambiar_Actividad_a_apunte_triggered();
 };
 
 #endif // MAINWINDOW_H

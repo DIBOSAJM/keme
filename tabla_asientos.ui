@@ -2344,16 +2344,6 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QComboBox" name="actividad_comboBox">
-       <property name="minimumSize">
-        <size>
-         <width>200</width>
-         <height>0</height>
-        </size>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
@@ -2907,6 +2897,16 @@
      </item>
      <item>
       <widget class="QLineEdit" name="concepto_sii_lineEdit"/>
+     </item>
+     <item>
+      <widget class="QComboBox" name="actividad_comboBox">
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="input_predef_pushButton">
@@ -3717,13 +3717,14 @@
   <tabstop>impriasigpushButton</tabstop>
   <tabstop>borravisdocpushButton</tabstop>
   <tabstop>concepto_sii_lineEdit</tabstop>
+  <tabstop>actividad_comboBox</tabstop>
   <tabstop>input_predef_pushButton</tabstop>
   <tabstop>ed_venci_checkBox</tabstop>
-  <tabstop>fichdocpushButton</tabstop>
-  <tabstop>borraasdocpushButton</tabstop>
   <tabstop>FechaApunte</tabstop>
   <tabstop>diariocomboBox</tabstop>
   <tabstop>fichdoclineEdit</tabstop>
+  <tabstop>fichdocpushButton</tabstop>
+  <tabstop>borraasdocpushButton</tabstop>
   <tabstop>visdocpushButton</tabstop>
   <tabstop>BotonIncorporar</tabstop>
   <tabstop>BotonCancelar</tabstop>

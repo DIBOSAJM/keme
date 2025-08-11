@@ -240,6 +240,11 @@ void consret::refrescar()
                                                  ui.arrendamientoscheckBox->isChecked(),
                                                  ui.excluir_arrcheckBox->isChecked());
   fila=0;
+
+  ui.edasientopushButton->setEnabled(false);
+  ui.edret_pushButton->setEnabled(false);
+  ui.borra_asientolineEdit->setEnabled(false);
+
   while (consulta.next())
       {
         //QMessageBox::warning( 0, QObject::tr("ret"),
@@ -371,6 +376,14 @@ void consret::refrescar()
          newItem66->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
          ui.detalletableWidget->setItem(fila,13,newItem66);
 
+         if (!consulta.value(14).toBool()) {
+             for (int v=0; v<ui.detalletableWidget->columnCount(); v++) {
+                 bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
+                 QTableWidgetItem* item = ui.detalletableWidget->item(fila, v);
+                 item->setBackground(background_alt(darkMode));
+             }
+
+         }
          fila++;
       }
   // ui.refrescarpushButton->setEnabled(false);
@@ -913,3 +926,26 @@ void consret::actufechas()
   ui.inicialdateEdit->setDate(fechaini);
   ui.finaldateEdit->setDate(fechafin);
 }
+
+void consret::on_detalletableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
+{
+    Q_UNUSED(previousRow);
+    Q_UNUSED(previousColumn);
+    Q_UNUSED(currentColumn);
+    Q_UNUSED(currentRow);
+    int fcurrentRow=ui.detalletableWidget->currentRow();
+    if (fcurrentRow>0 || fcurrentRow+1<ui.detalletableWidget->rowCount()) {
+        QColor fondo= ui.detalletableWidget->item(fcurrentRow,0)->background().color();
+        bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
+        if (fondo==background_alt(darkMode)) {
+            ui.edasientopushButton->setEnabled(true);
+            ui.edret_pushButton->setEnabled(true);
+            ui.borra_asientolineEdit->setEnabled(true);
+            return;
+        }
+    }
+    ui.edasientopushButton->setEnabled(false);
+    ui.edret_pushButton->setEnabled(false);
+    ui.borra_asientolineEdit->setEnabled(false);
+}
+

@@ -27,6 +27,7 @@
 #include <QDomDocument>
 #include <QtGui>
 #include <QSplashScreen>
+#include <QTableView>
 
 #define NUMPRIVILEGIOS 89
 
@@ -54,6 +55,9 @@ extern bool curl_sii;
 
 extern QString global_url_actu;
 extern QString global_msj_url_actu;
+
+void setAlternateRowColor(QTableView *view, bool darkMode);
+QColor background_alt(bool darkMode);
 
 QString convacoma(QString cad);
 
@@ -764,3 +768,6 @@ bool pdf_contiene_texto(QString nfichero);
 QString pdfgraf_a_qstring(QString nfichero);
 
 QString graf_a_qstring(QString nfichero);
+
+QString periodo_trim(QDate fecha);
+QString periodo_mes(QDate fecha);

@@ -8779,3 +8779,30 @@ QString graf_a_qstring(QString nfichero) {
     fichero.remove();
     return contenido;
 }
+
+void setAlternateRowColor(QTableView *view, bool darkMode)
+{
+    QPalette p = view->palette();
+        QColor base = darkMode ? QColor("#A85D5D") : QColor("#FFDFDF"); // Salmón claro solo en modo claro, salmón marrón saturado en modo oscuro "#A85D5D"
+        p.setColor(QPalette::AlternateBase, base);
+        view->setPalette(p);
+}
+
+QColor background_alt(bool darkMode) {
+    return darkMode ? QColor("#A85D5D") : QColor("#FFDFDF");
+}
+
+QString periodo_trim(QDate fecha) {
+    if (fecha.month()>0 && fecha.month()<4) return "1T";
+    if (fecha.month()>3 && fecha.month()<7) return "2T";
+    if (fecha.month()>6 && fecha.month()<10) return "3T";
+    if (fecha.month()>9 && fecha.month()<13) return "4T";
+    return QString();
+}
+
+QString periodo_mes(QDate fecha) {
+  int mes=fecha.month();
+  QString cadnum; cadnum.setNum(mes);
+  QString periodo=cadnum.trimmed()+"M";
+  return periodo;
+}

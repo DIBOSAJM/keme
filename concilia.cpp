@@ -470,8 +470,9 @@ void concilia::cargadatos()
              }
       if (! query.value(8).toBool()) {
          for (int v=0; v<6; v++) {
+              bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
               QTableWidgetItem* item = ui.contabtableWidget->item(fila, v);
-              item->setBackground(QColor(255, 200, 200));
+              item->setBackground(background_alt(darkMode));
              }
       }
       QTableWidgetItem *newItem = new QTableWidgetItem(formateanumero(sumadebe-sumahaber,
@@ -2492,7 +2493,8 @@ void concilia::check_botones_edicion()
     int currentRow=ui.contabtableWidget->currentRow();
     if (currentRow>0 || currentRow+1<ui.contabtableWidget->rowCount()) {
         QColor fondo= ui.contabtableWidget->item(currentRow,0)->background().color();
-        if (fondo==QColor(255, 200, 200)) {
+        bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
+        if (fondo==background_alt(darkMode)) {
             activa_botones_edicion(true);
             return;
         }

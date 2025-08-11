@@ -335,8 +335,8 @@ void consmayor::cargadatos()
     QDate fechainiejercicio=inicioejercicio(ejercicio);
     QDate fechaejercicioanterior=fechainiejercicio.addDays(-1);
     QString ejercicioanterior=ejerciciodelafecha(fechaejercicioanterior);
-    if (ejerciciocerrado(ejercicioanterior) || escuentadegasto(ui.subcuentalineEdit->text()) || 
-	   escuentadeingreso(ui.subcuentalineEdit->text()))
+    if ((ui.externolineEdit->text().isEmpty()) && (ejerciciocerrado(ejercicioanterior) || escuentadegasto(ui.subcuentalineEdit->text()) ||
+               escuentadeingreso(ui.subcuentalineEdit->text())))
        {
         query = basedatos::instancia()->selectSumdebesumhaberdiariofechascondicion(
                  fechainiejercicio, ui.inicialdateEdit->date(), condicion);
@@ -354,6 +354,7 @@ void consmayor::cargadatos()
         if (saldoin>0) sumadebe=saldoin;
         if (saldoin<0) sumahaber=saldoin*-1;
       }
+
 
     // obtenemos lista de apuntes con vencimiento y suma de importe con pendiente=false
    QSqlQuery q;
@@ -436,6 +437,8 @@ void consmayor::cargadatos()
            }
         fila++;
        }
+
+
     for (int v=0; v<filas_borrador.count(); v++) {
            for (int column = 0; column < ui.mayortable->columnCount(); ++column)
            {
@@ -445,7 +448,8 @@ void consmayor::cargadatos()
                 item = new QTableWidgetItem();
                 ui.mayortable->setItem(filas_borrador.at(v), column, item);
                }
-            item->setBackground(QColor(255, 200, 200));
+            bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
+            item->setBackground(background_alt(darkMode));
            }
        }
    ui.debelineEdit->setText(formateanumero(sumadebe,comadecimal,decimales));

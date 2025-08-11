@@ -54,6 +54,7 @@ class consret : public QDialog {
                 void ed_registro_ret();
                 void cambiacuenpase();
                 void actufechas();
+                void on_detalletableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 };
 
 

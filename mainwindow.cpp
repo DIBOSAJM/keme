@@ -129,6 +129,7 @@
 #include "modelo_182.h"
 #include "tipos_cambio.h"
 #include "check_herramientas.h"
+#include "cambia_actividad.h"
 
 #include <QSplashScreen>
 #include <QPdfDocument>
@@ -699,7 +700,9 @@ punterodiario=eldiario;
 setCentralWidget(eldiario);
 QString cadena;
 filtroactivo=condicionesfiltrodefecto();
+filtroactivob.clear();
 eldiario->pasafiltroedlin(filtro_a_lingu(filtroactivo));
+eldiario->pasafiltroedlinb(filtroactivob);
 if (filtroactivo.length()>0) cadena=" WHERE "+filtroactivo+" ";
 if (filtroactivo.isEmpty()) cadena="where contabilizado ";
   else cadena+=" and contabilizado ";
@@ -1452,6 +1455,7 @@ void MainWindow::actuprivilegios()
     ui->actionNuevo_Asiento->setEnabled(privilegios[nuev_asiento]);
     ui->actionEditar_Asiento->setEnabled(privilegios[edi_asiento]);
     ui->actionEditar_Asiento_N_mero->setEnabled(privilegios[edi_asiento]);
+    ui->actionCambiar_Actividad_a_apunte->setEnabled(privilegios[edi_asiento]);
     ui->actionPapelera->setEnabled(privilegios[edi_asiento]);
     // ui->actionConsulta_Asiento
     // ui->actionConsulta_Asiento_N_mero
@@ -2058,7 +2062,7 @@ QString MainWindow::ordenarpor(void)
 
   if (orden_campo_diario.isEmpty())
      {
-      if (ordendiario==ASIENTO)  {cadena+="ejercicio,asiento desc,pase";}
+      if (ordendiario==ASIENTO)  {cadena+="ejercicio desc,asiento desc,pase desc";}
         else {cadena+="fecha desc,pase";}
      }
     else
@@ -7456,5 +7460,31 @@ void MainWindow::on_actionActividades_economicas_triggered()
     e->prepara_actividades();
     e->exec();
     delete(e);
+}
+
+
+void MainWindow::on_actionCambiar_Actividad_a_apunte_triggered()
+{
+    QString elasiento;
+    qlonglong pase_actual=punterodiario->paseactual();
+    qlonglong numasiento=punterodiario->asientoactual();
+    QString ejercicio=ejerciciodelafecha(punterodiario->fechapaseactual());
+    if (numasiento!=0) elasiento.setNum(numasiento);
+    if (elasiento=="")
+       {
+         QMessageBox::warning( this, tr("CAMBIO DE ACTIVIDAD"),
+         tr("Para editar un asiento debe de seleccionar un apunte en el diario"));
+         return;
+       }
+    QString cadnum; cadnum.setNum(pase_actual);
+    QString actividad=basedatos::instancia()->cod_actividad_apunte(cadnum);
+
+  Cambia_actividad *c = new Cambia_actividad;
+  c->pasa_actividad(actividad);
+  int resultado=c->exec();
+  if (resultado==QDialog::Accepted) {
+      basedatos::instancia()->actualiza_cod_actividad_asiento(elasiento, ejercicio, c->nueva_actividad());
+  }
+  delete (c);
 }
 

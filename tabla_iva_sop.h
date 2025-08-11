@@ -101,6 +101,7 @@ class tabla_iva_sop : public QDialog {
                 void chequea_solo_criterio_caja();
                 void solo_ptes_criterio_caja();
 
+                void on_tableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 };
 
 

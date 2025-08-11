@@ -19,6 +19,11 @@
     En caso contrario, consulte <http://www.gnu.org/licenses/>.
   ----------------------------------------------------------------------------------*/
 
+#include <QApplication>
+#include <QTableView>
+#include <QStyleHints>
+#include <QPalette>
+
 #include "diario.h" 
 #include "funciones.h"
 #include "basedatos.h"
@@ -184,6 +189,17 @@ diario::diario() : QWidget() {
   ui.latabladiario->setSelectionMode(QAbstractItemView::ContiguousSelection);
   ui.borrador_tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
   ui.borrador_tableView->setSelectionMode(QAbstractItemView::ContiguousSelection);
+
+  QTableView *view_borrador=ui.borrador_tableView;
+  // colores fila alterna en borrador
+  auto updateColors = [view_borrador]() {
+      bool darkMode = (QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
+      setAlternateRowColor(view_borrador, darkMode);
+  };
+  QObject::connect(QApplication::styleHints(), &QStyleHints::colorSchemeChanged, view_borrador, updateColors);
+  updateColors();
+
+
   ui.fechadateEdit->setDate(QDate::currentDate());
   ui.fechadateEdit_2->setDate(QDate::currentDate());
   comadecimal=true; sindecimales=false;
@@ -1470,6 +1486,10 @@ void diario::renumera_borr()
                 asiento_guarda=q.value(0).toInt();
                 prox_asiento=basedatos::instancia()->selectMaxAsientoContabEjercicio(q.value(2).toString()) +1;
                 ejercicio=q.value(2).toString();
+                QString cad_resp_num;
+                bool primero_apertura=false;
+                basedatos::instancia()->datosnumeracion_ejercicio(ejercicio,&cad_resp_num,&primero_apertura);
+                if (primero_apertura && prox_asiento==1) prox_asiento=2;
             }
             if (q.value(0).toInt()!=asiento_guarda) {
                 prox_asiento++;

@@ -63,6 +63,7 @@ class libro_recibidas : public QDialog {
                void check_grupo_externo_cambiado();
 
                void on_documentos_pushButton_clicked();
+               void on_hoja_pushButton_clicked();
 };
 
 
