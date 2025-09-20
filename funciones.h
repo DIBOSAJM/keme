@@ -771,3 +771,5 @@ QString graf_a_qstring(QString nfichero);
 
 QString periodo_trim(QDate fecha);
 QString periodo_mes(QDate fecha);
+
+QString cad_mes_2C(QDate fecha);

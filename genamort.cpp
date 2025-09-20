@@ -273,10 +273,18 @@ void genamort::procesa()
                          }
                         basedatos::instancia()->incrementa_prox_num_ci();
                        }
+                          // void insertDiario(QString cadnumasiento, qlonglong pase, QString cadfecha,
+                          // QString cuentagasto,
+                          // double debe, double haber, QString concepto, QString documento,
+                          // QString diario,
+                          // QString ci, QString usuario, QString clave_ci, QString ejercicio,
+                          // QString nrecepcion, bool hay_fecha_factura=false,
+                          // QDate fecha_factura=QDate::currentDate(), QString externo="",
+                          // QString concepto_sii="", bool borrador=false, QString actividad="");
                      basedatos::instancia()->insertDiario(cadnumasiento, pase,
                           cadfecha, cuentagasto,
                           sumagasto, 0, concepto, "",
-                          "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"");
+                          "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"",false,QDate::currentDate(),"","",borrador);
 
                     }
                     else
@@ -482,10 +490,18 @@ void genamort::procesa()
                }
               basedatos::instancia()->incrementa_prox_num_ci();
              }
-           basedatos::instancia()->insertDiario(cadnumasiento, pase,
+           // void insertDiario(QString cadnumasiento, qlonglong pase, QString cadfecha,
+           //                   QString cuentagasto,
+           //                   double debe, double haber, QString concepto, QString documento,
+           //                   QString diario,
+           //                   QString ci, QString usuario, QString clave_ci, QString ejercicio,
+           //                   QString nrecepcion, bool hay_fecha_factura=false,
+           //                   QDate fecha_factura=QDate::currentDate(), QString externo="",
+           //                   QString concepto_sii="", bool borrador=false, QString actividad="");
+             basedatos::instancia()->insertDiario(cadnumasiento, pase,
                 cadfecha, cuentagasto,
                 sumagasto, 0, concepto, "",
-                "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"",borrador);
+                "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"",false, QDate::currentDate(),"","",borrador);
            actualizasaldo(cuentagasto,cadimporte,true);
            pase++;
           }
@@ -557,10 +573,18 @@ void genamort::procesa()
                          }
                         basedatos::instancia()->incrementa_prox_num_ci();
                        }
+                     // void insertDiario(QString cadnumasiento, qlonglong pase, QString cadfecha,
+                     //                   QString cuentagasto,
+                     //                   double debe, double haber, QString concepto, QString documento,
+                     //                   QString diario,
+                     //                   QString ci, QString usuario, QString clave_ci, QString ejercicio,
+                     //                   QString nrecepcion, bool hay_fecha_factura=false,
+                     //                   QDate fecha_factura=QDate::currentDate(), QString externo="",
+                     //                   QString concepto_sii="", bool borrador=false, QString actividad="");
                      basedatos::instancia()->insertDiario(cadnumasiento, pase,
                           cadfecha, cuentagasto,
                           sumagasto, 0, concepto, "",
-                          "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"",borrador);
+                          "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"",false, QDate::currentDate(), "","",borrador);
 
                     }
                     else
@@ -690,10 +714,18 @@ void genamort::procesa()
                }
               basedatos::instancia()->incrementa_prox_num_ci();
              }
+           // void insertDiario(QString cadnumasiento, qlonglong pase, QString cadfecha,
+           //                   QString cuentagasto,
+           //                   double debe, double haber, QString concepto, QString documento,
+           //                   QString diario,
+           //                   QString ci, QString usuario, QString clave_ci, QString ejercicio,
+           //                   QString nrecepcion, bool hay_fecha_factura=false,
+           //                   QDate fecha_factura=QDate::currentDate(), QString externo="",
+           //                   QString concepto_sii="", bool borrador=false, QString actividad="");
            basedatos::instancia()->insertDiario(cadnumasiento, pase,
                 cadfecha, cuentagasto,
                 sumagasto, 0, concepto, "",
-                "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"",borrador);
+                "", "",usuario, cadproxci,ui.ejerciciocomboBox->currentText(),"",false,QDate::currentDate(), "","", borrador);
            actualizasaldo(cuentagasto,cadimporte,true);
            pase++;
           }

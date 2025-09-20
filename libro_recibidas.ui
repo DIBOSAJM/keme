@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>744</width>
+    <width>756</width>
     <height>703</height>
    </rect>
   </property>
@@ -259,36 +259,6 @@
             </item>
             <item>
              <widget class="QDateEdit" name="finaldateEdit"/>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox_2">
-         <property name="title">
-          <string>Periodos</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_10">
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_9">
-            <item>
-             <widget class="QRadioButton" name="trimestres_radioButton">
-              <property name="text">
-               <string>TRIMESTRES</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="meses_radioButton">
-              <property name="text">
-               <string>MESES</string>
-              </property>
-             </widget>
             </item>
            </layout>
           </item>
@@ -577,7 +547,7 @@
      <item>
       <widget class="QPushButton" name="hoja_pushButton">
        <property name="text">
-        <string>Hoja</string>
+        <string>Hoja fiscal</string>
        </property>
        <property name="icon">
         <iconset resource="keme.qrc">

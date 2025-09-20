@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>727</width>
+    <width>764</width>
     <height>653</height>
    </rect>
   </property>
@@ -27,7 +27,7 @@
       <string>LIBRO DE FACTURAS EMITIDAS</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>
@@ -146,7 +146,7 @@
            <item>
             <widget class="Line" name="line">
              <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+              <enum>Qt::Orientation::Horizontal</enum>
              </property>
             </widget>
            </item>
@@ -528,24 +528,22 @@
       <number>0</number>
      </property>
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
    <item>
     <layout class="QHBoxLayout">
      <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+      <widget class="QPushButton" name="hoja_pushButton">
+       <property name="text">
+        <string>Hoja fiscal</string>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/view_choose.png</normaloff>:/iconos/graf/view_choose.png</iconset>
        </property>
-      </spacer>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="imprimirpushButton">
@@ -675,7 +673,9 @@
   <tabstop>serieiniciallineEdit</tabstop>
   <tabstop>bicheckBox</tabstop>
   <tabstop>cabeceralineEdit</tabstop>
+  <tabstop>hoja_pushButton</tabstop>
   <tabstop>imprimirpushButton</tabstop>
+  <tabstop>documentos_pushButton</tabstop>
   <tabstop>consultarpushButton</tabstop>
   <tabstop>tablapushButton</tabstop>
   <tabstop>copiarpushButton</tabstop>

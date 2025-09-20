@@ -950,7 +950,9 @@ bool tablaSII::fich_sii_recibidas(QString nombrefich)
          QString cadyear; cadyear.setNum(ui->inicialdateEdit->date().year());
          cadyear=cadyear.trimmed();
          addElementoTextoDom(doc,tag21,"sii:Ejercicio",cadyear);
-         addElementoTextoDom(doc,tag21,"sii:Periodo",ui->periodocomboBox->currentText().left(2));
+         //addElementoTextoDom(doc,tag21,"sii:Periodo",ui->periodocomboBox->currentText().left(2)); // -------------- cad_mes_2C(QDate fecha); "sii:FechaRegContable",ui->tableWidget->item(fila,1)->text()
+         addElementoTextoDom(doc,tag21,"sii:Periodo",ui->tableWidget->item(fila,1)->text().mid(3,2));
+         // qDebug()<< ui->tableWidget->item(fila,1)->text().mid(3,2);
 
          QDomElement tag22 = doc.createElement("siiLR:IDFactura");
          tag2.appendChild(tag22);
@@ -1347,7 +1349,10 @@ bool tablaSII::fich_sii_emitidas(QString nombrefich)
          QString cadyear; cadyear.setNum(ui->inicialdateEdit->date().year());
          cadyear=cadyear.trimmed();
          addElementoTextoDom(doc,tag21,"sii:Ejercicio",cadyear);
-         addElementoTextoDom(doc,tag21,"sii:Periodo",ui->periodocomboBox->currentText().left(2));
+         //addElementoTextoDom(doc,tag21,"sii:Periodo",ui->periodocomboBox->currentText().left(2));
+         addElementoTextoDom(doc,tag21,"sii:Periodo",ui->tableWidget->item(fila,1)->text().mid(3,2));
+         // qDebug() << ui->tableWidget->item(fila,1)->text().mid(3,2);
+
 
          QDomElement tag22 = doc.createElement("siiLR:IDFactura");
          tag2.appendChild(tag22);

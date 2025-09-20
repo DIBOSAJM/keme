@@ -7488,3 +7488,4 @@ void MainWindow::on_actionCambiar_Actividad_a_apunte_triggered()
   delete (c);
 }
 
+

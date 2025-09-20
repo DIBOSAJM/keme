@@ -12689,7 +12689,9 @@ QSqlQuery basedatos::registros_recibidas_prorrata(QString ejercicio, bool fechac
 	    "l.base_iva,l.tipo_iva,l.cuota_iva,l.base_iva+l.cuota_iva,"
             "l.prorrata,l.cuota_iva*l.prorrata*l.afecto, l.fecha_fra,l.autofactura, "
             "l.autofactura_no_ue, l.afecto, l.nombre, l.cif, d.pase, d.nrecepcion, " // nrecepción campo 18
-            "l.isp_op_interiores, l.importacion, l.caja_iva, d.cuenta, d.externo, l.enviado_sii, d.concepto_sii, l.aib, d.contabilizado "
+            "l.isp_op_interiores, l.importacion, l.caja_iva, d.cuenta, d.externo, l.enviado_sii, d.concepto_sii, l.aib, d.contabilizado, "
+            "d.cod_actividad, l.importacion, l.rectificativa, l.rectificada, l.fecha_operacion, l.dua, l.pase, l.agrario, l.arrto_local_ret, "
+            "arrto_local_sin_ret, oro_inversion, bien_inversion "
             "from diario d, libroiva l, plancontable p "
             "where d.pase=l.pase and ";
 

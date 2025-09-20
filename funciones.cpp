@@ -8783,13 +8783,13 @@ QString graf_a_qstring(QString nfichero) {
 void setAlternateRowColor(QTableView *view, bool darkMode)
 {
     QPalette p = view->palette();
-        QColor base = darkMode ? QColor("#A85D5D") : QColor("#FFDFDF"); // Salmón claro solo en modo claro, salmón marrón saturado en modo oscuro "#A85D5D"
+        QColor base = darkMode ? QColor(168,93,93,80) : QColor("#FFDFDF"); // Salmón claro solo en modo claro, salmón marrón saturado en modo oscuro "#A85D5D"
         p.setColor(QPalette::AlternateBase, base);
         view->setPalette(p);
 }
 
 QColor background_alt(bool darkMode) {
-    return darkMode ? QColor("#A85D5D") : QColor("#FFDFDF");
+    return darkMode ? QColor(168,93,93,80) : QColor("#FFDFDF");
 }
 
 QString periodo_trim(QDate fecha) {
@@ -8804,5 +8804,16 @@ QString periodo_mes(QDate fecha) {
   int mes=fecha.month();
   QString cadnum; cadnum.setNum(mes);
   QString periodo=cadnum.trimmed()+"M";
+  return periodo;
+}
+
+
+QString cad_mes_2C(QDate fecha) {
+  int mes=fecha.month();
+  QString cadnum; cadnum.setNum(mes);
+  cadnum=cadnum.trimmed();
+  QString periodo;
+  if (cadnum.length()==1) periodo="0"+cadnum;
+     else periodo=cadnum;
   return periodo;
 }
