@@ -122,6 +122,9 @@ void consret::excluir_arrendamientoscambiado()
 
 void consret::refrescar()
 {
+    QSignalBlocker blocker(ui.detalletableWidget);
+    // QObject::disconnect(ui.detalletableWidget, &QTableWidget::currentCellChanged,
+    //                     this, &consret::on_detalletableWidget_currentCellChanged);
     ui.resumentableWidget->clearContents();
     ui.resumentableWidget->setRowCount(0);
     ui.detalletableWidget->clearContents();
@@ -387,6 +390,8 @@ void consret::refrescar()
          fila++;
       }
   // ui.refrescarpushButton->setEnabled(false);
+  // connect(ui.detalletableWidget, &QTableWidget::currentCellChanged,
+  //             this, &consret::on_detalletableWidget_currentCellChanged);
 }
 
 void consret::activarefrescar()

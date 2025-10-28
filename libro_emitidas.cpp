@@ -2155,20 +2155,37 @@ void libro_emitidas::on_hoja_pushButton_clicked()
     // --------------------------------------------------------------------------------------
     global+=cadena+"\n\n";
     // ---------------------------------------------------------------------------------------
-    global+=tr("Orden")+"\t";
-    global+=tr("Factura")+"\t";
-    global+=tr("Fecha Fra.")+"\t";
-    global+=tr("Contab.")+ "\t";
-    global+=tr("Cuenta, Cliente/deudor")+"\t";
-    global+=tr("Cliente/deudor")+"\t";
-    global+=tr("NIF")+"\t";
-    global+=tr("Asto.")+"\t";
-    global+=tr("Base Imp.")+"\t";
-    global+=tr("Tipo")+"\t";
+    global+=tr("Ejercicio")+"\t";
+    global+=tr("Periodo")+"\t";
+    global+=tr("Código Activ.")+"\t";
+    global+=tr("Tipo Activ.")+ "\t";
+    global+=tr("Epígrafe")+"\t";
+    global+=tr("Tipo Factura")+"\t";
+    global+=tr("Concepto Ingreso")+"\t"; // irpf
+    global+=tr("Ingreso Computable")+"\t"; // irpf
+    global+=tr("Fecha Expedición")+"\t";
+    global+=tr("Fecha Operación")+"\t";
+    global+=tr("Serie Fac.")+"\t";
+    global+=tr("Número Fac.")+"\t";
+    global+=tr("Número Final")+"\t";
+    global+=tr("Tipo Dest.")+"\t";
+    global+=tr("País")+"\t";
+    global+=tr("Identificación")+"\t";
+    global+=tr("Nombre Destinatario")+"\t";
+    global+=tr("Clave Operación")+"\t";
+    global+=tr("Calificación Op.")+"\t";
+    global+=tr("Op. Exenta")+"\t";
+    global+=tr("Total Fra.")+"\t";
+    global+=tr("Base Imponible")+"\t";
+    global+=tr("Tipo IVA")+"\t";
     global+=tr("Cuota")+"\t";
-    global+=tr("Tipo.RE")+"\t";
-    global+=tr("R.E.")+"\t";
-    global+=tr("Total")+"\t";
+    global+=tr("Tipo RE")+"\t";
+    global+=tr("Cuota RE")+"\t";
+    global+=tr("Fecha Cobro")+"\t";
+    global+=tr("Importe")+"\t";
+    global+=tr("Medio Utilizado")+"\t";
+    global+=tr("Identificación Medio");
+
     global+="\n";
 
     QString ejercicio=ui.ejerciciocomboBox->currentText();
@@ -2252,15 +2269,89 @@ void libro_emitidas::on_hoja_pushButton_clicked()
                 || numprog==1 || guardaprov!=query.value(2).toString()) numorden++;
             guardadoc=query.value(0).toString();
             guardaprov=query.value(2).toString();
-            global+= cadnum.setNum(numorden)+"\t";
-            global+= filtracad(query.value(0).toString())+"\t"; // fra.
+
+            cadnum.setNum(query.value(1).toDate().year());
+            global+=cadnum + "\t"; // ejercicio
+            global+=periodo_trim(query.value(1).toDate());
+            global+="\t";
+
+            // código, tipo, iae === actividad
+            // campo 28 es el código de actividad
+            // existecodigotabla_actividades(QString ref, QString *descripcion, QString *codigo, QString *tipo, QString *epigrafe, QString *cnae)
+            QString descripcion, codigo, tipo, epigrafe, cnae;
+            QString ref_actividad=query.value(27).toString();
+            if (basedatos::instancia()->existecodigotabla_actividades(ref_actividad,&descripcion,&codigo,&tipo,&epigrafe,&cnae)) {
+                global+=codigo;
+                global+="\t";
+                global+=tipo;
+                global+="\t";
+                global+=epigrafe;
+                global+="\t";
+            }
+            else global+="\t\t\t";
+
+            // TIPO FACTURA
+            // tipo factura
+            //   F1 Factura normal
+            //   F2 Factura simplificada
+            QString clave_operacion=query.value(21).toString();
+            QString finicial=query.value(23).toString();
+            QString ffinal=query.value(24).toString();
+            bool rectificativa=query.value(29).toBool();
+            QString rectificada=query.value(30).toString();
+
+             if (clave_operacion=="J")
+             {
+                 if (ffinal.isEmpty())
+                     global+="F2";
+                 else
+                     global+="F4";
+             }
+            else
+             {
+                 if (!rectificativa) global+="F1";
+                 else
+                 {
+                     global+=rectificada.left(2);
+                     //addElementoTextoDom(doc,tag23,"sii:TipoRectificativa", "I"); // siempre por diferencias
+                 }
+             }
+
+            global+="\t\t\t";
+
+            // FECHA DE EXPEDICIÓN
             global+=query.value(11).toDate().toString("dd/MM/yyyy")+"\t"; // fecha fra.
-            global+=query.value(1).toDate().toString("dd/MM/yyyy") +"\t"; // fecha cont.
-            global+=query.value(2).toString()+"\t"; // cuenta
+            // FECHA DE OPERACIÓN
+            global+=query.value(31).toDate().toString("dd/MM/yyyy")+"\t"; // fecha operación
+            global+="\t"; // serie
+            if (!finicial.isEmpty()) global+= finicial+"\t"; // fra.
+                else global+= filtracad(query.value(0).toString())+"\t"; // fra.
+            if (!ffinal.isEmpty()) global+= ffinal; // fra.
+            global+="\t";
+
+            // nif destinatario
+            QString pais;
+
+
+            if (externo.isEmpty())
+            {
+                //select7Datossubcuentacuenta (QString cuenta)
+                QSqlQuery q=basedatos::instancia()->select7Datossubcuentacuenta(query.value(2).toString());
+                if (q.isActive())
+                    if (q.next())
+                        pais=q.value(6).toString().left(2);
+            }
+            else
+            {
+                //select7datos_externo (QString externo)
+                QSqlQuery q=basedatos::instancia()->select7datos_externo(externo);
+                if (q.isActive())
+                    if (q.next())
+                        pais=q.value(6).toString().left(2);
+            }
 
             QString externo=query.value(17).toString();
             bool hayexterno=!externo.isEmpty();
-
             QString razon,nif;
             if (!hayexterno)
                 basedatos::instancia()->razon_nif_datos(query.value(2).toString(), &razon, &nif);
@@ -2270,26 +2361,98 @@ void libro_emitidas::on_hoja_pushButton_clicked()
                 nif=basedatos::instancia()->cif_externo(externo);
             }
             if (razon.trimmed().isEmpty()) razon=query.value(3).toString();
+            bool pr_servicios_ue, eib, exportacion;
+            pr_servicios_ue=query.value(32).toBool();
+            eib=query.value(33).toBool();
+            exportacion=query.value(34).toBool();
+            if (!pr_servicios_ue && !eib && !exportacion)
+                global+="\t\t"+nif+"\t";
+            else
+            {
+                QString nif_iva=nif;
+                bool ue=false;
+                QString paises="AT BE BG CY CZ DE DK EE EL ES FI FR HR HU IE IT LT LU LV MT NL PL PT RO SE SI SK GR";
+                if ((nif_iva.length()>2) && (paises.contains(nif_iva.left(2))) &&paises.contains(pais) )
+                  { pais=nif_iva.left(2);
+                    if (pais=="EL") pais="GR"; ue=true; }
+                if (pais!="ES")
+                {
+                    if (ue)
+                        global+="02\t";
+                    else
+                        global+="04\t";//addElementoTextoDom(doc,tag2321,"sii:IDType","04"); // DOC OF. IDENTIF. PAIS RESIDENCIA
+                    // añadimos etiqueta IDOtro
+                    global+=pais+"\t";
+                    if (!nif.isEmpty())
+                        global+=nif+"\t";//addElementoTextoDom(doc,tag2321,"sii:ID",ui->tableWidget->item(fila,6)->text());
+                    else
+                        global+=basedatos::instancia()->cif()+"\t";//addElementoTextoDom(doc,tag2321,"sii:ID",basedatos::instancia()->cif());
+                }
+                else global+=nif+"\t";//addElementoTextoDom(doc,tag232,"sii:NIF",ui->tableWidget->item(fila,6)->text());
 
+            }
+
+
+            // nombre destinatario
             global+= (query.value(13).toString().isEmpty() ?
                            filtracad(razon) :
                            filtracad(query.value(13).toString()))
-                      + "\t"; // proveedor
-            global+= (query.value(14).toString().isEmpty() ?
-                           nif :
-                           filtracad(query.value(14).toString())); // cif
-            global+="\t";
-            global+=query.value(4).toString()+"\t"; // asiento
+                      + "\t";
 
+
+            // clave de operación
+            bool oro_inversion=query.value(35).toBool();
+            bool arrto_local_ret=query.value(36).toBool();
+            bool arrto_local_sin_ret=query.value(37).toBool();
+            bool caja_iva=query.value(16).toBool();
+            bool op_no_sujeta=query.value(38).toBool();
+            QString cadop="01";
+            if (exportacion && !op_no_sujeta) cadop="02";
+            if (oro_inversion) cadop="04";
+            if (arrto_local_ret) cadop="11";
+            if (arrto_local_sin_ret) cadop="12";
+            if (caja_iva) cadop="07";
+            global+=cadop;
+            global+="\t";
+
+            // calificación de la operación
+            bool isp_op_interiores=query.value(19).toBool();
+            QString calop="S1"; // SUJETA NO EXENTA
+            if (isp_op_interiores) calop="S2";
+            if (exportacion && op_no_sujeta) calop="N2"; // no sujeta reglas localización
+            global+=calop;
+            global+="\t";
+
+            // operación exenta
+            bool exento_dcho_ded=query.value(39).toBool();
+            QString op_exenta;
+            if (!exento_dcho_ded) op_exenta="E1";
+            if (exportacion && !op_no_sujeta) cadop="E2";
+            if (eib) cadop="E5";
+            global+="\t";
+
+            // total factura
+            global+=formateanumero(query.value(10).toDouble(),comadecimal,decimales);
+            global+="\t";
+
+            // base imponible
             global+=formateanumero(query.value(5).toDouble(),comadecimal,decimales)+"\t"; // base iva
+
+            // tipo iva (4,2)
             global+=formateanumero(query.value(6).toDouble(),comadecimal,decimales)+"\t"; // tipo
+
+            // cuota iva
             QString qcuota=formateanumero(query.value(7).toDouble(),comadecimal,decimales);
             global+=qcuota+"\t"; // cuota
+
+            // tipo re
             global+=formateanumero(query.value(8).toDouble(),comadecimal,decimales)+"\t"; // tipo re
+
+            // cuota re
             QString qre=formateanumero(query.value(5).toDouble()*
                                              query.value(8).toDouble()/100,comadecimal,decimales);
             global+=qre+"\t"; // re
-            global+=formateanumero(query.value(10).toDouble(),comadecimal,decimales)+"\n"; // total
+
             if (query.value(16).toBool())
             {
                 // criterio de caja
@@ -2302,37 +2465,48 @@ void libro_emitidas::on_hoja_pushButton_clicked()
                     while (q.next())
                     {
                         vacio=false;
-                        global+= "\t\t";
-                        global+= tr("Importe pago");
-                        global+= "\t";
-                        global+= formatea_redondeado_sep(q.value(3).toDouble(),comadecimal,decimales);
-                        global+= "\t ";
-                        global+= q.value(5).toString();
-                        global+= "\t";
-                        global+= tr("FECHA: ");
-                        global+= "\t ";
+                        // fecha cobro
                         global+= q.value(1).toDate().toString("dd-MM-yyyy");
                         global+= "\t";
-                        global+= tr("Cuenta:");
-                        global+= "\t";
-                        global+= q.value(6).toString();
-                        global+= "\n  ";
+                        // importe cobro
+                        global+= formatea_redondeado_sep(q.value(3).toDouble(),comadecimal,decimales);
+                        global+= "\t ";
+                        // medio utilizado
+                        global+= "\t ";
+                        // identificación medio
+                        global+= q.value(5).toString();
+                        global+= "\t ";
                     }
                 if (vacio)
                 {
-                    global+= "\t\t";
-                    global+= tr("Importe pago");
+                    // fecha cobro
                     global+= "\t";
-                    global+= "\t";
+                    // importe cobro
                     global+= "\t ";
-                    global+= tr("FECHA: ");
+                    // medio utilizado
                     global+= "\t ";
-                    global+= "\t";
-                    global+= tr("Cuenta:");
-                    global+= "\t";
-                    global+= "\n  ";
+                    // identificación medio
+                    global+= "\t ";
                 }
             }
+
+
+            // medio utilizado
+                            // | Código | Medio de cobro o pago      |
+                            // | :----: | -------------------------- |
+                            // |   01   | Transferencia bancaria     |
+                            // |   02   | Cheque                     |
+                            // |   03   | Domiciliación bancaria     |
+                            // |   04   | Efectivo                   |
+                            // |   05   | Tarjeta                    |
+                            // |   06   | Compensación               |
+                            // |   07   | Pagaré                     |
+                            // |   08   | Letra de cambio            |
+                            // |   09   | Otros medios de cobro/pago |
+
+
+            global+= "\n  ";
+
             numprog++;
             base+=query.value(5).toDouble();
             cuota+=convapunto(qcuota).toDouble();
@@ -2340,17 +2514,17 @@ void libro_emitidas::on_hoja_pushButton_clicked()
         }
     }
 
-    global+="\t\t\t\t\t";
-    // --------------------------------------------------------------------------------------
-    global+=tr("SUMAS TOTALES:")+"\t";
-    global+=formateanumero(base,comadecimal,decimales)+"\t\t";
-    global+=formateanumero(cuota,comadecimal,decimales)+"\t\t";
-    global+=formateanumero(re,comadecimal,decimales)+"\t";
-    global+=formateanumero(base+cuota+re,comadecimal,decimales);
-    global+="\n";
+    // global+="\t\t\t\t\t";
+    // // --------------------------------------------------------------------------------------
+    // global+=tr("SUMAS TOTALES:")+"\t";
+    // global+=formateanumero(base,comadecimal,decimales)+"\t\t";
+    // global+=formateanumero(cuota,comadecimal,decimales)+"\t\t";
+    // global+=formateanumero(re,comadecimal,decimales)+"\t";
+    // global+=formateanumero(base+cuota+re,comadecimal,decimales);
+    // global+="\n";
     ui.progressBar->reset();
     cb->setText(global);
-    QMessageBox::information( this, tr("Libro de Facturas"),
+    QMessageBox::information( this, tr("Hoja Libro Facturas Emitidas"),
                              tr("Se ha pasado el contenido al portapapeles") );
 
 }

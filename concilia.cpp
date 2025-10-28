@@ -2321,8 +2321,9 @@ void concilia::actualiza_tras_edicion()
              }
       if (! query.value(8).toBool()) {
           for (int v=0; v<6; v++) {
+              bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
               QTableWidgetItem* item = ui.contabtableWidget->item(pos, v);
-              item->setBackground(QColor(255, 200, 200));
+              item->setBackground(background_alt(darkMode));
           }
       }
       QTableWidgetItem *newItem = new QTableWidgetItem("0");

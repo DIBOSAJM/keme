@@ -181,6 +181,7 @@ void tablaSII::actufechas()
 
 void tablaSII::refrescar()
 {
+    QSignalBlocker blocker(ui->tableWidget);
     if (recibidas) carga_recibidas();
       else carga_emitidas();
 }

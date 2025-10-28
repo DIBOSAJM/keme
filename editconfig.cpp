@@ -25,6 +25,7 @@
 #include "graf_recorte.h"
 #include <QFileDialog>
 #include <QMessageBox>
+#include "edtabla.h"
 
 editconfig::editconfig() : QDialog()
  {
@@ -411,5 +412,14 @@ void editconfig::on_niflineEdit_textChanged(const QString &arg1)
     }
     else ui.check_ciflabel->hide();
 
+}
+
+
+void editconfig::on_actividades_pushButton_clicked()
+{
+    edtabla *e = new edtabla("activ_ecas");
+    e->prepara_actividades();
+    e->exec();
+    delete(e);
 }
 

@@ -313,7 +313,7 @@ void diario::activaconfiltrob(QString filtro, bool qcomadecimal, bool qsindecima
     if (filtro.isEmpty()) guardafiltro2="where not contabilizado";
      else
        guardafiltro2=filtro+ " not contabilizado";
-     guardafiltro2+=" order by ejercicio desc,asiento desc,pase desc";
+     guardafiltro2+=" order by ejercicio desc,asiento desc,pase asc";
     modelb = elmodelob;
     modelb->pasainfo(qcomadecimal, qsindecimales);
 

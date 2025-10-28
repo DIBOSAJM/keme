@@ -2024,7 +2024,7 @@ void MainWindow::qordendiario(bool numero)
 
 int MainWindow::n_campo_orden()
 {
-    int campo_orden;
+    int campo_orden=0;
     if (orden_campo_diario.isEmpty())
        {
         if (ordendiario==ASIENTO)  {campo_orden=2;}
@@ -2062,7 +2062,7 @@ QString MainWindow::ordenarpor(void)
 
   if (orden_campo_diario.isEmpty())
      {
-      if (ordendiario==ASIENTO)  {cadena+="ejercicio desc,asiento desc,pase desc";}
+      if (ordendiario==ASIENTO)  {cadena+="ejercicio desc,asiento desc,pase asc";}
         else {cadena+="fecha desc,pase";}
      }
     else

@@ -577,6 +577,47 @@
          </item>
         </layout>
        </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="actividades_pushButton">
+           <property name="text">
+            <string>&amp;Actividades</string>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/factory.png</normaloff>:/iconos/graf/factory.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab_2">
@@ -1568,8 +1609,8 @@
   <tabstop>externoscheckBox</tabstop>
   <tabstop>borrados_consol_checkBox</tabstop>
   <tabstop>url_actu_lineEdit</tabstop>
-  <tabstop>cancelarpushButton</tabstop>
   <tabstop>aceptarpushButton</tabstop>
+  <tabstop>cancelarpushButton</tabstop>
  </tabstops>
  <includes>
   <include location="global">qsqlquery.h</include>
@@ -1585,8 +1626,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>674</x>
-     <y>688</y>
+     <x>676</x>
+     <y>748</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>

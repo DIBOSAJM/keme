@@ -47,6 +47,7 @@ class editconfig : public QDialog {
 
             void on_prorrata_checkBox_stateChanged(int arg1);
             void on_niflineEdit_textChanged(const QString &arg1);
+            void on_actividades_pushButton_clicked();
 };
 
 

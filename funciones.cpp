@@ -8421,6 +8421,7 @@ QJsonObject info_contenido_fact(QString contenido) {
     for (const QString &palabra : palabras) {
         bool ok=false;
         QString dest=palabra;
+        dest=dest.remove("€");
         if (dest.contains('.') && dest.contains(',')) dest=dest.remove('.');
         double number=convapunto(dest).toDouble(&ok);
         if (ok && (number>0.001 || number<0.001) && (palabra.contains('.') || palabra.contains(','))

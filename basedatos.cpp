@@ -13065,7 +13065,9 @@ QSqlQuery basedatos::registros_emitidas(QString ejercicio, bool fechacontable, Q
             "l.base_iva,l.tipo_iva, l.cuota_iva-l.tipo_re*l.base_iva/100, l.tipo_re,"
             "l.tipo_re*l.base_iva/100, l.base_iva+l.cuota_iva, l.fecha_fra, l.cta_base_iva, "
             "l.nombre, l.cif, l.pase, l.caja_iva, d.externo, l.enviado_sii, l.isp_op_interiores, "
-            "l.clave_operacion, l.nfacturas, l.finicial, l.ffinal, d.concepto_sii, d.copia_doc, d.contabilizado "
+            "l.clave_operacion, l.nfacturas, l.finicial, l.ffinal, d.concepto_sii, d.copia_doc, d.contabilizado, "
+            "d.cod_actividad, l.rectificativa, l.rectificada, l.fecha_operacion, l.pr_servicios_ue, "
+            "l.eib, l.exportacion, l.oro_inversion, l.arrto_local_ret, l.arrto_local_sin_ret, l.op_no_sujeta, l.exento_dcho_ded "
 	    "from diario d, libroiva l, plancontable p "
             "where d.pase=l.pase and ";
 
