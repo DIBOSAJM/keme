@@ -28,6 +28,7 @@ HEADERS += factur/main_factur.h \
     factur/config_verifactu.h \
     factur/contenido_mail_factur.h \
            factur/listaseries.h \
+    factur/respuesta_vf.h \
            funciones.h \
            basedatos.h \
            aritmetica.h \
@@ -110,6 +111,7 @@ SOURCES += factur/amain.cpp \
     factur/contenido_mail_factur.cpp \
     factur/main_factur.cpp \
     factur/listaseries.cpp \
+    factur/respuesta_vf.cpp \
     funciones.cpp \
     basedatos.cpp \
     aritmetica.cpp \
@@ -196,6 +198,7 @@ FORMS += factur/main_factur.ui \
          factur/inicial.ui \
          creaempresa.ui \
          conexion.ui \
+    factur/respuesta_vf.ui \
     factur/serie.ui \
     factur/listadocs.ui \
     factur/edita_doc.ui \

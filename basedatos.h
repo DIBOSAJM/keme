@@ -2424,6 +2424,8 @@ class basedatos {
 
         void actualizade4020();
 
+        void actualizade4030();
+
         void introclave_op_retenciones();
 
         void intro_provincias();
@@ -3674,7 +3676,7 @@ class basedatos {
         void actualiza_config_sif_verifactu(QString sif_nif, QString sif_nombre_razon, QString sif_nombre_sif,
                                             QString sif_id_sistema_informatico, QString sif_numero_instalacion,
                                             bool sif_tipo_uso_verifactu, bool sif_posible_multi_ot,
-                                            bool sif_multi_ot, QString endpoint_verifactu, QString url_val_QR);
+                                            bool sif_multi_ot, QString endpoint_verifactu, QString url_val_QR, QString endpoint_vf_pruebas);
 
         QString url_val_QR();
 

@@ -24,6 +24,8 @@
 #include "basedatos.h"
 #include "network_connections.h"
 #include "privilegios.h"
+#include "qfiledialog.h"
+#include "pidenombre.h"
 #include <QPdfDocument>
 
 #include <QDir>
@@ -8817,4 +8819,55 @@ QString cad_mes_2C(QDate fecha) {
   if (cadnum.length()==1) periodo="0"+cadnum;
      else periodo=cadnum;
   return periodo;
+}
+
+void get_certificado(QString *fichero, QString *pwd) {
+    *fichero="";
+    *pwd="";
+    // cargamos fichero certificado
+    QString fich_certificado;
+    QFileDialog dialogofich(nullptr);
+    dialogofich.setFileMode(QFileDialog::ExistingFile);
+    // dialogofich.setLabelText ( QFileDialog::LookIn, tr("Directorio:") );
+    // dialogofich.setLabelText ( QFileDialog::FileName, tr("Archivo:") );
+    // dialogofich.setLabelText ( QFileDialog::FileType, tr("Tipo de archivo:") );
+    // dialogofich.setLabelText ( QFileDialog::Accept, tr("Aceptar") );
+    // dialogofich.setLabelText ( QFileDialog::Reject, tr("Cancelar") );
+
+    QStringList filtros;
+    filtros << QObject::tr("Archivos de certificado usuario (*.pem *.pfx *.p12)");
+    dialogofich.setNameFilters(filtros);
+    dialogofich.setDirectory(adapta(dirtrabajo_certificados()));
+    dialogofich.setWindowTitle(QObject::tr("SELECCIÓN DE CERTIFICADO"));
+    // dialogofich.exec();
+    //QString fileName = dialogofich.getOpenFileName(this, tr("Seleccionar archivo para importar asientos"),
+    //                                              dirtrabajo,
+    //                                              tr("Ficheros de texto (*.txt)"));
+    QStringList fileNames;
+    if (dialogofich.exec())
+    {
+        fileNames = dialogofich.selectedFiles();
+        if (fileNames.at(0).length()>0)
+        {
+            // QString cadfich=cadfich.fromLocal8Bit(fileNames.at(0));
+            fich_certificado=fileNames.at(0);
+        }
+    }
+    else return;
+
+
+    pidenombre *p = new pidenombre();
+    p->tipo_password();
+    p->asignaetiqueta(QObject::tr("CLAVE DEL CERTIFICADO:"));
+    p->asignanombreventana(QObject::tr("PETICIÓN DE CLAVE"));
+    int cod=p->exec();
+    if (!(cod==QDialog::Accepted))
+    {
+        delete p;
+        return;
+    }
+    QString clave=p->contenido();
+    delete p;
+    *fichero=fich_certificado;
+    *pwd=clave;
 }

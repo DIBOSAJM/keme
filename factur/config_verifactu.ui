@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>479</width>
-    <height>374</height>
+    <height>342</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Configuración Veri*factu</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -150,6 +150,20 @@
     </layout>
    </item>
    <item>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Enpoint Pruebas:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="endpoint_pruebas_lineEdit"/>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <spacer name="horizontalSpacer">
@@ -175,6 +189,9 @@
       <widget class="QPushButton" name="aceptar_pushButton">
        <property name="text">
         <string>&amp;Aceptar</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

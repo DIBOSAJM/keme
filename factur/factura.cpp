@@ -20,6 +20,7 @@
   ----------------------------------------------------------------------------------*/
 
 #include "factura.h"
+#include "factur/respuesta_vf.h"
 #include "funciones.h"
 #include "basedatos.h"
 #include "buscasubcuenta.h"
@@ -31,6 +32,7 @@
 #include <QMessageBox>
 #include "busca_externo.h"
 #include "externos.h"
+#include "network_connections.h"
 #include "pidenombre.h"
 #include <QFileDialog>
 #include <QProgressDialog>
@@ -66,6 +68,11 @@ esconde_cta_anticipo();
 ui.facturae_groupBox->hide();
 
 ui.textEdit->setMinimumWidth(850);
+
+ui.vf_consulta_pushButton->hide();
+ui.vf_pruebas_pushButton->hide();
+ui.subsanacion_pushButton->hide();
+ui.vf_anulacion_pushButton->hide();
 
 imprimir=false;
 
@@ -271,6 +278,7 @@ void factura::actudoc()
  ui.concepto_sii_lineEdit->setText(concepto_sii);
  if (verifactu) ui.verifactu_label->show();
  else ui.verifactu_label->hide();
+ if (verifactu) { ui.vf_consulta_pushButton->show(); ui.vf_pruebas_pushButton->show();}
  QPixmap foto;
  if (logo.length()>0)
        {
@@ -805,6 +813,37 @@ void factura::terminar(bool impri)
            basedatos::instancia()->desbloquea_y_commit();
            return;
        }
+       QFile fichero(adapta(nombrefichero_respuesta));
+       if (!fichero.exists())
+       {
+           QMessageBox::warning( this, tr("VERI*FACTU"),
+                                tr("ERROR: La conexión no ha devuelto fichero de respuesta"));
+           return;
+
+       }
+       // QUEDA ANALIZAR EL FICHERO DE RESPUESTA
+       QDomDocument doc("RESPUESTA");
+       if ( !fichero.open( QIODevice::ReadOnly ) )
+       {
+           QMessageBox::warning( this, tr("VERI*FACTU"),
+                                tr("ERROR: La conexión no ha devuelto respuesta"));
+           return;
+       }
+       if (!doc.setContent(&fichero)) {
+           fichero.close();
+           QMessageBox::warning( this, tr("VERI*FACTU"),
+                                tr("ERROR: La conexión no ha devuelto respuesta"));
+           return;
+       }
+       fichero.close();
+
+       // procesamos el dom de las respuestas
+       // *****
+       respuesta_vf *r = new respuesta_vf();
+       r->pasa_dom(doc);
+       r->exec();
+       if (!r->es_correcto()) return;
+       delete(r);
        basedatos::instancia()->set_ult_huella_serie(ui.serielineEdit->text(), huella);
     }
 
@@ -930,7 +969,7 @@ void factura::pasa_cabecera_doc(QString serie,
                        QDate fecha_fac,
                        QDate fecha_asiento,
                        QDate fecha_op,
-                       bool contabilizable,
+                       bool qcontabilizable,
                        bool con_ret,
                        bool re,
                        QString tipo_ret,
@@ -962,7 +1001,7 @@ void factura::pasa_cabecera_doc(QString serie,
     ui.fechadateEdit->setDate(fecha_fac);
     ui.fecha_asiento_dateEdit->setDate(fecha_asiento);
     ui.fechaopdateEdit->setDate(fecha_op);
-    contabilizable=contabilizable;
+    contabilizable=qcontabilizable;
     ui.ret_checkBox->setChecked(con_ret);
     ui.recheckBox->setChecked(re);
     ui.concepto_sii_lineEdit->setText(concepto_sii);
@@ -1326,6 +1365,7 @@ void factura::activa_consulta()
 {
   setWindowTitle(tr("DOCUMENTO: MODO CONSULTA"));
   modo_consulta=true;
+  if (verifactu) ui.vf_anulacion_pushButton->show();
   ui.doccomboBox->setEnabled(false);
   ui.serielineEdit->setReadOnly(true);
   ui.fechadateEdit->setReadOnly(true);
@@ -1678,6 +1718,7 @@ void factura::forma_pago()
         //qlonglong vnum = basedatos::instancia()->proximovencimiento();
         //QString cadnum; cadnum.setNum(vnum+1);
         // ***********************************************************************
+        vto_dia_fijo=0;
         QDate fechavenci;
         // fechavenci=fecha_operacion;
         fechavenci=ui.fechadateEdit->date();
@@ -1826,6 +1867,36 @@ bool factura::envia_verifactu(QString serie, QString numero, QString *ghuella, Q
     }
     *ghuella=huella;
     *huella_anterior=huella_prev;
+
+    QString wurl;
+    QSqlQuery q = basedatos::instancia()->config_sif_verifactu();
+    if (q.isActive())
+        if (q.next()) wurl=q.value(8).toString();
+
+    aeat_soap validation;
+    validation.process(nombrefichero,wurl,fich_certificado,clave);
+    bool processed=validation.processed();
+    if (!processed) {
+        QMessageBox::warning( this, tr("FICHERO SII"),
+                             tr("ERROR: Problemas con la conexión"));
+        return false;
+    }
+
+    // -------------------------------------
+    QString xml=validation.response().toString();
+    nombrefichero_respuesta=nombrefichero;
+    nombrefichero_respuesta=nombrefichero_respuesta.remove(".xml");
+    nombrefichero_respuesta+="_RESPUESTA.xml";
+    QFile fichero( adapta(nombrefichero_respuesta)  );
+
+    if ( !fichero.open( QIODevice::WriteOnly ) ) return false;
+
+    QTextStream stream( &fichero );
+    stream.setEncoding(QStringConverter::Utf8);
+
+    stream << xml;
+    fichero.close();
+
     return true;
 }
 
@@ -2049,18 +2120,26 @@ bool factura::gen_fich_verifactu(QString nombrefich, QString serie, QString nume
     referencia_registro_alta.append("&");
     referencia_registro_alta.append("Huella="+ultima_huella);
     referencia_registro_alta.append("&");
-    referencia_registro_alta.append("FechaHoraHusoRegistro="+formattedDateTime);
-    // qDebug() << referencia_registro_alta;
+    referencia_registro_alta.append("FechaHoraHusoGenRegistro="+formattedDateTime);
+    qDebug() << referencia_registro_alta + "\n";
     QByteArray byteArray = referencia_registro_alta.toUtf8();
     QByteArray hash = QCryptographicHash::hash(byteArray, QCryptographicHash::Sha256);
-    QString huella_gen=hash.toHex();
+    QString huella_gen=QString::fromUtf8(hash.toHex()).toUpper();
     addElementoTextoDom(doc,RegistroAlta,"sum1:Huella",huella_gen);
     *huella=huella_gen;
+    //qDebug() << huella_gen;
+
+    // QString prueba="IDEmisorFactura=89890001K&NumSerieFactura=12345678/G33&FechaExpedicionFactura=01-01-2024&"
+    //                "TipoFactura=F1&CuotaTotal=12.35&ImporteTotal=123.45&Huella=&FechaHoraHusoGenRegistro=2024-01-01T19:20:30+01:00";
+    // QByteArray pruebaarray=prueba.toUtf8();
+    // QByteArray pruebahash =QCryptographicHash::hash(pruebaarray, QCryptographicHash::Sha256);
+    // QString huella_gen_prueba=QString::fromUtf8(pruebahash.toHex());
+    // qDebug() << huella_gen_prueba; return false;
 
     QString cadini="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    cadini+="<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\""
+    cadini+="<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"\n"
         "xmlns:sum=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/tike/cont/ws/SuministroLR.xsd\"\n"
-        "xmlns:sum1=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/tike/cont/ws/SuministroInformacion.xsd\"\n"
+              "xmlns:sum1=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/tike/cont/ws/SuministroInformacion.xsd\"\n"
               "xmlns:xd=\"http://www.w3.org/2000/09/xmldsig#\">\n";
     cadini+="<soapenv:Header/>";
 
@@ -2069,7 +2148,80 @@ bool factura::gen_fich_verifactu(QString nombrefich, QString serie, QString nume
     xml.prepend(cadini);
     xml.append("</soapenv:Envelope>\n");
 
-    QFile fichero( adapta(nombrefich)  );
+    QFile fichero( adapta(nombrefich) );
+
+    if ( !fichero.open( QIODevice::WriteOnly ) ) return false;
+
+    QTextStream stream( &fichero );
+    stream.setEncoding(QStringConverter::Utf8);
+
+    stream << xml;
+    fichero.close();
+    return true;
+}
+
+bool factura::xml_verifactu_consulta(QString nombrefich, QString serie, QString numero)
+{
+    QDomDocument doc("ENVIO");
+    QDomElement root = doc.createElement("soapenv:Body");
+    doc.appendChild(root);
+
+    QDomElement consulta = doc.createElement("con:ConsultaFactuSistemaFacturacion");
+    root.appendChild(consulta);
+
+    QDomElement cabecera = doc.createElement("con:Cabecera");
+    consulta.appendChild(cabecera);
+
+    addElementoTextoDom(doc,cabecera,"sum:IDVersion",VERY_FACTU_IDVERSION);
+
+    QDomElement ObligadoEmision = doc.createElement("sum:ObligadoEmision");
+    cabecera.appendChild(ObligadoEmision);
+
+    addElementoTextoDom(doc,ObligadoEmision,"sum:NombreRazon",nombreempresa());
+    addElementoTextoDom(doc,ObligadoEmision,"sum:NIF",basedatos::instancia()->cif());
+
+
+    QDomElement FiltroConsulta = doc.createElement("con:FiltroConsulta");
+    consulta.appendChild(FiltroConsulta);
+
+    QDomElement PeriodoImputacion = doc.createElement("con:PeriodoImputacion");
+    FiltroConsulta.appendChild(PeriodoImputacion);
+    int anyo=ui.fechadateEdit->date().year();
+    int mes=ui.fechadateEdit->date().month();
+    QString cadnum;
+    cadnum=cadnum.setNum(anyo).trimmed();
+    addElementoTextoDom(doc,PeriodoImputacion,"sum:Ejercicio",cadnum);
+    cadnum=cadnum.setNum(mes).trimmed();
+    addElementoTextoDom(doc,PeriodoImputacion,"sum:Periodo",cadnum);
+
+    // QDomElement ClaveFactura = doc.createElement("con:ClaveFactura");
+    // FiltroConsulta.appendChild(ClaveFactura);
+
+
+    // QDomElement IDFactura = doc.createElement("con:IDFactura");
+    // FiltroConsulta.appendChild(IDFactura);
+
+    // QDomElement IDEmisor = doc.createElement("sum:IDEmisor");
+    // IDFactura.appendChild(IDEmisor);
+    // addElementoTextoDom(doc,IDEmisor,"sum:NIF",basedatos::instancia()->cif());
+
+
+    addElementoTextoDom(doc,FiltroConsulta,"con:NumSerieFactura",serie.trimmed()+numero.trimmed());
+    addElementoTextoDom(doc,FiltroConsulta,"con:FechaExpedicionFactura",ui.fechadateEdit->date().toString("dd-MM-yyyy"));
+
+    QString cadini="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    cadini+="<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"\n"
+              "xmlns:con=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/tike/cont/ws/ConsultaLR.xsd\"\n"
+              "xmlns:sum=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/tike/cont/ws/SuministroInformacion.xsd\">\n";
+    cadini+="<soapenv:Header/>";
+
+
+    QString xml = doc.toString();
+    xml.remove("<!DOCTYPE ENVIO>");
+    xml.prepend(cadini);
+    xml.append("</soapenv:Envelope>\n");
+
+    QFile fichero( adapta(nombrefich) );
 
     if ( !fichero.open( QIODevice::WriteOnly ) ) return false;
 
@@ -2235,3 +2387,151 @@ void factura::fecha_factura_cambiada() {
     ui.fecha_asiento_dateEdit->setDate(ui.fechadateEdit->date());
 
 }
+
+void factura::on_vf_consulta_pushButton_clicked()
+{
+
+    // cargamos fichero certificado
+    // QString fich_certificado;
+    // QFileDialog dialogofich(this);
+    // dialogofich.setFileMode(QFileDialog::ExistingFile);
+    // dialogofich.setLabelText ( QFileDialog::LookIn, tr("Directorio:") );
+    // dialogofich.setLabelText ( QFileDialog::FileName, tr("Archivo:") );
+    // dialogofich.setLabelText ( QFileDialog::FileType, tr("Tipo de archivo:") );
+    // dialogofich.setLabelText ( QFileDialog::Accept, tr("Aceptar") );
+    // dialogofich.setLabelText ( QFileDialog::Reject, tr("Cancelar") );
+
+    // QStringList filtros;
+    // filtros << tr("Archivos de certificado usuario (*.pem *.pfx *.p12)");
+    // dialogofich.setNameFilters(filtros);
+    // dialogofich.setDirectory(adapta(dirtrabajo_certificados()));
+    // dialogofich.setWindowTitle(tr("SELECCIÓN DE CERTIFICADO"));
+    // // dialogofich.exec();
+    // //QString fileName = dialogofich.getOpenFileName(this, tr("Seleccionar archivo para importar asientos"),
+    // //                                              dirtrabajo,
+    // //                                              tr("Ficheros de texto (*.txt)"));
+    // QStringList fileNames;
+    // if (dialogofich.exec())
+    // {
+    //     fileNames = dialogofich.selectedFiles();
+    //     if (fileNames.at(0).length()>0)
+    //     {
+    //         // QString cadfich=cadfich.fromLocal8Bit(fileNames.at(0));
+    //         fich_certificado=fileNames.at(0);
+    //     }
+    // }
+    // else return;
+
+
+    // pidenombre *p = new pidenombre();
+    // p->tipo_password();
+    // p->asignaetiqueta(tr("CLAVE DEL CERTIFICADO:"));
+    // p->asignanombreventana(tr("PETICIÓN DE CLAVE"));
+    // int cod=p->exec();
+    // if (!(cod==QDialog::Accepted))
+    // {
+    //     delete p;
+    //     return;
+    // }
+    // QString clave=p->contenido();
+    // delete p;
+
+    QString fich_certificado, clave;
+    get_certificado(&fich_certificado,&clave);
+
+    QProgressDialog progress(tr("Enviando información ..."), 0, 0, 0, this);
+    progress.show();
+    QApplication::processEvents();
+
+    QString nombrefichero;
+    nombrefichero=dirtrabajo_verifactu();
+    nombrefichero.append(QDir::separator());
+    nombrefichero.append(tr("consulta_"));
+    nombrefichero+=ui.serielineEdit->text();
+    nombrefichero+="-";
+    nombrefichero+=ui.facturalineEdit->text();
+    QDate fecha;
+    nombrefichero+="-";
+    nombrefichero+=fecha.currentDate().toString("yyMMdd");
+    nombrefichero+="-";
+    QTime hora;
+    hora=hora.currentTime();
+    nombrefichero+=hora.toString("hhmm");
+    nombrefichero+=".xml";
+
+    if (!xml_verifactu_consulta(nombrefichero, ui.serielineEdit->text(), ui.facturalineEdit->text())) return;
+
+    QString wurl;
+    QSqlQuery q = basedatos::instancia()->config_sif_verifactu();
+    if (q.isActive())
+        if (q.next()) wurl=q.value(8).toString();
+    // wurl="https://prewww2.aeat.es/wlpl/TIKE-CONT/ConsultaFactuSisFactWS/ConsultaRegistrosFacturacion";
+
+    aeat_soap validation;
+    validation.process(nombrefichero,wurl,fich_certificado,clave);
+    bool processed=validation.processed();
+    if (!processed) {
+        QMessageBox::warning( this, tr("FICHERO SII"),
+                             tr("ERROR: Problemas con la conexión"));
+        return;
+    }
+
+    // -------------------------------------
+    QString xml=validation.response().toString();
+    nombrefichero_respuesta=nombrefichero;
+    nombrefichero_respuesta=nombrefichero_respuesta.remove(".xml");
+    nombrefichero_respuesta+="_RESPUESTA.xml";
+    QFile fichero( adapta(nombrefichero_respuesta)  );
+
+    if ( !fichero.open( QIODevice::WriteOnly ) ) return;
+
+    QTextStream stream( &fichero );
+    stream.setEncoding(QStringConverter::Utf8);
+
+    stream << xml;
+    fichero.close();
+
+    // QUEDA ANALIZAR EL FICHERO DE RESPUESTA
+    QDomDocument doc("RESPUESTA");
+    if ( !fichero.open( QIODevice::ReadOnly ) )
+    {
+        QMessageBox::warning( this, tr("VERI*FACTU"),
+                             tr("ERROR: La conexión no ha devuelto respuesta"));
+        return;
+    }
+    if (!doc.setContent(&fichero)) {
+        fichero.close();
+        QMessageBox::warning( this, tr("VERI*FACTU"),
+                             tr("ERROR: La conexión no ha devuelto respuesta"));
+        return;
+    }
+    fichero.close();
+
+    // procesamos el dom de las respuestas
+    // *****
+    respuesta_vf *r = new respuesta_vf();
+    r->pasa_dom(doc);
+    r->exec();
+    if (!r->es_correcto()) return;
+    delete(r);
+
+}
+
+
+void factura::on_vf_pruebas_pushButton_clicked()
+{
+
+}
+
+
+void factura::on_subsanacion_pushButton_clicked()
+{
+
+}
+
+
+void factura::on_vf_anulacion_pushButton_clicked()
+{
+
+}
+

@@ -773,3 +773,5 @@ QString periodo_trim(QDate fecha);
 QString periodo_mes(QDate fecha);
 
 QString cad_mes_2C(QDate fecha);
+
+void get_certificado(QString *fichero, QString *pwd);

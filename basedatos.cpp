@@ -23,7 +23,7 @@
 
 #include "funciones.h"
 
-#define VERSION "4.0.3.0"
+#define VERSION "4.0.4.0"
 
 #include <QMessageBox>
 #include <QApplication>
@@ -1976,6 +1976,15 @@ void basedatos::solotablas(bool segunda, QString qbase)
     else {
           cadena += "cerrado bool default false,";
          }
+
+     if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
+          cadena +="vf_aceptada_errores bool default 0,";
+        else cadena +="vf_aceptada_errores bool default false,";
+
+     if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
+          cadena +="vf_anulada bool default 0,";
+        else cadena +="vf_anulada bool default false,";
+
     cadena+="tipo_ret  numeric(5,2),"
             "retencion numeric(14,2), "
             "suplidos numeric(14,2) default 0, "
@@ -22542,6 +22551,29 @@ void basedatos::actualizade4020()
 
 }
 
+void basedatos::actualizade4030()
+{
+    QString cadena="alter table configuracion add column ";
+    cadena+="endpoint_vf_pruebas varchar(255) default ''";
+    ejecutar(cadena);
+
+    cadena="alter table facturas add column ";
+    if ( cualControlador() == SQLITE )
+         cadena +="vf_aceptada_errores bool default 0";
+       else cadena +="vf_aceptada_errores bool default false";
+    ejecutar(cadena);
+
+    cadena="alter table facturas add column ";
+    if (cualControlador() == SQLITE )
+         cadena +="vf_anulada bool default 0";
+       else cadena +="vf_anulada bool default false";
+    ejecutar(cadena);
+
+
+    ejecutar("update configuracion set version='4.0.4.0'");
+
+}
+
 void basedatos::actualizade2977()
 {
     ejecutar("alter table configuracion add column cuenta_tesoreria  varchar(40) default ''");
@@ -24471,7 +24503,8 @@ bool basedatos::comprobarVersion () {
                 && laversion !="3.2.2.3" && laversion !="3.2.2.4"
                 && laversion !="3.2.2.5" && laversion !="3.2.2.6"
                 && laversion !="4.0.0.0" && laversion !="4.0.0.2"
-                && laversion !="4.0.1.0" && laversion !="4.0.2.0") {
+                && laversion !="4.0.1.0" && laversion !="4.0.2.0"
+                && laversion !="4.0.3.0"){
             if (!(splash==NULL))
              {
               splash->finish( 0 );
@@ -24586,7 +24619,8 @@ bool basedatos::comprobarVersion () {
                 if (versionbd()=="4.0.0.0") actualizade4000();
                 if (versionbd()=="4.0.0.2") actualizade4002();
                 if (versionbd()=="4.0.1.0") actualizade4010();
-                actualizade4020();
+                if (versionbd()=="4.0.2.0") actualizade4020();
+                actualizade4030();
 
               }
             else {
@@ -32503,20 +32537,22 @@ QSqlQuery basedatos::consulta_conciliacion_ci_tabla(QString ejercicio)
 QSqlQuery basedatos::config_sif_verifactu()
 {
     QString cad="select sif_nif, sif_nombre_razon, sif_nombre_sif, sif_id_sistema_informatico,sif_numero_instalacion, "
-                "sif_tipo_uso_verifactu, sif_posible_multi_ot, sif_multi_ot, endpoint_verifactu, url_val_QR from configuracion";
+                "sif_tipo_uso_verifactu, sif_posible_multi_ot, sif_multi_ot, endpoint_verifactu, url_val_QR, "
+                "endpoint_vf_pruebas from configuracion";
 
     return ejecutar(cad);
 }
 
 void basedatos::actualiza_config_sif_verifactu(QString sif_nif, QString sif_nombre_razon, QString sif_nombre_sif, QString sif_id_sistema_informatico,
                                                QString sif_numero_instalacion, bool sif_tipo_uso_verifactu,
-                                               bool sif_posible_multi_ot, bool sif_multi_ot, QString endpoint_verifactu, QString url_val_QR)
+                                               bool sif_posible_multi_ot, bool sif_multi_ot, QString endpoint_verifactu, QString url_val_QR,
+                                               QString endpoint_vf_pruebas)
 {
     QSqlQuery query;
     query.prepare("update configuracion set sif_nif= :sif_nif, sif_nombre_razon=:sif_nombre_razon  ,sif_nombre_sif= :sif_nombre_sif, "
                   "sif_id_sistema_informatico= :sif_id_sistema_informatico, sif_numero_instalacion= :sif_numero_instalacion, "
                   "sif_tipo_uso_verifactu= :sif_tipo_uso_verifactu, sif_posible_multi_ot= :sif_posible_multi_ot, "
-                  "sif_multi_ot= :sif_multi_ot, endpoint_verifactu= :endpoint_verifactu, url_val_QR= :url_val_QR");
+                  "sif_multi_ot= :sif_multi_ot, endpoint_verifactu= :endpoint_verifactu, url_val_QR= :url_val_QR, endpoint_vf_pruebas= :endpoint_vf_pruebas");
     query.bindValue(":sif_nif",sif_nif);
     query.bindValue(":sif_nombre_sif",sif_nombre_sif);
     query.bindValue(":sif_nombre_razon",sif_nombre_razon);
@@ -32527,6 +32563,7 @@ void basedatos::actualiza_config_sif_verifactu(QString sif_nif, QString sif_nomb
     query.bindValue(":sif_multi_ot",sif_multi_ot);
     query.bindValue(":endpoint_verifactu",endpoint_verifactu);
     query.bindValue(":url_val_QR",url_val_QR);
+    query.bindValue(":endpoint_vf_pruebas",endpoint_vf_pruebas);
     query=ejecuta(std::move(query));
 }
 

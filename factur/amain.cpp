@@ -32,6 +32,14 @@ int main(int argc, char *argv[])
   QApplication app(argc, argv);
   //app.addLibraryPath ( "/usr/lib/qt4/plugins"); // añadido para trabajar con QT-Creator 2.0
   //QTextCodec::setCodecForTr( QTextCodec::codecForName("utf8") );
+  QTranslator translator;
+
+  QTranslator baseTranslator;
+  bool ok=baseTranslator.load("qtbase_es", QLibraryInfo::path(QLibraryInfo::TranslationsPath));
+  if (!ok) {
+      qWarning() << "No se pudo cargar la traducción qtbase_es";
+  }
+  app.installTranslator(&baseTranslator);
 
   main_factur mainWin;
   if (mainWin.oknosalir())

@@ -661,7 +661,7 @@ void facturas::informe (QString qserie, QString qnumero, bool pdf_novis) {
     bool verifactu=basedatos::instancia()->es_verifactu_tipo_doc(tipo_doc);
     QString url_qr_verifactu;
     if (verifactu) url_qr_verifactu=basedatos::instancia()->url_val_QR();
-    url_qr_verifactu.append("&nif=");
+    url_qr_verifactu.append("?nif=");
     url_qr_verifactu.append(cif);
     url_qr_verifactu.append("&numserie=");
     url_qr_verifactu.append(qserie+qnumero);

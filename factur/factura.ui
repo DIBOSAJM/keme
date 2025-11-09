@@ -861,6 +861,53 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
+        <widget class="QPushButton" name="vf_consulta_pushButton">
+         <property name="text">
+          <string>C&amp;onsulta</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../keme.qrc">
+           <normaloff>:/iconos/graf/aeat.png</normaloff>:/iconos/graf/aeat.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="vf_pruebas_pushButton">
+         <property name="toolTip">
+          <string>Envío a portal pruebas</string>
+         </property>
+         <property name="text">
+          <string>VF &amp;Pruebas</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../keme.qrc">
+           <normaloff>:/iconos/graf/cheq.png</normaloff>:/iconos/graf/cheq.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="subsanacion_pushButton">
+         <property name="text">
+          <string>&amp;Subsanación</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../keme.qrc">
+           <normaloff>:/iconos/graf/reload.png</normaloff>:/iconos/graf/reload.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="vf_anulacion_pushButton">
+         <property name="text">
+          <string>VF A&amp;nulación</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../keme.qrc">
+           <normaloff>:/iconos/graf/borraelem.png</normaloff>:/iconos/graf/borraelem.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="horizontalSpacer_4">
          <property name="orientation">
           <enum>Qt::Orientation::Horizontal</enum>
@@ -878,6 +925,10 @@
          <property name="text">
           <string>&amp;Cancelar</string>
          </property>
+         <property name="icon">
+          <iconset resource="../keme.qrc">
+           <normaloff>:/iconos/graf/borrar.png</normaloff>:/iconos/graf/borrar.png</iconset>
+         </property>
         </widget>
        </item>
        <item>
@@ -885,12 +936,20 @@
          <property name="text">
           <string>&amp;PDF</string>
          </property>
+         <property name="icon">
+          <iconset resource="../keme.qrc">
+           <normaloff>:/iconos/graf/pdf-icon.png</normaloff>:/iconos/graf/pdf-icon.png</iconset>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="aceptarpushButton">
          <property name="text">
           <string>&amp;Aceptar</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../keme.qrc">
+           <normaloff>:/iconos/graf/task-new.png</normaloff>:/iconos/graf/task-new.png</iconset>
          </property>
         </widget>
        </item>

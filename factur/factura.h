@@ -89,7 +89,7 @@ class factura : public QDialog {
                 QString codigo_moneda;
                 QStringList codigoiva;
                 QList<double> tipoiva, tipore, baseimponible;
-                bool modo_consulta;
+                bool modo_consulta=false;
                 int tipo_operacion;
                 bool contabilizable;
                 bool verifactu=false;
@@ -110,6 +110,7 @@ class factura : public QDialog {
                 QString contrato_linea[100];
                 QStringList lista_suplidos;
                 bool imprimir;
+                QString nombrefichero_respuesta;
                 void fijatipoiva(QString codigo, double tporuno);
                 void fijatipore(QString codigo, double tporuno);
                 void guarda_predef();
@@ -117,6 +118,7 @@ class factura : public QDialog {
                 void muestra_cta_anticipo();
                 bool envia_verifactu(QString serie, QString numero, QString *ghuella, QString *huella_anterior);
                 bool gen_fich_verifactu(QString nombrefich, QString serie, QString numero, QString *huella, QString *huella_anterior);
+                bool xml_verifactu_consulta(QString nombrefich, QString serie, QString numero);
 
 
       private slots:
@@ -158,6 +160,10 @@ class factura : public QDialog {
                 void copia_lin_face();
                 void fecha_factura_cambiada();
 
+                void on_vf_consulta_pushButton_clicked();
+                void on_vf_pruebas_pushButton_clicked();
+                void on_subsanacion_pushButton_clicked();
+                void on_vf_anulacion_pushButton_clicked();
 };
 
 
