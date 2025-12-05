@@ -667,6 +667,8 @@ void basedatos::solotablas(bool segunda, QString qbase)
     cadena+="sif_multi_ot varchar(40) default 'S', ";
     cadena+="endpoint_verifactu varchar(255) default '', ";
     cadena+="url_val_QR varchar(255) default '', ";
+    cadena+="vf_ultima_huella varchar(255) default '', ";
+    cadena+="vf_ultima_huella_pr varchar(255) default '', ";
 
     cadena+="email_from varchar(255) default '', ";
     cadena+="email_to varchar(255) default '', ";
@@ -698,68 +700,68 @@ void basedatos::solotablas(bool segunda, QString qbase)
     // datossubcuenta
     cadena = "CREATE TABLE datossubcuenta ("
              "cuenta         varchar(40),"
-             "razon          varchar(80),"
-             "nombrecomercial varchar(80),"
-             "cif            varchar(80),"
-             "nifrprlegal    varchar(80),"
-             "web            varchar(80),"
-             "claveidfiscal  varchar(80),"
-             "domicilio      varchar(255),"
-             "poblacion      varchar(80),"
-             "codigopostal   varchar(40),"
-             "provincia      varchar(80),"
-             "pais           varchar(80),"
-             "tfno           varchar(80),"
-             "fax            varchar(80),"
-             "email          varchar(80),"
-             "ccc            varchar(80),"
-             "cuota          varchar(40),"
-             "observaciones  varchar(255),"
+             "razon          varchar(80) default '',"
+             "nombrecomercial varchar(80) default '',"
+             "cif            varchar(80) default '',"
+             "nifrprlegal    varchar(80) default '',"
+             "web            varchar(80) default '',"
+             "claveidfiscal  varchar(80) default '',"
+             "domicilio      varchar(255) default '',"
+             "poblacion      varchar(80) default '',"
+             "codigopostal   varchar(40) default '',"
+             "provincia      varchar(80) default '',"
+             "pais           varchar(80) default '',"
+             "tfno           varchar(80) default '',"
+             "fax            varchar(80) default '',"
+             "email          varchar(80) default '',"
+             "ccc            varchar(80) default '',"
+             "cuota          varchar(40) default '',"
+             "observaciones  varchar(255) default '',"
              "forma_pago     varchar(255) default '',"
-             "pais_dat       varchar(80),"
+             "pais_dat       varchar(80) default '',"
              "tipo_ret       numeric(5,2) default 0,"
-             "tipo_operacion_ret varchar(80),";
+             "tipo_operacion_ret varchar(80) default '',";
     if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
          cadena += "ret_arrendamiento bool default 0,"; // retención de arrendamiento
        else cadena += "ret_arrendamiento bool default false,";
     if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE ) cadena += "venciasoc bool default 0,"; // vencimiento asociado
        else cadena += "venciasoc bool default false,";
-     cadena+="codvenci       varchar(40),"
+     cadena+="codvenci       varchar(40) default '',"
              "vto_dia_fijo   int default 0, "
-             "tesoreria      varchar(40),";
+             "tesoreria      varchar(40) default '',";
     if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE ) cadena += "ivaasoc bool default 0,"; // vencimiento asociado
        else cadena += "ivaasoc bool default false,";
     if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE ) cadena += "procesavenci bool default 0,"; // procesa vencimiento
        else cadena += "procesavenci bool default false,";
-     cadena+="cuentaiva      varchar(40),"
-             "tipoiva        varchar(20),"
-             "conceptodiario varchar(155), "
+     cadena+="cuentaiva      varchar(40) default '',"
+             "tipoiva        varchar(20) default '',"
+             "conceptodiario varchar(155) default '', "
              "cta_base_iva varchar(40) default '',"
              "cuenta_ret_asig varchar(40) default '',";
      if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
              cadena += "es_ret_asig_arrend bool default 0,"; // vencimiento asociado
         else cadena += "es_ret_asig_arrend bool default false,";
      cadena+="tipo_ret_asig numeric(5,2) default 0,"
-             "tipo_oper_ret_asig varchar(80),";
+             "tipo_oper_ret_asig varchar(80) default '',";
      if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
              cadena += "dom_bancaria bool default 0,"; // domiciliable
         else cadena += "dom_bancaria bool default false,";
-     cadena+="IBAN     varchar(80),";
-     cadena+="BIC     varchar(80),";
-     cadena+="nriesgo  varchar(80),";
-     cadena+="cedente1 varchar(80),";
-     cadena+="cedente2 varchar(80),";
-     cadena+="sufijo   varchar(80),";
-     cadena+="ref_mandato varchar(80),";
+     cadena+="IBAN     varchar(80) default '',";
+     cadena+="BIC     varchar(80) default '',";
+     cadena+="nriesgo  varchar(80) default '',";
+     cadena+="cedente1 varchar(80) default '',";
+     cadena+="cedente2 varchar(80) default '',";
+     cadena+="sufijo   varchar(80) default '',";
+     cadena+="ref_mandato varchar(80) default '',";
      cadena+="firma_mandato date,";
      if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
              cadena += "caja_iva bool default 0,"; // criterio de caja en IVA
         else cadena += "caja_iva bool default false,";
 
-     cadena+="tipo_proveedor varchar(40),";
-     cadena+="homologacion varchar(40),";
-     cadena+="actividad varchar(40),";
-     cadena+="fecha_homologacion date,";
+     cadena+="tipo_proveedor varchar(40) default '',";
+     cadena+="homologacion varchar(40) default '',";
+     cadena+="actividad varchar(40) default '',";
+     cadena+="fecha_homologacion date default '',";
      if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE ) cadena += "proveedor_activo bool default 0,";
         else cadena += "proveedor_activo bool default false,";
      if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE ) cadena += "acceso_lopd bool default 0,";
@@ -1998,6 +2000,9 @@ void basedatos::solotablas(bool segunda, QString qbase)
             "c_a_rol1 varchar(254) default '',"
             "c_a_rol2 varchar(254) default '',"
             "c_a_rol3 varchar(254) default '',"
+            "serie_rectificada varchar(254) default '',"
+            "num_rectificada varchar(254) default '',"
+            "tipo_rectificativa varchar(254) default '',"
             "huella_anterior varchar(254) default '',"
             "huella varchar(254) default '',"
             "pase_diario_cta bigint";
@@ -22569,6 +22574,13 @@ void basedatos::actualizade4030()
        else cadena +="vf_anulada bool default false";
     ejecutar(cadena);
 
+    ejecutar("alter table facturas add column serie_rectificada varchar(254) default ''");
+    ejecutar("alter table facturas add column num_rectificada varchar(254) default ''");
+    ejecutar("alter table facturas add column tipo_rectificativa varchar(254) default ''");
+
+
+    ejecutar("alter table configuracion add column vf_ultima_huella varchar(255) default ''");
+    ejecutar("alter table configuracion add column vf_ultima_huella_pr varchar(255) default ''");
 
     ejecutar("update configuracion set version='4.0.4.0'");
 
@@ -22714,12 +22726,15 @@ int basedatos::nuevacabecerafactura(QString serie,
                                     QString externo,
                                     QString concepto_sii,
                                     QString c_a_rol1, QString c_a_rol2, QString c_a_rol3,
-                                    QString suplidos, QString total_factura, QString huella, QString huella_anterior)
+                                    QString suplidos, QString total_factura, QString huella,
+                                    QString huella_anterior, bool aceptadoConErrores, QString serie_rect,
+                                    QString num_rect, QString tipo_rectificativa)
 {
     QString cad1="INSERT into facturas (serie,numero,cuenta, fecha,fecha_fac,fecha_op,"
         "contabilizado,contabilizable, con_ret, con_re, tipo_ret, retencion, "
         "tipo_doc, notas, pie1, pie2, cta_anticipos, externo, concepto_sii, "
-        "c_a_rol1, c_a_rol2, c_a_rol3, suplidos, total_factura, huella, huella_anterior, pase_diario_cta ) VALUES(";
+        "c_a_rol1, c_a_rol2, c_a_rol3, suplidos, total_factura, huella, huella_anterior,"
+        "pase_diario_cta, vf_aceptada_errores, serie_rectificada, num_rectificada, tipo_rectificativa ) VALUES(";
     cad1 += "'"+serie.left(-1).replace("'","''") +"', ";
     cad1 += numero + ", '";
     cad1 += cuenta + "', '";
@@ -22789,6 +22804,20 @@ cad1+=", ";
     cad1+= huella_anterior;
     cad1+="', ";
     cad1+=pase_diario_cta.left(-1).replace("'","''");
+    cad1+=",";
+    if ( cualControlador() == SQLITE ) {
+       cad1 += aceptadoConErrores ? "1": "0" ;
+      }
+    else {
+           cad1 += aceptadoConErrores ? "true": "false" ;
+         }
+    cad1 +=", '";
+    cad1 += serie_rect;
+    cad1+= "', '";
+    cad1+=num_rect;
+    cad1+="','";
+    cad1+=tipo_rectificativa;
+    cad1+="'";
     cad1 += ")";
     ejecutar(cad1);
   //  QMessageBox::information( 0 , QObject::tr("PRUEBA"),cad1);
@@ -22826,27 +22855,28 @@ void basedatos::fintransac_fich_import()
 
 // devuelve la clave de la factura
 int basedatos::modificacabecerafactura(QString serie,
-                                    QString numero,
-                                    QString cuenta,
-                                    QDate fecha_asiento,
-                                    QDate fecha_fac,
-                                    QDate fecha_op,
-                                    bool contabilizado,
-                                    bool contabilizable,
-                                    bool con_ret,
-                                    bool re,
-                                    QString tipo_ret,
-                                    QString retencion,
-                                    QString tipo_doc,
-                                    QString notas,
-                                    QString pie1,
-                                    QString pie2,
-                                    QString pase_diario_cta,
-                                    QString cta_anticipos,
-                                    QString externo,
-                                    QString concepto_sii,
-                                    QString c_a_rol1, QString c_a_rol2, QString c_a_rol3,
-                                    QString suplidos, QString total_factura   )
+                                       QString numero,
+                                       QString cuenta,
+                                       QDate fecha_asiento,
+                                       QDate fecha_fac,
+                                       QDate fecha_op,
+                                       bool contabilizado,
+                                       bool contabilizable,
+                                       bool con_ret,
+                                       bool re,
+                                       QString tipo_ret,
+                                       QString retencion,
+                                       QString tipo_doc,
+                                       QString notas,
+                                       QString pie1,
+                                       QString pie2,
+                                       QString pase_diario_cta,
+                                       QString cta_anticipos,
+                                       QString externo,
+                                       QString concepto_sii,
+                                       QString c_a_rol1, QString c_a_rol2, QString c_a_rol3,
+                                       QString suplidos, QString total_factura, QString serie_rect,
+                                       QString num_rect, QString tipo_rectificativa)
 {
    // (serie,numero,cuenta, fecha,fecha_fac,fecha_op,"
    //         "contabilizado,contabilizable, con_ret, re, tipo_ret, retencion, "
@@ -22914,6 +22944,12 @@ int basedatos::modificacabecerafactura(QString serie,
     cad1+="c_a_rol2='"+ c_a_rol2.left(-1).replace("'","''");
     cad1+="', ";
     cad1+="c_a_rol3='"+ c_a_rol3.left(-1).replace("'","''");
+    cad1+="', ";
+    cad1+="serie_rectificada='"+ serie_rect.left(-1).replace("'","''");
+    cad1+="', ";
+    cad1+="num_rectificada='"+ num_rect.left(-1).replace("'","''");
+    cad1+="', ";
+    cad1+="tipo_rectificativa='"+ tipo_rectificativa.left(-1).replace("'","''");
     cad1+="', ";
     cad1+="pase_diario_cta="+pase_diario_cta.left(-1).replace("'","''");
     cad1 += " where serie='";
@@ -23015,6 +23051,29 @@ if (query.isActive())
 return 0;
 }
 
+void basedatos::quita_vf_aceptada_errores(QString serie, QString numero)
+{
+ QString cad="update facturas set vf_aceptada_errores=";
+ cad.append(cualControlador()==SQLITE ? "0" : "false");
+ cad.append(" where serie='");
+ cad.append(serie);
+ cad.append("' and numero=");
+ cad.append(numero);
+ ejecutar(cad);
+}
+
+void basedatos::vf_marca_anulada(QString serie, QString numero)
+{
+    QString cad="update facturas set vf_anulada=";
+    cad.append(cualControlador()==SQLITE ? "1" : "true");
+    cad.append(" where serie='");
+    cad.append(serie);
+    cad.append("' and numero=");
+    cad.append(numero);
+    ejecutar(cad);
+
+}
+
 
 QSqlQuery basedatos::select_cabecera_doc (QString serie, QString numero) {
     // (serie,numero,cuenta, fecha,fecha_fac,fecha_op,"
@@ -23023,12 +23082,38 @@ QSqlQuery basedatos::select_cabecera_doc (QString serie, QString numero) {
     QString cadquery = "select serie, numero, cuenta, fecha, fecha_fac, fecha_op, "
                        "contabilizado,contabilizable, con_ret, con_re, tipo_ret, retencion, "
                        "tipo_doc, notas, pie1, pie2, pase_diario_cta, clave,cerrado, "
-                       "cta_anticipos, externo, concepto_sii, c_a_rol1, c_a_rol2, c_a_rol3, fecha from facturas"
+                       "cta_anticipos, externo, concepto_sii, c_a_rol1, c_a_rol2, c_a_rol3, "
+                       "fecha, vf_aceptada_errores, serie_rectificada, num_rectificada, tipo_rectificativa from facturas"
                        " where serie='";
     cadquery+=serie.left(-1).replace("'","''");
     cadquery+="' and numero=";
     cadquery+=numero.left(-1).replace("'","''");
     return ejecutar(cadquery);
+}
+
+void basedatos::select_huellas_doc(QString serie, QString numero, QString *huella, QString *huella_anterior)
+{
+  QString cadquery="select huella, huella_anterior from facturas where serie='";
+  cadquery+=serie.left(-1).replace("'","''");
+  cadquery+="' and numero=";
+  cadquery+=numero.left(-1).replace("'","''");
+  QSqlQuery q = ejecutar(cadquery);
+  if (q.isActive())
+      if (q.next()) {
+          *huella=q.value(0).toString();
+          *huella_anterior=q.value(1).toString();
+      }
+}
+
+void basedatos::update_huella_doc(QString serie, QString numero, QString huella)
+{
+ QString cadquery="update facturas set huella='";
+ cadquery.append(huella);
+ cadquery.append("' where serie='");
+ cadquery+=serie.left(-1).replace("'","''");
+ cadquery+="' and numero=";
+ cadquery+=numero.left(-1).replace("'","''");
+ ejecutar(cadquery);
 }
 
 
@@ -23207,6 +23292,35 @@ if (query.isActive())
 return false;
 }
 
+bool basedatos::vf_anulada(QString serie, QString numero)
+{
+    // averiguamos campo cerrado del registro de cabecera facturas
+    QString cad1 = "select vf_anulada from facturas where serie='";
+    cad1 += serie.left(-1).replace("'","''");
+    cad1 += "' and numero=";
+    cad1 += numero;
+    QSqlQuery query=ejecutar(cad1);
+    if (query.isActive())
+       if (query.next()) return query.value(0).toBool();
+
+    return false;
+}
+
+bool basedatos::doc_verifactu(QString serie, QString numero)
+{
+    QString cad1 = "select huella from facturas where serie='";
+    cad1 += serie.left(-1).replace("'","''");
+    cad1 += "' and numero=";
+    cad1 += numero;
+    QSqlQuery query=ejecutar(cad1);
+    if (query.isActive())
+       if (query.next()) {
+           return !query.value(0).toString().isEmpty();
+       }
+
+    return false;
+}
+
 bool basedatos::doc_contabilizado(QString serie,
                               QString numero)
 {
@@ -23299,7 +23413,7 @@ return QString();
 QSqlQuery basedatos::select_cab_facturas (QString filtro) {
     QString cadena="SELECT f.serie,f.numero,f.cuenta, p.descripcion, f.fecha_fac,"
                       "f.contabilizado, f.cerrado, "
-                      "f.pase_diario_cta, f.tipo_doc, f.externo, f.total_factura, f.retencion, f.suplidos"
+                      "f.pase_diario_cta, f.tipo_doc, f.externo, f.total_factura, f.retencion, f.suplidos, f.vf_aceptada_errores, f.vf_anulada"
                       " from facturas f, plancontable p ";
     if (filtro.length()>0)
        {
@@ -28485,6 +28599,21 @@ QStringList basedatos::listacodseries()
    return listaseries;
 }
 
+QStringList basedatos::lista_num_serie_fac(QString serie)
+{
+    QStringList lista_nums;
+    QString cadquery = "SELECT numero from facturas where serie='";
+    cadquery.append(serie);
+    cadquery.append("' order by numero");
+    QSqlQuery query = ejecutar(cadquery);
+    if  (query.isActive() )
+        while (query.next())
+         {
+          lista_nums << query.value(0).toString();
+         }
+   return lista_nums;
+}
+
 QStringList basedatos::listacoddocs()
 {
     QStringList listadocs;
@@ -28689,6 +28818,21 @@ void basedatos::carga_tipo_doc(QString codigo,
      *porcent_deduc_autonomia=query.value(57).toDouble();
      *imagen=query.value(58).toString();
     }
+}
+
+bool basedatos::es_vf_tipo_doc(QString codigo)
+{
+    QString cadquery = "SELECT verifactu "
+                        "from tipos_doc where codigo='";
+    cadquery+=codigo;
+    cadquery+="'";
+    QSqlQuery query = ejecutar(cadquery);
+    if ( (query.isActive()) && (query.first()) ) {
+        if (query.value(0).toBool()) return true;
+    }
+
+    return false;
+
 }
 
 bool basedatos::es_euro_tipo_doc(QString codigo)
@@ -29641,12 +29785,55 @@ QString basedatos::serie_ultima_huella(QString serie)
     return QString();
 }
 
+bool basedatos::hay_huellas_series()
+{
+ QString cadena="select ultima_huella from series_fact where ultima_huella!=''";
+ QSqlQuery query = ejecutar(cadena);
+ if  (query.isActive() )
+     if (query.next()) return true;
+ return false;
+}
+
 QSqlQuery basedatos::fecha_serie_numero_de_huella(QString huella)
 {
     QString cadena="SELECT serie,numero,fecha_fac from facturas where huella='";
     cadena+=huella;
     cadena+="'";
     return ejecutar(cadena);
+}
+
+QString basedatos::ultima_huella()
+{
+  QString cadena="select vf_ultima_huella from configuracion";
+  QSqlQuery query = ejecutar(cadena);
+  if  (query.isActive() )
+      if (query.next()) return query.value(0).toString();
+  return QString();
+}
+
+QString basedatos::ultima_huella_pruebas()
+{
+    QString cadena="select vf_ultima_huella_pr from configuracion";
+    QSqlQuery query = ejecutar(cadena);
+    if  (query.isActive() )
+        if (query.next()) return query.value(0).toString();
+    return QString();
+}
+
+void basedatos::update_ultima_huella(QString huella)
+{
+    QString cadena="update configuracion set vf_ultima_huella='";
+    cadena+=huella;
+    cadena+="'";
+    ejecutar(cadena);
+}
+
+void basedatos::update_ultima_huella_pr(QString huella)
+{
+    QString cadena="update configuracion set vf_ultima_huella_pr='";
+    cadena+=huella;
+    cadena+="'";
+    ejecutar(cadena);
 }
 
 

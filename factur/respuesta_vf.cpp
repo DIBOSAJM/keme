@@ -100,10 +100,10 @@ void respuesta_vf::pasa_dom(QDomDocument qdom)
                   ui->tableWidget->setItem(veces,5,new QTableWidgetItem(e.text()));
                 }
             }
-     } else correcto=true;
+     }
 
-     if (estado!="Incorrecto") correcto=true;
-
+     if (estado=="Correcto") correcto=true;
+     if (estado=="AceptadoConErrores") aceptadoConErrores=true;
    }
 
 }
@@ -111,10 +111,14 @@ void respuesta_vf::pasa_dom(QDomDocument qdom)
 void respuesta_vf::pasa_dom_consulta_facts(QDomDocument qdom)
 {
     ui->tableWidget->clear();
-    // ui->tableWidget->setColumnCount();
+    ui->tableWidget->setColumnCount(14);
     QStringList cabeceras;
     cabeceras << tr("Emisor") << tr("NumSerie") << tr("Expedición");
-    ui->tableWidget->setVerticalHeaderLabels(cabeceras);
+    cabeceras << tr("TipoFactura") << tr("Descripción") << tr("Nombre/Razón");
+    cabeceras << tr("NIF") << tr("CuotaTotal") << tr("ImporteTotal");
+    cabeceras << tr("Huella") << tr("TimeStamp") << tr("Estado");
+    cabeceras << tr("Cod.Error") << tr("Error");
+    ui->tableWidget->setHorizontalHeaderLabels(cabeceras);
 
     QApplication::processEvents();
 
@@ -164,46 +168,98 @@ void respuesta_vf::pasa_dom_consulta_facts(QDomDocument qdom)
         }
 
         QDomNode DatosRegistroFacturacion=nodo_respuesta.namedItem("tikLRRC:DatosRegistroFacturacion");
-
-        QDomNode nodo_estado_registro=nodo_respuesta.namedItem("tikR:EstadoRegistro");
-        QDomElement e = nodo_estado_registro.toElement();
-        QString estado;
-        if (!e.isNull())
-        {
-            QDomElement e = nodo_estado_registro.toElement();
+        if (!DatosRegistroFacturacion.isNull()) {
+            QDomNode TipoFactura=DatosRegistroFacturacion.namedItem("tikLRRC:TipoFactura");
+            QDomElement e = TipoFactura.toElement();
             if (!e.isNull())
-            {
-                estado=e.text();
                 ui->tableWidget->setItem(veces,3,new QTableWidgetItem(e.text()));
+
+            QDomNode DescripcionOperacion=DatosRegistroFacturacion.namedItem("tikLRRC:DescripcionOperacion");
+            e = DescripcionOperacion.toElement();
+            if (!e.isNull())
+                ui->tableWidget->setItem(veces,4,new QTableWidgetItem(e.text()));
+
+            QDomNode Destinatarios=DatosRegistroFacturacion.namedItem("tikLRRC:Destinatarios");
+            if (!Destinatarios.isNull()) {
+                QDomNode IDDestinatario=Destinatarios.namedItem("tikLRRC:IDDestinatario");
+                if (!IDDestinatario.isNull()) {
+                    QDomNode NombreRazon=IDDestinatario.namedItem("tik:NombreRazon");
+                    QDomElement e = NombreRazon.toElement();
+                    if (!e.isNull())
+                        ui->tableWidget->setItem(veces,5,new QTableWidgetItem(e.text()));
+                    QDomNode NIF=IDDestinatario.namedItem("tik:NIF");
+                    e=NIF.toElement();
+                    if (!e.isNull())
+                        ui->tableWidget->setItem(veces,6,new QTableWidgetItem(e.text()));
+                }
+            }
+
+            QDomNode CuotaTotal=DatosRegistroFacturacion.namedItem("tikLRRC:CuotaTotal");
+            if (!CuotaTotal.isNull()) {
+                QDomElement e = CuotaTotal.toElement();
+                if (!e.isNull()) {
+                    QTableWidgetItem *newItem = new QTableWidgetItem(e.text());
+                    newItem->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+                    ui->tableWidget->setItem(veces,7,newItem);
+                }
+            }
+
+            QDomNode ImporteTotal=DatosRegistroFacturacion.namedItem("tikLRRC:ImporteTotal");
+            if (!ImporteTotal.isNull()) {
+                QDomElement e=ImporteTotal.toElement();
+                if (!e.isNull()) {
+                    QTableWidgetItem *newItem = new QTableWidgetItem(e.text());
+                    newItem->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+                    ui->tableWidget->setItem(veces,8,newItem);
+                }
+            }
+
+            QDomNode Huella=DatosRegistroFacturacion.namedItem("tikLRRC:Huella");
+            if (!Huella.isNull()) {
+                QDomElement e=Huella.toElement();
+                if (!e.isNull())
+                    ui->tableWidget->setItem(veces,9,new QTableWidgetItem(e.text()));
             }
         }
-        if (estado!="Correcto")
-        {
-            if (estado=="Incorrecto") ui->tableWidget->item(veces,3)->setBackground(Qt::red);
-            QDomNode nodo_codigo_error=nodo_respuesta.namedItem("tikR:CodigoErrorRegistro");
-            if (!nodo_codigo_error.isNull())
-            {
-                QDomElement e = nodo_codigo_error.toElement();
-                if (!e.isNull())
-                {
-                    ui->tableWidget->setItem(veces,4,new QTableWidgetItem(e.text()));
-                }
-            }
-            QDomNode nodo_descrip=nodo_respuesta.namedItem("tikR:DescripcionErrorRegistro");
-            if (!nodo_descrip.isNull())
-            {
-                QDomElement e = nodo_descrip.toElement();
-                if (!e.isNull())
-                {
-                    ui->tableWidget->setItem(veces,5,new QTableWidgetItem(e.text()));
-                }
-            }
-        } else correcto=true;
 
+        QDomNode Estado_registro=nodo_respuesta.namedItem("tikLRRC:EstadoRegistro");
+        if (!Estado_registro.isNull()) {
+            QDomNode Timestamp=Estado_registro.namedItem("tikLRRC:TimestampUltimaModificacion");
+            if (!Timestamp.isNull()) {
+                QDomElement e=Timestamp.toElement();
+                if (!e.isNull())
+                    ui->tableWidget->setItem(veces,10,new QTableWidgetItem(e.text()));
+            }
+
+            QDomNode EstadoRegistro=Estado_registro.namedItem("tikLRRC:EstadoRegistro");
+            if (!EstadoRegistro.isNull()) {
+                QDomElement e=EstadoRegistro.toElement();
+                if (!e.isNull())
+                    ui->tableWidget->setItem(veces,11,new QTableWidgetItem(e.text()));
+            }
+
+            QDomNode CodigoErrorRegistro=Estado_registro.namedItem("tikLRRC:CodigoErrorRegistro");
+            if (!CodigoErrorRegistro.isNull()) {
+                QDomElement e=CodigoErrorRegistro.toElement();
+                if (!e.isNull()) {
+                    ui->tableWidget->setItem(veces,12,new QTableWidgetItem(e.text()));
+                    ui->tableWidget->item(veces,12)->setBackground(Qt::yellow);
+                }
+            }
+
+            QDomNode DescripcionErrorRegistro=Estado_registro.namedItem("tikLRRC:DescripcionErrorRegistro");
+            if (!DescripcionErrorRegistro.isNull()) {
+                QDomElement e=DescripcionErrorRegistro.toElement();
+                if (!e.isNull()) {
+                    ui->tableWidget->setItem(veces,13,new QTableWidgetItem(e.text()));
+                    ui->tableWidget->item(veces,13)->setBackground(Qt::yellow);
+                }
+            }
+        }
 
     }
-
 }
+
 
 void respuesta_vf::verxml()
 {
@@ -231,6 +287,11 @@ QString respuesta_vf::contenido_celda(int fila, int columna)
 bool respuesta_vf::es_correcto()
 {
     return correcto;
+}
+
+bool respuesta_vf::es_aceptado_con_errores()
+{
+    return aceptadoConErrores;
 }
 
 

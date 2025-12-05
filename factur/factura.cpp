@@ -33,7 +33,6 @@
 #include "busca_externo.h"
 #include "externos.h"
 #include "network_connections.h"
-#include "pidenombre.h"
 #include <QFileDialog>
 #include <QProgressDialog>
 #include <QString>
@@ -73,6 +72,14 @@ ui.vf_consulta_pushButton->hide();
 ui.vf_pruebas_pushButton->hide();
 ui.subsanacion_pushButton->hide();
 ui.vf_anulacion_pushButton->hide();
+
+ui.serie_rectificada_comboBox->hide();
+ui.serie_rectificada_label->hide();
+ui.num_Rectificada_comboBox->hide();
+ui.num_rectificada_label->hide();
+ui.tipo_Rectif_comboBox->hide();
+ui.tipo_rect_label->hide();
+
 
 imprimir=false;
 
@@ -167,6 +174,19 @@ if (query.isActive())
      ui.quita_externo_pushButton->hide();
     }
 
+}
+
+void factura::quita_docs_vf()
+{
+    int index=0;
+
+    while (index<ui.doccomboBox->count()) {
+        if (basedatos::instancia()->es_vf_tipo_doc(ui.doccomboBox->itemText(index))) {
+            ui.doccomboBox->removeItem(index);
+            continue;
+        }
+        index++;
+    }
 }
 
 QString factura::ltipoiva(QString codigo)
@@ -278,7 +298,28 @@ void factura::actudoc()
  ui.concepto_sii_lineEdit->setText(concepto_sii);
  if (verifactu) ui.verifactu_label->show();
  else ui.verifactu_label->hide();
- if (verifactu) { ui.vf_consulta_pushButton->show(); ui.vf_pruebas_pushButton->show();}
+ if (verifactu) ui.vf_pruebas_pushButton->show(); else ui.vf_pruebas_pushButton->hide();
+ if (verifactu && !ui.facturalineEdit->text().isEmpty()) ui.vf_consulta_pushButton->show();
+
+ if (rectificativo) {
+     ui.serie_rectificada_comboBox->show();
+     ui.serie_rectificada_label->show();
+     ui.num_Rectificada_comboBox->show();
+     ui.num_rectificada_label->show();
+     ui.serie_rectificada_comboBox->addItem("- -");
+     ui.serie_rectificada_comboBox->addItems(basedatos::instancia()->listacodseries());
+     ui.tipo_Rectif_comboBox->show();
+     ui.tipo_rect_label->show();
+ }
+ else {
+     ui.serie_rectificada_comboBox->hide();
+     ui.serie_rectificada_label->hide();
+     ui.num_Rectificada_comboBox->hide();
+     ui.num_rectificada_label->hide();
+     ui.tipo_Rectif_comboBox->hide();
+     ui.tipo_rect_label->hide();
+    }
+ rectificativa=rectificativo;
  QPixmap foto;
  if (logo.length()>0)
        {
@@ -842,9 +883,12 @@ void factura::terminar(bool impri)
        respuesta_vf *r = new respuesta_vf();
        r->pasa_dom(doc);
        r->exec();
-       if (!r->es_correcto()) return;
+       if (!r->es_correcto() && ! r->es_aceptado_con_errores()) {delete(r); return;}
+       if (r->es_aceptado_con_errores()) aceptadoConErrores=true;
+
        delete(r);
        basedatos::instancia()->set_ult_huella_serie(ui.serielineEdit->text(), huella);
+       basedatos::instancia()->update_ultima_huella(huella); // ACTUALIZAR CAMPO EN CONFIGURACIÓN
     }
 
    if (ui.facturalineEdit->text().isEmpty()) { ui.facturalineEdit->setText(cadnum);
@@ -858,6 +902,9 @@ void factura::terminar(bool impri)
     long clave_cabecera;
     QString cadsuplidos;
     cadsuplidos.setNum(gsuplidos,'f',2);
+    QString serie_rect, num_rect;
+    if (ui.serie_rectificada_comboBox->count()>0 && ui.serie_rectificada_comboBox->currentIndex()>0) serie_rect=ui.serie_rectificada_comboBox->currentText();
+    if (ui.num_Rectificada_comboBox->count()>0 && ui.num_Rectificada_comboBox->currentIndex()>0) num_rect=ui.num_Rectificada_comboBox->currentText();
     if (basedatos::instancia()->existe_fact(ui.serielineEdit->text(), ui.facturalineEdit->text()))
        {
         // actualizamos
@@ -886,7 +933,10 @@ void factura::terminar(bool impri)
                                             ui.rol2_lineEdit->text(),
                                             ui.rol3_lineEdit->text(),
                                             cadsuplidos,
-                                            cad_bi_mas_cuota
+                                            cad_bi_mas_cuota,
+                                            serie_rect,
+                                            num_rect,
+                                            ui.tipo_Rectif_comboBox->currentText()
                                             );
         // borramos registros de detalle
         basedatos::instancia()->borralineas_doc(clave_cabecera);
@@ -920,7 +970,10 @@ void factura::terminar(bool impri)
                       ui.rol3_lineEdit->text(),
                       cadsuplidos,
                       cad_bi_mas_cuota,
-                      huella, huella_anterior
+                      huella, huella_anterior,
+                      aceptadoConErrores,
+                     serie_rect,
+                     num_rect
                      );
 
          }
@@ -964,24 +1017,27 @@ void factura::gen_pdf()
 
 
 void factura::pasa_cabecera_doc(QString serie,
-                       QString numero,
-                       QString cuenta,
-                       QDate fecha_fac,
-                       QDate fecha_asiento,
-                       QDate fecha_op,
-                       bool qcontabilizable,
-                       bool con_ret,
-                       bool re,
-                       QString tipo_ret,
-                       QString retencion,
-                       QString tipo_doc,
-                       QString notas,
-                       QString pie1,
-                       QString pie2,
-                       QString anticipos,
-                       QString externo,
-                       QString concepto_sii, QString c_a_rol1, QString c_a_rol2, QString c_a_rol3)
+                                QString numero,
+                                QString cuenta,
+                                QDate fecha_fac,
+                                QDate fecha_asiento,
+                                QDate fecha_op,
+                                bool qcontabilizable,
+                                bool con_ret,
+                                bool re,
+                                QString tipo_ret,
+                                QString retencion,
+                                QString tipo_doc,
+                                QString notas,
+                                QString pie1,
+                                QString pie2,
+                                QString anticipos,
+                                QString externo,
+                                QString concepto_sii, QString c_a_rol1, QString c_a_rol2, QString c_a_rol3,
+                                bool aceptada_errores, QString serie_rect, QString num_rect, QString tipo_rectificativa)
 {
+    aceptadoConErrores=aceptada_errores;
+    if (aceptadoConErrores) ui.subsanacion_pushButton->show();
     bool esfacturae=false;
     if (!c_a_rol1.isEmpty() || !c_a_rol2.isEmpty() || !c_a_rol3.isEmpty()) esfacturae=true;
     if (esfacturae) ui.facturae_checkBox->setChecked(true);
@@ -993,7 +1049,25 @@ void factura::pasa_cabecera_doc(QString serie,
              break;
             }
         }
-
+    if (!serie_rect.isEmpty()) {
+            for (int veces=0; veces<ui.serie_rectificada_comboBox->count(); veces++)
+            {
+                if (ui.serie_rectificada_comboBox->itemText(veces)==serie_rect)
+                {
+                    ui.serie_rectificada_comboBox->setCurrentIndex(veces);
+                    on_serie_rectificada_comboBox_currentIndexChanged(veces);
+                    for (int veces2=0;veces2<ui.num_Rectificada_comboBox->count(); veces2++) {
+                        if (ui.num_Rectificada_comboBox->itemText(veces2)==num_rect)
+                            ui.num_Rectificada_comboBox->setCurrentIndex(veces2);
+                    }
+                    break;
+                }
+            }
+            for (int veces=0; veces<ui.tipo_Rectif_comboBox->count();veces++) {
+                if (ui.tipo_Rectif_comboBox->itemText(veces)==tipo_rectificativa)
+                   { ui.tipo_Rectif_comboBox->setCurrentIndex(veces); break; }
+            }
+        }
     ui.serielineEdit->setText(serie);
     ui.facturalineEdit->setText(numero);
     ui.externo_lineEdit->setText(externo);
@@ -1404,6 +1478,12 @@ void factura::activa_consulta()
   ui.expediente_lineEdit->setReadOnly(true);
   ui.contrato_lineEdit->setReadOnly(true);
 
+  ui.serie_rectificada_comboBox->setEnabled(false);
+  ui.num_Rectificada_comboBox->setEnabled(false);
+  ui.tipo_Rectif_comboBox->setEnabled(false);
+
+  if (verifactu) ui.vf_consulta_pushButton->show();
+
 }
 
 
@@ -1789,52 +1869,10 @@ void factura::muestra_cta_anticipo()
 
 }
 
-bool factura::envia_verifactu(QString serie, QString numero, QString *ghuella, QString *huella_anterior)
+bool factura::envia_verifactu(QString serie, QString numero, QString *ghuella, QString *huella_anterior, bool pruebas)
 {
-    // cargamos fichero certificado
-    QString fich_certificado;
-    QFileDialog dialogofich(this);
-    dialogofich.setFileMode(QFileDialog::ExistingFile);
-    dialogofich.setLabelText ( QFileDialog::LookIn, tr("Directorio:") );
-    dialogofich.setLabelText ( QFileDialog::FileName, tr("Archivo:") );
-    dialogofich.setLabelText ( QFileDialog::FileType, tr("Tipo de archivo:") );
-    dialogofich.setLabelText ( QFileDialog::Accept, tr("Aceptar") );
-    dialogofich.setLabelText ( QFileDialog::Reject, tr("Cancelar") );
-
-    QStringList filtros;
-    filtros << tr("Archivos de certificado usuario (*.pem *.pfx *.p12)");
-    dialogofich.setNameFilters(filtros);
-    dialogofich.setDirectory(adapta(dirtrabajo_certificados()));
-    dialogofich.setWindowTitle(tr("SELECCIÓN DE CERTIFICADO"));
-    // dialogofich.exec();
-    //QString fileName = dialogofich.getOpenFileName(this, tr("Seleccionar archivo para importar asientos"),
-    //                                              dirtrabajo,
-    //                                              tr("Ficheros de texto (*.txt)"));
-    QStringList fileNames;
-    if (dialogofich.exec())
-    {
-        fileNames = dialogofich.selectedFiles();
-        if (fileNames.at(0).length()>0)
-        {
-            // QString cadfich=cadfich.fromLocal8Bit(fileNames.at(0));
-            fich_certificado=fileNames.at(0);
-        }
-    }
-    else return false;
-
-
-    pidenombre *p = new pidenombre();
-    p->tipo_password();
-    p->asignaetiqueta(tr("CLAVE DEL CERTIFICADO:"));
-    p->asignanombreventana(tr("PETICIÓN DE CLAVE"));
-    int cod=p->exec();
-    if (!(cod==QDialog::Accepted))
-    {
-        delete p;
-        return false;
-    }
-    QString clave=p->contenido();
-    delete p;
+    QString fich_certificado, clave;
+    get_certificado(&fich_certificado,&clave);
 
     QProgressDialog progress(tr("Enviando información ..."), 0, 0, 0, this);
     progress.show();
@@ -1849,6 +1887,7 @@ bool factura::envia_verifactu(QString serie, QString numero, QString *ghuella, Q
     nombrefichero+=numero;
     QDate fecha;
     nombrefichero+="-";
+    if (pruebas) nombrefichero+="PRUEBAS-";
     nombrefichero+=fecha.currentDate().toString("yyMMdd");
     nombrefichero+="-";
     QTime hora;
@@ -1871,7 +1910,10 @@ bool factura::envia_verifactu(QString serie, QString numero, QString *ghuella, Q
     QString wurl;
     QSqlQuery q = basedatos::instancia()->config_sif_verifactu();
     if (q.isActive())
-        if (q.next()) wurl=q.value(8).toString();
+        if (q.next()) {
+            wurl=q.value(8).toString();
+            if (pruebas) wurl=q.value(10).toString();
+        }
 
     aeat_soap validation;
     validation.process(nombrefichero,wurl,fich_certificado,clave);
@@ -1900,7 +1942,8 @@ bool factura::envia_verifactu(QString serie, QString numero, QString *ghuella, Q
     return true;
 }
 
-bool factura::gen_fich_verifactu(QString nombrefich, QString serie, QString numero, QString *huella, QString *huella_anterior)
+bool factura::gen_fich_verifactu(QString nombrefich, QString serie, QString numero, QString *huella,
+                                 QString *huella_anterior, bool ya_existente, bool subsanacion)
 {
     QDomDocument doc("ENVIO");
     QDomElement root = doc.createElement("soapenv:Body");
@@ -1933,8 +1976,28 @@ bool factura::gen_fich_verifactu(QString nombrefich, QString serie, QString nume
     addElementoTextoDom(doc,IDFactura,"sum1:FechaExpedicionFactura",ui.fechadateEdit->date().toString("dd-MM-yyyy"));
 
     QString tipoFactura="F1";
+    if (rectificativa) tipoFactura=ui.tipo_Rectif_comboBox->currentText();
     addElementoTextoDom(doc,RegistroAlta,"sum1:NombreRazonEmisor",nombreempresa());
+    if (subsanacion)
+        addElementoTextoDom(doc,RegistroAlta,"sum1:Subsanacion","S");
     addElementoTextoDom(doc,RegistroAlta,"sum1:TipoFactura",tipoFactura); // de momento F1 factura completa - tenemos que añadir simplificada, sustitutiva de simplificada y rectificativa
+    if (rectificativa) addElementoTextoDom(doc,RegistroAlta,"sum1:TipoRectificativa","I");
+
+    if (rectificativa) {
+      QDomElement FacturasRectificadas = doc.createElement("sum1:FacturasRectificadas");
+      RegistroAlta.appendChild(FacturasRectificadas);
+      QDomElement IDFacturaRectificada = doc.createElement("sum1:IDFacturaRectificada");
+      FacturasRectificadas.appendChild(IDFacturaRectificada);
+      // QDomElement IDEmisorFactura = doc.createElement("sum1:IDEmisorFactura");
+      // IDFacturaRectificada.appendChild(IDEmisorFactura);
+      addElementoTextoDom(doc,IDFacturaRectificada,"sum1:IDEmisorFactura",basedatos::instancia()->cif());
+      addElementoTextoDom(doc,IDFacturaRectificada,"sum1:NumSerieFactura",ui.serie_rectificada_comboBox->currentText()+ui.num_Rectificada_comboBox->currentText());
+      QSqlQuery q3=basedatos::instancia()->select_cabecera_doc (ui.serie_rectificada_comboBox->currentText(), ui.num_Rectificada_comboBox->currentText());
+      if (q3.isActive())
+        if (q3.next())
+            addElementoTextoDom(doc,IDFacturaRectificada,"sum1:FechaExpedicionFactura",q3.value(4).toDate().toString("dd-MM-yyyy"));
+
+    }
 
     QString descripcionOperacion=ui.concepto_sii_lineEdit->text();
     if (descripcionOperacion.isEmpty()) descripcionOperacion=tr("OPERACIÓN SEGÚN FACTURA");
@@ -1955,7 +2018,7 @@ bool factura::gen_fich_verifactu(QString nombrefich, QString serie, QString nume
         q=basedatos::instancia()->selectTodoDatosexterno (ui.externo_lineEdit->text());
 
     QString razon,nombrecomercial,cif2,domicilio2,poblacion2,
-        codigopostal,provincia2,pais,codvenci;
+        codigopostal,provincia2,pais,codvenci,pais_cod;
     if (q.isActive())
     {
         if (q.next())
@@ -1968,88 +2031,65 @@ bool factura::gen_fich_verifactu(QString nombrefich, QString serie, QString nume
             codigopostal=q.value(7).toString();
             provincia2=q.value(8).toString();
             pais=q.value(26).toString();
+            pais_cod=q.value(9).toString().left(2);
             codvenci=q.value(10).toString();
 
         }
     }
 
     addElementoTextoDom(doc,IDDestinatario,"sum1:NombreRazon",razon);
-    addElementoTextoDom(doc,IDDestinatario,"sum1:NIF",cif2);
-
-    QDomElement Desglose = doc.createElement("sum1:Desglose");
-    RegistroAlta.appendChild(Desglose);
-
-    QStringList claves_iva;
-    QList<double> bases;
-    QList<double> tipos, res;
-    QList<double> cuotas, cuotasre;
-
-    QSqlQuery query = basedatos::instancia()->selectTodoTiposiva();
-    if ( query.isActive() )
-    {
-        while (query.next())
-        {
-            claves_iva << query.value(0).toString();
-            // qDebug() << query.value(0).toString();
-            bases << 0;
-            cuotas << 0;
-            cuotasre <<0;
-            QString tipo,re;
-            cadvalorestipoiva(query.value(0).toString(), &tipo, &re);
-            tipos << tipo.toDouble();
-            res << re.toDouble();
+    bool pais_ue=false;
+    QString paises="AT BE BG CY CZ DE DK EE ES FI FR HR HU IE IT LT LU LV MT NL PL PT RO SE SI SK GR";
+    if (cif2.length()>2 && paises.contains(cif2.left(2))) pais_ue=true;
+    if (tipo_operacion==04 || tipo_operacion==05 || pais_ue) {
+        QDomElement IDOtro = doc.createElement("sum1:IDOtro");
+        IDDestinatario.appendChild(IDOtro);
+        QString qpais;
+        QString nifiva;
+        if (ui.externo_lineEdit->text().isEmpty()) {
+            QSqlQuery q=basedatos::instancia()->select7Datossubcuentacuenta(ui.cta_cli_lineEdit->text());
+            if (q.isActive())
+                if (q.next())
+                {qpais=q.value(1).toString().left(2); nifiva=q.value(1).toString();}
         }
-    }
-    claves_iva << tr("EXENTO");
-    bases << 0;
-    cuotas << 0;
-    cuotasre <<0;
-    tipos <<0;
-    res << 0;
-
-    int ultimo=ultimafila();
-    for (int veces=0; veces<=ultimo; veces++)
-    {
-        if (ui.tableWidget->item(veces,0)==NULL) continue;
-        int pos=claves_iva.indexOf(ui.tableWidget->item(veces,7)->text());
-
-        if (pos>=0) {
-            double cantidad=convapunto(ui.tableWidget->item(veces,2)->text()).toDouble();
-            double precio=convapunto(ui.tableWidget->item(veces,3)->text()).toDouble();
-            double descuento=convapunto(ui.tableWidget->item(veces,4)->text()).toDouble()/100;
-            double baselin=cantidad*precio*(1-descuento);
-            bases[pos]=bases[pos]+baselin;
-            cuotas[pos]=cuotas[pos]+baselin*tipos[pos]/100;
-            res[pos]=res[pos]+baselin*res[pos]/100;
+        else {
+            QSqlQuery q=basedatos::instancia()->select7datos_externo(ui.externo_lineEdit->text());
+            if (q.isActive())
+                if (q.next())
+                {qpais=q.value(1).toString().left(2); nifiva=q.value(1).toString();}
         }
+        addElementoTextoDom(doc,IDOtro,"sum1:CodigoPais",qpais);
+        addElementoTextoDom(doc,IDOtro,"sum1:IDType","02");
+        addElementoTextoDom(doc,IDOtro,"sum1:ID",nifiva);
     }
+    else
+        if (pais_cod!="ES") {
+            QDomElement IDOtro = doc.createElement("sum1:IDOtro");
+            IDDestinatario.appendChild(IDOtro);
+            if (cif2.isEmpty()) cif2="DESCONOCIDO";
+            if (tipo_operacion!=6 and tipo_operacion!=9) addElementoTextoDom(doc,IDOtro,"sum1:CodigoPais",pais_cod); //addElementoTextoDom(doc,IDOtro,"sum1:CodigoPais","ES");
+               else addElementoTextoDom(doc,IDOtro,"sum1:CodigoPais",pais_cod);
+                if (tipo_operacion!=6 and tipo_operacion!=9) addElementoTextoDom(doc,IDOtro,"sum1:IDType","04");
+                  else addElementoTextoDom(doc,IDOtro,"sum1:IDType","06");
+                addElementoTextoDom(doc,IDOtro,"sum1:ID",cif2);
+          }
+          else
+             addElementoTextoDom(doc,IDDestinatario,"sum1:NIF",cif2);
 
-
-    // AGRUPAMOS CONTENIDO DE LA FACTURA Y METEMOS UN BUCLE POR CADA TIPO DE IVA/EXENTO
     double cuota_total=0;
     double importe_total=0;
-    for (int t=0; t<bases.count(); t++) {
-        if (bases.at(t)>-0.001 && bases.at(t)<0.001) continue;
-        QDomElement DetalleDesglose = doc.createElement("sum1:DetalleDesglose");
-        Desglose.appendChild(DetalleDesglose);
-        // 02 Exportación;
-        // 03 Bienes usados
-        // 04 Oro de inversión
-        // 11 arrendamiento con retención
-        // 12 arrendamiento sin retención
-        // 13 arrentamiento con y sin retención
-       addElementoTextoDom(doc,DetalleDesglose,"sum1:ClaveRegimen","01"); // régimen general
-       addElementoTextoDom(doc,DetalleDesglose,"sum1:CalificacionOperacion","S1"); // sujeta no exenta
-       QString cadtipo; cadtipo.setNum(tipos[t],'f',2);
-       addElementoTextoDom(doc,DetalleDesglose,"sum1:TipoImpositivo",cadtipo);
-       QString cadbase; cadbase.setNum(bases[t],'f',2);
-       addElementoTextoDom(doc,DetalleDesglose,"sum1:BaseImponibleOimporteNoSujeto",cadbase);
-       QString cadcuota; cadcuota.setNum(cuotas[t],'f',2);
-       addElementoTextoDom(doc,DetalleDesglose,"sum1:CuotaRepercutida",cadcuota);
-       cuota_total+=cuotas[t];
-       importe_total+=bases[t]+cuotas[t];
-    }
-    // añadir a RegistroAlta los totales de cuota e importe total
+
+    QDomElement Desglose;
+    if (tipo_operacion==4) Desglose=fdesglose_eib(&doc, &importe_total);
+      else
+        if (tipo_operacion==5) Desglose=fdesglose_eis(&doc,&importe_total);
+           else
+          if (tipo_operacion==6) Desglose=fdesglose_export(&doc,&importe_total);
+             else
+               if (tipo_operacion==9) Desglose=fdesglose_ext_isp(&doc,&importe_total);
+               else
+                 Desglose = fdesglose_interior(&doc, &cuota_total, &importe_total);
+    RegistroAlta.appendChild(Desglose);
     QString cad_cuota_total; cad_cuota_total.setNum(cuota_total,'f',2);
     QString cad_importe_total; cad_importe_total.setNum(importe_total,'f',2);
     addElementoTextoDom(doc,RegistroAlta,"sum1:CuotaTotal",cad_cuota_total.trimmed());
@@ -2059,20 +2099,25 @@ bool factura::gen_fich_verifactu(QString nombrefich, QString serie, QString nume
     RegistroAlta.appendChild(Encadenamiento);
 
     // si es primer registro meter campo PrimerRegistro con valor 'S'
-    QString ultima_huella=basedatos::instancia()->serie_ultima_huella(serie);
-    if (ultima_huella.isEmpty()) {
+    QString ultima_huella;
+    if (ya_existente || subsanacion) ultima_huella=*huella_anterior; // el parámetro de la función cogerlo fuera
+       else
+       ultima_huella=basedatos::instancia()->ultima_huella(); // LA ÚLTIMA HUELLA ENVIADA, NO DE LA SERIE
+    if (ultima_huella.isEmpty() && !basedatos::instancia()->hay_huellas_series()) {
         addElementoTextoDom(doc,Encadenamiento,"sum1:PrimerRegistro","S");
     }
     else {
            *huella_anterior=ultima_huella;
            QString serie_numero;
            QDate fecha_anterior;
+           if (!ultima_huella.isEmpty()) {
            QSqlQuery q = basedatos::instancia()->fecha_serie_numero_de_huella(ultima_huella);
            if (q.isActive())
                if (q.next()) {
                    serie_numero=q.value(0).toString().trimmed()+q.value(1).toString().trimmed();
                    fecha_anterior=q.value(2).toDate();
                }
+           }
            QDomElement RegistroAnterior = doc.createElement("sum1:RegistroAnterior");
            Encadenamiento.appendChild(RegistroAnterior);
            addElementoTextoDom(doc,RegistroAnterior,"sum1:IDEmisorFactura",basedatos::instancia()->cif());
@@ -2233,7 +2278,322 @@ bool factura::xml_verifactu_consulta(QString nombrefich, QString serie, QString 
     return true;
 }
 
+bool factura::xml_verifactu_anulacion(QString nombrefich, QString serie, QString numero, QString *nueva_huella)
+{
+    QDomDocument doc("ENVIO");
+    QDomElement root = doc.createElement("soapenv:Body");
+    doc.appendChild(root);
 
+    QDomElement RegFactu= doc.createElement("sum:RegFactuSistemaFacturacion");
+    root.appendChild(RegFactu);
+
+    QDomElement cabecera = doc.createElement("sum:Cabecera");
+    RegFactu.appendChild(cabecera);
+
+
+    QDomElement ObligadoEmision = doc.createElement("sum1:ObligadoEmision");
+    cabecera.appendChild(ObligadoEmision);
+
+    addElementoTextoDom(doc,ObligadoEmision,"sum1:NombreRazon",nombreempresa());
+    addElementoTextoDom(doc,ObligadoEmision,"sum1:NIF",basedatos::instancia()->cif());
+
+    QDomElement RegistroFactura = doc.createElement("sum:RegistroFactura");
+    RegFactu.appendChild(RegistroFactura);
+
+    QDomElement RegistroAnulacion = doc.createElement("sum1:RegistroAnulacion");
+    RegistroFactura.appendChild(RegistroAnulacion);
+
+    addElementoTextoDom(doc,RegistroAnulacion,"sum1:IDVersion",VERY_FACTU_IDVERSION);
+
+    QDomElement IDFactura = doc.createElement("sum1:IDFactura");
+    RegistroAnulacion.appendChild(IDFactura);
+
+    addElementoTextoDom(doc,IDFactura,"sum1:IDEmisorFacturaAnulada",basedatos::instancia()->cif());
+    addElementoTextoDom(doc,IDFactura,"sum1:NumSerieFacturaAnulada",serie+numero);
+    addElementoTextoDom(doc,IDFactura,"sum1:FechaExpedicionFacturaAnulada",ui.fechadateEdit->date().toString("dd-MM-yyyy"));
+
+    QDomElement Encadenamiento = doc.createElement("sum1:Encadenamiento");
+    RegistroAnulacion.appendChild(Encadenamiento);
+
+    QString serie_numero_anterior;
+    QDate fecha_anterior;
+    QString huella_anterior;
+    QString huella;
+    basedatos::instancia()->select_huellas_doc(serie, numero,&huella, &huella_anterior);
+    QSqlQuery q = basedatos::instancia()->fecha_serie_numero_de_huella(huella_anterior);
+    if (q.isActive())
+        if (q.next()) {
+            serie_numero_anterior=q.value(0).toString().trimmed()+q.value(1).toString().trimmed();
+            fecha_anterior=q.value(2).toDate();
+        }
+
+    QDomElement RegistroAnterior = doc.createElement("sum1:RegistroAnterior");
+    Encadenamiento.appendChild(RegistroAnterior);
+    addElementoTextoDom(doc,RegistroAnterior,"sum1:IDEmisorFactura",basedatos::instancia()->cif());
+    addElementoTextoDom(doc,RegistroAnterior,"sum1:NumSerieFactura",serie_numero_anterior);
+    addElementoTextoDom(doc,RegistroAnterior,"sum1:FechaExpedicionFactura",fecha_anterior.toString("dd-MM-yyyy"));
+    addElementoTextoDom(doc,RegistroAnterior,"sum1:Huella",huella_anterior);
+
+    QDomElement SistemaInformatico = doc.createElement("sum1:SistemaInformatico");
+    RegistroAnulacion.appendChild(SistemaInformatico);
+
+    QSqlQuery q2 = basedatos::instancia()->config_sif_verifactu();
+    if (q2.isActive())
+        if (q2.next()) {
+            //"select sif_nif,sif_nombre_razon, sif_nombre_sif, sif_id_sistema_informatico,sif_numero_instalacion, "
+            //"sif_tipo_uso_verifactu, sif_posible_multi_ot, sif_multi_ot, endpoint_verifactu from configuracion"
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:NombreRazon",q2.value(1).toString());
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:NIF",q2.value(0).toString());
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:NombreSistemaInformatico",q2.value(2).toString());
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:IdSistemaInformatico",q2.value(3).toString());
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:Version",basedatos::instancia()->selectVersionconfiguracion());
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:NumeroInstalacion",q2.value(4).toString());
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:TipoUsoPosibleSoloVerifactu",q2.value(5).toBool() ? "S":"N");
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:TipoUsoPosibleMultiOT",q2.value(6).toBool() ? "S":"N");
+            addElementoTextoDom(doc,SistemaInformatico,"sum1:IndicadorMultiplesOT",q2.value(7).toBool() ? "S":"N");
+        }
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+    QTimeZone localTimeZone = QTimeZone::systemTimeZone();
+    QString formattedDateTime = currentDateTime.toTimeZone(localTimeZone).toString("yyyy-MM-ddTHH:mm:ssttt");
+
+    addElementoTextoDom(doc,RegistroAnulacion,"sum1:FechaHoraHusoGenRegistro",formattedDateTime);
+    addElementoTextoDom(doc,RegistroAnulacion,"sum1:TipoHuella","01");
+
+    QString referencia_registro_alta="IDEmisorFacturaAnulada="+basedatos::instancia()->cif();
+    referencia_registro_alta.append("&");
+    referencia_registro_alta.append("NumSerieFacturaAnulada="+serie.trimmed()+numero.trimmed());
+    referencia_registro_alta.append("&");
+    referencia_registro_alta.append("FechaExpedicionFacturaAnulada="+ui.fechadateEdit->date().toString("dd-MM-yyyy"));
+    referencia_registro_alta.append("&");
+    referencia_registro_alta.append("Huella="+huella_anterior);
+    referencia_registro_alta.append("&");
+    referencia_registro_alta.append("FechaHoraHusoGenRegistro="+formattedDateTime);
+    qDebug() << referencia_registro_alta + "\n";
+    QByteArray byteArray = referencia_registro_alta.toUtf8();
+    QByteArray hash = QCryptographicHash::hash(byteArray, QCryptographicHash::Sha256);
+    QString huella_gen=QString::fromUtf8(hash.toHex()).toUpper();
+    addElementoTextoDom(doc,RegistroAnulacion,"sum1:Huella",huella_gen);
+    *nueva_huella=huella_gen;
+
+    QString cadini="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    cadini+="<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"\n"
+              "xmlns:sum=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/tike/cont/ws/SuministroLR.xsd\"\n"
+              "xmlns:sum1=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/tike/cont/ws/SuministroInformacion.xsd\"\n"
+              "xmlns:xd=\"http://www.w3.org/2000/09/xmldsig#\">\n";
+    cadini+="<soapenv:Header/>";
+
+
+    QString xml = doc.toString();
+    xml.remove("<!DOCTYPE ENVIO>");
+    xml.prepend(cadini);
+    xml.append("</soapenv:Envelope>\n");
+
+    QFile fichero( adapta(nombrefich) );
+
+    if ( !fichero.open( QIODevice::WriteOnly ) ) return false;
+
+    QTextStream stream( &fichero );
+    stream.setEncoding(QStringConverter::Utf8);
+
+    stream << xml;
+    fichero.close();
+
+    return true;
+}
+
+QDomElement factura::fdesglose_interior(QDomDocument *doc, double *cuota_total, double *importe_total)
+{
+    QDomElement Desglose = doc->createElement("sum1:Desglose");
+
+    QStringList claves_iva;
+    QList<double> bases;
+    QList<double> tipos, res;
+    QList<double> cuotas, cuotasre;
+
+    QSqlQuery query = basedatos::instancia()->selectTodoTiposiva();
+    if ( query.isActive() )
+    {
+        while (query.next())
+        {
+            claves_iva << query.value(0).toString();
+            // qDebug() << query.value(0).toString();
+            bases << 0;
+            cuotas << 0;
+            cuotasre <<0;
+            QString tipo,re;
+            cadvalorestipoiva(query.value(0).toString(), &tipo, &re);
+            tipos << tipo.toDouble();
+            res << re.toDouble();
+        }
+    }
+    claves_iva << tr("EXENTO");
+    bases << 0;
+    cuotas << 0;
+    cuotasre <<0;
+    tipos <<0;
+    res << 0;
+    int ultimo=ultimafila();
+    for (int veces=0; veces<=ultimo; veces++)
+    {
+        if (ui.tableWidget->item(veces,0)==NULL) continue;
+        int pos=(ui.tableWidget->item(veces,7)!=nullptr ? claves_iva.indexOf(ui.tableWidget->item(veces,7)->text()) :0);
+
+        if (pos>=0) {
+            double cantidad=(ui.tableWidget->item(veces,2)!=nullptr ? convapunto(ui.tableWidget->item(veces,2)->text()).toDouble() : 0);
+            double precio=(ui.tableWidget->item(veces,3)!=nullptr ? convapunto(ui.tableWidget->item(veces,3)->text()).toDouble() : 0);
+            double descuento=(ui.tableWidget->item(veces,4)!=nullptr ?  convapunto(ui.tableWidget->item(veces,4)->text()).toDouble()/100 : 0);
+            double baselin=cantidad*precio*(1-descuento);
+            bases[pos]=bases[pos]+baselin;
+            cuotas[pos]=cuotas[pos]+baselin*tipos[pos]/100;
+            res[pos]=res[pos]+baselin*res[pos]/100;
+        }
+    }
+
+    // AGRUPAMOS CONTENIDO DE LA FACTURA Y METEMOS UN BUCLE POR CADA TIPO DE IVA/EXENTO
+    *cuota_total=0;
+    *importe_total=0;
+    for (int t=0; t<bases.count(); t++) {
+        if (bases.at(t)>-0.001 && bases.at(t)<0.001) continue;
+        QDomElement DetalleDesglose = doc->createElement("sum1:DetalleDesglose");
+        Desglose.appendChild(DetalleDesglose);
+        // 02 Exportación;
+        // 03 Bienes usados
+        // 04 Oro de inversión
+        // 11 arrendamiento con retención
+        // 12 arrendamiento sin retención
+        // 13 arrentamiento con y sin retención
+        if (claves_iva[t]!=tr("EXENTO")) {
+            addElementoTextoDom(*doc,DetalleDesglose,"sum1:ClaveRegimen","01"); // régimen general
+            addElementoTextoDom(*doc,DetalleDesglose,"sum1:CalificacionOperacion","S1"); // sujeta no exenta
+            QString cadtipo; cadtipo.setNum(tipos[t],'f',2);
+            addElementoTextoDom(*doc,DetalleDesglose,"sum1:TipoImpositivo",cadtipo);
+            QString cadbase; cadbase.setNum(bases[t],'f',2);
+            addElementoTextoDom(*doc,DetalleDesglose,"sum1:BaseImponibleOimporteNoSujeto",cadbase);
+            QString cadcuota; cadcuota.setNum(cuotas[t],'f',2);
+            addElementoTextoDom(*doc,DetalleDesglose,"sum1:CuotaRepercutida",cadcuota);
+        } else {
+            addElementoTextoDom(*doc,DetalleDesglose,"sum1:ClaveRegimen","01"); // régimen general
+            addElementoTextoDom(*doc,DetalleDesglose,"sum1:OperacionExenta","E1");
+            //addElementoTextoDom(doc,DetalleDesglose,"sum1:CausaExencion","E1");
+            //addElementoTextoDom(doc,DetalleDesglose,"sum1:TipoImpositivo","0.00");
+            QString cadbase; cadbase.setNum(bases[t],'f',2);
+            addElementoTextoDom(*doc,DetalleDesglose,"sum1:BaseImponibleOimporteNoSujeto",cadbase);
+            // addElementoTextoDom(doc,DetalleDesglose,"sum1:CuotaRepercutida","0.00");
+        }
+        *cuota_total+=cuotas[t];
+        *importe_total+=bases[t]+cuotas[t];
+    }
+    return Desglose;
+}
+
+QDomElement factura::fdesglose_eib(QDomDocument *doc, double *importe_total)
+{
+    QDomElement Desglose = doc->createElement("sum1:Desglose");
+
+    int ultimo=ultimafila();
+    double gen_total=0;
+    for (int veces=0; veces<=ultimo; veces++)
+    {
+        if (ui.tableWidget->item(veces,0)==NULL) continue;
+        double cantidad=(ui.tableWidget->item(veces,2)!=nullptr ? convapunto(ui.tableWidget->item(veces,2)->text()).toDouble() : 0);
+        double precio=(ui.tableWidget->item(veces,3)!=nullptr ? convapunto(ui.tableWidget->item(veces,3)->text()).toDouble() : 0);
+        double descuento=(ui.tableWidget->item(veces,4)!=nullptr ?  convapunto(ui.tableWidget->item(veces,4)->text()).toDouble()/100 : 0);
+        gen_total+=cantidad*precio*(1-descuento);
+    }
+
+    // AGRUPAMOS CONTENIDO DE LA FACTURA Y METEMOS UN BUCLE POR CADA TIPO DE IVA/EXENTO
+    *importe_total=gen_total;
+    QDomElement DetalleDesglose = doc->createElement("sum1:DetalleDesglose");
+    Desglose.appendChild(DetalleDesglose);
+    addElementoTextoDom(*doc,DetalleDesglose,"sum1:ClaveRegimen","01"); // régimen general
+    addElementoTextoDom(*doc,DetalleDesglose,"sum1:OperacionExenta","E5");
+    QString cadnum; cadnum.setNum(gen_total,'f',2);
+    addElementoTextoDom(*doc,DetalleDesglose,"sum1:BaseImponibleOimporteNoSujeto",cadnum);
+
+    return Desglose;
+}
+
+QDomElement factura::fdesglose_eis(QDomDocument *doc, double *importe_total)
+{
+    QDomElement Desglose = doc->createElement("sum1:Desglose");
+
+    int ultimo=ultimafila();
+    double gen_total=0;
+    for (int veces=0; veces<=ultimo; veces++)
+    {
+        if (ui.tableWidget->item(veces,0)==NULL) continue;
+        double cantidad=(ui.tableWidget->item(veces,2)!=nullptr ? convapunto(ui.tableWidget->item(veces,2)->text()).toDouble() : 0);
+        double precio=(ui.tableWidget->item(veces,3)!=nullptr ? convapunto(ui.tableWidget->item(veces,3)->text()).toDouble() : 0);
+        double descuento=(ui.tableWidget->item(veces,4)!=nullptr ?  convapunto(ui.tableWidget->item(veces,4)->text()).toDouble()/100 : 0);
+        gen_total+=cantidad*precio*(1-descuento);
+    }
+
+    // AGRUPAMOS CONTENIDO DE LA FACTURA Y METEMOS UN BUCLE POR CADA TIPO DE IVA/EXENTO
+    *importe_total=gen_total;
+    QDomElement DetalleDesglose = doc->createElement("sum1:DetalleDesglose");
+    Desglose.appendChild(DetalleDesglose);
+    addElementoTextoDom(*doc,DetalleDesglose,"sum1:ClaveRegimen","01"); // régimen general
+    addElementoTextoDom(*doc,DetalleDesglose,"sum1:CalificacionOperacion","N2");
+    QString cadnum; cadnum.setNum(gen_total,'f',2);
+    addElementoTextoDom(*doc,DetalleDesglose,"sum1:BaseImponibleOimporteNoSujeto",cadnum);
+
+    return Desglose;
+}
+
+QDomElement factura::fdesglose_export(QDomDocument *doc, double *importe_total)
+{
+    QDomElement Desglose = doc->createElement("sum1:Desglose");
+
+    int ultimo=ultimafila();
+    double gen_total=0;
+    for (int veces=0; veces<=ultimo; veces++)
+    {
+        if (ui.tableWidget->item(veces,0)==NULL) continue;
+        double cantidad=(ui.tableWidget->item(veces,2)!=nullptr ? convapunto(ui.tableWidget->item(veces,2)->text()).toDouble() : 0);
+        double precio=(ui.tableWidget->item(veces,3)!=nullptr ? convapunto(ui.tableWidget->item(veces,3)->text()).toDouble() : 0);
+        double descuento=(ui.tableWidget->item(veces,4)!=nullptr ?  convapunto(ui.tableWidget->item(veces,4)->text()).toDouble()/100 : 0);
+        gen_total+=cantidad*precio*(1-descuento);
+    }
+
+    // AGRUPAMOS CONTENIDO DE LA FACTURA Y METEMOS UN BUCLE POR CADA TIPO DE IVA/EXENTO
+    *importe_total=gen_total;
+    QDomElement DetalleDesglose = doc->createElement("sum1:DetalleDesglose");
+    Desglose.appendChild(DetalleDesglose);
+    addElementoTextoDom(*doc,DetalleDesglose,"sum1:ClaveRegimen","02"); // Exportación
+    addElementoTextoDom(*doc,DetalleDesglose,"sum1:OperacionExenta","E2");
+    QString cadnum; cadnum.setNum(gen_total,'f',2);
+    addElementoTextoDom(*doc,DetalleDesglose,"sum1:BaseImponibleOimporteNoSujeto",cadnum);
+
+    return Desglose;
+}
+
+QDomElement factura::fdesglose_ext_isp(QDomDocument *doc, double *importe_total)
+{
+    QDomElement Desglose = doc->createElement("sum1:Desglose");
+
+    int ultimo=ultimafila();
+    double gen_total=0;
+    for (int veces=0; veces<=ultimo; veces++)
+    {
+        if (ui.tableWidget->item(veces,0)==NULL) continue;
+        double cantidad=(ui.tableWidget->item(veces,2)!=nullptr ? convapunto(ui.tableWidget->item(veces,2)->text()).toDouble() : 0);
+        double precio=(ui.tableWidget->item(veces,3)!=nullptr ? convapunto(ui.tableWidget->item(veces,3)->text()).toDouble() : 0);
+        double descuento=(ui.tableWidget->item(veces,4)!=nullptr ?  convapunto(ui.tableWidget->item(veces,4)->text()).toDouble()/100 : 0);
+        gen_total+=cantidad*precio*(1-descuento);
+    }
+
+    // AGRUPAMOS CONTENIDO DE LA FACTURA Y METEMOS UN BUCLE POR CADA TIPO DE IVA/EXENTO
+    *importe_total=gen_total;
+    QDomElement DetalleDesglose = doc->createElement("sum1:DetalleDesglose");
+    Desglose.appendChild(DetalleDesglose);
+    addElementoTextoDom(*doc,DetalleDesglose,"sum1:ClaveRegimen","01"); // régimen general
+    addElementoTextoDom(*doc,DetalleDesglose,"sum1:CalificacionOperacion","N2");
+    QString cadnum; cadnum.setNum(gen_total,'f',2);
+    addElementoTextoDom(*doc,DetalleDesglose,"sum1:BaseImponibleOimporteNoSujeto",cadnum);
+
+    return Desglose;
+
+}
 
 
 void factura::cta_anticipo_cambiada()
@@ -2391,51 +2751,6 @@ void factura::fecha_factura_cambiada() {
 void factura::on_vf_consulta_pushButton_clicked()
 {
 
-    // cargamos fichero certificado
-    // QString fich_certificado;
-    // QFileDialog dialogofich(this);
-    // dialogofich.setFileMode(QFileDialog::ExistingFile);
-    // dialogofich.setLabelText ( QFileDialog::LookIn, tr("Directorio:") );
-    // dialogofich.setLabelText ( QFileDialog::FileName, tr("Archivo:") );
-    // dialogofich.setLabelText ( QFileDialog::FileType, tr("Tipo de archivo:") );
-    // dialogofich.setLabelText ( QFileDialog::Accept, tr("Aceptar") );
-    // dialogofich.setLabelText ( QFileDialog::Reject, tr("Cancelar") );
-
-    // QStringList filtros;
-    // filtros << tr("Archivos de certificado usuario (*.pem *.pfx *.p12)");
-    // dialogofich.setNameFilters(filtros);
-    // dialogofich.setDirectory(adapta(dirtrabajo_certificados()));
-    // dialogofich.setWindowTitle(tr("SELECCIÓN DE CERTIFICADO"));
-    // // dialogofich.exec();
-    // //QString fileName = dialogofich.getOpenFileName(this, tr("Seleccionar archivo para importar asientos"),
-    // //                                              dirtrabajo,
-    // //                                              tr("Ficheros de texto (*.txt)"));
-    // QStringList fileNames;
-    // if (dialogofich.exec())
-    // {
-    //     fileNames = dialogofich.selectedFiles();
-    //     if (fileNames.at(0).length()>0)
-    //     {
-    //         // QString cadfich=cadfich.fromLocal8Bit(fileNames.at(0));
-    //         fich_certificado=fileNames.at(0);
-    //     }
-    // }
-    // else return;
-
-
-    // pidenombre *p = new pidenombre();
-    // p->tipo_password();
-    // p->asignaetiqueta(tr("CLAVE DEL CERTIFICADO:"));
-    // p->asignanombreventana(tr("PETICIÓN DE CLAVE"));
-    // int cod=p->exec();
-    // if (!(cod==QDialog::Accepted))
-    // {
-    //     delete p;
-    //     return;
-    // }
-    // QString clave=p->contenido();
-    // delete p;
-
     QString fich_certificado, clave;
     get_certificado(&fich_certificado,&clave);
 
@@ -2510,9 +2825,8 @@ void factura::on_vf_consulta_pushButton_clicked()
     // procesamos el dom de las respuestas
     // *****
     respuesta_vf *r = new respuesta_vf();
-    r->pasa_dom(doc);
+    r->pasa_dom_consulta_facts(doc);
     r->exec();
-    if (!r->es_correcto()) return;
     delete(r);
 
 }
@@ -2520,18 +2834,276 @@ void factura::on_vf_consulta_pushButton_clicked()
 
 void factura::on_vf_pruebas_pushButton_clicked()
 {
+    QString cadnum;
+    if (ui.facturalineEdit->text().isEmpty())
+    {
+        //qlonglong numero=basedatos::instancia()->proxnum_serie(ui.serielineEdit->text());
+        qlonglong numero=basedatos::instancia()->proxnum_serie_no_incrementa(ui.serielineEdit->text());
+        cadnum.setNum(numero);
+    }
 
+    QString huella, huella_anterior;
+    if (verifactu) {
+        // intentamos enviar la factura
+        // si no hay éxito terminamos la transacción - mensaje de error y vuelta a la pantalla de edición
+        if (!envia_verifactu(ui.serielineEdit->text(),cadnum,&huella,&huella_anterior)) {
+            QMessageBox::warning(this,tr("Envío Veri*factu"),tr("ERROR en envío Veri*factu"));
+            basedatos::instancia()->desbloquea_y_commit();
+            return;
+        }
+        QFile fichero(adapta(nombrefichero_respuesta));
+        if (!fichero.exists())
+        {
+            QMessageBox::warning( this, tr("VERI*FACTU"),
+                                 tr("ERROR: La conexión no ha devuelto fichero de respuesta"));
+            return;
+
+        }
+        // QUEDA ANALIZAR EL FICHERO DE RESPUESTA
+        QDomDocument doc("RESPUESTA");
+        if ( !fichero.open( QIODevice::ReadOnly ) )
+        {
+            QMessageBox::warning( this, tr("VERI*FACTU"),
+                                 tr("ERROR: La conexión no ha devuelto respuesta"));
+            return;
+        }
+        if (!doc.setContent(&fichero)) {
+            fichero.close();
+            QMessageBox::warning( this, tr("VERI*FACTU"),
+                                 tr("ERROR: La conexión no ha devuelto respuesta"));
+            return;
+        }
+        fichero.close();
+
+        // procesamos el dom de las respuestas
+        // *****
+        respuesta_vf *r = new respuesta_vf();
+        r->pasa_dom(doc);
+        r->exec();
+        if (!r->es_correcto() && ! r->es_aceptado_con_errores()) {delete(r); return;}
+        // if (r->es_aceptado_con_errores()) aceptadoConErrores=true;
+
+        delete(r);
+       }
 }
 
 
 void factura::on_subsanacion_pushButton_clicked()
 {
+    QString fich_certificado, clave;
+    get_certificado(&fich_certificado,&clave);
+
+    QProgressDialog progress(tr("Enviando información ..."), 0, 0, 0, this);
+    progress.show();
+    QApplication::processEvents();
+
+    QString nombrefichero;
+    nombrefichero=dirtrabajo_verifactu();
+    nombrefichero.append(QDir::separator());
+    nombrefichero.append(tr("subsana_"));
+    nombrefichero+=ui.serielineEdit->text();
+    nombrefichero+="-";
+    nombrefichero+=ui.facturalineEdit->text();
+    QDate fecha;
+    nombrefichero+="-";
+    nombrefichero+=fecha.currentDate().toString("yyMMdd");
+    nombrefichero+="-";
+    QTime hora;
+    hora=hora.currentTime();
+    nombrefichero+=hora.toString("hhmm");
+    nombrefichero+=".xml";
+
+    // GENERAMOS xml
+    QString huella, huella_prev;
+    basedatos::instancia()->select_huellas_doc(ui.serielineEdit->text(), ui.facturalineEdit->text(), &huella, &huella_prev);
+    if (huella_prev.isEmpty()) huella_prev=basedatos::instancia()->ultima_huella();
+    if (!gen_fich_verifactu(nombrefichero,ui.serielineEdit->text(),ui.facturalineEdit->text(),&huella,&huella_prev,true,true))
+    {
+        progress.close();
+        QMessageBox::warning( this, tr("FICHERO VERIFACTU"),
+                             tr("ERROR: No se ha podido generar el archivo XML"));
+        return;
+    }
+    // *ghuella=huella;
+    // *huella_anterior=huella_prev;
+    // si huella ha cambiado, la deberíamos de grabar
+    QString wurl;
+    QSqlQuery q = basedatos::instancia()->config_sif_verifactu();
+    if (q.isActive())
+        if (q.next()) wurl=q.value(8).toString();
+
+    aeat_soap validation;
+    validation.process(nombrefichero,wurl,fich_certificado,clave);
+    bool processed=validation.processed();
+    if (!processed) {
+        QMessageBox::warning( this, tr("FICHERO SII"),
+                             tr("ERROR: Problemas con la conexión"));
+        return;
+    }
+
+    // -------------------------------------
+    QString xml=validation.response().toString();
+    nombrefichero_respuesta=nombrefichero;
+    nombrefichero_respuesta=nombrefichero_respuesta.remove(".xml");
+    nombrefichero_respuesta+="_RESPUESTA.xml";
+    QFile fichero( adapta(nombrefichero_respuesta)  );
+
+    if ( !fichero.open( QIODevice::WriteOnly ) ) return;
+
+    QTextStream stream( &fichero );
+    stream.setEncoding(QStringConverter::Utf8);
+
+    stream << xml;
+    fichero.close();
+
+    // QUEDA ANALIZAR EL FICHERO DE RESPUESTA
+    QDomDocument doc("RESPUESTA");
+    if ( !fichero.open( QIODevice::ReadOnly ) )
+    {
+        QMessageBox::warning( this, tr("VERI*FACTU"),
+                             tr("ERROR: La conexión no ha devuelto respuesta"));
+        return;
+    }
+    if (!doc.setContent(&fichero)) {
+        fichero.close();
+        QMessageBox::warning( this, tr("VERI*FACTU"),
+                             tr("ERROR: La conexión no ha devuelto respuesta"));
+        return;
+    }
+    fichero.close();
+
+    // procesamos el dom de las respuestas
+    // *****
+    respuesta_vf *r = new respuesta_vf();
+    r->pasa_dom(doc);
+    r->exec();
+    if (!r->es_correcto() && ! r->es_aceptado_con_errores()) return;
+    if (r->es_aceptado_con_errores()) aceptadoConErrores=true;
+    if (r->es_correcto() || r->es_aceptado_con_errores()) { // deberíamos de grabar la huella
+        basedatos::instancia()->update_huella_doc(ui.serielineEdit->text(), ui.facturalineEdit->text(), huella);        
+    }
+    if (r->es_correcto()) {
+        // quitamos marca de aceptado con errores
+        basedatos::instancia()->quita_vf_aceptada_errores(ui.serielineEdit->text(), ui.facturalineEdit->text());
+    }
+    delete(r);
 
 }
 
 
 void factura::on_vf_anulacion_pushButton_clicked()
 {
+    if (basedatos::instancia()->doc_contabilizado(ui.serielineEdit->text(),ui.facturalineEdit->text())) {
+        QMessageBox::warning( this, tr("ANULAR FACTURA"),tr("No se puede anular una factura contabilizada"));
+        return;
+    }
 
+    if (!(QMessageBox::question(this,tr("ANULAR FACTURA"),tr("ATENCIÓN: Para la anulación se debe de tratar de una operación incorrecta\n"
+                                                               "(caso excluido de poder emitir una factura rectificativa según Reglamento),\n"
+                                                               "por ejemplo, factura expedida por error cuando no ha habido venta.\n"
+                                                                "¿ Deseas continuar ?"))==QMessageBox::Yes)) return;
+
+
+    QString fich_certificado, clave;
+    get_certificado(&fich_certificado,&clave);
+
+    QProgressDialog progress(tr("Enviando información ..."), 0, 0, 0, this);
+    progress.show();
+    QApplication::processEvents();
+
+    QString nombrefichero;
+    nombrefichero=dirtrabajo_verifactu();
+    nombrefichero.append(QDir::separator());
+    nombrefichero.append(tr("anula_"));
+    nombrefichero+=ui.serielineEdit->text();
+    nombrefichero+="-";
+    nombrefichero+=ui.facturalineEdit->text();
+    QDate fecha;
+    nombrefichero+="-";
+    nombrefichero+=fecha.currentDate().toString("yyMMdd");
+    nombrefichero+="-";
+    QTime hora;
+    hora=hora.currentTime();
+    nombrefichero+=hora.toString("hhmm");
+    nombrefichero+=".xml";
+    QString nueva_huella;
+    if (!xml_verifactu_anulacion(nombrefichero,ui.serielineEdit->text(),ui.facturalineEdit->text(),&nueva_huella))
+    {
+        progress.close();
+        QMessageBox::warning( this, tr("FICHERO VERIFACTU"),
+                             tr("ERROR: No se ha podido generar el archivo XML"));
+        return;
+    }
+    QString wurl;
+    QSqlQuery q = basedatos::instancia()->config_sif_verifactu();
+    if (q.isActive())
+        if (q.next()) wurl=q.value(8).toString();
+
+    aeat_soap validation;
+    validation.process(nombrefichero,wurl,fich_certificado,clave);
+    bool processed=validation.processed();
+    if (!processed) {
+        QMessageBox::warning( this, tr("FICHERO VERIFACTU"),
+                             tr("ERROR: Problemas con la conexión"));
+        return;
+    }
+
+    // -------------------------------------
+    QString xml=validation.response().toString();
+    nombrefichero_respuesta=nombrefichero;
+    nombrefichero_respuesta=nombrefichero_respuesta.remove(".xml");
+    nombrefichero_respuesta+="_RESPUESTA.xml";
+    QFile fichero( adapta(nombrefichero_respuesta)  );
+
+    if ( !fichero.open( QIODevice::WriteOnly ) ) return;
+
+    QTextStream stream( &fichero );
+    stream.setEncoding(QStringConverter::Utf8);
+
+    stream << xml;
+    fichero.close();
+
+    // QUEDA ANALIZAR EL FICHERO DE RESPUESTA
+    QDomDocument doc("RESPUESTA");
+    if ( !fichero.open( QIODevice::ReadOnly ) )
+    {
+        QMessageBox::warning( this, tr("VERI*FACTU"),
+                             tr("ERROR: La conexión no ha devuelto respuesta"));
+        return;
+    }
+    if (!doc.setContent(&fichero)) {
+        fichero.close();
+        QMessageBox::warning( this, tr("VERI*FACTU"),
+                             tr("ERROR: La conexión no ha devuelto respuesta"));
+        return;
+    }
+    fichero.close();
+
+    // procesamos el dom de las respuestas
+    // *****
+    respuesta_vf *r = new respuesta_vf();
+    r->pasa_dom(doc);
+    r->exec();
+    if (!r->es_correcto() && ! r->es_aceptado_con_errores()) return;
+    if (r->es_aceptado_con_errores()) {
+        aceptadoConErrores=true;
+    }
+    if (r->es_correcto() || r->es_aceptado_con_errores()) { // deberíamos de grabar la huella
+        basedatos::instancia()->update_huella_doc(ui.serielineEdit->text(), ui.facturalineEdit->text(), nueva_huella);
+        // actualizar anulada
+        basedatos::instancia()->vf_marca_anulada(ui.serielineEdit->text(), ui.facturalineEdit->text());
+    }
+    delete(r);
+
+}
+
+
+void factura::on_serie_rectificada_comboBox_currentIndexChanged(int index)
+{
+    // cargamos los número existentes de facturas correspondientes a esa serie
+    ui.num_Rectificada_comboBox->clear();
+    ui.num_Rectificada_comboBox->addItem("- -");
+    // QStringList basedatos::lista_num_serie_fac(QString serie)
+    ui.num_Rectificada_comboBox->addItems(basedatos::instancia()->lista_num_serie_fac(ui.serie_rectificada_comboBox->itemText(index)));
 }
 

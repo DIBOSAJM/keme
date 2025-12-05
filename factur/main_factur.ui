@@ -47,6 +47,8 @@
     </property>
     <addaction name="actionSeries"/>
     <addaction name="actionTipos_documento"/>
+    <addaction name="actionEjercicios"/>
+    <addaction name="actionDatos_empresa"/>
     <addaction name="actionConexion"/>
     <addaction name="actionSalir"/>
    </widget>
@@ -202,6 +204,16 @@
   <action name="actionContenido_Email_Facturas">
    <property name="text">
     <string>Contenido Email Facturas</string>
+   </property>
+  </action>
+  <action name="actionEjercicios">
+   <property name="text">
+    <string>Ejercicios</string>
+   </property>
+  </action>
+  <action name="actionDatos_empresa">
+   <property name="text">
+    <string>Datos empresa</string>
    </property>
   </action>
  </widget>

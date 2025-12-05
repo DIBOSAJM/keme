@@ -72,6 +72,10 @@ class main_factur : public QMainWindow {
 
                   void on_actionContenido_Email_Facturas_triggered();
 
+                  void on_actionEjercicios_triggered();
+
+                  void on_actionDatos_empresa_triggered();
+
               public:
                   bool oknosalir();
 

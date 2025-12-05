@@ -68,7 +68,7 @@ QVariant FacSqlModel::data(const QModelIndex &index, int role) const
                 // fecha
                 return value.toDate().toString("dd-MM-yyyy");
                }
-            if (index.column() == 5 || index.column() == 6)
+            if (index.column() == 5 || index.column() == 6 || index.column() == 13 || index.column() == 14)
                {
                     if (value.toBool())
                         return QString("*");
@@ -79,7 +79,7 @@ QVariant FacSqlModel::data(const QModelIndex &index, int role) const
                 // número de apunte en diario
                 if (value.toInt()==0) return QString();
                }
-            if (index.column() >= 10)
+            if (index.column() >= 10 && index.column()<=12)
             {
                 // número de apunte en diario
                 if (value.toDouble()<0.0001 && value.toDouble()>-0.0001) return QString();
@@ -262,10 +262,16 @@ void facturas::boton_refrescar()
 
 void facturas::editafactura()
 {
+
+    if (basedatos::instancia()->doc_verifactu(serie(), numero())) {
+        QMessageBox::warning( this, tr("Editar Documento"),tr("ERROR: "
+                                                          "El documento seleccionado no es editable"));
+        return;
+    }
     if (basedatos::instancia()->doc_cerrado(serie(),
                             numero()))
       {
-          QMessageBox::warning( this, tr("Contabilizar"),tr("ERROR: "
+          QMessageBox::warning( this, tr("Editar Documento"),tr("ERROR: "
                                "El documento seleccionado está cerrado"));
           return;
 
@@ -306,7 +312,12 @@ void facturas::editafactura()
                          q.value(21).toString(),
                               q.value(22).toString(),
                               q.value(23).toString(),
-                              q.value(24).toString());
+                              q.value(24).toString(),
+                              q.value(26).toBool(),
+                              q.value(27).toString(),
+                              q.value(28).toString(),
+                              q.value(29).toString()
+                              );
          f->exec();
          QString qserie, qnumero;
          if (f->imprime_informe(&qserie,&qnumero)) {
@@ -1180,6 +1191,12 @@ void facturas::contabilizar()
 {
 
     // está ya contabilizada ??
+    if (basedatos::instancia()->vf_anulada(serie(),numero())) {
+        QMessageBox::warning( this, tr("Contabilizar"),tr("ERROR: "
+                                                          "No se puede contabilizar una factura anulada"));
+        return;
+    }
+
     if (basedatos::instancia()->doc_contabilizado(serie(),numero()))
     {
         QMessageBox::warning( this, tr("Contabilizar"),tr("ERROR: "
@@ -1209,6 +1226,7 @@ void facturas::contabilizartodas()
       QString qnumero=model->data(model->index(veces,1),Qt::DisplayRole).toString();
       if (!basedatos::instancia()->doc_contabilizable(qserie,
                               qnumero)) continue;
+      if (basedatos::instancia()->vf_anulada(serie(),numero())) continue;
       if (basedatos::instancia()->doc_contabilizado(qserie,qnumero)) continue;
       contabilizar_factura(qserie, qnumero, usuario, true);
      }
@@ -1217,6 +1235,12 @@ void facturas::contabilizartodas()
 
 void facturas::borralinea()
 {
+    if (basedatos::instancia()->doc_verifactu(serie(), numero())) {
+        QMessageBox::warning( this, tr("Borrar registro"),tr("ERROR: "
+                                                            "El documento seleccionado no se puede borrar"));
+        return;
+    }
+
     // está contabilizada ??
     if (basedatos::instancia()->doc_contabilizado(serie(),numero()))
     {
@@ -1515,7 +1539,11 @@ void facturas::consulta()
                          q.value(21).toString(),
                               q.value(22).toString(),
                               q.value(23).toString(),
-                              q.value(24).toString()
+                              q.value(24).toString(),
+                              q.value(26).toBool(),
+                              q.value(27).toString(),
+                              q.value(28).toString(),
+                              q.value(29).toString()
                               );
          f->activa_consulta();
          f->exec();

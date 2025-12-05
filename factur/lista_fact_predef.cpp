@@ -220,6 +220,7 @@ void lista_fact_predef::eddoc()
      if (q.next())
       {
         factura *f = new factura;
+        f->quita_docs_vf();
         QString descrip, serie;
         bool contabilizable, con_ret, con_re;
         QString tipo_ret;

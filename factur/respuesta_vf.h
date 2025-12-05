@@ -21,11 +21,13 @@ public:
     int filas();
     QString contenido_celda(int fila, int columna);
     bool es_correcto();
+    bool es_aceptado_con_errores();
 
 private:
     Ui::respuesta_vf *ui;
     QDomDocument doc;
     bool correcto=false;
+    bool aceptadoConErrores=false;
 private slots:
     void verxml();
     void copiar();

@@ -46,6 +46,8 @@
 #include "pidecuenta.h"
 #include "config_verifactu.h"
 #include "contenido_mail_factur.h"
+#include "ejercicios.h"
+#include "editconfig.h"
 
 #include <QSplashScreen>
 #include <QMessageBox>
@@ -608,5 +610,21 @@ void main_factur::on_actionContenido_Email_Facturas_triggered()
     Contenido_mail_factur *c = new Contenido_mail_factur;
     c->exec();
     delete(c);
+}
+
+
+void main_factur::on_actionEjercicios_triggered()
+{
+    ejercicios *e = new ejercicios();
+    e->exec();
+    delete(e);
+}
+
+
+void main_factur::on_actionDatos_empresa_triggered()
+{
+    editconfig *e = new editconfig();
+    e->exec();
+    delete(e);
 }
 

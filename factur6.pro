@@ -104,7 +104,15 @@ HEADERS += factur/main_factur.h \
     cambiacuentapase.h \
     network_connections.h \
     mensaje_url.h \
-    busca_cta_diario.h
+    busca_cta_diario.h \
+    ejercicios.h \
+    nuevoejercicio.h \
+    editafechacierre.h \
+    numeracion.h \
+    periodos.h \
+    editconfig.h \
+    edtabla.h \
+    actividad_edicion.h
 
 SOURCES += factur/amain.cpp \
     factur/config_verifactu.cpp \
@@ -187,8 +195,15 @@ SOURCES += factur/amain.cpp \
     cambiacuentapase.cpp \
     network_connections.cpp \
     mensaje_url.cpp \
-    busca_cta_diario.cpp
-
+    busca_cta_diario.cpp \
+    ejercicios.cpp \
+    nuevoejercicio.cpp \
+    editafechacierre.cpp \
+    numeracion.cpp \
+    periodos.cpp \
+    editconfig.cpp \
+    edtabla.cpp \
+    actividad_edicion.cpp
 
 FORMS += factur/main_factur.ui \
     factur/config_verifactu.ui \
@@ -263,4 +278,13 @@ FORMS += factur/main_factur.ui \
     cambiacuentapase.ui \
     pide_info_unif.ui \
     mensaje_url.ui \
-    busca_cta_diario.ui
+    busca_cta_diario.ui \
+    ejercicios.ui \
+    nuevoejercicio.ui \
+    editafechacierre.ui \
+    numeracion.ui \
+    periodos.ui \
+    editconfig.ui \
+    edtabla.ui \
+    actividad_edicion.ui
+

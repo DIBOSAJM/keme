@@ -364,6 +364,62 @@
               </spacer>
              </item>
              <item>
+              <widget class="QLabel" name="serie_rectificada_label">
+               <property name="text">
+                <string>Serie Rectificada:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="serie_rectificada_comboBox"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="num_rectificada_label">
+               <property name="text">
+                <string>Núm. Rectificada:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="num_Rectificada_comboBox"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="tipo_rect_label">
+               <property name="text">
+                <string>Tipo Rect.</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="tipo_Rectif_comboBox">
+               <item>
+                <property name="text">
+                 <string>R1</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>R2</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>R3</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>R4</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>R5</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
               <widget class="QLabel" name="cta_anticipos_label">
                <property name="text">
                 <string>Cuenta Anticipos:</string>
@@ -863,7 +919,7 @@
        <item>
         <widget class="QPushButton" name="vf_consulta_pushButton">
          <property name="text">
-          <string>C&amp;onsulta</string>
+          <string>VF C&amp;onsulta</string>
          </property>
          <property name="icon">
           <iconset resource="../keme.qrc">
@@ -888,7 +944,7 @@
        <item>
         <widget class="QPushButton" name="subsanacion_pushButton">
          <property name="text">
-          <string>&amp;Subsanación</string>
+          <string>VF &amp;Subsanación</string>
          </property>
          <property name="icon">
           <iconset resource="../keme.qrc">

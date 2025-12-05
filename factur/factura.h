@@ -23,6 +23,7 @@
 #define FACTURA_H
 
 #include <QtGui>
+#include <QDomElement>
 #include "ui_factura.h"
 
 
@@ -31,6 +32,7 @@ class factura : public QDialog {
     Q_OBJECT
       public:
                 factura();
+                void quita_docs_vf();
                 void pasa_cabecera_doc(QString serie,
                                        QString numero,
                                        QString cuenta,
@@ -47,7 +49,8 @@ class factura : public QDialog {
                                        QString pie2,
                                        QString anticipos=""
                                        , QString externo="", QString concepto_sii="",
-                                       QString c_a_rol1="", QString c_a_rol2="", QString c_a_rol3="");
+                                       QString c_a_rol1="", QString c_a_rol2="", QString c_a_rol3="",
+                                       bool aceptada_errores=false, QString serie_rect="", QString num_rect="", QString tipo_rectificativa="");
                 void solo_cabecera_doc(QString serie,
                                        QString numero,
                                        QString cuenta,
@@ -93,6 +96,7 @@ class factura : public QDialog {
                 int tipo_operacion;
                 bool contabilizable;
                 bool verifactu=false;
+                bool rectificativa=false;
                 bool coma,decimales;
                 bool predefinida;
                 double gsuplidos=0;
@@ -111,15 +115,22 @@ class factura : public QDialog {
                 QStringList lista_suplidos;
                 bool imprimir;
                 QString nombrefichero_respuesta;
+                bool aceptadoConErrores=false;
                 void fijatipoiva(QString codigo, double tporuno);
                 void fijatipore(QString codigo, double tporuno);
                 void guarda_predef();
                 void esconde_cta_anticipo();
                 void muestra_cta_anticipo();
-                bool envia_verifactu(QString serie, QString numero, QString *ghuella, QString *huella_anterior);
-                bool gen_fich_verifactu(QString nombrefich, QString serie, QString numero, QString *huella, QString *huella_anterior);
+                bool envia_verifactu(QString serie, QString numero, QString *ghuella, QString *huella_anterior, bool pruebas=false);
+                bool gen_fich_verifactu(QString nombrefich, QString serie, QString numero, QString *huella,
+                                        QString *huella_anterior, bool ya_existente=false, bool subsanacion=false);
                 bool xml_verifactu_consulta(QString nombrefich, QString serie, QString numero);
-
+                bool xml_verifactu_anulacion(QString nombrefich, QString serie, QString numero, QString *nueva_huella);
+                QDomElement fdesglose_interior(QDomDocument *doc, double *cuota_total, double *importe_total);
+                QDomElement fdesglose_eib(QDomDocument *doc, double *importe_total);
+                QDomElement fdesglose_eis(QDomDocument *doc, double *importe_total);
+                QDomElement fdesglose_export(QDomDocument *doc, double *importe_total);
+                QDomElement fdesglose_ext_isp(QDomDocument *doc, double *importe_total);
 
       private slots:
                 void actudoc();
@@ -164,6 +175,7 @@ class factura : public QDialog {
                 void on_vf_pruebas_pushButton_clicked();
                 void on_subsanacion_pushButton_clicked();
                 void on_vf_anulacion_pushButton_clicked();
+                void on_serie_rectificada_comboBox_currentIndexChanged(int index);
 };
 
 

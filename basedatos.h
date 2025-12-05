@@ -2952,6 +2952,8 @@ class basedatos {
 
         QStringList listacodseries();
 
+        QStringList lista_num_serie_fac(QString serie);
+
         QString imagendoc(QString codigo);
 
         QString logo_empresa();
@@ -3006,6 +3008,8 @@ class basedatos {
                             QString *fe_datos_adic, QString *retencion, QString *clave_donacion, QString *comunidad_autonoma,
                             bool *donacion_especie, bool *donacion_2ejer, double *porcent_deduc_autonomia,
                             QString *imagen);
+
+        bool es_vf_tipo_doc(QString codigo);
 
         bool es_euro_tipo_doc(QString codigo);
 
@@ -3106,24 +3110,25 @@ class basedatos {
 
 
         int nuevacabecerafactura(QString serie,
-                                            QString numero,
-                                            QString cuenta, QDate fecha_asiento,
-                                            QDate fecha_fac,
-                                            QDate fecha_op,
-                                            bool contabilizado,
-                                            bool contabilizable,
-                                            bool con_ret,
-                                            bool re,
-                                            QString tipo_ret,
-                                            QString retencion,
-                                            QString tipo_doc,
-                                            QString notas,
-                                            QString pie1,
-                                            QString pie2,
-                                            QString pase_diario_cta,
-                                            QString cta_anticipos, QString externo="", QString concepto_sii="",
-                                            QString c_a_rol1="", QString c_a_rol2="", QString c_a_rol3="", QString suplidos="0", QString total_factura="0",
-                                            QString huella="", QString huella_anterior="");
+                                 QString numero,
+                                 QString cuenta, QDate fecha_asiento,
+                                 QDate fecha_fac,
+                                 QDate fecha_op,
+                                 bool contabilizado,
+                                 bool contabilizable,
+                                 bool con_ret,
+                                 bool re,
+                                 QString tipo_ret,
+                                 QString retencion,
+                                 QString tipo_doc,
+                                 QString notas,
+                                 QString pie1,
+                                 QString pie2,
+                                 QString pase_diario_cta,
+                                 QString cta_anticipos, QString externo="", QString concepto_sii="",
+                                 QString c_a_rol1="", QString c_a_rol2="", QString c_a_rol3="", QString suplidos="0", QString total_factura="0",
+                                 QString huella="", QString huella_anterior="", bool aceptadoConErrores=false, QString serie_rect="",
+                                 QString num_rect="", QString tipo_rectificativa="");
 
         int modificacabecerafactura(QString serie,
                                             QString numero,
@@ -3143,7 +3148,8 @@ class basedatos {
                                             QString pase_diario_cta,
                                             QString cta_anticipos, QString externo="", QString concepto_sii="",
                                             QString c_a_rol1="", QString c_a_rol2="", QString c_a_rol3="",
-                                            QString suplidos="", QString total_factura="");
+                                            QString suplidos="", QString total_factura="", QString serie_rect="",
+                                            QString num_rect="", QString tipo_rectificativa="");
 
 
         void modificacabecerafactura_predef(QString codigo,
@@ -3161,6 +3167,10 @@ class basedatos {
 
         QSqlQuery select_cabecera_doc (QString serie, QString numero);
 
+        void select_huellas_doc(QString serie, QString numero, QString *huella, QString *huella_anterior);
+
+        void update_huella_doc(QString serie, QString numero, QString huella);
+
         QString fichreport(QString tipo_doc);
 
         bool existe_fact(QString serie,
@@ -3170,6 +3180,13 @@ class basedatos {
 
         bool doc_cerrado(QString serie,
                          QString numero);
+
+        bool vf_anulada(QString serie,
+                         QString numero);
+
+        bool doc_verifactu(QString serie,
+                         QString numero);
+
 
         bool doc_contabilizado(QString serie,
                                       QString numero);
@@ -3227,13 +3244,24 @@ class basedatos {
         int clave_doc_fac(QString serie,
                           QString numero);
 
+        void quita_vf_aceptada_errores(QString serie, QString numero);
+
+        void vf_marca_anulada(QString serie, QString numero);
+
         qlonglong proxnum_serie(QString serie);
 
         qlonglong proxnum_serie_no_incrementa(QString serie);
 
         QString serie_ultima_huella(QString serie);
 
+        bool hay_huellas_series();
+
         QSqlQuery fecha_serie_numero_de_huella(QString huella);
+
+        QString ultima_huella();
+        QString ultima_huella_pruebas();
+        void update_ultima_huella(QString huella);
+        void update_ultima_huella_pr(QString huella);
 
         void incrementa_num_serie(QString serie);
 
