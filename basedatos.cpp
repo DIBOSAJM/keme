@@ -761,7 +761,7 @@ void basedatos::solotablas(bool segunda, QString qbase)
      cadena+="tipo_proveedor varchar(40) default '',";
      cadena+="homologacion varchar(40) default '',";
      cadena+="actividad varchar(40) default '',";
-     cadena+="fecha_homologacion date default '',";
+     cadena+="fecha_homologacion date,";
      if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE ) cadena += "proveedor_activo bool default 0,";
         else cadena += "proveedor_activo bool default false,";
      if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE ) cadena += "acceso_lopd bool default 0,";
