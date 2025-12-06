@@ -2193,6 +2193,8 @@ void MainWindow::qpreferencias()
      filtroactivo=condicionesfiltrodefecto();
      punterodiario->pasafiltroedlin(filtroactivo);
      if (filtroactivo.length()>0) cadena=" WHERE "+filtroactivo+" ";
+     if (filtroactivo.isEmpty()) cadena="where contabilizado ";
+       else cadena+=" and contabilizado ";
      //  falta pasar cadena a lineEdit del filtro
      cadena+=ordenarpor();
      punterodiario->pasafiltro(cadena,estilonumerico,sindecimales);
@@ -4500,6 +4502,7 @@ void MainWindow::impridiario()
 
    imprimediario *laimpri=new imprimediario();
    laimpri->pasafiltro( filtroactivo );
+   laimpri->pasafiltrob(filtroactivob);
    laimpri->pasafiltro_asiento(filtro2);
    laimpri->exec();
    delete(laimpri);

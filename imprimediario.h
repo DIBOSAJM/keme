@@ -32,11 +32,12 @@ class imprimediario : public QDialog {
       public:
                 imprimediario();
                 void pasafiltro( QString qfiltro );
+                void pasafiltrob (QString qfiltrob);
                 void pasafiltro_asiento(QString zfiltro);
       private:
                 Ui::imprimediario ui;
                 bool comadecimal,decimales;
-                QString filtro;
+                QString filtro, filtrob;
                 QString guardafiltro;
                 QString filtro_asiento;
                 void generalatexdiario();

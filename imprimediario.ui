@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>712</width>
-    <height>206</height>
+    <height>218</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -106,11 +106,29 @@
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="imprime_asiento_checkBox">
-     <property name="text">
-      <string>Imprime asiento actual</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QCheckBox" name="imprime_asiento_checkBox">
+       <property name="text">
+        <string>Imprime asiento actual</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="noBorrador_checkBox">
+       <property name="text">
+        <string>Excluir Borrador</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="solo_borrador_checkBox">
+       <property name="text">
+        <string>Sólo borrador</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QProgressBar" name="progressBar">
@@ -118,7 +136,7 @@
       <number>0</number>
      </property>
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -142,10 +160,10 @@
      <item>
       <spacer>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
+        <enum>QSizePolicy::Policy::Expanding</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>

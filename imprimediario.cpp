@@ -160,6 +160,13 @@ QString imprimediario::qfiltro()
         pasafiltro+=ui.finaldateEdit->date().toString("yyyy-MM-dd");
         pasafiltro+="'";
       }
+    if (ui.solo_borrador_checkBox->isChecked()) {
+          pasafiltro=filtrob;
+        pasafiltro+=" and not contabilizado";
+    }
+    if (ui.noBorrador_checkBox->isChecked()) {
+        pasafiltro+=" and contabilizado";
+    }
    return pasafiltro;
 }
 
@@ -573,6 +580,11 @@ void imprimediario::pasafiltro( QString qfiltro )
 {
   filtro=qfiltro;
   guardafiltro=qfiltro;
+}
+
+void imprimediario::pasafiltrob(QString qfiltrob)
+{
+    filtrob=qfiltrob;
 }
 
 void imprimediario::pasafiltro_asiento(QString zfiltro) {
