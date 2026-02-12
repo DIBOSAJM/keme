@@ -410,6 +410,7 @@
   <tabstop>fechadateEdit_2</tabstop>
   <tabstop>contabilizar_pushButton</tabstop>
   <tabstop>renum_borrador_pushButton</tabstop>
+  <tabstop>borrador_tableView</tabstop>
   <tabstop>iniciopushButton</tabstop>
   <tabstop>finpushButton</tabstop>
   <tabstop>fecha_pushButton</tabstop>
@@ -417,7 +418,6 @@
   <tabstop>cuenta_pushButton</tabstop>
   <tabstop>iva_pushButton</tabstop>
   <tabstop>ret_pushButton</tabstop>
-  <tabstop>borrador_tableView</tabstop>
  </tabstops>
  <resources>
   <include location="keme.qrc"/>

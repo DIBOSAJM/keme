@@ -139,6 +139,8 @@
      </property>
      <addaction name="actionEditar_Filtro"/>
      <addaction name="actionFiltro_inicial"/>
+     <addaction name="actionEjercicio_Actual"/>
+     <addaction name="actionEjercicio_Previo"/>
     </widget>
     <widget class="QMenu" name="menuPortapapeles">
      <property name="title">
@@ -425,6 +427,8 @@
    <addaction name="separator"/>
    <addaction name="actionImprimir_Diario"/>
    <addaction name="actionEditar_Filtro"/>
+   <addaction name="actionEjercicio_Actual"/>
+   <addaction name="actionEjercicio_Previo"/>
    <addaction name="actionPreferencias"/>
    <addaction name="separator"/>
    <addaction name="actionVencimientos_a_partir_diario"/>
@@ -1451,6 +1455,30 @@
    </property>
    <property name="text">
     <string>Cambiar Acti&amp;vidad a asiento</string>
+   </property>
+  </action>
+  <action name="actionEjercicio_Actual">
+   <property name="icon">
+    <iconset resource="keme.qrc">
+     <normaloff>:/iconos/graf/calendar_check_n.png</normaloff>:/iconos/graf/calendar_check_n.png</iconset>
+   </property>
+   <property name="text">
+    <string>Ejercicio &amp;Actual</string>
+   </property>
+   <property name="toolTip">
+    <string>Filtrar por ejercicio actual</string>
+   </property>
+  </action>
+  <action name="actionEjercicio_Previo">
+   <property name="icon">
+    <iconset resource="keme.qrc">
+     <normaloff>:/iconos/graf/calendar_check_n-1.png</normaloff>:/iconos/graf/calendar_check_n-1.png</iconset>
+   </property>
+   <property name="text">
+    <string>Ejercicio &amp;Previo</string>
+   </property>
+   <property name="toolTip">
+    <string>Filtrar por ejercicio previo</string>
    </property>
   </action>
  </widget>

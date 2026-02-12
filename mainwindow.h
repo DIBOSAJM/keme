@@ -340,6 +340,8 @@ private slots:
     void on_actionVerificar_cuadre_analitica_tabla_triggered();
     void on_actionActividades_economicas_triggered();
     void on_actionCambiar_Actividad_a_apunte_triggered();
+    void on_actionEjercicio_Actual_triggered();
+    void on_actionEjercicio_Previo_triggered();
 };
 
 #endif // MAINWINDOW_H

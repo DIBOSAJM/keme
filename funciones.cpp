@@ -8622,6 +8622,94 @@ void busca_info_nif(QString nif, QString *qexterno, QString *qcuenta_proveedor, 
 }
 
 
+
+void busca_info_nif_rep(QString nif, QString *qexterno, QString *qcuenta_cliente, QString *qcuenta_ingreso,
+                    QString *qcuenta_iva_rep) {
+    QString externo=*qexterno;
+    QString cuenta_cliente=*qcuenta_cliente;
+    QString cuenta_ingreso=*qcuenta_ingreso;
+    QString cuenta_iva_rep=*qcuenta_iva_rep;
+
+    if (!nif.isEmpty()) {
+       externo=basedatos::instancia()->select_codigo_cif_externo(nif);
+       if (externo.isEmpty()) cuenta_cliente=basedatos::instancia()->selectCuentaCifDatossubcuenta(nif);
+       if (!externo.isEmpty()) {
+           // buscamos apunte con externo y cuenta que empiece por código ingreso
+           QString cad="select cuenta,fecha from diario where externo='";
+           cad.append(externo);
+           cad.append("' and ");
+           if (basedatos::instancia()->cualControlador() == basedatos::SQLITE) {
+               cad += "cuenta like '"+ basedatos::instancia()->clavegastos() +"%'";
+              }
+              else {
+                     cad+="position('";
+                     cad+=basedatos::instancia()->claveingresos();
+                     cad+="' in cuenta)=1";
+                   }
+           cad.append(" order by fecha DESC");
+           QSqlQuery q=basedatos::instancia()->ejecutar_publica(cad);
+           if (q.isActive())
+               if (q.next()) cuenta_ingreso=q.value(0).toString();
+           // buscamos apunte con externo y cuenta que empiece por código cuenta IVA
+           cad="select cuenta,fecha from diario where externo='";
+           cad.append(externo);
+           cad.append("' and ");
+           if (basedatos::instancia()->cualControlador() == basedatos::SQLITE) {
+               cad += "cuenta like '"+ basedatos::instancia()->cuentadeivarepercutido() +"%'";
+              }
+              else {
+                     cad+="position('";
+                     cad+=basedatos::instancia()->cuentadeivarepercutido();
+                     cad+="' in cuenta)=1";
+                   }
+           cad.append(" order by fecha DESC");
+           q=basedatos::instancia()->ejecutar_publica(cad);
+           if (q.isActive())
+               if (q.next()) cuenta_iva_rep=q.value(0).toString();
+
+           // buscamos apunte que no sea ni iva ni gasto ni retención
+           // buscamos apunte con cuenta de IVA ¿ hay cuenta de IVA ?
+           // buscamos apuntes de cuenta de retención
+           //qDebug() << basedatos::instancia()->cuenta_ret_irpf();
+           //qDebug() << cuenta_ret_irpf;
+           //qDebug() << cad;
+           cuenta_cliente=basedatos::instancia()->cuenta_externo(externo);
+       } // no hay externo
+        else if (!cuenta_cliente.isEmpty()) {
+           // select asiento where cuenta=cuenta_cliente
+           // recorremos query y vemos contenido de cada asiento ---> nos detenemos el que tenga cuenta de ingreso
+           // de ese asiento sacamos el resto de la información
+           QString cad="select asiento, fecha from diario where cuenta='";
+           cad.append(cuenta_cliente);
+           cad.append("' and debe>0 order by fecha desc");
+           QString asiento;
+           QSqlQuery q=basedatos::instancia()->ejecutar_publica(cad);
+           if (q.isActive())
+               if (q.next()) asiento=q.value(0).toString();
+           if (asiento.isEmpty()) return;
+           cad="select cuenta from diario where asiento=";
+           cad.append(asiento);
+           q=basedatos::instancia()->ejecutar_publica(cad);
+           if (q.isActive())
+               while (q.next()) {
+                   if (q.value(0).toString().startsWith(basedatos::instancia()->claveingresos())) cuenta_ingreso=q.value(0).toString();
+                   if (q.value(0).toString().startsWith(basedatos::instancia()->cuentadeivarepercutido())) cuenta_iva_rep=q.value(0).toString();
+               }
+       }
+      }
+
+    *qexterno=externo;
+    *qcuenta_cliente=cuenta_cliente;
+    *qcuenta_ingreso=cuenta_ingreso;
+    *qcuenta_iva_rep=cuenta_iva_rep;
+
+}
+
+
+
+
+
+
 QString pdf_a_qstring(QString nfichero) {
     QPdfDocument *pdf = new QPdfDocument(0);
     if (pdf->load(nfichero)==QPdfDocument::Error::None) {

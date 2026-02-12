@@ -618,6 +618,7 @@ if (resultado==QDialog::Accepted)
                 }
                 else
                     haygestionusuarios=basedatos::instancia()->gestiondeusuarios();
+
            if (anombredb.isEmpty()) activaTodo();
            if (!haygestionusuarios)
              {
@@ -5322,10 +5323,17 @@ void MainWindow::consulta_retenciones()
 
 void MainWindow::roper182()
 {
-  relop *r = new relop();
-  r->prepara182();
-  r->exec();
-  delete(r);
+    modelo_182 *m = new modelo_182(usuario);
+    m->modo_info_contable();
+    m->exec();
+    delete(m);
+
+
+
+  // relop *r = new relop();
+  // r->prepara182();
+  // r->exec();
+  // delete(r);
 }
 
 
@@ -7377,6 +7385,8 @@ void MainWindow::on_diario_tab_cambiado(int index)
       ui->actionEdita_fecha_a_asiento->setVisible(false);
       ui->actionEdita_concepto_y_documento_en_pase->setVisible(false);
       ui->actionCortar->setEnabled(false);
+      ui->actionEjercicio_Previo->setVisible(false);
+      ui->actionEjercicio_Actual->setVisible(false);
       if (basedatos::instancia()->solo_borr()) {
           ui->actionNuevo_Asiento->setEnabled(false);
           ui->actionAsientos_Predefinidos->setEnabled(false);
@@ -7407,6 +7417,8 @@ void MainWindow::on_diario_tab_cambiado(int index)
       ui->actionEIB_Prestaci_n_servicos_UE->setEnabled(true);
       ui->actionAsiento_de_amortizaciones->setEnabled(true);
       ui->actionAsientos_en_Espera->setEnabled(true);
+      ui->actionEjercicio_Previo->setVisible(true);
+      ui->actionEjercicio_Actual->setVisible(true);
   }
 
 }
@@ -7491,4 +7503,31 @@ void MainWindow::on_actionCambiar_Actividad_a_apunte_triggered()
   delete (c);
 }
 
+
+
+void MainWindow::on_actionEjercicio_Actual_triggered()
+{
+    QDate fecha_actual=QDate().currentDate();
+    QString ejercicio=ejerciciodelafecha(fecha_actual);
+    QString filtro="ejercicio='"+ejercicio+"'";
+
+    if (!ejercicio.isEmpty()) {
+       filtroactivob=filtro;
+       refrescardiario();
+    }
+}
+
+
+void MainWindow::on_actionEjercicio_Previo_triggered()
+{
+    QDate fecha_actual=QDate().currentDate();
+    QString ejerciciop=ejerciciodelafecha(fecha_actual);
+    QDate inicial=inicioejercicio(ejerciciop);
+    QString ejercicio=ejerciciodelafecha(inicial.addDays(-1));
+    QString filtro="ejercicio='"+ejercicio+"'";
+    if (!ejercicio.isEmpty()) {
+       filtroactivob=filtro;
+       refrescardiario();
+    }
+}
 

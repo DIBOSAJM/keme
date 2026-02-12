@@ -379,7 +379,7 @@ void externos::codigocambiado(QString codigo)
                 indice=0;
                 while (indice<ui->tipo_oper_ret_asigcomboBox->count())
                   {
-                   if (ui->tipo_oper_ret_asigcomboBox->itemText(indice).left(1)==tipo_oper_ret_asig.left(1)) break;
+                   if (ui->tipo_oper_ret_asigcomboBox->itemText(indice).section("-",0,0).trimmed()==tipo_oper_ret_asig) break;
                    indice++;
                   }
                 if (indice>=ui->tipo_oper_ret_asigcomboBox->count()) indice=0;
@@ -715,7 +715,7 @@ void externos::botonaceptar()
                  ui->retgroupBox->isChecked() ? ui->cuentata_ret_asiglineEdit->text() :"",
                  ui->retgroupBox->isChecked() ? ui->es_ret_asigcheckBox->isChecked() : false,
                  ui->retgroupBox->isChecked() ? ui->porc_ret_asig_lineEdit->text(): "0",
-                 ui->retgroupBox->isChecked() ? ui->tipo_oper_ret_asigcomboBox->currentText().left(1) : "",
+                 ui->retgroupBox->isChecked() ? ui->tipo_oper_ret_asigcomboBox->currentText().section("-",0,0).trimmed() : "",
                  ui->domiciliacheckBox->isChecked(),
                  ui->ibanlineEdit->text(),
                  "",

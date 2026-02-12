@@ -761,6 +761,9 @@ QString busca_cod_factura(QString contenido);
 void busca_info_nif(QString nif, QString *qexterno, QString *qcuenta_proveedor, QString *qcuenta_gasto,
                     QString *qcuenta_iva_soportado, QString *qcuenta_ret_irpf);
 
+void busca_info_nif_rep(QString nif, QString *qexterno, QString *qcuenta_cliente, QString *qcuenta_ingreso,
+                        QString *qcuenta_iva_rep);
+
 QString pdf_a_qstring(QString nfichero);
 
 bool pdf_contiene_texto(QString nfichero);

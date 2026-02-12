@@ -285,6 +285,15 @@ void execasientomodelo::valorcambiado(int fila,int columna)
         int veces=0;
         while (veces<ui.variablestable->rowCount())
           {
+            if (ui.variablestable->item(veces,3)->text()==tipoNIF())
+            {
+                // EL CÓDIGO SE CORRESPONDE CON EXTERNO ?
+                if (basedatos::instancia()->existe_externo(ui.variablestable->item(veces,1)->text()))
+                {
+                    ui.externo_lineEdit->setText(ui.variablestable->item(veces,1)->text());
+                }
+            }
+
            if (ui.variablestable->item(veces,3)->text()!=tipoFecha() &&
                    ui.variablestable->item(veces,3)->text()==tipoCALC())
              {

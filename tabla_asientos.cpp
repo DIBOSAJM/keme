@@ -5580,7 +5580,7 @@ void tabla_asientos::procesaivaasociado(int fila, int columna,QString cuentabase
                          //&tipo_oper_ret
                          ui.Tablaapuntes->item(ulpos,35)->setText(qctafra); //cuenta retenido
                          ui.Tablaapuntes->item(ulpos,36)->setText(arrend ? "1" : "0"); //retención de arrendamiento
-                         ui.Tablaapuntes->item(ulpos,37)->setText(tipo_oper_ret.left(1)); //clave arrendamiento
+                         ui.Tablaapuntes->item(ulpos,37)->setText(tipo_oper_ret); //clave retención
                          ui.Tablaapuntes->item(ulpos,38)->setText(qbase); //base percepciones
                          ui.Tablaapuntes->item(ulpos,39)->setText(ret); //tipo retención
                          ui.Tablaapuntes->item(ulpos,40)->setText(valret); //retención
@@ -5922,7 +5922,7 @@ void tabla_asientos::procesaivaasociado_financ(int fila, int columna,QString cue
                          //&tipo_oper_ret
                          ui.Tablaapuntes->item(ulpos,35)->setText(cuentafin); //cuenta retenido
                          ui.Tablaapuntes->item(ulpos,36)->setText(arrend ? "1" : "0"); //retención de arrendamiento
-                         ui.Tablaapuntes->item(ulpos,37)->setText(tipo_oper_ret.left(1)); //clave arrendamiento
+                         ui.Tablaapuntes->item(ulpos,37)->setText(tipo_oper_ret); //clave retención
                          ui.Tablaapuntes->item(ulpos,38)->setText(qbase); //base percepciones
                          ui.Tablaapuntes->item(ulpos,39)->setText(ret); //tipo retención
                          ui.Tablaapuntes->item(ulpos,40)->setText(valret); //retención

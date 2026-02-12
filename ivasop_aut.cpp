@@ -1324,7 +1324,7 @@ if (convapunto(ui.retencionlineEdit->text()).toDouble()>0.001)
  else *cuenta_ret="";
 *tipo_ret=ui.tiporetlineEdit->text();
 *retencion=ui.retencionlineEdit->text();
-*clave_ret=ui.clavecomboBox->currentText().left(1);
+*clave_ret=ui.clavecomboBox->currentText().section("-",0,0).trimmed();
 *ret_arrendamiento=ui.arrendamientocheckBox->isChecked();
 
 *iva_exento=ui.exento_checkBox->isChecked();

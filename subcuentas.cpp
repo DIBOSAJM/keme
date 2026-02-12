@@ -24,8 +24,6 @@
 #include "basedatos.h"
 #include <QMessageBox>
 #include "buscasubcuenta.h"
-#include "ajuste_imagen.h"
-#include "directorio.h"
 #include <QFileDialog>
 #include "vies_msj.h"
 #include "graf_recorte.h"
@@ -517,7 +515,7 @@ void subcuentas::codigocambiado(QString codigo)
              indice=0;
              while (indice<ui.operacionretcomboBox->count())
                {
-                if (ui.operacionretcomboBox->itemText(indice).left(1)==tipo_operacion_ret.left(1)) break;
+                if (ui.operacionretcomboBox->itemText(indice).section("-",0,0).trimmed()==tipo_operacion_ret) break;
                 indice++;
                }
              if (indice>=ui.operacionretcomboBox->count()) indice=0;
@@ -538,7 +536,7 @@ void subcuentas::codigocambiado(QString codigo)
              indice=0;
              while (indice<ui.tipo_oper_ret_asigcomboBox->count())
                {
-                if (ui.tipo_oper_ret_asigcomboBox->itemText(indice).left(1)==tipo_oper_ret_asig.left(1)) break;
+                if (ui.tipo_oper_ret_asigcomboBox->itemText(indice).section("-",0,0).trimmed()==tipo_oper_ret_asig) break;
                 indice++;
                }
              if (indice>=ui.tipo_oper_ret_asigcomboBox->count()) indice=0;
@@ -893,14 +891,14 @@ void subcuentas::botonaceptar()
               ui.paislineEdit->text(),
               ui.tabWidget->isTabEnabled(2) ? ui.tiporetlineEdit->text() :"0",
               ui.alquilercheckBox->isChecked(),
-              ui.operacionretcomboBox->currentText().left(1),
+              ui.operacionretcomboBox->currentText().section("-",0,0).trimmed(),
               ui.diafijocheckBox->isChecked() ? ui.vfijospinBox->value() :0,
               // QString cuenta_ret_asig, bool es_ret_asig_arrend,
               // QString tipo_ret_asig, QString tipo_oper_ret_asig,
               ui.retgroupBox->isChecked() ? ui.cuentata_ret_asiglineEdit->text() :"",
               ui.retgroupBox->isChecked() ? ui.es_ret_asigcheckBox->isChecked() : false,
               ui.retgroupBox->isChecked() ? ui.porc_ret_asig_lineEdit->text(): "0",
-              ui.retgroupBox->isChecked() ? ui.tipo_oper_ret_asigcomboBox->currentText().left(1) : "",
+              ui.retgroupBox->isChecked() ? ui.tipo_oper_ret_asigcomboBox->currentText().section("-",0,0).trimmed() : "",
               ui.domiciliacheckBox->isChecked(),
               ui.ibanlineEdit->text(),
               "",
@@ -941,22 +939,22 @@ void subcuentas::botonaceptar()
               QString codvenci=ui.vencicomboBox->currentText().section("//",0,0).trimmed();
               // QString codpais=ui.paiscomboBox->currentText().section(" ",0,0).trimmed();
               QString codclaveidfiscal=ui.claveidfiscalcomboBox->currentText().section("//",0,0).trimmed();
-           if (ui.datosgroupBox->isChecked())
-            guardadatosaccesorios(
+              if (ui.datosgroupBox->isChecked())
+                guardadatosaccesorios(
               ui.codigolineEdit->text(),
-	      ui.NombreLineEdit->text(),
+              ui.NombreLineEdit->text(),
               ui.ncomerciallineEdit->text(),
-	      ui.NifLineEdit->text(),
+              ui.NifLineEdit->text(),
               ui.NifReplegalLineEdit->text(),
-	      ui.DomicilioLineEdit->text(),
-	      ui.PoblacionLineEdit->text(),
-	      ui.CpLineEdit->text(),
-	      ui.ProvinciaLineEdit->text(),
+              ui.DomicilioLineEdit->text(),
+              ui.PoblacionLineEdit->text(),
+              ui.CpLineEdit->text(),
+              ui.ProvinciaLineEdit->text(),
               ui.paiscomboBox->currentText(),
-	      ui.TfnoLineEdit->text(),
-	      ui.FaxLineEdit->text(),
-	      ui.EmailLineEdit->text(),
-	      ui.ObservacionesLineEdit->text(),
+              ui.TfnoLineEdit->text(),
+              ui.FaxLineEdit->text(),
+              ui.EmailLineEdit->text(),
+              ui.ObservacionesLineEdit->text(),
               ui.ccclineEdit->text(),
               ui.cuotalineEdit->text(),
               ui.ivaasocgroupBox->isChecked(),

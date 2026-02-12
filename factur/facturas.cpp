@@ -1226,7 +1226,7 @@ void facturas::contabilizartodas()
       QString qnumero=model->data(model->index(veces,1),Qt::DisplayRole).toString();
       if (!basedatos::instancia()->doc_contabilizable(qserie,
                               qnumero)) continue;
-      if (basedatos::instancia()->vf_anulada(serie(),numero())) continue;
+      if (basedatos::instancia()->vf_anulada(qserie,qnumero)) continue;
       if (basedatos::instancia()->doc_contabilizado(qserie,qnumero)) continue;
       contabilizar_factura(qserie, qnumero, usuario, true);
      }

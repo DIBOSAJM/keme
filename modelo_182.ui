@@ -74,7 +74,7 @@
      <item>
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -144,7 +144,7 @@
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -199,7 +199,7 @@
      <item>
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -208,6 +208,29 @@
         </size>
        </property>
       </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QLabel" name="cuentas_label">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Códigos (subgrupos, cuentas):&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::TextFormat::RichText</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignVCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="codigoslineEdit"/>
      </item>
     </layout>
    </item>
@@ -258,7 +281,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -293,6 +316,17 @@
        </property>
        <property name="default">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cargar_cont_pushButton">
+       <property name="text">
+        <string>Ca&amp;rgar cont.</string>
+       </property>
+       <property name="icon">
+        <iconset resource="keme.qrc">
+         <normaloff>:/iconos/graf/rayo.png</normaloff>:/iconos/graf/rayo.png</iconset>
        </property>
       </widget>
      </item>
@@ -371,10 +405,12 @@
   <tabstop>sustitutiva_radioButton</tabstop>
   <tabstop>complementaria_radioButton</tabstop>
   <tabstop>anteriorlineEdit</tabstop>
+  <tabstop>codigoslineEdit</tabstop>
   <tabstop>naturaleza_comboBox</tabstop>
   <tabstop>tableWidget</tabstop>
   <tabstop>genera_pushButton</tabstop>
   <tabstop>carga_pushButton</tabstop>
+  <tabstop>cargar_cont_pushButton</tabstop>
   <tabstop>borrarpushButton</tabstop>
   <tabstop>datospushButton</tabstop>
   <tabstop>mayorpushButton</tabstop>

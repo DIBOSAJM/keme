@@ -168,7 +168,7 @@ void consret::refrescar()
            QString clave;
            for (int veces=0; veces<claveoperaciones.count(); veces++)
               {
-               if (claveoperaciones.at(veces).left(1)==consulta.value(2).toString())
+               if (claveoperaciones.at(veces).section("-",0,0).trimmed()==consulta.value(2).toString())
                   clave=claveoperaciones.at(veces);
               }
            if (consulta.value(1).toBool()) clave.clear(); // arrendamiento
@@ -252,7 +252,7 @@ void consret::refrescar()
       {
         //QMessageBox::warning( 0, QObject::tr("ret"),
         //                    QObject::tr("datos"));
-         QString externo=consulta.value(13).toString();
+         QString externo=consulta.value(10).toString();
          bool hayexterno=!externo.trimmed().isEmpty();
          ui.detalletableWidget->insertRow(fila);
 
@@ -290,7 +290,7 @@ void consret::refrescar()
          QString clave;
          for (int veces=0; veces<claveoperaciones.count(); veces++)
             {
-             if (claveoperaciones.at(veces).left(1)==consulta.value(4).toString())
+             if (claveoperaciones.at(veces).section("-",0,0).trimmed()==consulta.value(4).toString())
                 clave=claveoperaciones.at(veces);
             }
          if (consulta.value(3).toBool()) clave.clear(); // arrendamiento
@@ -335,8 +335,7 @@ void consret::refrescar()
               datos_nombre=q.value(0).toString();
               datos_cif=q.value(1).toString();
               datos_codigoprovincia=q.value(3).toString().left(2);
-              nombre=consulta.value(9).toString();
-              if (nombre.isEmpty()) nombre=datos_nombre;
+              nombre=datos_nombre;
              }
             if (nombre.isEmpty()) nombre=descripcioncuenta(consulta.value(2).toString());
            }
@@ -358,12 +357,10 @@ void consret::refrescar()
          // nombre
          ui.detalletableWidget->setItem(fila,10,new QTableWidgetItem(nombre));
          // cif
-         QString cif=consulta.value(10).toString();
-         if (cif.isEmpty()) cif=datos_cif;
+         QString cif=datos_cif;
          ui.detalletableWidget->setItem(fila,11,new QTableWidgetItem(cif));
          // provincia
-         QString codigoprovincia=consulta.value(11).toString();
-         if (codigoprovincia.trimmed().isEmpty() || codigoprovincia.trimmed()=="--") codigoprovincia=datos_codigoprovincia;
+         QString codigoprovincia=datos_codigoprovincia;
          QString cadena;
          for (int veces=0; veces<listaprovincias.count(); veces++)
             {
@@ -374,19 +371,19 @@ void consret::refrescar()
          ui.detalletableWidget->setItem(fila,12,new QTableWidgetItem(cadena));
 
          // tipo de retención
-         QTableWidgetItem *newItem66 = new QTableWidgetItem(consulta.value(12).toDouble() >0.0001 ?
-                 formateanumero(consulta.value(12).toDouble(),comadecimal,decimales): "");
+         QTableWidgetItem *newItem66 = new QTableWidgetItem(consulta.value(9).toDouble() >0.0001 ?
+                 formateanumero(consulta.value(9).toDouble(),comadecimal,decimales): "");
          newItem66->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
          ui.detalletableWidget->setItem(fila,13,newItem66);
 
-         if (!consulta.value(14).toBool()) {
+         if (!ui.agruparcheckBox->isChecked())
+           if (!consulta.value(11).toBool()) {
              for (int v=0; v<ui.detalletableWidget->columnCount(); v++) {
                  bool darkMode=(QApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark);
                  QTableWidgetItem* item = ui.detalletableWidget->item(fila, v);
                  item->setBackground(background_alt(darkMode));
              }
-
-         }
+           }
          fila++;
       }
   // ui.refrescarpushButton->setEnabled(false);

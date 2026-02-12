@@ -290,6 +290,11 @@ bool basedatos::abrirBase (QString controlador, QString nombre, QString usuario,
         }
 
         if (!abierta()) { return false; }
+        if (codigoControlador(controlador) == SQLITE) {
+            ejecutar("PRAGMA journal_mode = WAL;");
+            ejecutar("PRAGMA synchronous = NORMAL;");
+            ejecutar("PRAGMA busy_timeout = 5000;");
+        }
         // La base de datos se ha abierto, ya podemos executar comandos
     }
     else {
@@ -23585,15 +23590,51 @@ QSqlQuery basedatos::select_iva_lin_doc (int clave) {
 
 void basedatos::introclave_op_retenciones()
 {
-    QString cadena="insert into clave_op_retenciones (codigo,descripcion) values ";
-    cadena+=QObject::tr("('G','G - Rendimientos de actividades económicas: actividades profesionales')");
-    ejecutar(cadena);
-    cadena="insert into clave_op_retenciones (codigo,descripcion) values ";
-    cadena+=QObject::tr("('H','H- Rendimientos de actividades económicas: actividades agrícolas,"
-                        " ganaderas y forestales y actividades empresariales en estimación "
-                        "objetiva (art.95.6 reglamento)')");
-    ejecutar(cadena);
+    // QString cadena="insert into clave_op_retenciones (codigo,descripcion) values ";
+    // cadena+=QObject::tr("('G','G - Rendimientos de actividades económicas: actividades profesionales')");
+    // ejecutar(cadena);
+    // cadena="insert into clave_op_retenciones (codigo,descripcion) values ";
+    // cadena+=QObject::tr("('H','H- Rendimientos de actividades económicas: actividades agrícolas,"
+    //                     " ganaderas y forestales y actividades empresariales en estimación "
+    //                     "objetiva (art.95.6 reglamento)')");
+    // ejecutar(cadena);
 
+    QString cadq="insert into clave_op_retenciones (codigo,descripcion) values ";
+    QString clave=QObject::tr("('A','RENDIMENTOS DEL TRABAJO')");
+    ejecutar(cadq+clave);
+
+    clave=QObject::tr("('E01','Consejeros/administradores asimilados trab.cuenta ajena')");
+    ejecutar(cadq+clave);
+
+    clave=QObject::tr("('E02','Consejeros/administradores asimil.trab.cuenta ajena cifra negocios<100.000 euros')");
+    ejecutar(cadq+clave);
+
+    clave=QObject::tr("('E03','Consejeros/administradores autónomos cifra negocios<100.000 euros')");
+    ejecutar(cadq+clave);
+
+    clave=QObject::tr("('E04','Consejeros/administradores autónomos no E03')");
+    ejecutar(cadq+clave);
+
+    clave=QObject::tr("('F02','Rendimientos trabajo derivados de cursos, conferencias, coloquios y similares')");
+    ejecutar(cadq+clave);
+
+    clave=QObject::tr("('G01','Actividades económicas, tipo retención general')");
+    ejecutar(cadq+clave);
+
+    clave=QObject::tr("('G03','Actividades económicas, tipo reducido nueva actividad')");
+    ejecutar(cadq+clave);
+
+    clave=QObject::tr("('H01','Actividades agrícolas/ganaderas - art. 95.4 2º Reglamento')");
+    ejecutar(cadq+clave);
+
+    clave=QObject::tr("('H02','Actividades engorde porcino y avicultura - art. 95.4 1º Reglamento')");
+    ejecutar(cadq+clave);
+
+    clave=QObject::tr("('H03','Actividades forestales - art. 95.5 Reglamento')");
+    ejecutar(cadq+clave);
+
+    clave=QObject::tr("('H03','Actividades estimación objetiva - art. 95.6 2º Reglamento')");
+    ejecutar(cadq+clave);
 }
 
 void basedatos::intro_provincias()
@@ -27017,7 +27058,7 @@ QStringList basedatos::listaoperaciones_ret()
     {
       while (query.next())
         {
-          QString cadena= query.value(1).toString();
+          QString cadena=query.value(0).toString() + " - " + query.value(1).toString();
           lista << cadena;
         }
     }
@@ -30173,7 +30214,7 @@ QSqlQuery basedatos::listaret (QDate fechaini, QDate fechafin,
     // clave, base, retención, ing_cta, ing_cta_repercutido, nombre, cif, provincia
     QString cadquery = "select d.pase, d.cuenta, r.cta_retenido, r.arrendamiento, "
                        "r.clave_ret, r.base_ret, "
-                       "r.retencion, r.ing_cta, r.ing_cta_rep, r.nombre, r.cif, r.provincia, r.tipo_ret, d.externo, d.contabilizado "
+                       "r.retencion, r.ing_cta, r.ing_cta_rep, r.tipo_ret, d.externo, d.contabilizado "
                        "from retenciones r, diario d "
                        "where d.pase= r.pase and d.fecha>='";
     cadquery+=fechaini.toString("yyyy-MM-dd");
@@ -30191,21 +30232,20 @@ QSqlQuery basedatos::listaretagrup (QDate fechaini, QDate fechafin,
                                         bool excluyearrendamientos) {
     // apunte, cta_ret, cta_retenido, arrendamiento, especie,
     // clave, base, retención, ing_cta, ing_cta_repercutido, nombre, cif, provincia
-    QString cadquery = "select '', d.cuenta, r.cta_retenido, r.arrendamiento, "
+    QString cadquery = "select d.cuenta, d.cuenta, r.cta_retenido, r.arrendamiento, "
                        "r.clave_ret, sum(r.base_ret), "
                        "sum(r.retencion), sum(r.ing_cta), sum(r.ing_cta_rep), "
-                       "r.nombre, r.cif, r.provincia, r.tipo_ret, d.externo "
-                       "from retenciones r, diario d "
-                       "where d.pase= r.pase and d.fecha>='";
+                       "max(r.tipo_ret), d.externo "
+                       "from retenciones r "
+                       "join diario d on d.pase = r.pase and d.fecha>='";
     cadquery+=fechaini.toString("yyyy-MM-dd");
     cadquery+="' and d.fecha<='";
     cadquery+=fechafin.toString("yyyy-MM-dd");
     cadquery+="' ";
     cadquery+= soloarrendamientos ? "and arrendamiento " : "";
     cadquery+= excluyearrendamientos ? "and not arrendamiento " : "";
-    cadquery+="group by d.cuenta, r.cta_retenido, r.arrendamiento, r.clave_ret, "
-              "r.nombre, r.cif, r.provincia, d.externo, r.tipo_ret ";
-    cadquery+="order by r.clave_ret,d.cuenta, d.externo";
+    cadquery+="group by r.clave_ret, d.cuenta, d.externo, r.cta_retenido, r.arrendamiento ";
+    cadquery+="order by r.clave_ret, d.cuenta, d.externo, r.cta_retenido, r.arrendamiento ";
     return ejecutar(cadquery);
 }
 

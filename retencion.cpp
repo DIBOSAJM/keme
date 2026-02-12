@@ -96,7 +96,7 @@ void retencion::pasadatos(QString qcuentaretencion,
   int indice=0;
   while (indice<ui.clavecomboBox->count())
     {
-     if (ui.clavecomboBox->itemText(indice).left(1)==tipo_operacion_ret.left(1)) break;
+     if (ui.clavecomboBox->itemText(indice).section("-",0,0).trimmed()==tipo_operacion_ret) break;
      indice++;
     }
   if (indice>=ui.clavecomboBox->count()) indice=0;
@@ -118,7 +118,7 @@ void retencion::recuperadatos(QString *cta_retenido, bool *ret_arrendamiento,
 {
  *cta_retenido=ui.retenidolineEdit->text();
  *ret_arrendamiento=ui.arrendamientocheckBox->isChecked();
- *clave=ui.clavecomboBox->currentText().left(1);
+ *clave=ui.clavecomboBox->currentText().section("-",0,0).trimmed();
  *base_percepciones=ui.baselineEdit->text();
  *tipo_ret=ui.tiporetlineEdit->text();
  *retencion=ui.retlineEdit->text();
@@ -146,7 +146,7 @@ void retencion::pasadatos_all(QString qcuentaretencion,
     int indice=0;
     while (indice<ui.clavecomboBox->count())
       {
-       if (ui.clavecomboBox->itemText(indice).left(1)==clave.left(1)) break;
+       if (ui.clavecomboBox->itemText(indice).section("-",0,0).trimmed()==clave) break;
        indice++;
       }
     if (indice>=ui.clavecomboBox->count()) indice=0;
@@ -190,7 +190,7 @@ void retencion::pasadatos2(QString qcuentaretencion,
     int indice=0;
     while (indice<ui.clavecomboBox->count())
       {
-       if (ui.clavecomboBox->itemText(indice).left(1)==clave.left(1)) break;
+       if (ui.clavecomboBox->itemText(indice).section("-",0,0).trimmed()==clave) break;
        indice++;
       }
     if (indice>=ui.clavecomboBox->count()) indice=0;

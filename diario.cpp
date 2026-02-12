@@ -1521,3 +1521,62 @@ void diario::renumera_borr()
 
 }
 
+
+// void diario::on_ej_actual_borr_checkBox_stateChanged(int arg1)
+// {
+//     Q_UNUSED (arg1);
+//     QSignalBlocker blocker(ui.ej_anterior_borr_checkBox);
+//     QString orderby=guardafiltro2.mid(guardafiltro2.indexOf("order"));
+//     qDebug() << orderby;
+//     if (!ui.ej_actual_borr_checkBox->isChecked()) {
+//         ui.filtrolineEdit_2->clear();
+//         guardafiltro2="where not contabilizado "+orderby;
+//         bool correcto;
+//         QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (guardafiltro2, &correcto);
+//         if (correcto)
+//             modelb->setQuery( std::move(q) );
+//         refresca();
+//         return;
+//     }
+//     if (ui.ej_actual_borr_checkBox->isChecked()) ui.ej_anterior_borr_checkBox->setChecked(false);
+//     QDate fecha_actual=QDate().currentDate();
+//     QString ejercicio=ejerciciodelafecha(fecha_actual);
+//     QString filtro="ejercicio='"+ejercicio+"'";
+
+//     if (!ejercicio.isEmpty()) {
+//        ui.filtrolineEdit_2->setText(filtro);
+//         filtro="where not contabilizado and "+filtro+" "+orderby;
+//        guardafiltro2=filtro;
+//        bool correcto;
+//        QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (filtro, &correcto);
+//        if (correcto)
+//          modelb->setQuery( std::move(q) );
+//        refresca();
+//     } else ui.ej_actual_borr_checkBox->setChecked(false);
+
+// }
+
+
+// void diario::on_ej_anterior_borr_checkBox_stateChanged(int arg1)
+// {
+//     Q_UNUSED (arg1);
+//     if (ui.ej_anterior_borr_checkBox->isChecked()) ui.ej_actual_borr_checkBox->setChecked(false);
+//     QDate fecha_actual=QDate().currentDate();
+//     QString ejerciciop=ejerciciodelafecha(fecha_actual);
+//     QDate inicial=inicioejercicio(ejerciciop);
+//     QString ejercicio=ejerciciodelafecha(inicial.addDays(-1));
+//     QString filtro="ejercicio='"+ejercicio+"'";
+
+//     if (!ejercicio.isEmpty()) {
+//         ui.filtrolineEdit_2->setText(filtro);
+//         filtro="where not contabilizado and "+filtro;
+//         guardafiltro2=filtro;
+//         bool correcto;
+//         QSqlQuery q=basedatos::instancia()->selectDiariofiltro_nomsj_error (filtro, &correcto);
+//         if (correcto)
+//             modelb->setQuery( std::move(q) );
+//         refresca();
+//     } else ui.ej_actual_borr_checkBox->setChecked(false);
+
+// }
+

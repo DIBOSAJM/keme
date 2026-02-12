@@ -14,6 +14,10 @@ modelo_182::modelo_182(QString qusuario, QWidget *parent) :
     ui(new Ui::modelo_182)
 {
     ui->setupUi(this);
+    ui->cargar_cont_pushButton->hide();
+    ui->cuentas_label->hide();
+    ui->codigoslineEdit->hide();
+
     usuario=qusuario;
     QStringList columnas;
     columnas << tr("CUENTA") << tr("EXTERNO") << tr("IMPORTE");
@@ -25,8 +29,10 @@ modelo_182::modelo_182(QString qusuario, QWidget *parent) :
     columnas << tr("RECURRENTE");
     columnas << tr("COMUN.AUTON.");
     columnas << tr("DED.AUTON.");
+    columnas << tr("N-1");
+    columnas << tr("N-2");
 
-    ui->tableWidget->setColumnCount(14);
+    ui->tableWidget->setColumnCount(16);
 
     ui->tableWidget->setHorizontalHeaderLabels(columnas);
 
@@ -55,6 +61,15 @@ modelo_182::modelo_182(QString qusuario, QWidget *parent) :
 modelo_182::~modelo_182()
 {
     delete ui;
+}
+
+void modelo_182::modo_info_contable()
+{
+    ui->cargar_cont_pushButton->show();
+    ui->cuentas_label->show();
+    ui->codigoslineEdit->show();
+    ui->carga_pushButton->hide();
+
 }
 
 
@@ -445,13 +460,115 @@ bool modelo_182::genfich182(QString nombre) {
 
 }
 
+void modelo_182::importes_anterior()
+{
+    QDate fecha_inicial=basedatos::instancia()->selectAperturaejercicios(ui->ejercicio_comboBox->currentText()).addYears(-1);
+    QDate fecha_final=basedatos::instancia()->selectCierreejercicios(ui->ejercicio_comboBox->currentText()).addYears(-1);
+
+    QSqlQuery q = basedatos::instancia()->datos_donaciones(fecha_inicial, fecha_final);
+    // columna 14
+
+    // l.cuenta_fra, sum(l.base_iva), d.externo, l.clave_donacion, l.donacion_especie, l.donacion_2ejer,
+    // l.comunidad_autonoma, l.porcent_deduc_autonomia
+    while (q.next())
+    {
+        for (int fila=0; fila<ui->tableWidget->rowCount(); fila++) {
+            if (ui->tableWidget->item(fila,0)->text()==q.value(0).toString() &&
+                ui->tableWidget->item(fila,1)->text()==q.value(2).toString() &&
+                ((ui->tableWidget->item(fila,10)->text()=="X") == q.value(4).toBool())) {
+                QTableWidgetItem *newItem1 = new QTableWidgetItem(
+                    formateanumero(q.value(1).toDouble(),comadecimal,decimales));
+                newItem1->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+                ui->tableWidget->setItem(fila,14,newItem1);
+            }
+        }
+        QApplication::processEvents();
+    }
+
+}
+
+void modelo_182::importes_2anterior()
+{
+    QDate fecha_inicial=basedatos::instancia()->selectAperturaejercicios(ui->ejercicio_comboBox->currentText()).addYears(-2);
+    QDate fecha_final=basedatos::instancia()->selectCierreejercicios(ui->ejercicio_comboBox->currentText()).addYears(-2);
+
+    QSqlQuery q = basedatos::instancia()->datos_donaciones(fecha_inicial, fecha_final);
+    // columna 15
+    // l.cuenta_fra, sum(l.base_iva), d.externo, l.clave_donacion, l.donacion_especie, l.donacion_2ejer,
+    // l.comunidad_autonoma, l.porcent_deduc_autonomia
+    while (q.next())
+    {
+        for (int fila=0; fila<ui->tableWidget->rowCount(); fila++) {
+            if (ui->tableWidget->item(fila,0)->text()==q.value(0).toString() &&
+                ui->tableWidget->item(fila,1)->text()==q.value(2).toString() &&
+                ((ui->tableWidget->item(fila,10)->text()=="X") == q.value(4).toBool())) {
+                QTableWidgetItem *newItem1 = new QTableWidgetItem(
+                    formateanumero(q.value(1).toDouble(),comadecimal,decimales));
+                newItem1->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+                ui->tableWidget->setItem(fila,15,newItem1);
+            }
+        }
+        QApplication::processEvents();
+    }
+
+}
+
+void modelo_182::importes_anterior_cont()
+{
+    QDate fecha_inicial=basedatos::instancia()->selectAperturaejercicios(ui->ejercicio_comboBox->currentText()).addYears(-1);
+    QString ejercicio=basedatos::instancia()->selectEjerciciodelafecha(fecha_inicial);
+    // cuenta, suma
+    QSqlQuery consulta = basedatos::instancia()->selectsumdiarionoaperturanocierrefechas(
+        false ,
+        ejercicio ,
+        ui->codigoslineEdit->text() );
+    if (consulta.isActive())
+        while (consulta.next())
+        {
+            for (int fila=0; fila<ui->tableWidget->rowCount(); fila++) {
+                if (ui->tableWidget->item(fila,0)->text()==consulta.value(0).toString()) {
+                    QTableWidgetItem *newItem1 = new QTableWidgetItem(
+                        formateanumero(consulta.value(1).toDouble(),comadecimal,decimales));
+                    newItem1->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+                    ui->tableWidget->setItem(fila,14,newItem1);
+                }
+            }
+            QApplication::processEvents();
+        }
+
+}
+
+void modelo_182::importes_2anterior_cont()
+{
+    QDate fecha_inicial=basedatos::instancia()->selectAperturaejercicios(ui->ejercicio_comboBox->currentText()).addYears(-2);
+    QString ejercicio=basedatos::instancia()->selectEjerciciodelafecha(fecha_inicial);
+    // cuenta, suma
+    QSqlQuery consulta = basedatos::instancia()->selectsumdiarionoaperturanocierrefechas(
+        false ,
+        ejercicio ,
+        ui->codigoslineEdit->text() );
+    if (consulta.isActive())
+        while (consulta.next())
+        {
+            for (int fila=0; fila<ui->tableWidget->rowCount(); fila++) {
+                if (ui->tableWidget->item(fila,0)->text()==consulta.value(0).toString()) {
+                    QTableWidgetItem *newItem1 = new QTableWidgetItem(
+                        formateanumero(consulta.value(1).toDouble(),comadecimal,decimales));
+                    newItem1->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+                    ui->tableWidget->setItem(fila,15,newItem1);
+                }
+            }
+            QApplication::processEvents();
+        }
+
+}
+
 
 void modelo_182::on_carga_pushButton_clicked()
 {
     ui->tableWidget->setRowCount(0);
     QProgressDialog progreso(tr("Cargando información ... ")
                              , 0, 0, 0);
-    progreso.setWindowModality(Qt::WindowModal);
     progreso.setMinimumDuration ( 0 );
     progreso.show();
     progreso.update();
@@ -488,7 +605,9 @@ void modelo_182::on_carga_pushButton_clicked()
 
               if (q.value(5).toBool()) ui->tableWidget->setItem(fila,8, new QTableWidgetItem("40"));
                  else ui->tableWidget->setItem(fila,8,new QTableWidgetItem("35"));
-          }
+          } else ui->tableWidget->setItem(fila,8,new QTableWidgetItem(""));
+
+
 
           ui->tableWidget->setItem(fila,9,new QTableWidgetItem(q.value(3).toString()));
           if (q.value(4).toBool()) // especie
@@ -555,6 +674,9 @@ void modelo_182::on_carga_pushButton_clicked()
               ui->tableWidget->setItem(linea,7,new QTableWidgetItem(consulta2.value(4).toString())); // provincia
              }
        }
+
+    importes_anterior();
+    importes_2anterior();
 
 }
 
@@ -645,6 +767,99 @@ void modelo_182::on_copiarpushButton_clicked()
      cb->setText(cadena);
      QMessageBox::information( this, tr("Modelo 182"),
                                tr("Se ha pasado el contenido al portapapeles") );
+
+}
+
+
+void modelo_182::on_cargar_cont_pushButton_clicked()
+{
+    ui->tableWidget->setRowCount(0);
+    QProgressDialog progreso(tr("Cargando información ... ")
+                             , 0, 0, 0);
+    progreso.setMinimumDuration ( 0 );
+    progreso.show();
+    progreso.update();
+    QApplication::processEvents();
+
+    QSqlQuery consulta = basedatos::instancia()->selectsumdiarionoaperturanocierrefechas(
+        false ,
+        ui->ejercicio_comboBox->currentText() ,
+        ui->codigoslineEdit->text() );
+
+    int fila=0;
+    if (consulta.isActive())
+        while (consulta.next())
+        {
+                ui->tableWidget->insertRow(fila);
+
+                QTableWidgetItem *newItem = new QTableWidgetItem(consulta.value(0).toString());
+                ui->tableWidget->setItem(fila,0,newItem);
+                ui->tableWidget->setItem(fila,1,new QTableWidgetItem(QString()));
+
+                QTableWidgetItem *newItem1 = new QTableWidgetItem(
+                    formateanumero(consulta.value(1).toDouble(),comadecimal,decimales));
+                newItem1->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+                ui->tableWidget->setItem(fila,2,newItem1);
+
+                for (int linea=0; linea<ui->tableWidget->rowCount(); linea++)
+                {
+                    QString externo=ui->tableWidget->item(linea,1)->text().trimmed();
+                    QSqlQuery consulta2;
+                    if (externo.isEmpty())
+                        consulta2 = basedatos::instancia()->select7Datossubcuentacuenta(ui->tableWidget->item(linea,0)->text());
+                    else
+                        consulta2 = basedatos::instancia()->select7datos_externo(externo);
+                    if ( (consulta2.isActive()) && (consulta2.next()) )
+                    {
+                        // razon,cif,poblacion,codigopostal,provincia,claveidfiscal,pais,domicilio
+                        QString identif=consulta2.value(0).toString();
+                        if (!externo.isEmpty())
+                            if (!consulta2.value(8).toString().isEmpty() &&
+                                !consulta2.value(9).toString().isEmpty())
+                                identif= consulta2.value(8).toString()+ " " + consulta2.value(9).toString();
+                        ui->tableWidget->setItem(linea,3,new QTableWidgetItem(identif));
+                        QString vat_id=consulta2.value(1).toString();
+                        ui->tableWidget->setItem(linea,4,new QTableWidgetItem(vat_id));
+
+                        // NATURALEZA DEL DECLARADO
+                        // Estudiamos la composición del NIF
+                        //   si es persona física empezará por número o X, Y, Z, K, L, M
+                        //   si empieza por letra E = Entidad atribución rentas
+                        // bool persona_fisica=true;
+                        bool persona_juridica=false;
+                        bool entidad_atrib_rentas=false;
+
+                        if (!vat_id.isEmpty())
+                            if (!QString("0123456789XYZKLM").contains(vat_id.left(1)))
+                            {
+                                //persona_fisica=false;
+                                if (vat_id.left(1)=="E")
+                                    entidad_atrib_rentas=true;
+                                else
+                                    persona_juridica=true;
+                            }
+                        if (!persona_juridica && !entidad_atrib_rentas) {
+                            if (ui->naturaleza_comboBox->currentText().left(1)=="2")
+                                ui->tableWidget->setItem(linea,8,new QTableWidgetItem("10"));
+                            if (ui->naturaleza_comboBox->currentText().left(1)=="1") {
+                                if (convapunto(ui->tableWidget->item(linea,2)->text()).toDouble()<=150.0)
+                                    ui->tableWidget->setItem(linea,8,new QTableWidgetItem("80"));
+                            }
+                        }
+
+
+                        ui->tableWidget->setItem(linea,5,new QTableWidgetItem(consulta2.value(2).toString())); // población
+                        ui->tableWidget->setItem(linea,6,new QTableWidgetItem(consulta2.value(3).toString())); // código postal
+                        ui->tableWidget->setItem(linea,7,new QTableWidgetItem(consulta2.value(4).toString())); // provincia
+                    }
+                }
+
+                fila++;
+                QApplication::processEvents();
+
+        }
+    importes_anterior_cont();
+    importes_2anterior_cont();
 
 }
 

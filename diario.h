@@ -118,6 +118,10 @@ class diario: public QWidget {
 
            void on_renum_borrador_pushButton_clicked();
 
+           // void on_ej_actual_borr_checkBox_stateChanged(int arg1);
+
+           // void on_ej_anterior_borr_checkBox_stateChanged(int arg1);
+
        signals:
            void cambio_tab(int ntab);
            void filedroped();

@@ -1508,4 +1508,113 @@ void ivarep_aut::externo_cambiado()
 
 void ivarep_aut::fichero_soltado() {
     ui.fichdoclineEdit->setText(etiqueta->nombre_fich());
+    if (!ui.baselineEdit->text().isEmpty()) return;
+    QString global_tex;
+    QString fichero_soltado=etiqueta->nombre_fich();
+    QString fichero_soltado_U=fichero_soltado.toUpper();
+    if (fichero_soltado_U.endsWith("PDF")) {
+        global_tex=pdf_a_qstring(fichero_soltado);
+        if (global_tex.isEmpty()) {
+            // tratamos de extraer gráfico jpg del pdf
+            global_tex=pdfgraf_a_qstring(fichero_soltado);
+        }
+    }
+    if (fichero_soltado_U.endsWith("JPG") ||
+        fichero_soltado_U.endsWith("PNG") ||
+        fichero_soltado_U.endsWith("TIF") ||
+        fichero_soltado_U.endsWith("JPEG"))
+        global_tex=graf_a_qstring(fichero_soltado);
+    if (global_tex.isEmpty()) return;
+    qDebug() << global_tex;
+    qDebug() << "\n";
+    qDebug() << "\n";
+    QString nif=busca_nif(global_tex, basedatos::instancia()->cif());
+    qDebug() << nif;
+    QDate fecha_fra= busca_primera_fecha(global_tex);
+    qDebug() << fecha_fra.toString("dd/MM/yyyy");
+
+    QString cod_factura=busca_cod_factura(global_tex);
+    qDebug() << "FACTURA:" + cod_factura;
+
+    QJsonObject importes=info_contenido_fact(global_tex);
+    QJsonDocument doc(importes);
+    qDebug() << doc.toJson();
+
+
+    // buscamos externo y cuenta asociada
+    QString externo;
+    QString cuenta_cliente;
+    QString cuenta_ingreso;
+    QString cuenta_iva_rep;
+
+    busca_info_nif_rep(nif, &externo,&cuenta_cliente, &cuenta_ingreso,
+                            &cuenta_iva_rep);
+    //qDebug() << cuenta_cliente;
+    //qDebug() << cuenta_ingreso;
+    qDebug() << cuenta_iva_rep;
+
+    // pasar datos
+    ui.externo_lineEdit->setText(externo);
+    ui.CtafralineEdit->setText(cuenta_cliente);
+    ui.CtabaselineEdit->setText(cuenta_ingreso);
+    ui.CtaivalineEdit->setText(cuenta_iva_rep);
+
+    ui.FechafradateEdit->setDate(fecha_fra);
+    ui.documentolineEdit->setText(cod_factura);
+    // pasar importes
+
+    if (importes["base21"].toDouble()>0.001 || importes["base21"].toDouble()<-0.001) {
+        // buscamos en el combo de tipos de IVA el correspondiente
+        double base21=importes["base21"].toDouble();
+        QString clave_iva=basedatos::instancia()->cod_iva(21);
+        ui.ClaveivacomboBox->setCurrentText(clave_iva);
+        ui.baselineEdit->setText(formateanumero(base21,comadecimal,decimales));
+        comboivacambiado();
+    }
+
+    if (importes["base10"].toDouble()>0.001 || importes["base10"].toDouble()<-0.001) {
+        // buscamos en el combo de tipos de IVA el correspondiente
+        double base10=importes["base10"].toDouble();
+        QString clave_iva=basedatos::instancia()->cod_iva(10);
+        if (ui.baselineEdit->text().isEmpty()) {
+            ui.ClaveivacomboBox->setCurrentText(clave_iva);
+            ui.baselineEdit->setText(formateanumero(base10,comadecimal,decimales));
+            comboivacambiado();
+        }
+        else {
+            // Activamos groupbox segundo
+            ui.groupBox_2->setChecked(true);
+            ui.ClaveivacomboBox_2->setCurrentText(clave_iva);
+            ui.baselineEdit_2->setText(formateanumero(base10,comadecimal,decimales));
+            comboivacambiado2();
+        }
+    }
+
+    if (importes["base4"].toDouble()>0.001 || importes["base4"].toDouble()<-0.001) {
+        // buscamos en el combo de tipos de IVA el correspondiente
+        double base4=importes["base4"].toDouble();
+        QString clave_iva=basedatos::instancia()->cod_iva(4);
+        if (ui.baselineEdit->text().isEmpty()) {
+            ui.ClaveivacomboBox->setCurrentText(clave_iva);
+            ui.baselineEdit->setText(formateanumero(base4,comadecimal,decimales));
+            comboivacambiado();
+        }
+        else {
+            if (ui.baselineEdit_2->text().isEmpty()) {
+                // Activamos groupbox segundo
+                ui.groupBox_2->setChecked(true);
+                ui.ClaveivacomboBox_2->setCurrentText(clave_iva);
+                ui.baselineEdit_2->setText(formateanumero(base4,comadecimal,decimales));
+                comboivacambiado2();
+            } else {
+                ui.groupBox_3->setChecked(true);
+                ui.ClaveivacomboBox_3->setCurrentText(clave_iva);
+                ui.baselineEdit_3->setText(formateanumero(base4,comadecimal,decimales));
+                comboivacambiado3();
+            }
+
+        }
+    }
+
+
 }
