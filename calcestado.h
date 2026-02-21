@@ -92,11 +92,11 @@ class calcestado : public QDialog {
                 double calculacuentaci(QString const & codigo, QString const & ejercicio,
                                                    bool acotacion,
                                                  QDate const & fecha1, QDate const & fecha2);
+                void calc_estado_ci(QString ci);
 
 
         private slots:
                 void buscapulsado();
-                void fijadescripciones();
                 void procesareferencias();
                 void consulta( void );
                 void imprime();
@@ -111,7 +111,17 @@ class calcestado : public QDialog {
                 void latex();
                 void genera_xml();
 
-        public slots:
+                void on_add_pushButton_clicked();
+
+                void on_borra_pushButton_clicked();
+
+                void on_arriba_pushButton_clicked();
+
+                void on_abajo_pushButton_clicked();
+
+                void on_hoja_ci_pushButton_clicked();
+
+            public slots:
                 void calculaestado();
 };
 

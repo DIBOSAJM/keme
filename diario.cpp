@@ -137,7 +137,7 @@ QVariant CustomSqlModel::data(const QModelIndex &index, int role) const
                 if (tabla_ci)
                    {
                     if (value.toLongLong()>0)
-                        return QString("*");
+                        return QString("✅");
                      else return QString();
                    }
                }
@@ -145,7 +145,7 @@ QVariant CustomSqlModel::data(const QModelIndex &index, int role) const
             if (index.column() == 15)
                {
                     if (value.toBool())
-                        return QString("*");
+                        return QString("✅");
                      else return QString();
                }
 
@@ -160,7 +160,7 @@ QVariant CustomSqlModel::data(const QModelIndex &index, int role) const
              (index.column() == 4 || index.column()==5 ||
               index.column() == 2 || index.column()==9 || index.column()==14))
                return QVariant::fromValue(int(Qt::AlignVCenter | Qt::AlignRight));
-        if (role == Qt::TextAlignmentRole && index.column()==1)
+        if (role == Qt::TextAlignmentRole && (index.column()==1 ||index.column() == 11 || index.column() == 15))
             return QVariant::fromValue(int(Qt::AlignCenter));
 
         if (role == Qt::ForegroundRole)

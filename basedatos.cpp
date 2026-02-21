@@ -23,7 +23,7 @@
 
 #include "funciones.h"
 
-#define VERSION "4.0.4.0"
+#define VERSION "4.0.5.0"
 
 #include <QMessageBox>
 #include <QApplication>
@@ -514,6 +514,7 @@ void basedatos::solotablas(bool segunda, QString qbase)
              "horacalculo             varchar(10),"
              "ejercicio1              varchar(255),"
              "ejercicio2              varchar(255),"
+             "hoja_ci                 varchar(255) default '',"
              "analitica               bool,"
              "grafico                 bool,"
              "haycolref               bool,"
@@ -561,8 +562,9 @@ void basedatos::solotablas(bool segunda, QString qbase)
              "anchocuentas   integer,"
              "cuenta_iva_soportado      varchar(255),"
              "cuenta_iva_repercutido    varchar(255),"
-             "cuenta_ret_irpf   varchar(255),"
-             "cuenta_ret_ing    varchar(255),"
+             "cuenta_ret_irpf   varchar(255) default '',"
+             "cuenta_ret_ing    varchar(255) default '',"
+             "cuenta_pago_a_cuenta    varchar(255) default '',"
              "tipo_ret_irpf     numeric(7,4) default 0,"
              "cuentasapagar     varchar(255),"
              "cuentasacobrar    varchar(255),"
@@ -10342,7 +10344,7 @@ QSqlQuery basedatos::selectCodigodescripcionplancontablefiltro(QString filtro) {
 QSqlQuery basedatos::selectCabeceraestadostitulo (QString titulo) {
     QString cadena = "select titulo,ejercicio1,ejercicio2,fechacalculo,"
         "diarios,estadosmedios,"
-        "analitica,ci,haycolref,colref,desglose,grafico,horacalculo, desglose_ctas "
+        "analitica,ci,haycolref,colref,desglose,grafico,horacalculo, desglose_ctas, hoja_ci "
         "from cabeceraestados ";
     cadena += "where titulo='";
     cadena += titulo.left(-1).replace("'","''");
@@ -11835,7 +11837,8 @@ QSqlQuery basedatos::selectConfiguracion () {
                 "prox_documento, gestion_usuarios, analitica_tabla, provincia_def,"
                 "cuentas_aa, cuentas_ag, amoinv, sec_recibidas, prox_domiciliacion, "
                 "cod_ine_plaza, caja_iva, borrados_consol, msj_vto_dcho, msj_vto_obl, externos, tfno, "
-                "gestor_db, tipo_proveedor, cod_homol_pruebas, nombre, apellidos, curl, url_actu, moneda, renum_borr, solo_borr, prorrata, imagen "
+                "gestor_db, tipo_proveedor, cod_homol_pruebas, nombre, apellidos, curl, url_actu, moneda, "
+                "renum_borr, solo_borr, prorrata, cuenta_pago_a_cuenta, imagen "
         "from configuracion";
     return ejecutar(cadena);
 }
@@ -15546,6 +15549,16 @@ void basedatos::updateCabeceraestadosfechacalculoejercicio1ciejercicio2titulo (Q
     ejecutar(cadena);
 }
 
+void basedatos::update_cabeceraestados_hoja_ci(QString titulo, QString cad_hoja_ci)
+{
+  QString cadena = "update cabeceraestados set hoja_ci='";
+  cadena+=cad_hoja_ci;
+  cadena += "' where titulo='";
+  cadena += titulo;
+  cadena += "'";
+  ejecutar(cadena);
+}
+
 //
 void basedatos::updateDiariocuentafechasnodiario_apertura (QString por, QString origen, bool fechas, QDate inicial, QDate final) {
     QString cadena = "update diario set cuenta='";
@@ -15796,7 +15809,7 @@ void basedatos::updateConfiguracion (QString empresa ,QString nif, QString domic
                                      QString msj_vto_dcho, QString msj_vto_obl,bool externos,
                                      QString tfno, bool gd_bd, bool tipo_proveedor, QString cod_homol_pruebas,
                                      QString nombre, QString apellidos, bool curl, QString url_actu, QString moneda,
-                                     bool renum_borr, bool solo_borr, bool prorrata) {
+                                     bool renum_borr, bool solo_borr, bool prorrata, QString cuenta_pago_a_cuenta) {
     QString cadena = "update configuracion set ";
     cadena += "empresa='"+ empresa.left(-1).replace("'","''");
     cadena += "',nif='"+ nif.left(-1).replace("'","''");
@@ -15896,6 +15909,9 @@ void basedatos::updateConfiguracion (QString empresa ,QString nif, QString domic
     cadena+="', ";
     cadena+="apellidos='";
     cadena+=apellidos;
+    cadena+="', ";
+    cadena+="cuenta_pago_a_cuenta='";
+    cadena+=cuenta_pago_a_cuenta;
     cadena+="',";
     cadena+="moneda='";
     cadena+=moneda;
@@ -22591,6 +22607,19 @@ void basedatos::actualizade4030()
 
 }
 
+void basedatos::actualizade4040()
+{
+    // TABLE cabeceraestados
+    ejecutar("alter table cabeceraestados add column hoja_ci varchar(255) default ''");
+    //              "cuenta_pago_a_cuenta    varchar(255),"
+    ejecutar("alter table configuracion add column cuenta_pago_a_cuenta varchar(255) default ''");
+
+    ejecutar("update configuracion set version='4.0.5.0'");
+    introclave_op_retenciones();
+
+}
+
+
 void basedatos::actualizade2977()
 {
     ejecutar("alter table configuracion add column cuenta_tesoreria  varchar(40) default ''");
@@ -23633,7 +23662,7 @@ void basedatos::introclave_op_retenciones()
     clave=QObject::tr("('H03','Actividades forestales - art. 95.5 Reglamento')");
     ejecutar(cadq+clave);
 
-    clave=QObject::tr("('H03','Actividades estimación objetiva - art. 95.6 2º Reglamento')");
+    clave=QObject::tr("('H04','Actividades estimación objetiva - art. 95.6 2º Reglamento')");
     ejecutar(cadq+clave);
 }
 
@@ -24659,7 +24688,7 @@ bool basedatos::comprobarVersion () {
                 && laversion !="3.2.2.5" && laversion !="3.2.2.6"
                 && laversion !="4.0.0.0" && laversion !="4.0.0.2"
                 && laversion !="4.0.1.0" && laversion !="4.0.2.0"
-                && laversion !="4.0.3.0"){
+                && laversion !="4.0.3.0" && laversion !="4.0.4.0"){
             if (!(splash==NULL))
              {
               splash->finish( 0 );
@@ -24775,7 +24804,8 @@ bool basedatos::comprobarVersion () {
                 if (versionbd()=="4.0.0.2") actualizade4002();
                 if (versionbd()=="4.0.1.0") actualizade4010();
                 if (versionbd()=="4.0.2.0") actualizade4020();
-                actualizade4030();
+                if (versionbd()=="4.0.3.0") actualizade4030();
+                actualizade4040();
 
               }
             else {

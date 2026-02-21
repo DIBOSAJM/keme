@@ -10,7 +10,7 @@ graf_recorte::graf_recorte(QString cadfich, qreal w, qreal h, QWidget *parent) :
     scene = new QGraphicsScene();
     //scene->setSceneRect(-300, -300, 600, 600);
     pixmap=new QPixmap(cadfich);
-    if (pixmap->height()>400) *pixmap=pixmap->scaledToHeight(400);
+    //if (pixmap->height()>400) *pixmap=pixmap->scaledToHeight(400);
     //*pixmap=pixmap->scaledToHeight(400);
     //*pixmap=pixmap->scaledToHeight(400);
     itempixmap = new QGraphicsPixmapItem(*pixmap);
@@ -22,7 +22,15 @@ graf_recorte::graf_recorte(QString cadfich, qreal w, qreal h, QWidget *parent) :
     QPen outlinePen(Qt::black);
     ancho_rec=w; alto_rec=h;
     rectangle = scene->addRect(0, 0, w, h, outlinePen, CBrush);
-    rectangle->moveBy(100,100);
+    //rectangle->moveBy(100,100);
+    // rectangle->moveBy(w/2+100,h/2+100);
+    // intentamos situarnos en el centro de scene
+    QRectF sceneBounds = scene->sceneRect();
+    QRectF itemBounds = rectangle->rect();
+    qreal x = sceneBounds.left() + (sceneBounds.width() - itemBounds.width()) / 2.0;
+    qreal y = sceneBounds.top() + (sceneBounds.height() - itemBounds.height()) / 2.0;
+    rectangle->setPos(x,y);
+
     /*QRectF rect=rectangle->rect();
     rectangle->setPos(rect.topLeft());
     rect.moveTo(0.0,0.0);

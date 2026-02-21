@@ -2629,6 +2629,12 @@ bool liquidacioniva::genfich303(QString qnombre)
    if (periodo=="4T" || periodo=="12") contenido+="0";
       else contenido+="0";
 
+   // Sujeto pasivo con derecho a deducir pago a cuenta de entregas de gasolinas, gasóleos
+   // y biocarburantes posteriores a la ultimación del régimen de depósito distinto del aduanero
+   if (periodo.contains("T") || periodo=="01") contenido+="0";
+     else
+        contenido+="2"; // no derecho a deducir
+
    // iva repercutido *****************
    double base0=0,base1=0,base5=0,base75=0,base2=0,base3=0,tipo1=0,tipo2=0,tipo3=0,tipo75=0,cuota0=0,cuota1=0,cuota5=0,cuota75=0,cuota2=0,cuota3=0;
    double base175re=0, cuota175re=0, base1re=0, base2re=0, base3re=0, tipo1re=0, tipo2re=0, tipo3re=0, cuota1re=0, cuota2re=0, cuota3re=0;
@@ -2719,6 +2725,12 @@ bool liquidacioniva::genfich303(QString qnombre)
    contenido+=cadnum2dec_cadena_signo(0,5);
    contenido+=cadnum2dec_cadena_signo(cuota0,17);
 
+   // tipo no procedente
+   contenido+=cadnum2dec_cadena_signo(0,17);
+   contenido+=cadnum2dec_cadena_signo(0,5);
+   contenido+=cadnum2dec_cadena_signo(0,17);
+
+
    // tipo superreducido 4
    contenido+=cadnum2dec_cadena_signo(base1,17);
    //contenido+=cadnum2dec_cadena_signo(tipo1,5);
@@ -2726,17 +2738,22 @@ bool liquidacioniva::genfich303(QString qnombre)
    contenido+=cadnum2dec_cadena_signo(cuota1,17);
 
    // tipo 5
-   if (base75>-0.001) {
-       contenido+=cadnum2dec_cadena_signo(base75,17);
-       //contenido+="00750" ;//cadnum2dec_cadena_signo(7.5,5);
-       contenido+="00000" ;
-       contenido+=cadnum2dec_cadena_signo(cuota75,17);
-   } else {
-     contenido+=cadnum2dec_cadena_signo(base5,17);
-     //contenido+="00500"; //cadnum2dec_cadena_signo(5,5);
-     contenido+="00000" ;
-     contenido+=cadnum2dec_cadena_signo(cuota5,17);
-   }
+   contenido+=cadnum2dec_cadena_signo(0,17);
+   contenido+=cadnum2dec_cadena_signo(0,5);
+   contenido+=cadnum2dec_cadena_signo(0,17);
+
+
+   // if (base75>-0.001) {
+   //     contenido+=cadnum2dec_cadena_signo(base75,17);
+   //     //contenido+="00750" ;//cadnum2dec_cadena_signo(7.5,5);
+   //     contenido+="00000" ;
+   //     contenido+=cadnum2dec_cadena_signo(cuota75,17);
+   // } else {
+   //   contenido+=cadnum2dec_cadena_signo(base5,17);
+   //   //contenido+="00500"; //cadnum2dec_cadena_signo(5,5);
+   //   contenido+="00000" ;
+   //   contenido+=cadnum2dec_cadena_signo(cuota5,17);
+   // }
 
    // tipo 10
    contenido+=cadnum2dec_cadena_signo(base2,17);
@@ -2845,8 +2862,12 @@ bool liquidacioniva::genfich303(QString qnombre)
    contenido+=cadnum2dec_cadena_signo(base1re,17);
    //contenido+=cadnum2dec_cadena_signo(tipo1re,5);
    //contenido+="00100"; //CORRECTO
-   contenido+="00000";
+   contenido+="00050";
    contenido+=cadnum2dec_cadena_signo(cuota1re,17);
+
+   contenido+=cadnum2dec_cadena_signo(0,17);
+   contenido+=cadnum2dec_cadena_signo(0,5);
+   contenido+=cadnum2dec_cadena_signo(0,17);
 
    contenido+=cadnum2dec_cadena_signo(base2re,17);
    //contenido+=cadnum2dec_cadena_signo(tipo2re,5);
@@ -2958,19 +2979,9 @@ bool liquidacioniva::genfich303(QString qnombre)
    contenido+=cadnum2dec_cadena_signo(sumadevengado-sumadeducir,17);
    // QMessageBox::warning( this, tr("Fichero 303"),cadnum2dec_cadena_signo_signo(sumadevengado-sumadeducir,17));
 
-   // línea en blanco
-   contenido+=cadnum2dec_cadena_signo(0,17);
-   // contenido+="00200";
-   contenido+="00000";
-   contenido+=cadnum2dec_cadena_signo(0,17);
-   // línea en blanco
-   contenido+=cadnum2dec_cadena_signo(0,17);
-   contenido+="00050";
-   contenido+=cadnum2dec_cadena_signo(0,17);
 
-
-   // 522 espacios
-   str.clear(); str.fill(' ',522);
+   // 521 espacios
+   str.clear(); str.fill(' ',521);
    contenido+=str;
 
    // espacio para el sello electrónico
@@ -3060,6 +3071,11 @@ bool liquidacioniva::genfich303(QString qnombre)
    // resultado reg. anual dip. forales
    contenido+=str;
 
+   // Rectificativa - Exclusivamente para determinados supuestos de autoliquidación rectificativa
+   // por discrepancia de criterio administrativo que no deban incluirse en otras casillas. Otros ajustes [108]
+   contenido+=str;
+
+
    // resultado
    contenido+=cadnum2dec_cadena_signo(sumadevengado-sumadeducir-aplicar_ejercicio,17);
 
@@ -3067,6 +3083,12 @@ bool liquidacioniva::genfich303(QString qnombre)
    contenido+=str;
 
    // devoluciones anteriores periodos
+   contenido+=str;
+
+   // Resultado - Pago a cuenta de entregas de gasolinas, gasóleos y biocarburantes
+   // posteriores a la ultimación del régimen de depósito
+   // distinto del aduanero atribuible a la Administración del Estado (Suma de la casilla 36
+   // de todos los modelos 319 correspondientes a entregas incluidas en esta autoliquidación) [112]
    contenido+=str;
 
    // resultado liquidación
@@ -3083,18 +3105,22 @@ bool liquidacioniva::genfich303(QString qnombre)
     // Rectificativa - solicita dar baja/modificar domiciliación
     contenido+=" ";
     // Rectificativa - otros ajustes
-    contenido+=str;
+    // contenido+=str;
     // Rectificativa - rectificación
     contenido+=str;
+    // Rectificativa - rectificaciones
+    contenido+=" ";
+    // Rectificativa - discrepancia critero administrativo
+    contenido+=" ";
     // Reservado AEAT
-    str.clear(); str.fill(' ',120);
-    contenido+=str;
+    // str.clear(); str.fill(' ',120);
+    // contenido+=str;
     // rectificación
-    contenido+=" ";
+    // contenido+=" ";
     // rectificación discrepancia critero administrativo
-    contenido+=" ";
+    // contenido+=" ";
 
-   str.clear(); str.fill(' ',443);
+   str.clear(); str.fill(' ',546);
    contenido+=str;
 
    contenido+="</T30303000>";

@@ -37,16 +37,15 @@
 #include "busca_externo.h"
 #include <qtrpt.h>
 #include "concilia.h"
-#include "pidecuenta.h"
 #include "pidefecha.h"
 #include "editafechaasiento.h"
 #include "edit_conc_doc.h"
-#include "cambiacuentapase.h"
 #include "ivasoportado.h"
 #include "ivarepercutido.h"
 #include "eib.h"
 #include "exento.h"
 #include "retencion.h"
+#include "externos.h"
 
 consmayor::consmayor(bool concomadecimal, bool condecimales, QString qusuario) : QDialog() {
    ui.setupUi(this);
@@ -416,7 +415,7 @@ void consmayor::cargadatos()
                  if (sumadebehaber<0) sumadebehaber=sumadebehaber*-1;
                  double compa=importes_vencimiento.at(veces) >0 ? importes_vencimiento.at(veces):
                                 importes_vencimiento.at(veces)*-1;
-                 QString colocar="*";
+                 QString colocar="✅";
                  if (compa-sumadebehaber>0.005 || compa-sumadebehaber<-0.005) colocar="P";
                  QTableWidgetItem *newItemx = new QTableWidgetItem(colocar);
                  newItemx->setTextAlignment (Qt::AlignHCenter | Qt::AlignVCenter);
@@ -429,7 +428,7 @@ void consmayor::cargadatos()
               {
                 if (apuntes_venci_realizados.at(veces)==apunte)
                   {
-                    QTableWidgetItem *newItemx = new QTableWidgetItem("*");
+                    QTableWidgetItem *newItemx = new QTableWidgetItem("✅");
                     newItemx->setTextAlignment (Qt::AlignHCenter | Qt::AlignVCenter);
                     ui.mayortable->setItem(fila,7,newItemx); // conciliado
                   }
@@ -2161,5 +2160,17 @@ void consmayor::on_finaldateEdit_userDateChanged(const QDate &date)
 {
     Q_UNUSED(date);
     ui.conmovs_checkBox->setChecked(false);
+}
+
+
+void consmayor::on_cons_externo_pushButton_clicked()
+{
+    QString externo=ui.externolineEdit->text();
+    if (!externo.isEmpty()) {
+        externos *e = new externos();
+        e->pasa_codigo(externo);
+        e->exec();
+        delete(e);
+    }
 }
 

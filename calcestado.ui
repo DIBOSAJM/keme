@@ -7,20 +7,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>844</width>
-    <height>605</height>
+    <width>714</width>
+    <height>607</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Cálculo de Estado Contable</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
     <widget class="QLabel" name="titulolabel">
      <property name="font">
       <font>
        <pointsize>12</pointsize>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -28,7 +27,7 @@
       <string>TITULO</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>
@@ -229,22 +228,7 @@
          <property name="title">
           <string>Contabilidad analítica</string>
          </property>
-         <layout class="QVBoxLayout">
-          <property name="spacing">
-           <number>6</number>
-          </property>
-          <property name="leftMargin">
-           <number>9</number>
-          </property>
-          <property name="topMargin">
-           <number>9</number>
-          </property>
-          <property name="rightMargin">
-           <number>9</number>
-          </property>
-          <property name="bottomMargin">
-           <number>9</number>
-          </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
            <layout class="QHBoxLayout">
             <property name="spacing">
@@ -308,49 +292,121 @@
            </layout>
           </item>
           <item>
-           <widget class="QLineEdit" name="nivel1lineEdit">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>8</pointsize>
-             </font>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Columnas CI para hoja de costes:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="hoja_ci_pushButton">
+              <property name="text">
+               <string>G&amp;enerar</string>
+              </property>
+              <property name="icon">
+               <iconset resource="keme.qrc">
+                <normaloff>:/iconos/graf/view_choose.png</normaloff>:/iconos/graf/view_choose.png</iconset>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QLineEdit" name="nivel2lineEdit">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>8</pointsize>
-             </font>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="nivel3lineEdit">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>8</pointsize>
-             </font>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <item>
+             <widget class="QListWidget" name="ci_listWidget"/>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <widget class="QPushButton" name="add_pushButton">
+                <property name="maximumSize">
+                 <size>
+                  <width>30</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="keme.qrc">
+                  <normaloff>:/iconos/graf/Files-New-File-icon.png</normaloff>:/iconos/graf/Files-New-File-icon.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="arriba_pushButton">
+                <property name="maximumSize">
+                 <size>
+                  <width>30</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="keme.qrc">
+                  <normaloff>:/iconos/graf/up.png</normaloff>:/iconos/graf/up.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="abajo_pushButton">
+                <property name="maximumSize">
+                 <size>
+                  <width>30</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="keme.qrc">
+                  <normaloff>:/iconos/graf/down.png</normaloff>:/iconos/graf/down.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="borra_pushButton">
+                <property name="maximumSize">
+                 <size>
+                  <width>30</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="keme.qrc">
+                  <normaloff>:/iconos/graf/borraelem.png</normaloff>:/iconos/graf/borraelem.png</iconset>
+                </property>
+                <property name="shortcut">
+                 <string>Alt+L</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
@@ -420,7 +476,7 @@ p, li { white-space: pre-wrap; }
         <number>0</number>
        </property>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
       </widget>
      </item>
@@ -431,7 +487,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -563,11 +619,13 @@ p, li { white-space: pre-wrap; }
   <tabstop>previsiones</tabstop>
   <tabstop>cilineEdit</tabstop>
   <tabstop>buscapushButton</tabstop>
-  <tabstop>nivel1lineEdit</tabstop>
-  <tabstop>nivel2lineEdit</tabstop>
-  <tabstop>nivel3lineEdit</tabstop>
+  <tabstop>add_pushButton</tabstop>
+  <tabstop>arriba_pushButton</tabstop>
+  <tabstop>abajo_pushButton</tabstop>
+  <tabstop>borra_pushButton</tabstop>
   <tabstop>diariolistWidget</tabstop>
   <tabstop>importescheckBox</tabstop>
+  <tabstop>desglose_mes_checkBox</tabstop>
   <tabstop>texlineEdit</tabstop>
   <tabstop>CalcularpushButton</tabstop>
   <tabstop>referenciaspushButton</tabstop>

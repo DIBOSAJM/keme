@@ -854,38 +854,6 @@ void conta347::consultamayor()
 
 void conta347::genera347()
 {
-#ifdef NOMACHINE
-  directorio *dir = new directorio();
-  dir->pasa_directorio(dirtrabajobd());
-  dir->activa_pide_archivo(tr("modelo.347"));
-  if (dir->exec() == QDialog::Accepted)
-    {
-      // QMessageBox::information( this, tr("selección"),
-      //                         dir->selec_actual() );
-      // QMessageBox::information( this, tr("selección"),
-      //                         dir->ruta_actual() );
-      QString nombre=dir->respuesta_arch();
-      if (nombre.length()>0)
-          {
-           // QString nombre=nombre.fromLocal8Bit(fileNames.at(0));
-           if (nombre.right(4)!=".347") nombre=nombre+".347";
-           // QMessageBox::information( this, tr("selección"),
-           //                         nombre );
-           QString rutadir=dir->directorio_actual();
-           if (!rutadir.endsWith(QDir::separator())) rutadir.append(QDir::separator());
-           nombre=rutadir+nombre;
-           // QMessageBox::information( this, tr("selección"),
-           //                          nombre );
-           // if (!genfich347(nombre))
-           //   QMessageBox::information( this, tr("Fichero 347"),tr("NO se ha generado correctamente el fichero 347"));
-           if (nombre.right(4)!=".347") nombre=nombre+".347";
-           if (!genfich347(nombre))
-              QMessageBox::information( this, tr("Fichero 347"),tr("NO se ha generado correctamente el fichero 347"));
-          }
-    }
-   delete(dir);
-#else
-
 
   QFileDialog dialogofich(this);
   dialogofich.setFileMode(QFileDialog::AnyFile);
@@ -922,7 +890,6 @@ void conta347::genera347()
               QMessageBox::information( this, tr("Fichero 347"),tr("NO se ha generado correctamente el fichero 347"));
           }
        }
-#endif
 
 }
 
@@ -1237,11 +1204,18 @@ bool conta347::genfich347(QString nombre)
        str.fill('0',15);
        contenido+=str;
 
-       // BLANCOS 201
+       // NÚMERO CONVOCATORIA BDNS
        str.clear();
-       str.fill(' ',201);
+       str.fill('0',6);
+       contenido+=str;
+
+       // BLANCOS 195
+       str.clear();
+       str.fill(' ',195);
        //contenido+=" ";
        contenido+=str;
+
+
        if (veces<ui.latconta347->rowCount()-1) contenido+="\r\n";
   // ----------------------------------------------------------------------------------------
    }

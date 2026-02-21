@@ -31,6 +31,7 @@
 #include <QProgressDialog>
 #include <qtrpt.h>
 #include "estado_grafico.h"
+#include "hoja_cols_ci.h"
 
 calcestado::calcestado() : QDialog() {
   ui.setupUi(this);
@@ -62,7 +63,6 @@ calcestado::calcestado() : QDialog() {
   condesglosectas=false;
   hay_analitica_tabla=basedatos::instancia()->analitica_tabla();
 
-  connect(ui.cilineEdit,SIGNAL(textChanged(QString)),this,SLOT(fijadescripciones()));
   connect(ui.buscapushButton,SIGNAL(clicked()),this,SLOT(buscapulsado()));
   connect(ui.referenciaspushButton,SIGNAL(clicked()), this, SLOT(procesareferencias()));
   connect(ui.CalcularpushButton,SIGNAL(clicked()), this, SLOT(calculaestado()));
@@ -238,8 +238,10 @@ void calcestado::cargaestado( QString titulo )
 	   ui.Ejercicio2comboBox->setCurrentIndex(indice);
 	   
 	   lafecha=query.value(3).toDate();
-	   if (lafecha.year()>2000)
-	       ui.FechadateEdit->setDate(lafecha);
+       if (lafecha.year()>2000) ui.FechadateEdit->setDate(lafecha);
+       QString cad_hoja_ci=query.value(14).toString();
+       QStringList lista_ci = cad_hoja_ci.split(',');
+       if (!cad_hoja_ci.isEmpty()) ui.ci_listWidget->addItems(lista_ci);
            QString linea=query.value(4).toString();
            int ndiarios=linea.count(' ')+1;
            for (int veces=0;veces<ndiarios;veces++)
@@ -311,51 +313,6 @@ void calcestado::buscapulsado()
 }
 
 
-void calcestado::fijadescripciones()
-{
-
-  QString codigo=ui.cilineEdit->text();
-  QString cadena,descripcion;
-  QString qnivel=0;
-  ui.nivel1lineEdit->setText("");
-  ui.nivel2lineEdit->setText("");
-  ui.nivel3lineEdit->setText("");
-
- if (codigo.length()==0) return;
-
-  if (codigo.startsWith("???"))
-      {
-       ui.nivel1lineEdit->setText(tr("CUALQUIERA"));
-      }
-      else
-           {
-            bool encontrada=buscaci(codigo.left(3),&descripcion,&qnivel);
-            if (encontrada && qnivel.toInt()==1)
-                ui.nivel1lineEdit->setText(descripcion);
-           }
-
- if (codigo.length()<=3) return;
-
- if (codigo.mid(3,3)==QString("???")) ui.nivel2lineEdit->setText(tr("CUALQUIERA"));
-     else
-          {
-           bool encontrada=buscaci(codigo.mid(3,3),&descripcion,&qnivel);
-           int elnivel=qnivel.toInt();
-           if (encontrada && elnivel==2)
-              ui.nivel2lineEdit->setText(descripcion);
-          }
-
- if (codigo.length()<=6) return;
-
- if (codigo.length()==7 && codigo[6]=='*')  ui.nivel3lineEdit->setText(tr("CUALQUIERA"));
-    else
-         {
-          bool encontrada=buscaci(codigo.right(codigo.length()-6),&descripcion,&qnivel);
-          if (encontrada && qnivel.toInt()==3)
-             ui.nivel3lineEdit->setText(descripcion);
-         }
-
-}
 
 void calcestado::procesareferencias()
 {
@@ -1496,14 +1453,14 @@ double calcestado::calculaformula( QString codigo, int ejercicio1,bool *calculad
 void calcestado::grabacabeceraestado()
 {
  QDate fechaactual;
- QString cadena;
- QSqlQuery query;
  fechaactual=QDate::currentDate();
  ui.FechadateEdit->setDate(fechaactual);
  QTime hora=QTime::currentTime();
  QString cadhora=hora.toString("hh:mm:ss");
  ui.horalineEdit->setText(cadhora);
- basedatos::instancia()->updateCabeceraestadosfechacalculoejercicio1ciejercicio2titulo( fechaactual, ui.Ejercicio1comboBox->currentText() , ui.cilineEdit->text() , ui.Ejercicio2comboBox->currentText() , ui.titulolabel->text() );
+
+ basedatos::instancia()->updateCabeceraestadosfechacalculoejercicio1ciejercicio2titulo( fechaactual, ui.Ejercicio1comboBox->currentText() , ui.cilineEdit->text() ,
+                                                                                        ui.Ejercicio2comboBox->currentText() , ui.titulolabel->text() );
 
 }
 
@@ -4555,6 +4512,14 @@ double calcestado::calculacuentaci(QString const & codigo, QString const & ejerc
    return calculacuenta(cuenta,ejercicio,acotacion,fecha1,fecha2,ci);
 }
 
+void calcestado::calc_estado_ci(QString ci)
+{
+  QString guarda_ci=ui.cilineEdit->text();
+  ui.cilineEdit->setText(ci);
+  calculaestado();
+  ui.cilineEdit->setText(guarda_ci);
+}
+
 
 void calcestado::genera_xml()
 {
@@ -6831,3 +6796,113 @@ void calcestado::generalatex_meses()
     fichero.close();
 
 }
+
+void calcestado::on_add_pushButton_clicked()
+{
+    if (!ui.cilineEdit->text().isEmpty()) {
+        auto *item = new QListWidgetItem(ui.cilineEdit->text());
+        ui.ci_listWidget->addItem(item);
+    }
+}
+
+
+void calcestado::on_borra_pushButton_clicked()
+{
+    int row = ui.ci_listWidget->currentRow();
+    if (row !=-1) {
+        QListWidgetItem *item = ui.ci_listWidget->takeItem(row);  // lo saca de la lista
+        delete item; // liberamos memoria
+    }
+}
+
+
+void calcestado::on_arriba_pushButton_clicked()
+{
+    int row = ui.ci_listWidget->currentRow();
+    if (row !=-1) {
+        if (row > 0) {                     // comprobación: no es el primero
+            QListWidgetItem *item = ui.ci_listWidget->takeItem(row);          // lo sacas
+            ui.ci_listWidget->insertItem(row - 1, item);                      // lo inserta una posición arriba
+            ui.ci_listWidget->setCurrentRow(row - 1);
+        }
+    }
+}
+
+
+void calcestado::on_abajo_pushButton_clicked()
+{
+    int row = ui.ci_listWidget->currentRow();
+    if (row !=-1) {
+        if (row >0 && row < ui.ci_listWidget->count()) {
+                // sacar ambos ítems
+                QListWidgetItem *item1 = ui.ci_listWidget->takeItem(row);       // el actual
+                QListWidgetItem *item2 = ui.ci_listWidget->takeItem(row);       // OJO: ahora en 'row' está el que estaba abajo
+
+                // reinsertar en orden inverso
+                ui.ci_listWidget->insertItem(row,     item2);   // abajo pasa arriba
+                ui.ci_listWidget->insertItem(row + 1, item1);   // arriba pasa abajo
+
+                ui.ci_listWidget->setCurrentRow(row + 1);
+        }
+    }
+}
+
+
+void calcestado::on_hoja_ci_pushButton_clicked()
+{
+    QProgressDialog progreso(tr("Generando ..."), 0, 0, 3);
+    progreso.setWindowTitle("Estados Contables");
+
+    QStringList columnas;
+    for (int v=0;v<ui.ci_listWidget->count();v++) columnas << ui.ci_listWidget->item(v)->text();
+
+    QStringList items_estado;
+    QSqlQuery query2 = basedatos::instancia()->select5Estadostituloparte1ordernodo( ui.titulolabel->text() , true );
+    if ( query2.isActive() )
+        while ( query2.next() ) {
+           if (query2.value(0).toString().contains("LINEA")>0) continue;
+           QString cadena_sec;
+           QString espacios;
+           for (int veces=1;veces<=query2.value(0).toString().count('.');veces++)
+               espacios+="  ";
+           cadena_sec=espacios +query2.value(1).toString();
+           items_estado << cadena_sec;
+        }
+
+    auto *h = new Hoja_cols_ci();
+    h->pasa_titulo(ui.titulolabel->text());
+    h->pasa_columnas(columnas);
+    h->pasa_nombre_items(items_estado);
+    if (ui.fechas_ej1_groupBox->isChecked())
+        h->intervalo_fechas(ui.ini_ej1_dateEdit->date(),ui.fin_ej1_dateEdit->date());
+    // calculamos cada columna
+    msj_calculado=false;
+    for (int v=0;v<ui.ci_listWidget->count();v++) {
+        calc_estado_ci(ui.ci_listWidget->item(v)->text());
+        QStringList valores;
+        query2 = basedatos::instancia()->select5Estadostituloparte1ordernodo( ui.titulolabel->text() , true );
+        if ( query2.isActive() )
+            while ( query2.next() ) {
+               if (query2.value(0).toString().contains("LINEA")>0) continue;
+               QString cadena_sec;
+               cadena_sec=formateanumero(query2.value(2).toDouble(),comadecimal, decimales);
+               valores << cadena_sec;
+            }
+        h->pasa_resultados_columna(v+1,valores);
+        QApplication::processEvents();
+    }
+    msj_calculado=true;
+    progreso.close();
+    h->exec();
+    delete (h);
+
+    // grabamos contenido lista ci en tabla de cacecera de estados
+    QString cadlis;
+    for (int veces=0; veces<ui.ci_listWidget->count(); veces++) {
+        cadlis+=ui.ci_listWidget->item(veces)->text();
+        if (veces<ui.ci_listWidget->count()-1) cadlis+=",";
+    }
+    // llamar a función para grabar
+    basedatos::instancia()->update_cabeceraestados_hoja_ci(ui.titulolabel->text(), cadlis);
+}
+

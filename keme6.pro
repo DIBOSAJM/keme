@@ -40,6 +40,7 @@ SOURCES += main.cpp\
     busca_cta_diario.cpp \
     cambia_actividad.cpp \
     check_herramientas.cpp \
+    hoja_cols_ci.cpp \
         mainwindow.cpp\
         arbol.cpp \
         aritmetica.cpp\
@@ -242,6 +243,7 @@ HEADERS  += mainwindow.h\
     check_herramientas.h \
          funciones.h\
          basedatos.h\
+    hoja_cols_ci.h \
          privilegios.h \
          conexion.h\
          diario.h \
@@ -439,6 +441,7 @@ FORMS    += mainwindow.ui\
     check_herramientas.ui \
           conexion.ui\
           diario.ui \
+    hoja_cols_ci.ui \
           preferencias.ui\
           directorio.ui \
           acercade.ui \

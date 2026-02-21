@@ -137,7 +137,8 @@ move ( x, y ); */
        ui.solo_borr_checkBox->setChecked(query.value(56).toBool());
        ui.prorrata_checkBox->setChecked(query.value(57).toBool());
        if (ui.prorrata_checkBox->isChecked()) ui.prorratalineEdit->setEnabled(true);
-       imagen=query.value(58).toString();
+       ui.pagosAcuenta_lineEdit->setText(query.value(58).toString());
+       imagen=query.value(59).toString();
      }
   for (int veces=0; veces<ui.provinciacomboBox->count(); veces++)
      {
@@ -221,7 +222,8 @@ void editconfig::aceptar()
                                                  ui.url_actu_lineEdit->text(),
                                                 ui.moneda_lineEdit->text(),
                                                 ui.renum_borr_checkBox->isChecked(),
-                                                ui.solo_borr_checkBox->isChecked(), ui.prorrata_checkBox->isChecked());
+                                                ui.solo_borr_checkBox->isChecked(), ui.prorrata_checkBox->isChecked(),
+                                                ui.pagosAcuenta_lineEdit->text());
 
     basedatos::instancia()->graba_config_imagenlogo(fototexto());
 

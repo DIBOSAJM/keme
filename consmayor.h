@@ -95,6 +95,7 @@ class consmayor : public QDialog {
                 void on_conmovs_checkBox_stateChanged(int arg1);
                 void on_inicialdateEdit_userDateChanged(const QDate &date);
                 void on_finaldateEdit_userDateChanged(const QDate &date);
+                void on_cons_externo_pushButton_clicked();
 };
 
 

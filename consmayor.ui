@@ -378,6 +378,35 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="cons_externo_pushButton">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="keme.qrc">
+             <normaloff>:/iconos/graf/text-x-vcard.png</normaloff>:/iconos/graf/text-x-vcard.png</iconset>
+           </property>
+           <property name="shortcut">
+            <string/>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="quita_externo_pushButton">
            <property name="minimumSize">
             <size>
@@ -1340,10 +1369,11 @@
   <tabstop>refrescarpushButton</tabstop>
   <tabstop>previapushButton</tabstop>
   <tabstop>siguientepushButton</tabstop>
+  <tabstop>conmovs_checkBox</tabstop>
   <tabstop>externolineEdit</tabstop>
   <tabstop>externo_pushButton</tabstop>
+  <tabstop>cons_externo_pushButton</tabstop>
   <tabstop>quita_externo_pushButton</tabstop>
-  <tabstop>descrip_externo_lineEdit</tabstop>
   <tabstop>intervalogroupBox</tabstop>
   <tabstop>iniciallineEdit</tabstop>
   <tabstop>finallineEdit</tabstop>
@@ -1351,7 +1381,11 @@
   <tabstop>inicialdateEdit</tabstop>
   <tabstop>fincheckBox</tabstop>
   <tabstop>finaldateEdit</tabstop>
-  <tabstop>mayortable</tabstop>
+  <tabstop>descrip_externo_lineEdit</tabstop>
+  <tabstop>fecha_pushButton</tabstop>
+  <tabstop>concepto_pushButton</tabstop>
+  <tabstop>iva_pushButton</tabstop>
+  <tabstop>ret_pushButton</tabstop>
   <tabstop>imprimirpushButton</tabstop>
   <tabstop>informe_tex_pushButton</tabstop>
   <tabstop>editarpushButton</tabstop>
@@ -1371,6 +1405,11 @@
   <tabstop>debelineEdit</tabstop>
   <tabstop>haberlineEdit</tabstop>
   <tabstop>saldolineEdit</tabstop>
+  <tabstop>csvpushButton</tabstop>
+  <tabstop>c43pushButton</tabstop>
+  <tabstop>borra_imp_pushButton</tabstop>
+  <tabstop>punteo_conci_pushButton</tabstop>
+  <tabstop>mayortable</tabstop>
  </tabstops>
  <resources>
   <include location="keme.qrc"/>

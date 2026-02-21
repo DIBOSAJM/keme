@@ -374,7 +374,7 @@ void tablaSII::carga_recibidas()
           ui->tableWidget->setItem(numorden,17,newItem912);
 
           // aquí iría enviado sii
-          QString cad_enviado_sii=query.value(24).toBool() ? "X" : "";
+          QString cad_enviado_sii=query.value(24).toBool() ? "✅" : "";
           QTableWidgetItem *newItem913 = new QTableWidgetItem(cad_enviado_sii);
           newItem913->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
           ui->tableWidget->setItem(numorden,18,newItem913);
@@ -602,7 +602,7 @@ void tablaSII::carga_emitidas()
           totaltotal+=query.value(10).toDouble();
 
           // aquí iría enviado sii
-          QString cad_enviado_sii=query.value(18).toBool() ? "X" : "";
+          QString cad_enviado_sii=query.value(18).toBool() ? "✅" : "";
           QTableWidgetItem *newItem913 = new QTableWidgetItem(cad_enviado_sii);
           newItem913->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
           ui->tableWidget->setItem(numorden,18,newItem913);

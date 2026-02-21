@@ -573,10 +573,13 @@ void execasientomodelo::generaasiento(bool verificar)
                             QString nombre=asignaconcepto( query.value(23).toString() );
                             QString cif=asignaconcepto( query.value(24).toString() );
                             QString exento_no_deduc=claveiva == tipo_exento_nodeduc() ? "1" : "";
+                            if (claveiva==tipo_exento()) claveiva = "";
                             QString qimportacion= importacion ? "1" : "";
                             QString qexportacion= exportacion ? "1" : "";
                             QString qisp_op_interiores= isp_op_interiores ? "1" : "";
                             // esto es para exento
+                            if (claveiva == tipo_nosujeto()) { tablaasiento->activa_fila_nosujeta(fila); claveiva = "";}
+                            if (claveiva == tipo_exento_nodeduc()) claveiva= "";
                             tablaasiento->pasadatos2(fila,cuentabaseiva,baseiva,
 					     claveiva,ctipoiva,ctipore,
                                              cuota,cuentafra,
@@ -588,7 +591,6 @@ void execasientomodelo::generaasiento(bool verificar)
                                              nombre,cif,qimportacion,qexportacion,exento_no_deduc,
                                              qisp_op_interiores,"");
                             if (eib_servicios) tablaasiento->make_linea_prest_servicio_ue(fila);
-                            if (claveiva == tipo_nosujeto()) tablaasiento->activa_fila_nosujeta(fila);
                             tablaasiento->chequeatotales();
                             filaexento=fila;
                             fila++;
