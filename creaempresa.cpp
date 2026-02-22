@@ -1005,7 +1005,7 @@ QString creaempresa::import_diario(QTextStream *stream)
         basedatos::instancia()->insertDiario_imp(cadnumasiento, apunte, cadfecha, cuenta, debe,
                                              haber, concepto, documento, diario, "", usuario,
                                              "", ejercicio, codfactura);
-        basedatos::instancia()->updateSaldossubcuentasaldomenosmascodigo(cuenta,convapunto(cadhaber),convapunto(caddebe));
+        basedatos::instancia()->updateSaldossubcuentasaldomenosmascodigo(convapunto(cadhaber),convapunto(caddebe),cuenta);
         chequea_error();
         if (nocontinuar) return QString();
        }
@@ -1110,7 +1110,7 @@ QString creaempresa::import_diario_pg(QTextStream *stream)
         cadq += "','";
         cadq += codfactura;
         cadq += "', false)";
-        basedatos::instancia()->updateSaldossubcuentasaldomenosmascodigo(cuenta,convapunto(cadhaber),convapunto(caddebe));
+        basedatos::instancia()->updateSaldossubcuentasaldomenosmascodigo(convapunto(cadhaber),convapunto(caddebe),cuenta);
        }
 
     //QMessageBox::information( this, tr("Importación"), cadq);
