@@ -27,26 +27,29 @@ void respuesta_sii::pasa_dom(QDomDocument qdom)
 
     QApplication::processEvents();
 
+    bool no_igic=!basedatos::instancia()->selectIgicconfiguracion();
+
   doc=qdom;
 
   // pasamos info a tabla
 
   // QDomElement docElem = doc.documentElement();
-
-  QDomNodeList lista = doc.elementsByTagName("siiR:RespuestaLinea");
+  QString msj_igic="ns4";
+  if (recibidas) msj_igic="ns5";
+  QDomNodeList lista = doc.elementsByTagName(no_igic ? "siiR:RespuestaLinea": msj_igic+":RespuestaLinea");
 
   for (int veces=0; veces< lista.count(); veces++)
    {
      QApplication::processEvents();
      ui->tableWidget->insertRow(veces);
      QDomNode nodo_respuesta=lista.at(veces);
-     QDomNode nodo_idfactura=nodo_respuesta.namedItem("siiR:IDFactura");
+     QDomNode nodo_idfactura=nodo_respuesta.namedItem(no_igic ? "siiR:IDFactura" : msj_igic+":IDFactura");
      if (!nodo_idfactura.isNull())
         {
-         QDomNode nodo_idemisor=nodo_idfactura.namedItem("sii:IDEmisorFactura");
+         QDomNode nodo_idemisor=nodo_idfactura.namedItem(no_igic ? "sii:IDEmisorFactura" : "IDEmisorFactura");
          if (!nodo_idemisor.isNull())
            {
-            QDomNode nodo_nif=nodo_idemisor.namedItem("sii:NIF");
+            QDomNode nodo_nif=nodo_idemisor.namedItem(no_igic ? "sii:NIF" : "NIF");
             if (!nodo_nif.isNull())
                {
                 QDomElement e = nodo_nif.toElement();
@@ -57,7 +60,7 @@ void respuesta_sii::pasa_dom(QDomDocument qdom)
                }
            }
          // num-serie factura emisor
-         QDomNode nodo_numserie=nodo_idfactura.namedItem("sii:NumSerieFacturaEmisor");
+         QDomNode nodo_numserie=nodo_idfactura.namedItem(no_igic ? "sii:NumSerieFacturaEmisor": "NumSerieFacturaEmisor");
          if (!nodo_numserie.isNull())
            {
              QDomElement e = nodo_numserie.toElement();
@@ -66,7 +69,7 @@ void respuesta_sii::pasa_dom(QDomDocument qdom)
                  ui->tableWidget->setItem(veces,1,new QTableWidgetItem(e.text()));
                }
            }
-         QDomNode nodo_fecha=nodo_idfactura.namedItem("sii:FechaExpedicionFacturaEmisor");
+         QDomNode nodo_fecha=nodo_idfactura.namedItem(no_igic ? "sii:FechaExpedicionFacturaEmisor": "FechaExpedicionFacturaEmisor");
          if (!nodo_fecha.isNull())
            {
              QDomElement e = nodo_fecha.toElement();
@@ -76,7 +79,7 @@ void respuesta_sii::pasa_dom(QDomDocument qdom)
                }
            }
         }
-     QDomNode nodo_estado=nodo_respuesta.namedItem("siiR:EstadoRegistro");
+     QDomNode nodo_estado=nodo_respuesta.namedItem(no_igic ? "siiR:EstadoRegistro":msj_igic+":EstadoRegistro");
      QString estado;
      if (!nodo_estado.isNull())
        {
@@ -90,7 +93,7 @@ void respuesta_sii::pasa_dom(QDomDocument qdom)
      if (estado!="Correcto")
        {
           ui->tableWidget->item(veces,3)->setBackground(Qt::red);
-          QDomNode nodo_codigo=nodo_respuesta.namedItem("siiR:CodigoErrorRegistro");
+          QDomNode nodo_codigo=nodo_respuesta.namedItem(no_igic ? "siiR:CodigoErrorRegistro":msj_igic+":CodigoErrorRegistro");
           if (!nodo_codigo.isNull())
             {
               QDomElement e = nodo_codigo.toElement();
@@ -99,7 +102,7 @@ void respuesta_sii::pasa_dom(QDomDocument qdom)
                   ui->tableWidget->setItem(veces,4,new QTableWidgetItem(e.text()));
                 }
             }
-          QDomNode nodo_descrip=nodo_respuesta.namedItem("siiR:DescripcionErrorRegistro");
+          QDomNode nodo_descrip=nodo_respuesta.namedItem(no_igic?"siiR:DescripcionErrorRegistro":msj_igic+":DescripcionErrorRegistro");
           if (!nodo_descrip.isNull())
             {
               QDomElement e = nodo_descrip.toElement();

@@ -9411,7 +9411,21 @@ QSqlQuery basedatos::selectTodoDatossubcuentacuenta (QString cuenta) {
 
 }
 
-// Devuelve los datos de una subcuenta
+QSqlQuery basedatos::select_datossubcuenta()
+{
+ return ejecutar("select cuenta, razon, nombrecomercial, cif, nifrprlegal, web, claveidfiscal, domicilio, poblacion, codigopostal,"
+                 "provincia, pais, tfno, fax, email, ccc, cuota, observaciones, pais_dat, "
+                 "iban, bic from datossubcuenta order by cuenta");
+}
+
+QSqlQuery basedatos::select_datos_externo()
+{
+ return ejecutar("select codigo, cuenta, razon, nombrecomercial, nombre, apellidos, cif, nifrprlegal, web, claveidfiscal, "
+                 "domicilio, poblacion, codigopostal,"
+                 "provincia, pais, pais_dat, tfno, fax, email, ccc, iban, bic, cuota, observaciones from externos order by codigo");
+}
+
+// Devuelve los datos de un externo
 QSqlQuery basedatos::selectTodoDatosexterno (QString codigo) {
 // pais_dat, qtipo_ret, ret_arrendamiento, tipo_operacion_ret
     QString cadquery = "SELECT codigo,razon,nombrecomercial,cif,nifrprlegal,domicilio,poblacion,";
@@ -13054,6 +13068,8 @@ void basedatos::actu_enviado_sii_fra(QString cod_factura, QDate fecha_fra, bool 
     QString cadena="select d.pase from diario d, libroiva l where (d.documento='";
     cadena+=cod_factura;
     cadena+="' or l.finicial='";
+    cadena+=cod_factura;
+    cadena+="' or l.dua='";
     cadena+=cod_factura;
     cadena+="') and l.fecha_fra='";
     cadena+=fecha_fra.toString("yyyy-MM-dd");
@@ -17243,11 +17259,11 @@ void basedatos::recupera_pp_asiento(QString asiento, QString ejercicio)
               QString cad="insert into diario (asiento,pase,fecha,cuenta,debe,haber,concepto,documento, "
                        "diario, ci, usuario, conciliado, enlace, dif_conciliacion, copia_doc, clave_ci, "
                        "ejercicio, externo, apunte_origen, codfactura, nrecepcion, revisado,"
-                       "codigo_var_evpn_pymes, fecha_factura) ";
+                       "codigo_var_evpn_pymes, fecha_factura, contabilizado) ";
               cad+="select asiento,pase,fecha,cuenta,debe,haber,concepto,documento, "
                 "diario, ci, usuario, conciliado, enlace, dif_conciliacion, copia_doc, clave_ci, "
                 "ejercicio, externo, apunte_origen, codfactura, nrecepcion, revisado,"
-                "codigo_var_evpn_pymes, fecha_factura from pp_diario where pase= ";
+                "codigo_var_evpn_pymes, fecha_factura, false from pp_diario where pase= ";
               cad+=query.value(0).toString();
               ejecutar(cad);
 
@@ -22474,6 +22490,16 @@ void basedatos::actualizade4000()
     else cadena += "prorrata bool default false";
     ejecutar(cadena);
 
+    // dejamos en borrador los apuntes de los ejercicios abiertos que no sean diario de apertura.
+    // QStringList basedatos::ejercicios_abiertos()
+    QStringList ejercicios_abiertos=basedatos::instancia()->ejercicios_abiertos();
+
+    foreach (const QString &ejercicio, ejercicios_abiertos) {
+        cadena="update diario set contabilizado=false where ejercicio='";
+        cadena.append(ejercicio);
+        cadena.append("' and diario!='APERTURA'");
+        ejecutar(cadena);
+    }
 
     ejecutar("update configuracion set version='4.0.0.2'");
 }
@@ -29740,6 +29766,20 @@ QStringList basedatos::lista_cod_ejercicios()
           listacod << query.value(0).toString();
          }
    return listacod;
+}
+
+QStringList basedatos::ejercicios_abiertos()
+{
+    QStringList listacod;
+    QString cadquery = "SELECT codigo from ejercicios where not cerrado order by codigo";
+    QSqlQuery query = ejecutar(cadquery);
+    if  (query.isActive() )
+        while (query.next())
+         {
+          listacod << query.value(0).toString();
+         }
+   return listacod;
+
 }
 
 void basedatos::actu_ejercicio_diario(QString ejercicio)

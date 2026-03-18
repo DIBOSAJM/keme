@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "datos_accesorios_export.h"
 #include "ui_mainwindow.h"
 #include "conexion.h"
 #include "preferencias.h"
@@ -237,6 +238,8 @@ QApplication::processEvents();
 
     QNetworkAccessManager *manager=new QNetworkAccessManager();
     mNetMan=manager;
+
+    // ui->actionFacturas_Emitidas_E_xentas->setVisible(false);
 
     connect(ui->actionConexion,SIGNAL(triggered()),SLOT(conex()));
     connect(ui->actionOrden_numero, SIGNAL(toggled(bool)), this,
@@ -7529,5 +7532,39 @@ void MainWindow::on_actionEjercicio_Previo_triggered()
        filtroactivob=filtro;
        refrescardiario();
     }
+}
+
+
+void MainWindow::on_actionFacturas_Emitidas_E_xentas_triggered()
+{
+
+    tabla_asientos *t = new tabla_asientos(estilonumerico,!sindecimales,usuario);
+    if (punterodiario->borrador()) t->set_borrador();
+
+    if (activa_msj_tabla) t->pasanocerrar(true);
+
+    t->emitida_exenta_autonomo();
+    // tablaasiento->exec();
+    delete(t);
+    refrescardiario();
+}
+
+
+void MainWindow::on_actionE_xportar_Datos_Accesorios_de_cuentas_triggered()
+{
+    Datos_accesorios_export *d = new Datos_accesorios_export();
+    d->carga_datossubcuenta();
+    d->exec();
+    delete(d);
+
+}
+
+
+void MainWindow::on_actionExportar_Ex_ternos_triggered()
+{
+    Datos_accesorios_export *d = new Datos_accesorios_export();
+    d->carga_externos();
+    d->exec();
+    delete(d);
 }
 

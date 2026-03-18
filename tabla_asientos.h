@@ -89,6 +89,7 @@ class tabla_asientos  : public QDialog {
                                             QString fichero);
                 void pasa_importes_sop_autonomo(QJsonObject info);
                 void repercutidoautonomo();
+                void emitida_exenta_autonomo();
                 void activa_aibautonomo();
                 void activa_eibautonomo();
                 void quitavar_aibautonomo();

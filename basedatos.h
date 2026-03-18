@@ -651,6 +651,11 @@ class basedatos {
         // Devuelve los datos de una subcuenta
         QSqlQuery selectTodoDatossubcuentacuenta(QString cuenta);
 
+        QSqlQuery select_datossubcuenta();
+
+        QSqlQuery select_datos_externo();
+
+
         QSqlQuery select_datos_tipo_proveedor_cta (QString codigo);
 
         QSqlQuery lista_datos_tipo_proveedor_cta (QString filtro, QString cuenta="");
@@ -3339,6 +3344,7 @@ class basedatos {
         QSqlQuery libroiva_isp_interiores_recibidas (QDate inicial, QDate final);
         QSqlQuery libroiva_isp_interiores_emitidas (QDate inicial, QDate final);
         QStringList lista_cod_ejercicios();
+        QStringList ejercicios_abiertos();
         void actu_ejercicio_diario(QString ejercicio);
         void asigna_prox_asiento_ejercicio(QString ejercicio);
         QStringList tipos_automaticos();

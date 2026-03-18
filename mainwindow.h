@@ -342,6 +342,9 @@ private slots:
     void on_actionCambiar_Actividad_a_apunte_triggered();
     void on_actionEjercicio_Actual_triggered();
     void on_actionEjercicio_Previo_triggered();
+    void on_actionFacturas_Emitidas_E_xentas_triggered();
+    void on_actionE_xportar_Datos_Accesorios_de_cuentas_triggered();
+    void on_actionExportar_Ex_ternos_triggered();
 };
 
 #endif // MAINWINDOW_H

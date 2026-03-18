@@ -118,6 +118,8 @@
      <addaction name="actionCarga_Documentos_en_Base_de_Datos"/>
      <addaction name="actionInventario_inmovilizado"/>
      <addaction name="actionVerificar_cuadre_analitica_tabla"/>
+     <addaction name="actionE_xportar_Datos_Accesorios_de_cuentas"/>
+     <addaction name="actionExportar_Ex_ternos"/>
     </widget>
     <addaction name="actionPreferencias"/>
     <addaction name="menuImportar"/>
@@ -301,6 +303,7 @@
     </widget>
     <addaction name="actionNuevo_Registro_IVA_soportado"/>
     <addaction name="actionNuevo_Registro_IVA_repercutido"/>
+    <addaction name="actionFacturas_Emitidas_E_xentas"/>
     <addaction name="actionAIB_Inversi_n_sujeto_pasivo"/>
     <addaction name="actionEIB_Prestaci_n_servicos_UE"/>
     <addaction name="actionTipos_de_IVA"/>
@@ -1479,6 +1482,21 @@
    </property>
    <property name="toolTip">
     <string>Filtrar por ejercicio previo</string>
+   </property>
+  </action>
+  <action name="actionFacturas_Emitidas_E_xentas">
+   <property name="text">
+    <string>Facturas Emitidas E&amp;xentas</string>
+   </property>
+  </action>
+  <action name="actionE_xportar_Datos_Accesorios_de_cuentas">
+   <property name="text">
+    <string>E&amp;xportar Datos Accesorios de cuentas</string>
+   </property>
+  </action>
+  <action name="actionExportar_Ex_ternos">
+   <property name="text">
+    <string>Exportar Ex&amp;ternos</string>
    </property>
   </action>
  </widget>

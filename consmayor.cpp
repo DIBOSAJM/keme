@@ -168,6 +168,7 @@ consmayor::consmayor(bool concomadecimal, bool condecimales, QString qusuario) :
      ui.externo_label->hide();
      ui.externolineEdit->hide();
      ui.externo_pushButton->hide();
+     ui.cons_externo_pushButton->hide();
      ui.quita_externo_pushButton->hide();
      ui.descrip_externo_lineEdit->hide();
     }

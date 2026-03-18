@@ -46,6 +46,7 @@
 #include "privilegios.h"
 #include "busca_externo.h"
 #include "externos.h"
+#include "emitida_exenta_aut.h"
 #include <QProgressDialog>
 #include <QFileDialog>
 #include <buscasubcuenta_input.h>
@@ -4572,6 +4573,193 @@ void tabla_asientos::repercutidoautonomo()
                 || conanalitica_parc()) exec();
          else incorporar();
      }
+}
+
+void tabla_asientos::emitida_exenta_autonomo()
+{
+    Emitida_exenta_aut *e = new Emitida_exenta_aut();
+   int resultado=e->exec();
+   bool verifica_as=e->verifica();
+   QJsonObject info=e->info_export();
+   delete(e);
+   if (resultado==QDialog::Rejected) return;
+
+   // info.insert("cuenta_base",ui->CtabaselineEdit->text());
+   // info.insert("base_imponible",ui->baselineEdit->text());
+   // info.insert("fecha_fra",ui->FechafradateEdit->date().toString("yyyy-MM-dd"));
+   // info.insert("fecha_cont",ui->fecha_cont_dateEdit->date().toString("yyyy-MM-dd"));
+   // info.insert("fecha_op",ui->fechaoperaciondateEdit->date().toString("yyyy-MM-dd"));
+   // info.insert("cuenta_factura",ui->CtafralineEdit->text());
+   // info.insert("documento",ui->documento_lineEdit->text());
+   // info.insert("concepto",ui->concepto_lineEdit->text());
+   // info.insert("clave_op",ui->clavecomboBox->currentText().section("-",0,0).trimmed());
+   // info.insert("actividad",ui->actividad_comboBox->currentText().section("-",0,0).trimmed());
+   // info.insert("externo",ui->externo_lineEdit->text());
+   // info.insert("cuenta_ret",ui->cta_ret_lineEdit->text());
+   // info.insert("importe_ret",ui->retenido_lineEdit->text());
+   // info.insert("nombre",ui->nombrelineEdit->text());
+   // info.insert("cif",ui->ciflineEdit->text());
+   // info.insert("num_facts",ui->numfacturaslineEdit->text());
+   // info.insert("inicial",ui->iniciallineEdit->text());
+   // info.insert("final",ui->finallineEdit->text());
+   // info.insert("rectificativa",ui->rectificativagroupBox->isChecked());
+   // info.insert("tipo_rectificativa",ui->tipo_rectificativa_comboBox->currentText().section("-",0,0).trimmed());
+   // info.insert("rectificada",ui->rectificada_lineEdit->text());
+   // info.insert("no_sujeta",ui->nosujetacheckBox->isChecked());
+   // info.insert("export_ext",ui->exportacionheckBox->isChecked());
+   // info.insert("isp",ui->expedida_isp_checkBox->isChecked());
+   // info.insert("fuera_tac",ui->ventas_fuera_tac_checkBox->isChecked());
+   // info.insert("no_deduc",ui->exenta_no_deduccheckBox->isChecked());
+   // info.insert("donacion",ui->donacion_checkBox->isChecked());
+   // info.insert("donacion_clave",ui->clave_donacion_comboBox->currentText().section("-",0,0).trimmed());
+   // info.insert("donacion_ca",ui->ca_comboBox->currentText().section("-",0,0).trimmed());
+   // info.insert("donacion_especie",ui->donacion_especie_checkBox->isChecked());
+   // info.insert("fichdoc",ui->fichdoclineEdit->text());
+
+
+   if (resultado==QDialog::Accepted)
+        {
+          QString cuenta_fra=info["cuenta_factura"].toString();
+          QString cuenta_ret=info["cuenta_ret"].toString().trimmed();
+          QString qretencion=info["importe_ret"].toString();
+          hay_fecha_factura=true;
+          fecha_factura=QDate().fromString(info["fecha_fra"].toString(),"yyyy-MM-dd");
+          ui.fichdoclineEdit->setText(info["fichdoc"].toString());
+          ui.externo_lineEdit->setText(info["externo"].toString());
+          for (int veces=0; veces<ui.actividad_comboBox->count(); veces++)
+              if (ui.actividad_comboBox->itemText(veces).section('-',0,0).trimmed()==info["actividad"].toString())
+                  ui.actividad_comboBox->setCurrentIndex(veces);
+          QString concepto;
+          QString concepto_plantilla=info["concepto"].toString();
+          concepto=descripcioncuenta(info["cuenta_factura"].toString());
+          if (!concepto_plantilla.isEmpty()) concepto=concepto_plantilla;
+          // empezamos por la primera línea = la base imponible
+          for (int veces=0;veces<=COLUMNAS;veces++)
+              if (ui.Tablaapuntes->item(0,veces)==0)
+                    {
+                     QTableWidgetItem *newItem = new QTableWidgetItem("");
+                     if (veces==2 || veces==3) newItem->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+                     ui.Tablaapuntes->setItem(0,veces,newItem);
+                    }
+          ui.Tablaapuntes->item(0,0)->setText(info["cuenta_base"].toString());
+          ui.Tablaapuntes->item(0,1)->setText(concepto);
+          ui.Tablaapuntes->item(0,3)->setText(info["base_imponible"].toString());
+          if (es_cuenta_para_analitica(info["cuenta_base"].toString()) &&
+              basedatos::instancia()->analitica_tabla())
+              realiza_asignainputdiario(0,info["base_imponible"].toString());
+         // segunda fila
+         int fila_actual=1;
+         // actualizamos línea siguiente con ctafra
+         for (int veces=0;veces<=COLUMNAS;veces++)
+             if (ui.Tablaapuntes->item(fila_actual,veces)==0)
+                 {
+                  QTableWidgetItem *newItem = new QTableWidgetItem("");
+                  if (veces==2 || veces==3) newItem->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+                  ui.Tablaapuntes->setItem(fila_actual,veces,newItem);
+                 }
+         ui.Tablaapuntes->item(fila_actual,0)->setText(info["cuenta_factura"].toString());
+         ui.Tablaapuntes->item(fila_actual,1)->setText(concepto);
+         double vtotal=convapunto(info["base_imponible"].toString()).toDouble();
+         if (!cuenta_ret.isEmpty()) vtotal=vtotal-convapunto(qretencion).toDouble();
+         ui.Tablaapuntes->item(fila_actual,2)->setText(formateanumero(vtotal,comadecimal,decimales));
+         // iva exento
+         if (verifica_as) ui.exentacheckBox->setChecked(true);
+         // void pasainfoexento(bool ivaexentorecibidas,  QString ctabaseexento,
+         //                     QString baseimponibleexento, QString cuentafraexento,
+         //                     QDate fechaexent, QDate fechaopexento, QString claveopexento,
+         //                     QString qfrectificativaexento,
+         //                     QString qfrectificadaexento, QString qnfacturasexento, QString qinicialexento,
+         //                     QString qfinalexento, bool binversion,
+         //                     QString qnombre, QString qcif,
+         //                     bool importacion, bool exportacion, bool nodeduccion, bool ventas_fuera_tac,
+         //                     bool qemitidas_int_isp, bool donacion, QString clave_donacion, bool donacion_especie, bool donacion_2ejer, QString comunidad_autonoma,
+         //                     double porcent_deduc_autonomia, QString dua);
+         pasainfoexento(false,  info["cuenta_base"].toString(),
+                        info["base_imponible"].toString(),info["cuenta_factura"].toString(),
+                        QDate().fromString(info["fecha_fra"].toString(),"yyyy-MM-dd"),
+                        QDate().fromString(info["fecha_op"].toString(),"yyyy-MM-dd"), info["clave_op"].toString(),
+                        info["rectificativa"].toBool() ? "1" : "0",
+                        info["rectificada"].toString(), info["num_facts"].toString(), info["inicial"].toString(),
+                        info["final"].toString(), false, info["nombre"].toString(), info["cif"].toString(),
+                        false, info["export_ext"].toBool(),info["no_deduc"].toBool(),info["fuera_tac"].toBool(),
+                        info["isp"].toBool(), info["donacion"].toBool(),info["donacion_clave"].toString(),
+                        info["donacion_especie"].toBool(),false,info["donacion_ca"].toString(),0, "");
+         ui.Tablaapuntes->item(fila_actual,5)->setText(info["cuenta_base"].toString());
+         ui.Tablaapuntes->item(fila_actual,6)->setText(info["base_imponible"].toString());
+         ui.Tablaapuntes->item(fila_actual,7)->setText(""); // clave iva
+         ui.Tablaapuntes->item(fila_actual,8)->setText("0"); // tipo iva
+         ui.Tablaapuntes->item(fila_actual,9)->setText(""); // tipo re
+         ui.Tablaapuntes->item(fila_actual,10)->setText("0"); // cuota iva
+         ui.Tablaapuntes->item(fila_actual,11)->setText(info["cuenta_factura"].toString());
+         QString caddia,cadmes,cadyear;
+         QDate qfechafra = QDate().fromString(info["fecha_fra"].toString(),"yyyy-MM-dd");
+         caddia.setNum(qfechafra.day());
+         cadmes.setNum(qfechafra.month());
+         cadyear.setNum(qfechafra.year());
+         ui.Tablaapuntes->item(fila_actual,12)->setText(caddia);
+         ui.Tablaapuntes->item(fila_actual,13)->setText(cadmes);
+         ui.Tablaapuntes->item(fila_actual,14)->setText(cadyear);
+         ui.Tablaapuntes->item(fila_actual,15)->setText("0"); // no soportado
+         ui.Tablaapuntes->item(fila_actual,20)->setText(info["fecha_op"].toString());
+         ui.Tablaapuntes->item(fila_actual,21)->setText(info["clave_op"].toString());
+         ui.Tablaapuntes->item(fila_actual,18)->setText(info["rectificativa"].toBool() ? "1" : "0");
+         ui.Tablaapuntes->item(fila_actual,23)->setText(info["rectificada"].toString());
+         ui.Tablaapuntes->item(fila_actual,24)->setText(info["num_facts"].toString());
+         ui.Tablaapuntes->item(fila_actual,25)->setText(info["inicial"].toString());
+         ui.Tablaapuntes->item(fila_actual,26)->setText(info["final"].toString());
+         ui.Tablaapuntes->item(fila_actual,30)->setText(info["no_sujeta"].toString());
+         ui.Tablaapuntes->item(fila_actual,33)->setText(info["nombre"].toString());
+         ui.Tablaapuntes->item(fila_actual,34)->setText(info["cif"].toString());
+         ui.Tablaapuntes->item(fila_actual,47)->setText(info["export_ext"].toBool() ? "1" : "0"); // exportacion
+         ui.Tablaapuntes->item(fila_actual,48)->setText(info["no_deduc"].toBool() ? "1" : "0"); // exenta no deduc no_deduc
+         ui.Tablaapuntes->item(fila_actual,49)->setText(info["isp"].toBool() ? "1" : "0");
+         ui.Tablaapuntes->item(fila_actual,52)->setText(info["fuera_tac"].toBool() ? "1" : "0");
+         QJsonObject reg_donacion;
+         reg_donacion.insert("clave",info["donacion_clave"].toString());
+         reg_donacion.insert("especie",info["donacion_especie"].toBool());
+         reg_donacion.insert("recurrente",false);
+         reg_donacion.insert("ca",info["donacion_ca"].toString());
+         reg_donacion.insert("deduccion_ca",0);
+         QJsonDocument doc(reg_donacion);
+         QString datos_donacion=doc.toJson();
+         ui.Tablaapuntes->item(fila_actual,59)->setText(datos_donacion);
+
+
+        // añadimos apuntes de retención
+        if (!cuenta_ret.isEmpty())
+            {
+              fila_actual++;
+              for (int veces=0;veces<=COLUMNAS;veces++)
+                 if (ui.Tablaapuntes->item(fila_actual,veces)==0)
+                    {
+                     QTableWidgetItem *newItem = new QTableWidgetItem("");
+                     if (veces==2 || veces==3) newItem->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+                     ui.Tablaapuntes->setItem(fila_actual,veces,newItem);
+                    }
+               ui.Tablaapuntes->item(fila_actual,0)->setText(cuenta_ret);
+               ui.Tablaapuntes->item(fila_actual,1)->setText(concepto);
+               ui.Tablaapuntes->item(fila_actual,2)->setText(qretencion);
+            }
+            QString qdocumento=info["documento"].toString();
+         if (qdocumento.length()>0) {
+              for (int veces=0;veces<=fila_actual;veces++)
+                        {
+                         if (concepto_plantilla.isEmpty())
+                             ui.Tablaapuntes->item(veces,1)->setText(concepto+" Fra. "+qdocumento);
+                         ui.Tablaapuntes->item(veces,4)->setText(qdocumento);
+                        }
+              }
+         ui.FechaApunte->setDate(QDate().fromString(info["fecha_cont"].toString(),"yyyy-MM-dd"));
+         // si botón aceptar activado pasar, si no edición
+         // contenidocambiado(0,0);
+         chequeatotales();
+
+         if (verifica_as || !ui.BotonIncorporar->isEnabled()
+               || (fechadejerciciocerrado(ui.FechaApunte->date()))
+               || !fechacorrespondeaejercicio(ui.FechaApunte->date()) || conanalitica()
+                       || conanalitica_parc()) exec();
+
+       }
 }
 
 void tabla_asientos::activa_aibautonomo()

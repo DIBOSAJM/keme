@@ -264,7 +264,8 @@ void tablaSII::carga_recibidas()
           // fecha_fra << fechafra.toString("yyyy-MM-dd");
 
           // Documento
-          ui->tableWidget->setItem(numorden,3,new QTableWidgetItem(query.value(0).toString()));
+          bool importacion=query.value(20).toBool();
+          ui->tableWidget->setItem(numorden,3,new QTableWidgetItem(importacion ? query.value(33).toString(): query.value(0).toString()));
           //documento << query.value(0).toString();
 
           // Cuenta
@@ -884,7 +885,8 @@ bool tablaSII::fich_sii_recibidas(QString nombrefich)
     QDomElement tag1 = doc.createElement("sii:Cabecera");
     tag.appendChild(tag1);
 
-    addElementoTextoDom(doc,tag1,"sii:IDVersionSii",VERSION_SII);
+    bool no_igic=!basedatos::instancia()->selectIgicconfiguracion();
+    addElementoTextoDom(doc,tag1,"sii:IDVersionSii",no_igic ? VERSION_SII:"1.0");
 
     QDomElement tag11 = doc.createElement("sii:Titular");
     tag1.appendChild(tag11);
@@ -1130,7 +1132,7 @@ bool tablaSII::fich_sii_recibidas(QString nombrefich)
            }
            else
                {
-                QDomElement tag2311 = doc.createElement("sii:DesgloseIVA");
+                QDomElement tag2311 = doc.createElement(no_igic? "sii:DesgloseIVA":"sii:DesgloseIGIC");
                 tag231.appendChild(tag2311);
 
                 QString asiento=ui->tableWidget->item(fila,7)->text();
@@ -1140,7 +1142,7 @@ bool tablaSII::fich_sii_recibidas(QString nombrefich)
 
                 while(fila<ui->tableWidget->rowCount())
                   {
-                   QDomElement tag23111 = doc.createElement("sii:DetalleIVA");
+                   QDomElement tag23111 = doc.createElement(no_igic?"sii:DetalleIVA":"sii:DetalleIGIC");
                    tag2311.appendChild(tag23111);
                    if (!agrario)
                      addElementoTextoDom(doc,tag23111,"sii:TipoImpositivo",convapunto(ui->tableWidget->item(fila,9)->text()));
@@ -1222,7 +1224,7 @@ bool tablaSII::fich_sii_recibidas(QString nombrefich)
     } else
         cadini+="xmlns:siiLR=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroLR.xsd\" "
                 "xmlns:sii=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd\">\n";
-
+    if (!no_igic) cadini.replace("/fact/","/igic/") ;
     QString xml = doc.toString();
     xml.remove("<!DOCTYPE ENVIO>");
     xml.prepend(cadini);
@@ -1268,7 +1270,8 @@ bool tablaSII::fich_sii_emitidas(QString nombrefich)
     QDomElement tag1 = doc.createElement("sii:Cabecera");
     tag.appendChild(tag1);
 
-    addElementoTextoDom(doc,tag1,"sii:IDVersionSii",VERSION_SII);
+    bool no_igic=!basedatos::instancia()->selectIgicconfiguracion();
+    addElementoTextoDom(doc,tag1,"sii:IDVersionSii",no_igic ? VERSION_SII:"1.0");
 
     QDomElement tag11 = doc.createElement("sii:Titular");
     tag1.appendChild(tag11);
@@ -1396,7 +1399,7 @@ bool tablaSII::fich_sii_emitidas(QString nombrefich)
 
          //addElementoTextoDom(doc,tag23,"sii:FechaOperacion",fecha_operacion.toString("dd-MM-yyyy"));
          QString clave_trasc="01";
-         if (exportacion && !op_no_sujeta) clave_trasc="02";
+         if (exportacion && (!op_no_sujeta)) clave_trasc="02";
          if (arrto_local_ret) clave_trasc="11";
          if (arrto_local_sin_ret) clave_trasc="12";
          // 02 Exportación;
@@ -1451,11 +1454,10 @@ bool tablaSII::fich_sii_emitidas(QString nombrefich)
          QString descripcion;
          QString concepto_sii=basedatos::instancia()->concepto_sii_pase(ui->tableWidget->item(fila,0)->text());
          if (concepto_sii.isEmpty())
-           descripcion=(cta_operacion.isEmpty() || multireg) ? tr("Objeto de la factura") : descripcioncuenta(cta_operacion);
-          else
+             descripcion=(cta_operacion.isEmpty() || multireg) ? tr("Objeto de la factura") : descripcioncuenta(cta_operacion);
+         else
              descripcion=concepto_sii;
          addElementoTextoDom(doc,tag23,"sii:DescripcionOperacion",descripcion);
-
 
 
          QString qpais;
@@ -1485,7 +1487,7 @@ bool tablaSII::fich_sii_emitidas(QString nombrefich)
          QDomElement tag232 = doc.createElement("sii:Contraparte");
          tag23.appendChild(tag232);
          addElementoTextoDom(doc,tag232,"sii:NombreRazon",filtracadxml( ui->tableWidget->item(fila,5)->text()));
-         if (!pr_servicios_ue && !eib && !exportacion)
+         if (!pr_servicios_ue && !eib && !exportacion && qpais=="ES")
             addElementoTextoDom(doc,tag232,"sii:NIF",ui->tableWidget->item(fila,6)->text());
           else
               {
@@ -1518,6 +1520,8 @@ bool tablaSII::fich_sii_emitidas(QString nombrefich)
 
               }
          }
+
+
 
          QDomElement tag231 = doc.createElement("sii:TipoDesglose");
          tag23.appendChild(tag231);
@@ -1560,8 +1564,17 @@ bool tablaSII::fich_sii_emitidas(QString nombrefich)
             } // fin desglose tipo operación
             else
                 {
-                 QDomElement tag2311 = doc.createElement("sii:DesgloseFactura");
-                 tag231.appendChild(tag2311);
+                 QDomElement DesgloseOperacion=doc.createElement("sii:DesgloseTipoOperacion");
+                 QDomElement EntregaBienes=doc.createElement("sii:Entrega");
+                 DesgloseOperacion.appendChild(EntregaBienes);
+                 QDomElement tag2311;
+                 if (qpais=="ES")
+                   tag2311 = doc.createElement("sii:DesgloseFactura");
+                 else {
+                     tag231.appendChild(DesgloseOperacion);
+                     tag2311=EntregaBienes;
+                 }
+                 if (qpais=="ES") tag231.appendChild(tag2311); // tag231 es tipo desglose
 
                  // --------------------------------------------------------------
                  //
@@ -1637,8 +1650,7 @@ bool tablaSII::fich_sii_emitidas(QString nombrefich)
                 if (isp_op_interiores) addElementoTextoDom(doc,tag231111,"sii:TipoNoExenta","S2");
                   else
                       addElementoTextoDom(doc,tag231111,"sii:TipoNoExenta","S1");
-
-                QDomElement tag2311111 = doc.createElement("sii:DesgloseIVA");
+                QDomElement tag2311111 = doc.createElement(no_igic ?"sii:DesgloseIVA":"sii:DesgloseIGIC");
                 tag231111.appendChild(tag2311111);
 
                 QString asiento=ui->tableWidget->item(fila,7)->text();
@@ -1647,7 +1659,7 @@ bool tablaSII::fich_sii_emitidas(QString nombrefich)
 
                 while(fila<ui->tableWidget->rowCount())
                   {
-                   QDomElement tag23111111 = doc.createElement("sii:DetalleIVA");
+                   QDomElement tag23111111 = doc.createElement(no_igic ? "sii:DetalleIVA": "sii:DetalleIGIC");
                    tag2311111.appendChild(tag23111111);
 
                    addElementoTextoDom(doc,tag23111111,"sii:TipoImpositivo",convapunto(ui->tableWidget->item(fila,9)->text()));
@@ -1698,7 +1710,7 @@ bool tablaSII::fich_sii_emitidas(QString nombrefich)
         cadini+= "xmlns:siiLR=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroLR.xsd\" "
                  "xmlns:sii=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd\">\n"
                  "<soapenv:Header/>\n";
-
+    if (basedatos::instancia()->selectIgicconfiguracion()) cadini.replace("/fact/","/igic/") ;
     QString xml = doc.toString();
     xml.remove("<!DOCTYPE ENVIO>");
     xml.prepend(cadini);
@@ -2642,6 +2654,8 @@ bool tablaSII::consulta_SII(bool pruebas)
 
 bool tablaSII::fich_cons_sii_recibidas(QString nombrefich)
 {
+    bool no_igic=!basedatos::instancia()->selectIgicconfiguracion();
+
     QDomDocument doc("ENVIO");
     QDomElement root = doc.createElement("soapenv:Body");
     doc.appendChild(root);
@@ -2652,7 +2666,8 @@ bool tablaSII::fich_cons_sii_recibidas(QString nombrefich)
     QDomElement tag1 = doc.createElement("sum:Cabecera");
     tag.appendChild(tag1);
 
-    addElementoTextoDom(doc,tag1,"sum:IDVersionSii",VERSION_SII);
+    addElementoTextoDom(doc,tag1,no_igic?"sum:IDVersionSii":"sum:IDVersionSii",no_igic ? VERSION_SII:"1.0");
+
 
     QDomElement tag11 = doc.createElement("sum:Titular");
     tag1.appendChild(tag11);
@@ -2677,6 +2692,7 @@ bool tablaSII::fich_cons_sii_recibidas(QString nombrefich)
     cadini+="<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" ";
     cadini+="xmlns:con=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/ConsultaLR.xsd\" "
             "xmlns:sum=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd\">\n";
+    if (!no_igic) cadini.replace("/fact/","/igic/") ;
 
     QString xml = doc.toString();
     xml.remove("<!DOCTYPE ENVIO>");
@@ -2702,6 +2718,7 @@ bool tablaSII::fich_cons_sii_recibidas(QString nombrefich)
 
 bool tablaSII::fich_cons_sii_emitidas(QString nombrefich)
 {
+    bool no_igic=!basedatos::instancia()->selectIgicconfiguracion();
     QDomDocument doc("ENVIO");
     QDomElement root = doc.createElement("soapenv:Body");
     doc.appendChild(root);
@@ -2712,7 +2729,7 @@ bool tablaSII::fich_cons_sii_emitidas(QString nombrefich)
     QDomElement tag1 = doc.createElement("sum:Cabecera");
     tag.appendChild(tag1);
 
-    addElementoTextoDom(doc,tag1,"sum:IDVersionSii",VERSION_SII);
+    addElementoTextoDom(doc,tag1,no_igic?"sum:IDVersionSii":"sum:IDVersionSii",no_igic ? VERSION_SII:"1.0");
 
     QDomElement tag11 = doc.createElement("sum:Titular");
     tag1.appendChild(tag11);
@@ -2737,6 +2754,7 @@ bool tablaSII::fich_cons_sii_emitidas(QString nombrefich)
     cadini+="<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" ";
     cadini+="xmlns:con=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/ConsultaLR.xsd\" "
             "xmlns:sum=\"https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd\">\n";
+    if (!no_igic) cadini.replace("/fact/","/igic/") ;
 
     QString xml = doc.toString();
     xml.remove("<!DOCTYPE ENVIO>");
@@ -2762,7 +2780,7 @@ bool tablaSII::fich_cons_sii_emitidas(QString nombrefich)
 
 bool tablaSII::check_documentos_vacios()
 {
-
+    return false;
 }
 
 

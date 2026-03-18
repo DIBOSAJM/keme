@@ -1783,10 +1783,14 @@ void ivasop_aut::buscacopiadoc()
 void ivasop_aut::visdoc()
 {
    if (ui.fichdoclineEdit->text().isEmpty()) return;
-   if (!ejecuta(aplicacionabrirfich(extensionfich(ui.fichdoclineEdit->text())),ui.fichdoclineEdit->text()))
-         QMessageBox::warning( this, tr("TABLA DE ASIENTOS"),
-                             tr("No se puede abrir ")+ui.fichdoclineEdit->text()+tr(" con ")+
-                             aplicacionabrirfich(extensionfich(ui.fichdoclineEdit->text())));
+
+   QString url=ui.fichdoclineEdit->text();
+   QDesktopServices::openUrl(QUrl(url.prepend("file:"),QUrl::TolerantMode));
+
+   // if (!ejecuta(aplicacionabrirfich(extensionfich(ui.fichdoclineEdit->text())),ui.fichdoclineEdit->text()))
+   //       QMessageBox::warning( this, tr("TABLA DE ASIENTOS"),
+   //                           tr("No se puede abrir ")+ui.fichdoclineEdit->text()+tr(" con ")+
+   //                           aplicacionabrirfich(extensionfich(ui.fichdoclineEdit->text())));
 
 }
 

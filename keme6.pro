@@ -40,6 +40,8 @@ SOURCES += main.cpp\
     busca_cta_diario.cpp \
     cambia_actividad.cpp \
     check_herramientas.cpp \
+    datos_accesorios_export.cpp \
+    emitida_exenta_aut.cpp \
     hoja_cols_ci.cpp \
         mainwindow.cpp\
         arbol.cpp \
@@ -241,6 +243,8 @@ HEADERS  += mainwindow.h\
     busca_cta_diario.h \
     cambia_actividad.h \
     check_herramientas.h \
+    datos_accesorios_export.h \
+    emitida_exenta_aut.h \
          funciones.h\
          basedatos.h\
     hoja_cols_ci.h \
@@ -440,7 +444,9 @@ FORMS    += mainwindow.ui\
     cambia_actividad.ui \
     check_herramientas.ui \
           conexion.ui\
+    datos_accesorios_export.ui \
           diario.ui \
+    emitida_exenta_aut.ui \
     hoja_cols_ci.ui \
           preferencias.ui\
           directorio.ui \
