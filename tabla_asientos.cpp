@@ -4707,7 +4707,7 @@ void tabla_asientos::emitida_exenta_autonomo()
          ui.Tablaapuntes->item(fila_actual,24)->setText(info["num_facts"].toString());
          ui.Tablaapuntes->item(fila_actual,25)->setText(info["inicial"].toString());
          ui.Tablaapuntes->item(fila_actual,26)->setText(info["final"].toString());
-         ui.Tablaapuntes->item(fila_actual,30)->setText(info["no_sujeta"].toString());
+         ui.Tablaapuntes->item(fila_actual,30)->setText(info["no_sujeta"].toBool()? "1" : "0");
          ui.Tablaapuntes->item(fila_actual,33)->setText(info["nombre"].toString());
          ui.Tablaapuntes->item(fila_actual,34)->setText(info["cif"].toString());
          ui.Tablaapuntes->item(fila_actual,47)->setText(info["export_ext"].toBool() ? "1" : "0"); // exportacion
@@ -4722,7 +4722,7 @@ void tabla_asientos::emitida_exenta_autonomo()
          reg_donacion.insert("deduccion_ca",0);
          QJsonDocument doc(reg_donacion);
          QString datos_donacion=doc.toJson();
-         ui.Tablaapuntes->item(fila_actual,59)->setText(datos_donacion);
+         if (info["donacion"].toBool()) ui.Tablaapuntes->item(fila_actual,59)->setText(datos_donacion);
 
 
         // añadimos apuntes de retención
@@ -4758,6 +4758,7 @@ void tabla_asientos::emitida_exenta_autonomo()
                || (fechadejerciciocerrado(ui.FechaApunte->date()))
                || !fechacorrespondeaejercicio(ui.FechaApunte->date()) || conanalitica()
                        || conanalitica_parc()) exec();
+         else incorporar();
 
        }
 }

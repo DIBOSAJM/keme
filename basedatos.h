@@ -129,6 +129,19 @@ class basedatos {
         void copiatabla_facturas(QString base);
         void copiatabla_lin_fac(QString base);
 
+        void copiatabla_facturas_predef(QString nombreBaseDestino);
+        void copiatabla_lin_fact_predef(QString nombreBaseDestino);
+        void copiatabla_lote_fact(QString nombreBaseDestino);
+        void copiatabla_lin_lote_predef(QString nombreBaseDestino);
+        void copiatabla_usuarios(QString nombreBaseDestino);
+
+        void copiatabla_cab_as_modelo(QString nombreBaseDestino);
+        void copiatabla_det_as_modelo(QString nombreBaseDestino);
+        void copiatabla_var_as_modelo(QString nombreBaseDestino);
+
+        void copiatabla_cabeceraestados(QString nombreBaseDestino);
+        void copiatabla_estados(QString nombreBaseDestino);
+
         // Copia tablas a segunda base de datos
         void copiatablas(QString qbase);
 

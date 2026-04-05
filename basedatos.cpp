@@ -2902,6 +2902,7 @@ void basedatos::copiatablas(QString base)
  progress.setValue(1);
  QApplication::processEvents();
 
+ copiatabla_usuarios(base);
  copiatabla_plancontable(base);
  progress.setValue(2);
  QApplication::processEvents();
@@ -3015,6 +3016,16 @@ void basedatos::copiatablas(QString base)
  progress.setValue(26);
  QApplication::processEvents();
  copiatabla_lin_fac(base);
+ copiatabla_facturas_predef(base);
+ copiatabla_lin_fact_predef(base);
+ copiatabla_lote_fact(base);
+ copiatabla_lin_lote_predef(base);
+ copiatabla_cab_as_modelo(base);
+ copiatabla_det_as_modelo(base);
+ copiatabla_var_as_modelo(base);
+ copiatabla_cabeceraestados(base);
+ copiatabla_estados(base);
+
  progress.setValue(27);
  QApplication::processEvents();
 
@@ -3029,7 +3040,7 @@ void basedatos::copiatabla_ejercicios(QString base)
 {
   QString cad = "select codigo,apertura,cierre, cerrado,cerrando, prox_asiento,"
                 "primero_apertura, "
-                "base_ejercicio, base_presupuesto, presupuesto_base_cero, prox_nrecepcion, incremento "
+                "base_ejercicio, base_presupuesto, presupuesto_base_cero, prox_nrecepcion, incremento, bloqueado "
                 "from ejercicios";
   QSqlQuery query=ejecutar(cad);
   if (query.isActive())
@@ -3037,7 +3048,7 @@ void basedatos::copiatabla_ejercicios(QString base)
       {
        QString cad2="insert into ejercicios ( codigo,apertura,cierre, cerrado,cerrando, "
                     "prox_asiento, primero_apertura, "
-                "base_ejercicio, base_presupuesto, presupuesto_base_cero, prox_nrecepcion, incremento) "
+                "base_ejercicio, base_presupuesto, presupuesto_base_cero, prox_nrecepcion, incremento, bloqueado) "
                 "values ('";
                 cad2+=query.value(0).toString().left(-1).replace("'","''"); // codigo
                 cad2+="', '";
@@ -3086,6 +3097,14 @@ void basedatos::copiatabla_ejercicios(QString base)
                   else cad2+=query.value(10).toString();
                 cad2+=",";
                 cad2+=query.value(11).toString();
+                cad2+=",";
+                if ( cualControlador(base) == SQLITE ) { // bloqueado
+                   cad2 += query.value(12).toBool() ? "1": "0" ;
+                  }
+                else {
+                       cad2 += query.value(12).toBool() ? "true": "false" ;
+                     }
+
                 cad2+=")";
                 ejecutar(cad2,base);
       }
@@ -3116,360 +3135,551 @@ void basedatos::copiatabla_plancontable(QString base)
       }
 }
 
-void basedatos::copiatabla_diario(QString base)
+
+
+// void basedatos::copiatabla_diario(QString base)
+// {
+  // QString cad = "select asiento, pase, fecha, cuenta, debe, haber, concepto, documento, "
+  //               "diario, ci, usuario, conciliado, dif_conciliacion, copia_doc, "
+  //               "clave_ci, ejercicio, "
+  //               "apunte_origen,"
+  //               "codfactura,"
+  //               "nrecepcion,"
+  //               "revisado,"
+  //               "codigo_var_evpn_pymes,"
+  //               "fecha_factura, enlace, externo, concepto_sii, contabilizado "
+  //               "from diario";
+  // QSqlQuery query=ejecutar(cad);
+  // if (query.isActive())
+  //    while (query.next())
+  //     {
+  //      QString cad2="insert into diario (asiento, pase, fecha, cuenta, debe, haber,"
+  //                   " concepto, documento, diario, ci, usuario, conciliado, dif_conciliacion,"
+  //                   "copia_doc, clave_ci, ejercicio, "
+  //              "apunte_origen,"
+  //              "codfactura,"
+  //              "nrecepcion,"
+  //              "revisado,"
+  //              "codigo_var_evpn_pymes,"
+  //              "fecha_factura, enlace, externo, concepto_sii, contabilizado "
+  //               ") values (";
+  //               cad2+=query.value(0).toString(); // asiento
+  //               cad2+=", ";
+  //               cad2+=query.value(1).toString(); // pase
+  //               cad2+=", '";
+  //               cad2+=query.value(2).toDate().toString("yyyy-MM-dd"); // fecha
+  //               cad2+="', '";
+  //               cad2+=query.value(3).toString().left(-1).replace("'","''"); // cuenta
+  //               cad2+="', ";
+  //               cad2+=query.value(4).toString(); // debe
+  //               cad2+=", ";
+  //               cad2+=query.value(5).toString(); // haber
+  //               cad2+=", '";
+  //               cad2+=query.value(6).toString().left(-1).replace("'","''"); // concepto
+  //               cad2+="', '";
+  //               cad2+=query.value(7).toString().left(-1).replace("'","''"); // documento
+  //               cad2+="', '";
+  //               cad2+=query.value(8).toString().left(-1).replace("'","''"); // diario
+  //               cad2+="', '";
+  //               cad2+=query.value(9).toString().left(-1).replace("'","''"); // ci
+  //               cad2+="', '";
+  //               cad2+=query.value(10).toString().left(-1).replace("'","''"); // usuario
+  //               cad2+="', ";
+  //               if ( cualControlador(base) == SQLITE ) { // conciliado
+  //                  cad2 += query.value(11).toBool() ? "1": "0";
+  //                 }
+  //               else {
+  //                      cad2 += query.value(11).toBool() ? "true": "false" ;
+  //                    }
+  //               cad2+=", '";
+  //               cad2+=query.value(12).toString().left(-1).replace("'","''"); // dif_conciliacion
+  //               cad2+="','";
+  //               cad2+=query.value(13).toString().left(-1).replace("'","''"); // copia_doc
+  //               cad2+="',";
+  //               cad2+=query.value(14).toString().left(-1).replace("'","''"); // clave_ci
+  //               cad2+=", '";
+  //               cad2+=query.value(15).toString().left(-1).replace("'","''"); // ejercicio
+  //               cad2+="',";
+  //               cad2+=query.value(16).toString().isEmpty() ? "0" :query.value(16).toString(); // "apunte_origen,"
+  //               cad2+=", '";
+  //               cad2+=query.value(17).toString().left(-1).replace("'","''"); // "codfactura,"
+  //               cad2+="',";
+  //               cad2+=query.value(18).toString(); // "nrecepcion,"
+  //               cad2+=", ";
+  //               if ( cualControlador(base) == SQLITE ) { // revisado
+  //                  cad2 += query.value(19).toBool() ? "1": "0";
+  //                 }
+  //               else {
+  //                      cad2 += query.value(19).toBool() ? "true": "false" ;
+  //                    }
+  //               cad2+=", '";
+  //               cad2+=query.value(20).toString().left(-1).replace("'","''"); // "codigo_var_evpn_pymes,"
+  //               cad2+="', '";
+  //               if (query.value(21).toString().isEmpty()) cad2+="2000-01-01";
+  //                 else cad2+=query.value(21).toDate().toString("yyyy-MM-dd"); //"fecha_factura "
+  //               cad2+="', ";
+  //               if ( cualControlador(base) == SQLITE ) { // enlace
+  //                  cad2 += query.value(22).toBool() ? "1": "0";
+  //                 }
+  //               else {
+  //                      cad2 += query.value(22).toBool() ? "true": "false" ;
+  //                    }
+  //               cad2+=", '";
+  //               cad2+=query.value(23).toString(); // externo
+  //               cad2+="', '";
+  //               cad2+=query.value(24).toString(); // concepto_sii
+  //               cad2+="', ";
+  //               if ( cualControlador(base) == SQLITE ) { // contabilizado
+  //                  cad2 += query.value(25).toBool() ? "1": "0";
+  //                 }
+  //               else {
+  //                      cad2 += query.value(25).toBool() ? "true": "false" ;
+  //                    }
+  //               cad2+=")";
+  //               ejecutar(cad2,base);
+  //     }
+
+
+// }
+
+
+void basedatos::copiatabla_diario(QString nombreBaseDestino)
 {
-  QString cad = "select asiento, pase, fecha, cuenta, debe, haber, concepto, documento, "
-                "diario, ci, usuario, conciliado, dif_conciliacion, copia_doc, "
-                "clave_ci, ejercicio, "
-                "apunte_origen,"
-                "codfactura,"
-                "nrecepcion,"
-                "revisado,"
-                "codigo_var_evpn_pymes,"
-                "fecha_factura, enlace, externo, concepto_sii "
-                "from diario";
-  QSqlQuery query=ejecutar(cad);
-  if (query.isActive())
-     while (query.next())
-      {
-       QString cad2="insert into diario (asiento, pase, fecha, cuenta, debe, haber,"
-                    " concepto, documento, diario, ci, usuario, conciliado, dif_conciliacion,"
-                    "copia_doc, clave_ci, ejercicio, "
-               "apunte_origen,"
-               "codfactura,"
-               "nrecepcion,"
-               "revisado,"
-               "codigo_var_evpn_pymes,"
-               "fecha_factura, enlace, externo, concepto_sii "
-                ")values (";
-                cad2+=query.value(0).toString(); // asiento
-                cad2+=", ";
-                cad2+=query.value(1).toString(); // pase
-                cad2+=", '";
-                cad2+=query.value(2).toDate().toString("yyyy-MM-dd"); // fecha
-                cad2+="', '";
-                cad2+=query.value(3).toString().left(-1).replace("'","''"); // cuenta
-                cad2+="', ";
-                cad2+=query.value(4).toString(); // debe
-                cad2+=", ";
-                cad2+=query.value(5).toString(); // haber
-                cad2+=", '";
-                cad2+=query.value(6).toString().left(-1).replace("'","''"); // concepto
-                cad2+="', '";
-                cad2+=query.value(7).toString().left(-1).replace("'","''"); // documento
-                cad2+="', '";
-                cad2+=query.value(8).toString().left(-1).replace("'","''"); // diario
-                cad2+="', '";
-                cad2+=query.value(9).toString().left(-1).replace("'","''"); // ci
-                cad2+="', '";
-                cad2+=query.value(10).toString().left(-1).replace("'","''"); // usuario
-                cad2+="', ";
-                if ( cualControlador(base) == SQLITE ) { // conciliado
-                   cad2 += query.value(11).toBool() ? "1": "0";
-                  }
-                else {
-                       cad2 += query.value(11).toBool() ? "true": "false" ;
-                     }
-                cad2+=", '";
-                cad2+=query.value(12).toString().left(-1).replace("'","''"); // dif_conciliacion
-                cad2+="','";
-                cad2+=query.value(13).toString().left(-1).replace("'","''"); // copia_doc
-                cad2+="',";
-                cad2+=query.value(14).toString().left(-1).replace("'","''"); // clave_ci
-                cad2+=", '";
-                cad2+=query.value(15).toString().left(-1).replace("'","''"); // ejercicio
-                cad2+="',";
-                cad2+=query.value(16).toString().isEmpty() ? "0" :query.value(16).toString(); // "apunte_origen,"
-                cad2+=", '";
-                cad2+=query.value(17).toString().left(-1).replace("'","''"); // "codfactura,"
-                cad2+="',";
-                cad2+=query.value(18).toString(); // "nrecepcion,"
-                cad2+=", ";
-                if ( cualControlador(base) == SQLITE ) { // revisado
-                   cad2 += query.value(19).toBool() ? "1": "0";
-                  }
-                else {
-                       cad2 += query.value(19).toBool() ? "true": "false" ;
-                     }
-                cad2+=", '";
-                cad2+=query.value(20).toString().left(-1).replace("'","''"); // "codigo_var_evpn_pymes,"
-                cad2+="', '";
-                if (query.value(21).toString().isEmpty()) cad2+="2000-01-01";
-                  else cad2+=query.value(21).toDate().toString("yyyy-MM-dd"); //"fecha_factura "
-                cad2+="', ";
-                if ( cualControlador(base) == SQLITE ) { // enlace
-                   cad2 += query.value(22).toBool() ? "1": "0";
-                  }
-                else {
-                       cad2 += query.value(22).toBool() ? "true": "false" ;
-                     }
-                cad2+=", '";
-                cad2+=query.value(23).toString(); // externo
-                cad2+="', '";
-                cad2+=query.value(24).toString(); // concepto_sii
-                cad2+="')";
-                ejecutar(cad2,base);
-      }
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
+
+    QSqlQuery queryOrigen(dbOrigen);
+    // 29 campos seleccionados en el orden exacto de tu esquema
+    queryOrigen.prepare("SELECT asiento, pase, fecha, cuenta, debe, haber, concepto, "
+                        "documento, diario, ci, usuario, conciliado, enlace, "
+                        "dif_conciliacion, copia_doc, clave_ci, ejercicio, apunte_origen, "
+                        "codfactura, nrecepcion, revisado, codigo_var_evpn_pymes, "
+                        "fecha_factura, externo, concepto_sii, registro, "
+                        "contabilizacion, contabilizado, cod_actividad FROM diario");
+
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error leyendo Diario:" << queryOrigen.lastError().text();
+        return;
+    }
+
+    dbDestino.transaction();
+  {
+    QSqlQuery queryInsert(dbDestino);
+    // Preparamos el INSERT con 29 placeholders
+    QStringList placeholders;
+    for(int i=0; i<29; ++i) placeholders << "?";
+
+    queryInsert.prepare(QString("INSERT INTO diario (asiento, pase, fecha, cuenta, debe, haber, "
+                        "concepto, documento, diario, ci, usuario, conciliado, enlace, "
+                        "dif_conciliacion, copia_doc, clave_ci, ejercicio, apunte_origen, "
+                        "codfactura, nrecepcion, revisado, codigo_var_evpn_pymes, "
+                        "fecha_factura, externo, concepto_sii, registro, "
+                        "contabilizacion, contabilizado, cod_actividad) "
+                        "VALUES (%1)").arg(placeholders.join(",")));
+
+    // Transacción crítica: Sin esto, la copia de un diario grande podría tardar horas
+
+    while (queryOrigen.next()) {
+        queryInsert.addBindValue(queryOrigen.value(0));  // asiento (bigint)
+        queryInsert.addBindValue(queryOrigen.value(1));  // pase (bigint)
+        queryInsert.addBindValue(queryOrigen.value(2).toDate()); // fecha (date)
+        queryInsert.addBindValue(queryOrigen.value(3));  // cuenta
+        queryInsert.addBindValue(queryOrigen.value(4));  // debe (numeric)
+        queryInsert.addBindValue(queryOrigen.value(5));  // haber (numeric)
+        queryInsert.addBindValue(queryOrigen.value(6));  // concepto
+        queryInsert.addBindValue(queryOrigen.value(7));  // documento
+        queryInsert.addBindValue(queryOrigen.value(8));  // diario
+        queryInsert.addBindValue(queryOrigen.value(9));  // ci
+        queryInsert.addBindValue(queryOrigen.value(10)); // usuario
+        queryInsert.addBindValue(queryOrigen.value(11).toBool()); // conciliado
+        queryInsert.addBindValue(queryOrigen.value(12).toBool()); // enlace
+        queryInsert.addBindValue(queryOrigen.value(13)); // dif_conciliacion
+        queryInsert.addBindValue(queryOrigen.value(14)); // copia_doc
+        queryInsert.addBindValue(queryOrigen.value(15)); // clave_ci (bigint)
+        queryInsert.addBindValue(queryOrigen.value(16)); // ejercicio
+        queryInsert.addBindValue(queryOrigen.value(17)); // apunte_origen (bigint)
+        queryInsert.addBindValue(queryOrigen.value(18)); // codfactura
+        queryInsert.addBindValue(queryOrigen.value(19)); // nrecepcion (bigint)
+        queryInsert.addBindValue(queryOrigen.value(20).toBool()); // revisado
+        queryInsert.addBindValue(queryOrigen.value(21)); // codigo_var_evpn_pymes
+        queryInsert.addBindValue(queryOrigen.value(22).toDate()); // fecha_factura (date)
+        queryInsert.addBindValue(queryOrigen.value(23)); // externo
+        queryInsert.addBindValue(queryOrigen.value(24)); // concepto_sii
+
+        // Timestamps (registro y contabilizacion)
+        queryInsert.addBindValue(queryOrigen.value(25).toDateTime());
+        queryInsert.addBindValue(queryOrigen.value(26).toDateTime());
+
+        queryInsert.addBindValue(queryOrigen.value(27).toBool()); // contabilizado
+        queryInsert.addBindValue(queryOrigen.value(28)); // cod_actividad
+
+        if (!queryInsert.exec()) {
+            qDebug() << "Error en pase" << queryOrigen.value(1).toLongLong()
+                     << ":" << queryInsert.lastError().text();
+            dbDestino.rollback();
+            return;
+        }
+    }
+  }
+    if (dbDestino.commit()) {
+        qDebug() << "Libro Diario copiado con éxito.";
+    } else {
+        qDebug() << "Error al realizar COMMIT en Diario:" << dbDestino.lastError().text();
+    }
 }
 
-void basedatos::copiatabla_libroiva(QString base)
+// void basedatos::copiatabla_libroiva(QString base)
+// {
+//     QString cad = "select pase, cta_base_iva, base_iva, clave_iva, tipo_iva, tipo_re, "
+//                   "cuota_iva, cuenta_fra, fecha_fra, soportado, prorrata, "
+//                   "afecto, aib, eib, rectificativa, autofactura, agrario, fecha_operacion,"
+//                   "clave_operacion, bi_costo, rectificada, nfacturas, finicial,"
+//                   "ffinal, nombre, cif, autofactura_no_ue, pr_servicios_ue, bien_inversion, "
+//                   "op_no_sujeta, exento_dcho_ded, isp_op_interiores, importacion, exportacion, "
+//                   "caja_iva, apunte_tot_factura, total_factura, "
+//                   "noincluir347, ventas_fuera_tac, donacion_2ejer, donacion_especie, enviado_sii, "
+//                   "oro_inversion, arrto_local_ret, arrto_local_sin_ret, dua, tipo_inmueble, rc_inmueble, "
+//                   "reav, operacion, donacion, clave_donacion, comunidad_autonoma, porcent_deduc_autonomomia"
+//                   " from libroiva";
+//     QSqlQuery query=ejecutar(cad);
+//     if (query.isActive())
+//        while (query.next())
+//         {
+//          QString cad2="insert into libroiva ("
+//                   "pase, cta_base_iva, base_iva, clave_iva, tipo_iva, tipo_re, "
+//                   "cuota_iva, cuenta_fra, fecha_fra, soportado, prorrata, "
+//                   "afecto, aib, eib, rectificativa, autofactura, agrario, fecha_operacion,"
+//                   "clave_operacion, bi_costo, rectificada, nfacturas, finicial,"
+//                   "ffinal, nombre, cif, autofactura_no_ue, pr_servicios_ue, bien_inversion, "
+//                   "op_no_sujeta, exento_dcho_ded, isp_op_interiores, importacion, exportacion, "
+//                   "caja_iva, apunte_tot_factura, total_factura,"
+//                   "noincluir347, ventas_fuera_tac, donacion_2ejer, donacion_especie, enviado_sii, "
+//                   "oro_inversion, arrto_local_ret, arrto_local_sin_ret, dua, tipo_inmueble, rc_inmueble, "
+//                   "reav, operacion, donacion, clave_donacion, comunidad_autonoma, porcent_deduc_autonomomia"
+//                   ") values (";
+//          cad2+=query.value(0).toString(); // pase
+//          cad2+=",'";
+//          cad2+=query.value(1).toString().left(-1).replace("'","''"); // cta_base_iva
+//          cad2+="',";
+//          cad2+=query.value(2).toString(); // base_iva
+//          cad2+=",'";
+//          cad2+=query.value(3).toString().left(-1).replace("'","''"); // clave_iva
+//          cad2+="',";
+//          cad2+=query.value(4).toString(); // tipo_iva
+//          cad2+=",";
+//          cad2+=query.value(5).toString(); // tipo_re
+//          cad2+=",";
+//          cad2+=query.value(6).toString(); // cuota_iva
+//          cad2+=",'";
+//          cad2+=query.value(7).toString().left(-1).replace("'","''"); // cuenta_fra
+//          cad2+="','";
+//          cad2+=query.value(8).toDate().toString("yyyy-MM-dd"); // fecha_fra
+//          cad2+="',";
+//          if ( cualControlador(base) == SQLITE ) { // soportado
+//             cad2 += query.value(9).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(9).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          cad2+=query.value(10).toString(); // prorrata
+//          cad2+=",";
+//          cad2+=query.value(11).toString(); // afecto (porcentaje)
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // aib
+//             cad2 += query.value(12).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(12).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // eib
+//             cad2 += query.value(13).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(13).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // rectificativa
+//             cad2 += query.value(14).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(14).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // autofactura
+//             cad2 += query.value(15).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(15).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // agrario
+//             cad2 += query.value(16).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(16).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",'";
+//          cad2+=query.value(17).toDate().toString("yyyy-MM-dd"); // fecha_operacion
+//          cad2+="','";
+//          cad2+=query.value(18).toString().left(-1).replace("'","''"); // clave operación
+//          cad2+="',";
+//          cad2+=query.value(19).toString().isEmpty() ? "0" : query.value(19).toString(); // bi_costo
+//          cad2+=",'";
+//          cad2+=query.value(20).toString(); // rectificada
+//          cad2+="',";
+//          cad2+=query.value(21).toString(); // nfacturas
+//          cad2+=",'";
+//          cad2+=query.value(22).toString().left(-1).replace("'","''"); // finicial
+//          cad2+="','";
+//          cad2+=query.value(23).toString().left(-1).replace("'","''"); // ffinal
+//          cad2+="','";
+//          cad2+=query.value(24).toString().left(-1).replace("'","''"); // nombre
+//          cad2+="','";
+//          cad2+=query.value(25).toString().left(-1).replace("'","''"); // cif
+//          cad2+="',";
+//          if ( cualControlador(base) == SQLITE ) { // autofactura_no_e
+//             cad2 += query.value(26).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(26).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // pr_servicios_ue
+//             cad2 += query.value(27).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(27).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // bien_inversion
+//             cad2 += query.value(28).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(28).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // op_no_sujeta
+//             cad2 += query.value(29).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(29).toBool() ? "true": "false" ;
+//               }
+//          //exento_dcho_ded, isp_op_interiores, importacion, exportacion, "
+//          //"caja_iva, apunte_tot_factura, total_factura
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // exento_dcho_ded
+//             cad2 += query.value(30).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(30).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // isp_op_interiores
+//             cad2 += query.value(31).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(31).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // importacion
+//             cad2 += query.value(32).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(32).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // exportación
+//             cad2 += query.value(33).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(33).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // caja_iva
+//             cad2 += query.value(34).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(34).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if (query.value(35).toString().isEmpty()) cad2+="0";
+//             else cad2+=query.value(35).toString(); // apunte_tot_factura
+//          cad2+=",";
+
+//          if (query.value(36).toString().isEmpty()) cad2+="0";
+//             else cad2+=query.value(36).toString(); // total_factura
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // noincluir 347
+//             cad2 += query.value(37).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(37).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // ventas_fuera_tac
+//             cad2 += query.value(38).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(38).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // donacion_2ejerc
+//             cad2 += query.value(39).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(39).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // donacion_especie
+//             cad2 += query.value(40).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(40).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // enviado_sii
+//             cad2 += query.value(41).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(41).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // oro_inversion
+//             cad2 += query.value(42).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(42).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // arrto_local_ret
+//             cad2 += query.value(43).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(43).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",";
+//          if ( cualControlador(base) == SQLITE ) { // arrto_local_sin_ret
+//             cad2 += query.value(44).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(44).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",'";
+//          cad2+=query.value(45).toString().left(-1).replace("'","''"); // dua
+//          cad2+="','";
+//          cad2+=query.value(46).toString().left(-1).replace("'","''"); // tipo_inmueble
+//          cad2+="','";
+//          cad2+=query.value(47).toString().left(-1).replace("'","''"); // rc_inmueble
+//          cad2+="',";
+//          if ( cualControlador(base) == SQLITE ) { // reav
+//             cad2 += query.value(48).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(48).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",'";
+//          cad2+=query.value(49).toString().left(-1).replace("'","''"); // operacion
+//          cad2+="',";
+//          if ( cualControlador(base) == SQLITE ) { // donacion
+//             cad2 += query.value(50).toBool() ? "1": "0";
+//            }
+//          else {
+//                 cad2 += query.value(50).toBool() ? "true": "false" ;
+//               }
+//          cad2+=",'";
+//          cad2+=query.value(51).toString().left(-1).replace("'","''"); // clave_donacion
+//          cad2+="','";
+//          cad2+=query.value(52).toString().left(-1).replace("'","''"); // comunidad autónoma
+//          cad2+="',";
+//          if (query.value(53).toString().isEmpty()) cad2+="0";
+//             else cad2+=query.value(53).toString(); // porcent_deduc_autonomia
+//          cad2+=")";
+//          ejecutar(cad2,base);
+//         }
+
+// }
+
+void basedatos::copiatabla_libroiva(QString nombreBaseDestino)
 {
-    QString cad = "select pase, cta_base_iva, base_iva, clave_iva, tipo_iva, tipo_re, "
-                  "cuota_iva, cuenta_fra, fecha_fra, soportado, prorrata, "
-                  "afecto, aib, eib, rectificativa, autofactura, agrario, fecha_operacion,"
-                  "clave_operacion, bi_costo, rectificada, nfacturas, finicial,"
-                  "ffinal, nombre, cif, autofactura_no_ue, pr_servicios_ue, bien_inversion, "
-                  "op_no_sujeta, exento_dcho_ded, isp_op_interiores, importacion, exportacion, "
-                  "caja_iva, apunte_tot_factura, total_factura, "
-                  "noincluir347, ventas_fuera_tac, donacion_2ejer, donacion_especie, enviado_sii, "
-                  "oro_inversion, arrto_local_ret, arrto_local_sin_ret, dua, tipo_inmueble, rc_inmueble, "
-                  "reav, operacion"
-                  " from libroiva";
-    QSqlQuery query=ejecutar(cad);
-    if (query.isActive())
-       while (query.next())
-        {
-         QString cad2="insert into libroiva ("
-                  "pase, cta_base_iva, base_iva, clave_iva, tipo_iva, tipo_re, "
-                  "cuota_iva, cuenta_fra, fecha_fra, soportado, prorrata, "
-                  "afecto, aib, eib, rectificativa, autofactura, agrario, fecha_operacion,"
-                  "clave_operacion, bi_costo, rectificada, nfacturas, finicial,"
-                  "ffinal, nombre, cif, autofactura_no_ue, pr_servicios_ue, bien_inversion, "
-                  "op_no_sujeta, exento_dcho_ded, isp_op_interiores, importacion, exportacion, "
-                  "caja_iva, apunte_tot_factura, total_factura,"
-                  "noincluir347, ventas_fuera_tac, donacion_2ejer, donacion_especie, enviado_sii, "
-                  "oro_inversion, arrto_local_ret, arrto_local_sin_ret, dua, tipo_inmueble, rc_inmueble, "
-                  "reav, operacion"
-                  ") values (";
-         cad2+=query.value(0).toString(); // pase
-         cad2+=",'";
-         cad2+=query.value(1).toString().left(-1).replace("'","''"); // cta_base_iva
-         cad2+="',";
-         cad2+=query.value(2).toString(); // base_iva
-         cad2+=",'";
-         cad2+=query.value(3).toString().left(-1).replace("'","''"); // clave_iva
-         cad2+="',";
-         cad2+=query.value(4).toString(); // tipo_iva
-         cad2+=",";
-         cad2+=query.value(5).toString(); // tipo_re
-         cad2+=",";
-         cad2+=query.value(6).toString(); // cuota_iva
-         cad2+=",'";
-         cad2+=query.value(7).toString().left(-1).replace("'","''"); // cuenta_fra
-         cad2+="','";
-         cad2+=query.value(8).toDate().toString("yyyy-MM-dd"); // fecha_fra
-         cad2+="',";
-         if ( cualControlador(base) == SQLITE ) { // soportado
-            cad2 += query.value(9).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(9).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         cad2+=query.value(10).toString(); // prorrata
-         cad2+=",";
-         cad2+=query.value(11).toString(); // afecto (porcentaje)
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // aib
-            cad2 += query.value(12).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(12).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // eib
-            cad2 += query.value(13).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(13).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // rectificativa
-            cad2 += query.value(14).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(14).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // autofactura
-            cad2 += query.value(15).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(15).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // agrario
-            cad2 += query.value(16).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(16).toBool() ? "true": "false" ;
-              }
-         cad2+=",'";
-         cad2+=query.value(17).toDate().toString("yyyy-MM-dd"); // fecha_operacion
-         cad2+="','";
-         cad2+=query.value(18).toString().left(-1).replace("'","''"); // clave operación
-         cad2+="',";
-         cad2+=query.value(19).toString().isEmpty() ? "0" : query.value(19).toString(); // bi_costo
-         cad2+=",'";
-         cad2+=query.value(20).toString(); // rectificada
-         cad2+="',";
-         cad2+=query.value(21).toString(); // nfacturas
-         cad2+=",'";
-         cad2+=query.value(22).toString().left(-1).replace("'","''"); // finicial
-         cad2+="','";
-         cad2+=query.value(23).toString().left(-1).replace("'","''"); // ffinal
-         cad2+="','";
-         cad2+=query.value(24).toString().left(-1).replace("'","''"); // nombre
-         cad2+="','";
-         cad2+=query.value(25).toString().left(-1).replace("'","''"); // cif
-         cad2+="',";
-         if ( cualControlador(base) == SQLITE ) { // autofactura_no_e
-            cad2 += query.value(26).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(26).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // pr_servicios_ue
-            cad2 += query.value(27).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(27).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // bien_inversion
-            cad2 += query.value(28).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(28).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // op_no_sujeta
-            cad2 += query.value(29).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(29).toBool() ? "true": "false" ;
-              }
-         //exento_dcho_ded, isp_op_interiores, importacion, exportacion, "
-         //"caja_iva, apunte_tot_factura, total_factura
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // exento_dcho_ded
-            cad2 += query.value(30).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(30).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // isp_op_interiores
-            cad2 += query.value(31).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(31).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // importacion
-            cad2 += query.value(32).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(32).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // exportación
-            cad2 += query.value(33).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(33).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // caja_iva
-            cad2 += query.value(34).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(34).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if (query.value(35).toString().isEmpty()) cad2+="0";
-            else cad2+=query.value(35).toString(); // apunte_tot_factura
-         cad2+=",";
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
 
-         if (query.value(36).toString().isEmpty()) cad2+="0";
-            else cad2+=query.value(36).toString(); // total_factura
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // noincluir 347
-            cad2 += query.value(37).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(37).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // ventas_fuera_tac
-            cad2 += query.value(38).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(38).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // donacion_2ejerc
-            cad2 += query.value(39).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(39).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // donacion_especie
-            cad2 += query.value(40).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(40).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // enviado_sii
-            cad2 += query.value(41).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(41).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // oro_inversion
-            cad2 += query.value(42).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(42).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // arrto_local_ret
-            cad2 += query.value(43).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(43).toBool() ? "true": "false" ;
-              }
-         cad2+=",";
-         if ( cualControlador(base) == SQLITE ) { // arrto_local_sin_ret
-            cad2 += query.value(44).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(44).toBool() ? "true": "false" ;
-              }
-         cad2+=",'";
-         cad2+=query.value(45).toString().left(-1).replace("'","''"); // dua
-         cad2+="','";
-         cad2+=query.value(46).toString().left(-1).replace("'","''"); // tipo_inmueble
-         cad2+="','";
-         cad2+=query.value(47).toString().left(-1).replace("'","''"); // rc_inmueble
-         cad2+="',";
-         if ( cualControlador(base) == SQLITE ) { // reav
-            cad2 += query.value(48).toBool() ? "1": "0";
-           }
-         else {
-                cad2 += query.value(48).toBool() ? "true": "false" ;
-              }
-         cad2+=",'";
-         cad2+=query.value(49).toString().left(-1).replace("'","''"); // operacion
+    QSqlQuery queryOrigen(dbOrigen);
+    // 54 campos según tu esquema de Postgres
+    queryOrigen.prepare("SELECT pase, cta_base_iva, base_iva, clave_iva, tipo_iva, tipo_re, "
+                        "cuota_iva, cuenta_fra, fecha_fra, soportado, prorrata, afecto, "
+                        "aib, eib, rectificativa, autofactura, agrario, fecha_operacion, "
+                        "clave_operacion, bi_costo, rectificada, nfacturas, finicial, ffinal, "
+                        "nombre, cif, autofactura_no_ue, pr_servicios_ue, bien_inversion, "
+                        "op_no_sujeta, exento_dcho_ded, isp_op_interiores, importacion, "
+                        "exportacion, caja_iva, apunte_tot_factura, total_factura, noincluir347, "
+                        "ventas_fuera_tac, donacion_2ejer, donacion_especie, enviado_sii, "
+                        "oro_inversion, arrto_local_ret, arrto_local_sin_ret, dua, tipo_inmueble, "
+                        "rc_inmueble, reav, operacion, donacion, clave_donacion, "
+                        "comunidad_autonoma, porcent_deduc_autonomia FROM libroiva");
 
-         cad2+="')";
-         ejecutar(cad2,base);
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error leyendo libroiva:" << queryOrigen.lastError().text();
+        return;
+    }
+
+    QSqlQuery queryInsert(dbDestino);
+    QStringList placeholders;
+    for(int i = 0; i < 54; ++i) placeholders << "?";
+
+    queryInsert.prepare(QString("INSERT INTO libroiva (pase, cta_base_iva, base_iva, clave_iva, tipo_iva, tipo_re, "
+                        "cuota_iva, cuenta_fra, fecha_fra, soportado, prorrata, afecto, "
+                        "aib, eib, rectificativa, autofactura, agrario, fecha_operacion, "
+                        "clave_operacion, bi_costo, rectificada, nfacturas, finicial, ffinal, "
+                        "nombre, cif, autofactura_no_ue, pr_servicios_ue, bien_inversion, "
+                        "op_no_sujeta, exento_dcho_ded, isp_op_interiores, importacion, "
+                        "exportacion, caja_iva, apunte_tot_factura, total_factura, noincluir347, "
+                        "ventas_fuera_tac, donacion_2ejer, donacion_especie, enviado_sii, "
+                        "oro_inversion, arrto_local_ret, arrto_local_sin_ret, dua, tipo_inmueble, "
+                        "rc_inmueble, reav, operacion, donacion, clave_donacion, "
+                        "comunidad_autonoma, porcent_deduc_autonomia) "
+                        "VALUES (%1)").arg(placeholders.join(",")));
+
+    dbDestino.transaction();
+
+    while (queryOrigen.next()) {
+            for (int i = 0; i < 54; ++i) {
+                QVariant valor = queryOrigen.value(i);
+
+                // Lista de índices que son BOOLEAN en Postgres pero TINYINT en MySQL
+                // i=9 es 'soportado', el resto siguen el orden de tu esquema
+                bool esBooleano = (i == 9 || i == 12 || i == 13 || i == 14 || i == 15 ||
+                                   i == 16 || (i >= 26 && i <= 34) || (i >= 37 && i <= 44) ||
+                                   i == 48 || i == 50);
+
+                if (esBooleano) {
+                    // Forzamos la conversión de 0/1 a true/false
+                    // .toBool() convierte correctamente el 1 de MySQL en true
+                    queryInsert.addBindValue(valor.toBool());
+                }
+                else if (i == 8 || i == 17) { // Campos de fecha
+                    queryInsert.addBindValue(valor.toDate());
+                }
+                else {
+                    queryInsert.addBindValue(valor);
+                }
+            }
+
+            if (!queryInsert.exec()) {
+                qDebug() << "Error en LibroIVA (pase" << queryOrigen.value(0).toString() << "):"
+                         << queryInsert.lastError().text();
+                // Truco: muestra el valor que falló para depurar
+                qDebug() << "Valor fallido en columna:" << queryInsert.lastError().nativeErrorCode();
+                dbDestino.rollback();
+                return;
+            }
         }
 
+    if (dbDestino.commit()) {
+        qDebug() << "Tabla 'libroiva' copiada con éxito.";
+    }
 }
 
 
@@ -4532,7 +4742,8 @@ void basedatos::copiatabla_configuracion(QString base)
                 "ruta_sii_rec_test, "
                 "ruta_sii_emit_real, "
                 "ruta_sii_rec_real, "
-                "gestor_db "
+                "gestor_db, "
+                "cuenta_ret_ing, cuenta_tesoreria, cuenta_gasto_vto, imagen, nombre, apellidos, cuenta_pago_a_cuenta"
           " from configuracion";
   QSqlQuery query=ejecutar(cad);
   if (query.isActive())
@@ -4601,7 +4812,8 @@ void basedatos::copiatabla_configuracion(QString base)
                     "ruta_sii_rec_test, "
                     "ruta_sii_emit_real, "
                     "ruta_sii_rec_real, "
-                    "gestor_db "
+                    "gestor_db, "
+                    "cuenta_ret_ing, cuenta_tesoreria, cuenta_gasto_vto, imagen, nombre, apellidos, cuenta_pago_a_cuenta"
                     ") "
                     "values ('";
        cad2+=query.value(0).toString().left(-1).replace("'","''"); // empresa
@@ -4810,7 +5022,21 @@ void basedatos::copiatabla_configuracion(QString base)
        else {
               cad2 += query.value(70).toBool() ? "true": "false" ;
             } //"gestor_db "
-
+       cad2+=",'";
+       cad2+=query.value(71).toString().left(-1).replace("'","''"); //cuenta_ret_ing
+       cad2+="','";
+       cad2+=query.value(72).toString().left(-1).replace("'","''"); //cuenta_tesoreria
+       cad2+="','";
+       cad2+=query.value(73).toString().left(-1).replace("'","''"); //cuenta_gasto_vto
+       cad2+="','";
+       cad2+=query.value(74).toString().left(-1).replace("'","''"); //imagen
+       cad2+="','";
+       cad2+=query.value(75).toString().left(-1).replace("'","''"); //nombre
+       cad2+="','";
+       cad2+=query.value(76).toString().left(-1).replace("'","''"); //apellidos
+       cad2+="','";
+       cad2+=query.value(77).toString().left(-1).replace("'","''"); //cuenta_pago_a_cuenta
+       cad2+="'";
        cad2+=")";
        ejecutar(cad2,base);
       }
@@ -5318,12 +5544,12 @@ void basedatos::copiatabla_borrador(QString base)
              "proxnum bigint default 0,"
              "PRIMARY KEY (codigo) )"; */
 void basedatos::copiatabla_series_fact(QString base) {
-    QString cad = "select codigo, descrip, proxnum from series_fact";
+    QString cad = "select codigo, descrip, proxnum, ultima_huella from series_fact";
     QSqlQuery query=ejecutar(cad);
     if (query.isActive())
        while (query.next())
         {
-           QString cad2="insert into series_fact (codigo, descrip, proxnum) "
+           QString cad2="insert into series_fact (codigo, descrip, proxnum, ultima_huella) "
                         "values (";
            cad2+="'";
            cad2+=query.value(0).toString(); // codigo
@@ -5331,156 +5557,253 @@ void basedatos::copiatabla_series_fact(QString base) {
            cad2+=query.value(1).toString(); // descrip
            cad2+="', ";
            cad2+=query.value(2).toString(); // proxnum
+           cad2+=", '";
+           cad2+=query.value(3).toString(); // ultima_huella
+           cad2+="'";
            cad2+=")";
           ejecutar(cad2,base);
        }
 }
 
-// copiar tabla tipos_doc
-void basedatos::copiatabla_tipos_doc(QString base) {
-    QString cad = "select "
-    "codigo, descrip, serie, pie1, pie2, moneda, codigo_moneda, contabilizable, rectificativo, "
-    "tipo_operacion, cif_empresa, cif_cliente, documento, cantidad, referencia, descripref, precio, "
-    "totallin, bi, descuento, tipoiva, tipore, cuota, cuotare, totalfac, totallineas, suplidos, "
-    "retencion, lineas_doc, notas, venci, numero, fecha, cliente, fe_idioma, fe_libro, fe_registro, "
-    "fe_hoja, fe_folio, fe_seccion, fe_volumen, fe_datos_adic, nombre_emisor, domicilio_emisor, "
-    "cp_emisor, poblacion_emisor, provincia_emisor, pais_emisor, cif_emisor, id_registral, concepto_sii, "
-    "fichreport, notastex, imagen "
-    "from tipos_doc";
-    QSqlQuery query=ejecutar(cad);
-    if (query.isActive())
-       while (query.next()) {
-           QString cad2="insert into tipos_doc ("
-                        "codigo, descrip, serie, pie1, pie2, moneda, codigo_moneda, contabilizable, rectificativo, "
-                        "tipo_operacion, cif_empresa, cif_cliente, documento, cantidad, referencia, descripref, precio, "
-                        "totallin, bi, descuento, tipoiva, tipore, cuota, cuotare, totalfac, totallineas, suplidos, "
-                        "retencion, lineas_doc, notas, venci, numero, fecha, cliente, fe_idioma, fe_libro, fe_registro, "
-                        "fe_hoja, fe_folio, fe_seccion, fe_volumen, fe_datos_adic, nombre_emisor, domicilio_emisor, "
-                        "cp_emisor, poblacion_emisor, provincia_emisor, pais_emisor, cif_emisor, id_registral, concepto_sii, "
-                        "fichreport, notastex, imagen) "
-                        "values (";
-           cad2+="'";
-           cad2+=query.value(0).toString(); // codigo
-           cad2+="', '";
-           cad2+=query.value(1).toString(); // descrip
-           cad2+="', '";
-           cad2+=query.value(2).toString(); // serie
-           cad2+="', '";
-           cad2+=query.value(3).toString(); // pie1
-           cad2+="', '";
-           cad2+=query.value(4).toString(); // pie2
-           cad2+="', '";
-           cad2+=query.value(5).toString(); // moneda
-           cad2+="', '";
-           cad2+=query.value(6).toString(); // codigo_moneda
-           cad2+="', ";
-           if ( cualControlador(base) == SQLITE ) { // contabilizable
-              cad2 += query.value(7).toBool() ? "1": "0";
-             }
-           else {
-                  cad2 += query.value(7).toBool() ? "true": "false" ;
-                }
-           cad2+=", ";
-           if ( cualControlador(base) == SQLITE ) { // rectificativo
-              cad2 += query.value(8).toBool() ? "1": "0";
-             }
-           else {
-                  cad2 += query.value(8).toBool() ? "true": "false" ;
-                }
-           cad2+=", ";
-           cad2 += query.value(9).toString(); // tipo_operacion
-           cad2+=", '";
-           cad2 += query.value(10).toString(); // "cif_empresa varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(11).toString(); // "cif_cliente varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(12).toString(); // "documento   varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(13).toString(); // "cantidad    varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(14).toString(); // "referencia  varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(15).toString(); // "descripref  varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(16).toString(); // "precio      varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(17).toString(); // "totallin    varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(18).toString(); // "bi          varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(19).toString(); // "descuento   varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(20).toString(); // "tipoiva     varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(21).toString(); // "tipore      varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(22).toString(); // "cuota       varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(23).toString(); // "cuotare     varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(24).toString(); // "totalfac    varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(25).toString(); // "totallineas varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(26).toString(); // "suplidos    varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(27).toString(); // "retencion   varchar(254) default '', "
-           cad2+="', ";
-           cad2 += query.value(28).toString(); // "lineas_doc  int, "
-           cad2+=", '";
-           cad2 += query.value(29).toString(); //"notas       varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(30).toString(); //"venci       varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(31).toString(); //"numero      varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(32).toString(); //"fecha       varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(33).toString(); //"cliente     varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(34).toString(); //        "fe_idioma     varchar(10) default '', "
-           cad2+="', '";
-           cad2 += query.value(35).toString(); //        "fe_libro      varchar(40) default '', "
-           cad2+="', '";
-           cad2 += query.value(36).toString(); //        "fe_registro   varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(37).toString(); //        "fe_hoja     varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(38).toString(); //        "fe_folio     varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(39).toString(); //        "fe_seccion     varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(40).toString(); //        "fe_volumen     varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(41).toString(); //        "fe_datos_adic  varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(42).toString(); //"nombre_emisor     varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(43).toString(); //"domicilio_emisor  varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(44).toString(); //"cp_emisor         varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(45).toString(); //"poblacion_emisor  varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(46).toString(); //"provincia_emisor  varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(47).toString(); //"pais_emisor       varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(48).toString(); //"cif_emisor        varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(49).toString(); //"id_registral      varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(50).toString(); //"concepto_sii      varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(51).toString(); //"fichreport        varchar(254) default '', "
-           cad2+="', '";
-           cad2 += query.value(52).toString(); //"notastex    text , "
-           cad2+="', '";
-           cad2 += query.value(53).toString(); //"imagen         text,"
-           cad2+="')";
-           ejecutar(cad2,base);
-       }
+void basedatos::copiatabla_tipos_doc(QString nombreBaseDestino)
+{
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
+
+    QSqlQuery queryOrigen(dbOrigen);
+    // Seleccionamos los 61 campos
+    queryOrigen.prepare("SELECT codigo, descrip, serie, pie1, pie2, moneda, codigo_moneda, "
+                        "contabilizable, rectificativo, tipo_operacion, cif_empresa, cif_cliente, "
+                        "documento, cantidad, referencia, descripref, precio, totallin, bi, "
+                        "descuento, tipoiva, tipore, cuota, cuotare, totalfac, totallineas, "
+                        "lineas_doc, notas, venci, numero, fecha, cliente, nombre_emisor, "
+                        "domicilio_emisor, cp_emisor, poblacion_emisor, provincia_emisor, "
+                        "pais_emisor, cif_emisor, id_registral, notastex, imagen, fichreport, "
+                        "suplidos, concepto_sii, fe_idioma, fe_libro, fe_registro, fe_hoja, "
+                        "fe_folio, fe_seccion, fe_volumen, fe_datos_adic, retencion, img_fondo, "
+                        "donacion_2ejer, donacion_especie, clave_donacion, comunidad_autonoma, "
+                        "porcent_deduc_autonomia, verifactu FROM tipos_doc");
+
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error leyendo tipos_doc:" << queryOrigen.lastError().text();
+        return;
+    }
+
+    QSqlQuery queryInsert(dbDestino);
+    QStringList placeholders;
+    for(int i = 0; i < 61; ++i) placeholders << "?";
+
+    queryInsert.prepare(QString("INSERT INTO tipos_doc (codigo, descrip, serie, pie1, pie2, moneda, "
+                        "codigo_moneda, contabilizable, rectificativo, tipo_operacion, cif_empresa, "
+                        "cif_cliente, documento, cantidad, referencia, descripref, precio, totallin, "
+                        "bi, descuento, tipoiva, tipore, cuota, cuotare, totalfac, totallineas, "
+                        "lineas_doc, notas, venci, numero, fecha, cliente, nombre_emisor, "
+                        "domicilio_emisor, cp_emisor, poblacion_emisor, provincia_emisor, "
+                        "pais_emisor, cif_emisor, id_registral, notastex, imagen, fichreport, "
+                        "suplidos, concepto_sii, fe_idioma, fe_libro, fe_registro, fe_hoja, "
+                        "fe_folio, fe_seccion, fe_volumen, fe_datos_adic, retencion, img_fondo, "
+                        "donacion_2ejer, donacion_especie, clave_donacion, comunidad_autonoma, "
+                        "porcent_deduc_autonomia, verifactu) "
+                        "VALUES (%1)").arg(placeholders.join(",")));
+
+    dbDestino.transaction();
+
+    while (queryOrigen.next()) {
+        for (int i = 0; i < 61; ++i) {
+            QVariant valor = queryOrigen.value(i);
+
+            // 1. Manejo de Booleanos (lo que ya corregimos antes)
+            if (i == 7 || i == 8 || i == 55 || i == 56 || i == 60) {
+                queryInsert.addBindValue(valor.toBool());
+            }
+            // 2. Manejo de Binarios (img_fondo)
+            else if (i == 54) {
+                queryInsert.addBindValue(valor.toByteArray());
+            }
+            // 3. Sanitización de Strings (Para evitar el error de la comilla en "ANDALUZA...")
+            else if (valor.typeId() == QMetaType::QString) {
+                QString texto = valor.toString();
+                // Si el string es nulo o vacío, mandamos un string vacío explícito
+                // para evitar que Postgres interprete caracteres extraños del buffer
+                //queryInsert.addBindValue(texto.isEmpty() ? QString("") : texto);
+                queryInsert.addBindValue(texto.remove(QChar('\0')));
+            }
+            else {
+                queryInsert.addBindValue(valor);
+            }
+        }
+
+        if (!queryInsert.exec()) {
+            // Si falla, vamos a imprimir exactamente qué campo causó el problema
+            qDebug() << "-----------------------------------------";
+            qDebug() << "Error en tipos_doc ID:" << queryOrigen.value(0).toString();
+            qDebug() << "Mensaje SQL:" << queryInsert.lastError().text();
+            qDebug() << "Posible valor conflictivo:" << queryOrigen.value(32).toString(); // nombre_emisor
+            qDebug() << "-----------------------------------------";
+            dbDestino.rollback();
+            return;
+        }
+    }
+
+    if (dbDestino.commit()) {
+        qDebug() << "Tabla 'tipos_doc' copiada con éxito.";
+    }
 }
+
+// copiar tabla tipos_doc
+// void basedatos::copiatabla_tipos_doc(QString base) {
+//     QString cad = "select "
+//     "codigo, descrip, serie, pie1, pie2, moneda, codigo_moneda, contabilizable, rectificativo, "
+//     "tipo_operacion, cif_empresa, cif_cliente, documento, cantidad, referencia, descripref, precio, "
+//     "totallin, bi, descuento, tipoiva, tipore, cuota, cuotare, totalfac, totallineas, suplidos, "
+//     "retencion, lineas_doc, notas, venci, numero, fecha, cliente, fe_idioma, fe_libro, fe_registro, "
+//     "fe_hoja, fe_folio, fe_seccion, fe_volumen, fe_datos_adic, nombre_emisor, domicilio_emisor, "
+//     "cp_emisor, poblacion_emisor, provincia_emisor, pais_emisor, cif_emisor, id_registral, concepto_sii, "
+//     "fichreport, notastex, imagen, verifactu "
+//     "from tipos_doc";
+//     QSqlQuery query=ejecutar(cad);
+//     if (query.isActive())
+//        while (query.next()) {
+//            QString cad2="insert into tipos_doc ("
+//                         "codigo, descrip, serie, pie1, pie2, moneda, codigo_moneda, contabilizable, rectificativo, "
+//                         "tipo_operacion, cif_empresa, cif_cliente, documento, cantidad, referencia, descripref, precio, "
+//                         "totallin, bi, descuento, tipoiva, tipore, cuota, cuotare, totalfac, totallineas, suplidos, "
+//                         "retencion, lineas_doc, notas, venci, numero, fecha, cliente, fe_idioma, fe_libro, fe_registro, "
+//                         "fe_hoja, fe_folio, fe_seccion, fe_volumen, fe_datos_adic, nombre_emisor, domicilio_emisor, "
+//                         "cp_emisor, poblacion_emisor, provincia_emisor, pais_emisor, cif_emisor, id_registral, concepto_sii, "
+//                         "fichreport, notastex, imagen, verifactu) "
+//                         "values (";
+//            cad2+="'";
+//            cad2+=query.value(0).toString(); // codigo
+//            cad2+="', '";
+//            cad2+=query.value(1).toString(); // descrip
+//            cad2+="', '";
+//            cad2+=query.value(2).toString(); // serie
+//            cad2+="', '";
+//            cad2+=query.value(3).toString(); // pie1
+//            cad2+="', '";
+//            cad2+=query.value(4).toString(); // pie2
+//            cad2+="', '";
+//            cad2+=query.value(5).toString(); // moneda
+//            cad2+="', '";
+//            cad2+=query.value(6).toString(); // codigo_moneda
+//            cad2+="', ";
+//            if ( cualControlador(base) == SQLITE ) { // contabilizable
+//               cad2 += query.value(7).toBool() ? "1": "0";
+//              }
+//            else {
+//                   cad2 += query.value(7).toBool() ? "true": "false" ;
+//                 }
+//            cad2+=", ";
+//            if ( cualControlador(base) == SQLITE ) { // rectificativo
+//               cad2 += query.value(8).toBool() ? "1": "0";
+//              }
+//            else {
+//                   cad2 += query.value(8).toBool() ? "true": "false" ;
+//                 }
+//            cad2+=", ";
+//            cad2 += query.value(9).toString(); // tipo_operacion
+//            cad2+=", '";
+//            cad2 += query.value(10).toString(); // "cif_empresa varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(11).toString(); // "cif_cliente varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(12).toString(); // "documento   varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(13).toString(); // "cantidad    varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(14).toString(); // "referencia  varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(15).toString(); // "descripref  varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(16).toString(); // "precio      varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(17).toString(); // "totallin    varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(18).toString(); // "bi          varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(19).toString(); // "descuento   varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(20).toString(); // "tipoiva     varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(21).toString(); // "tipore      varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(22).toString(); // "cuota       varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(23).toString(); // "cuotare     varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(24).toString(); // "totalfac    varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(25).toString(); // "totallineas varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(26).toString(); // "suplidos    varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(27).toString(); // "retencion   varchar(254) default '', "
+//            cad2+="', ";
+//            cad2 += query.value(28).toString(); // "lineas_doc  int, "
+//            cad2+=", '";
+//            cad2 += query.value(29).toString(); //"notas       varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(30).toString(); //"venci       varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(31).toString(); //"numero      varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(32).toString(); //"fecha       varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(33).toString(); //"cliente     varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(34).toString(); //        "fe_idioma     varchar(10) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(35).toString(); //        "fe_libro      varchar(40) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(36).toString(); //        "fe_registro   varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(37).toString(); //        "fe_hoja     varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(38).toString(); //        "fe_folio     varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(39).toString(); //        "fe_seccion     varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(40).toString(); //        "fe_volumen     varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(41).toString(); //        "fe_datos_adic  varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(42).toString(); //"nombre_emisor     varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(43).toString(); //"domicilio_emisor  varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(44).toString(); //"cp_emisor         varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(45).toString(); //"poblacion_emisor  varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(46).toString(); //"provincia_emisor  varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(47).toString(); //"pais_emisor       varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(48).toString(); //"cif_emisor        varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(49).toString(); //"id_registral      varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(50).toString(); //"concepto_sii      varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(51).toString(); //"fichreport        varchar(254) default '', "
+//            cad2+="', '";
+//            cad2 += query.value(52).toString(); //"notastex    text , "
+//            cad2+="', '";
+//            cad2 += query.value(53).toString(); //"imagen         text,"
+
+//            cad2+="', ";
+//            if ( cualControlador(base) == SQLITE ) { // verifactu
+//               cad2 += query.value(54).toBool() ? "1": "0";
+//              }
+//            else {
+//                   cad2 += query.value(54).toBool() ? "true": "false" ;
+//                 }
+
+//            cad2+=")";
+//            ejecutar(cad2,base);
+//        }
+// }
 
 /*
 CREATE TABLE tipos_doc ("
@@ -5636,112 +5959,213 @@ void basedatos::copiatabla_referencias(QString base) {
 
 
 // copiar tabla facturas
-void basedatos::copiatabla_facturas(QString base) {
-    QString cad = "select "
-    "clave, serie, numero, cuenta, externo, fecha, fecha_fac, fecha_op, "
-    "contabilizado, contabilizable, con_ret, con_re, cerrado, tipo_ret, retencion, "
-    "tipo_doc, notas, pie1, pie2, cta_anticipos, concepto_sii, c_a_rol1, c_a_rol2, c_a_rol3, "
-    "pase_diario_cta from facturas";
-    QSqlQuery query=ejecutar(cad);
-    // ojo hay que crear un campo que guarde la clave original
-    // luego en lineas hay que restaurar la clave generada nueva
-    ejecutar("alter table facturas add column oldclave integer default 0",base);
-    if (query.isActive())
-       while (query.next()) {
-           QString cad2="insert into facturas ("
-                        "oldclave, serie, numero, cuenta, externo, fecha, fecha_fac, fecha_op, "
-                        "contabilizado, contabilizable, con_ret, con_re, cerrado, tipo_ret, retencion, "
-                        "tipo_doc, notas, pie1, pie2, cta_anticipos, concepto_sii, c_a_rol1, c_a_rol2, c_a_rol3, "
-                        "pase_diario_cta ) "
-                        "values (";
-               cad2+= query.value(0).toString(); //oldclave -- clave integer primary key autoincrement,";
-               cad2+= ", '";
-               cad2+= query.value(1).toString(); // "serie   varchar(80),"
-               cad2+= "', ";
-               cad2+= query.value(2).toString(); // "numero  bigint,"
-               cad2+= ", '";
-               cad2+= query.value(3).toString(); // "cuenta  varchar(80),"
-               cad2+= "', '";
-               cad2+= query.value(4).toString(); // "externo  varchar(80) default '',"
-               cad2+= "', '";
-               cad2+= query.value(5).toDate().toString("yyyy-MM-dd"); // "fecha     date,"
-               cad2+= "', '";
-               cad2+= query.value(6).toDate().toString("yyyy-MM-dd"); // "fecha_fac date,"
-               cad2+= "', '";
-               cad2+= query.value(7).toDate().toString("yyyy-MM-dd");; // "fecha_op  date,";
-               cad2+= "', ";
-               // "contabilizado bool default 0,";
-               if ( cualControlador(base) == SQLITE ) {
-                  cad2 += query.value(8).toBool() ? "1": "0";
-                 }
-               else {
-                      cad2 += query.value(8).toBool() ? "true": "false" ;
-                    }
-               cad2+= ", ";
-               // "contabilizable bool default 0,";
-               if ( cualControlador(base) == SQLITE ) {
-                  cad2 += query.value(9).toBool() ? "1": "0";
-                 }
-               else {
-                      cad2 += query.value(9).toBool() ? "true": "false" ;
-                    }
-               cad2+= ", ";
-               // "con_ret bool default 0,";
-               if ( cualControlador(base) == SQLITE ) {
-                  cad2 += query.value(10).toBool() ? "1": "0";
-                 }
-               else {
-                      cad2 += query.value(10).toBool() ? "true": "false" ;
-                    }
+void basedatos::copiatabla_facturas(QString nombreBaseDestino)
+{
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
 
-               cad2+= ", ";
-               // "con_re bool default 0,";
-               if ( cualControlador(base) == SQLITE ) {
-                  cad2 += query.value(11).toBool() ? "1": "0";
-                 }
-               else {
-                      cad2 += query.value(11).toBool() ? "true": "false" ;
-                    }
+    QSqlQuery queryOrigen(dbOrigen);
+    // 34 campos seleccionados
+    queryOrigen.prepare("SELECT clave, serie, numero, cuenta, fecha, fecha_fac, fecha_op, "
+                        "contabilizado, contabilizable, con_ret, con_re, cerrado, tipo_ret, "
+                        "retencion, tipo_doc, notas, pie1, pie2, pase_diario_cta, "
+                        "cta_anticipos, externo, concepto_sii, c_a_rol1, c_a_rol2, c_a_rol3, "
+                        "suplidos, total_factura, huella_anterior, huella, vf_aceptada_errores, "
+                        "vf_anulada, num_rectificada, serie_rectificada, tipo_rectificativa "
+                        "FROM facturas");
 
-               cad2+= ", ";
-               // "cerrado bool default 0,";
-               if ( cualControlador(base) == SQLITE ) { // conprecision
-                  cad2 += query.value(12).toBool() ? "1": "0";
-                 }
-               else {
-                      cad2 += query.value(12).toBool() ? "true": "false" ;
-                    }
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error leyendo facturas:" << queryOrigen.lastError().text();
+        return;
+    }
 
-               cad2+= ", ";
-               cad2+= query.value(13).toString(); // "tipo_ret  numeric(5,2),"
-               cad2+= ", ";
-               cad2+= query.value(14).toString(); // "retencion numeric(14,2), "
-               cad2+= ", '";
-               cad2+= query.value(15).toString(); // "tipo_doc varchar(80), "
-               cad2+= "', '";
-               cad2+= query.value(16).toString(); // "notas text, "
-               cad2+= "', '";
-               cad2+= query.value(17).toString(); // "pie1 varchar(254),"
-               cad2+= "', '";
-               cad2+= query.value(18).toString(); // "pie2 varchar(254),"
-               cad2+= "', '";
-               cad2+= query.value(19).toString(); // "cta_anticipos varchar(254),"
-               cad2+= "', '";
-               cad2+= query.value(20).toString(); // "concepto_sii varchar(254) default '',"
-               cad2+= "', '";
-               cad2+= query.value(21).toString(); // "c_a_rol1 varchar(254) default '',"
-               cad2+= "', '";
-               cad2+= query.value(22).toString(); // "c_a_rol2 varchar(254) default '',"
-               cad2+= "', '";
-               cad2+= query.value(23).toString(); // "c_a_rol3 varchar(254) default '',"
-               cad2+= "', ";
-               QString cadvalor=query.value(24).toString();
-               if (cadvalor.isEmpty()) cadvalor="0";
-               cad2+= cadvalor; // "pase_diario_cta bigint";
-               cad2+=")";
-               ejecutar(cad2,base);
-       }
+    QSqlQuery queryInsert(dbDestino);
+    QStringList placeholders;
+    for(int i = 0; i < 34; ++i) placeholders << "?";
+
+    queryInsert.prepare(QString("INSERT INTO facturas (clave, serie, numero, cuenta, fecha, "
+                        "fecha_fac, fecha_op, contabilizado, contabilizable, con_ret, con_re, "
+                        "cerrado, tipo_ret, retencion, tipo_doc, notas, pie1, pie2, "
+                        "pase_diario_cta, cta_anticipos, externo, concepto_sii, c_a_rol1, "
+                        "c_a_rol2, c_a_rol3, suplidos, total_factura, huella_anterior, "
+                        "huella, vf_aceptada_errores, vf_anulada, num_rectificada, "
+                        "serie_rectificada, tipo_rectificativa) "
+                        "VALUES (%1)").arg(placeholders.join(",")));
+
+    dbDestino.transaction();
+
+    while (queryOrigen.next()) {
+        for (int i = 0; i < 34; ++i) {
+            QVariant valor = queryOrigen.value(i);
+
+            // --- BLOQUE DE BOOLEANOS ---
+            // 7:contabilizado, 8:contabilizable, 9:con_ret, 10:con_re, 11:cerrado
+            // Y añadimos los de Verifactu si el error persiste en el parámetro 30 (índice 29)
+            if ((i >= 7 && i <= 11) || i == 29 || i == 30) {
+                // Forzamos que sea un booleano real de C++
+                queryInsert.addBindValue(valor.toBool());
+            }
+
+            // --- BLOQUE DE FECHAS ---
+            // 4:fecha, 5:fecha_fac, 6:fecha_op
+            else if (i >= 4 && i <= 6) {
+                queryInsert.addBindValue(valor.toDate());
+            }
+
+            // --- BLOQUE DE TEXTO ---
+            // Forzamos toString para evitar que el driver mande tipos numéricos a campos varchar
+            else if (valor.typeId() == QMetaType::QString || (i >= 27 && i <= 33) || i == 14 || i == 15) {
+                QString str = valor.toString();
+                // Limpieza básica de nulos
+                queryInsert.addBindValue(str.remove(QChar('\0')));
+            }
+
+            // --- RESTO DE CAMPOS (Numéricos) ---
+            else {
+                queryInsert.addBindValue(valor);
+            }
+        }
+
+        if (!queryInsert.exec()) {
+            qDebug() << "-----------------------------------------";
+            qDebug() << "ERROR EN COLUMNA (Parámetro):" << queryInsert.lastError().nativeErrorCode();
+            qDebug() << "CONTENIDO ORIGINAL CAMPO 30 (Índice 29):" << queryOrigen.value(29).toString();
+            qDebug() << "SQL ERROR:" << queryInsert.lastError().text();
+            qDebug() << "-----------------------------------------";
+            dbDestino.rollback();
+            return;
+        }
+    }
+
+    if (dbDestino.commit()) {
+        qDebug() << "Tabla 'facturas' copiada con éxito.";
+        // REPARAR LA SECUENCIA
+            QSqlQuery querySeq(dbDestino);
+            // Esta instrucción busca el máximo valor de 'clave' y pone la secuencia en ese punto
+            QString sqlSeq = "SELECT setval('facturas_clave_seq', (SELECT MAX(clave) FROM facturas))";
+
+            if (querySeq.exec(sqlSeq)) {
+                qDebug() << "Secuencia 'facturas_clave_seq' sincronizada correctamente.";
+            } else {
+                qDebug() << "Error al sincronizar secuencia:" << querySeq.lastError().text();
+            }
+    }
 }
+
+// void basedatos::copiatabla_facturas(QString base) {
+//     QString cad = "select "
+//     "clave, serie, numero, cuenta, externo, fecha, fecha_fac, fecha_op, "
+//     "contabilizado, contabilizable, con_ret, con_re, cerrado, tipo_ret, retencion, "
+//     "tipo_doc, notas, pie1, pie2, cta_anticipos, concepto_sii, c_a_rol1, c_a_rol2, c_a_rol3, "
+//     "pase_diario_cta,  suplidos, total_factura from facturas";
+//     QSqlQuery query=ejecutar(cad);
+//     // ojo hay que crear un campo que guarde la clave original
+//     // luego en lineas hay que restaurar la clave generada nueva
+//     ejecutar("alter table facturas add column oldclave integer default 0",base);
+//     if (query.isActive())
+//        while (query.next()) {
+//            QString cad2="insert into facturas ("
+//                         "oldclave, serie, numero, cuenta, externo, fecha, fecha_fac, fecha_op, "
+//                         "contabilizado, contabilizable, con_ret, con_re, cerrado, tipo_ret, retencion, "
+//                         "tipo_doc, notas, pie1, pie2, cta_anticipos, concepto_sii, c_a_rol1, c_a_rol2, c_a_rol3, "
+//                         "pase_diario_cta, suplidos, total_factura) "
+//                         "values (";
+//                cad2+= query.value(0).toString(); //oldclave -- clave integer primary key autoincrement,";
+//                cad2+= ", '";
+//                cad2+= query.value(1).toString(); // "serie   varchar(80),"
+//                cad2+= "', ";
+//                cad2+= query.value(2).toString(); // "numero  bigint,"
+//                cad2+= ", '";
+//                cad2+= query.value(3).toString(); // "cuenta  varchar(80),"
+//                cad2+= "', '";
+//                cad2+= query.value(4).toString(); // "externo  varchar(80) default '',"
+//                cad2+= "', '";
+//                cad2+= query.value(5).toDate().toString("yyyy-MM-dd"); // "fecha     date,"
+//                cad2+= "', '";
+//                cad2+= query.value(6).toDate().toString("yyyy-MM-dd"); // "fecha_fac date,"
+//                cad2+= "', '";
+//                cad2+= query.value(7).toDate().toString("yyyy-MM-dd");; // "fecha_op  date,";
+//                cad2+= "', ";
+//                // "contabilizado bool default 0,";
+//                if ( cualControlador(base) == SQLITE ) {
+//                   cad2 += query.value(8).toBool() ? "1": "0";
+//                  }
+//                else {
+//                       cad2 += query.value(8).toBool() ? "true": "false" ;
+//                     }
+//                cad2+= ", ";
+//                // "contabilizable bool default 0,";
+//                if ( cualControlador(base) == SQLITE ) {
+//                   cad2 += query.value(9).toBool() ? "1": "0";
+//                  }
+//                else {
+//                       cad2 += query.value(9).toBool() ? "true": "false" ;
+//                     }
+//                cad2+= ", ";
+//                // "con_ret bool default 0,";
+//                if ( cualControlador(base) == SQLITE ) {
+//                   cad2 += query.value(10).toBool() ? "1": "0";
+//                  }
+//                else {
+//                       cad2 += query.value(10).toBool() ? "true": "false" ;
+//                     }
+
+//                cad2+= ", ";
+//                // "con_re bool default 0,";
+//                if ( cualControlador(base) == SQLITE ) {
+//                   cad2 += query.value(11).toBool() ? "1": "0";
+//                  }
+//                else {
+//                       cad2 += query.value(11).toBool() ? "true": "false" ;
+//                     }
+
+//                cad2+= ", ";
+//                // "cerrado bool default 0,";
+//                if ( cualControlador(base) == SQLITE ) { // conprecision
+//                   cad2 += query.value(12).toBool() ? "1": "0";
+//                  }
+//                else {
+//                       cad2 += query.value(12).toBool() ? "true": "false" ;
+//                     }
+
+//                cad2+= ", ";
+//                cad2+= query.value(13).toString(); // "tipo_ret  numeric(5,2),"
+//                cad2+= ", ";
+//                cad2+= query.value(14).toString(); // "retencion numeric(14,2), "
+//                cad2+= ", '";
+//                cad2+= query.value(15).toString(); // "tipo_doc varchar(80), "
+//                cad2+= "', '";
+//                cad2+= query.value(16).toString(); // "notas text, "
+//                cad2+= "', '";
+//                cad2+= query.value(17).toString(); // "pie1 varchar(254),"
+//                cad2+= "', '";
+//                cad2+= query.value(18).toString(); // "pie2 varchar(254),"
+//                cad2+= "', '";
+//                cad2+= query.value(19).toString(); // "cta_anticipos varchar(254),"
+//                cad2+= "', '";
+//                cad2+= query.value(20).toString(); // "concepto_sii varchar(254) default '',"
+//                cad2+= "', '";
+//                cad2+= query.value(21).toString(); // "c_a_rol1 varchar(254) default '',"
+//                cad2+= "', '";
+//                cad2+= query.value(22).toString(); // "c_a_rol2 varchar(254) default '',"
+//                cad2+= "', '";
+//                cad2+= query.value(23).toString(); // "c_a_rol3 varchar(254) default '',"
+//                cad2+= "', ";
+//                QString cadvalor=query.value(24).toString();
+//                if (cadvalor.isEmpty()) cadvalor="0";
+//                cad2+= cadvalor; // "pase_diario_cta bigint";
+//                cad2+= ", ";
+//                cadvalor=query.value(26).toString();
+//                if (cadvalor.isEmpty()) cadvalor="0";
+//                cad2+= cadvalor; // "suplidos";
+//                cad2+= ", ";
+//                cadvalor=query.value(27).toString();
+//                if (cadvalor.isEmpty()) cadvalor="0";
+//                cad2+= cadvalor; // "total_factura";
+//                cad2+=")";
+//                ejecutar(cad2,base);
+//        }
+// }
 
 
 /*
@@ -5805,95 +6229,680 @@ void basedatos::copiatabla_facturas(QString base) {
 */
 
 // copiar tabla lin_fac
-void basedatos::copiatabla_lin_fac(QString base) {
-    // 1º averiguamos equivalencias entre clave de facturas generada y la original
-    QSqlQuery q=ejecutar("select clave, oldclave from facturas",base);
-    QList<int> clave, oldclave;
-    while (q.next()) {
-        clave << q.value(0).toInt();
-        oldclave << q.value(1).toInt();
-    }
-    QString cad = "select "
-    "clave, codigo, descripcion, pedido, albaran, expediente, contrato, notas, cantidad, precio, clave_iva,"
-    "ci, tipo_iva, tipo_re, dto from lin_fact";
-    QSqlQuery query=ejecutar(cad);
-    if (query.isActive())
-       while (query.next()) {
-        int numclave=query.value(0).toInt();
-        int pos=oldclave.indexOf(numclave);
-        int nuevaclave=-1;
-        if (pos>-1) nuevaclave=clave.at(pos);
-        if (nuevaclave>-1) {
-            // insertamos el registro
-            QString cadclave; cadclave.setNum(nuevaclave);
-            QString cad2="insert into lin_fact ("
-                         "clave, codigo, descripcion, pedido, albaran, expediente, contrato, notas, cantidad, precio, clave_iva,"
-                         "ci, tipo_iva, tipo_re, dto) "
-                         "values (";
-                          cad2+= cadclave; // "clave bigint, " por este campo se relaciona con cabecera
-                          cad2+=", '";
-                          cad2+= query.value(1).toString(); // "codigo       varchar(80),"
-                          cad2+="', '";
-                          cad2+= query.value(2).toString(); //"descripcion  varchar(254),"
-                          cad2+="', '";
-                          cad2+= query.value(3).toString(); //"pedido       varchar(254),"
-                          cad2+="', '";
-                          cad2+= query.value(4).toString(); //"albaran      varchar(254),"
-                          cad2+="', '";
-                          cad2+= query.value(5).toString(); //"expediente   varchar(254),"
-                          cad2+="', '";
-                          cad2+= query.value(6).toString(); //"contrato     varchar(254),"
-                          cad2+="', '";
-                          cad2+= query.value(7).toString(); //"notas        text,"
-                          cad2+="', ";
-                          cad2+= query.value(8).toString(); //"cantidad     numeric(19,3),"
-                          cad2+=", ";
-                          cad2+= query.value(9).toString(); //"precio       numeric(19,4),"
-                          cad2+=", '";
-                          cad2+= query.value(10).toString(); //"clave_iva    varchar(40),"
-                          cad2+="', '";
-                          cad2+= query.value(11).toString(); //"ci           varchar(254),"
-                          cad2+="', ";
-                          cad2+= query.value(12).toString(); //"tipo_iva     numeric(8,4),"
-                          cad2+=", ";
-                          cad2+= query.value(13).toString(); //"tipo_re      numeric(8,4),"
-                          cad2+=", ";
-                          cad2+= query.value(14).toString(); //"dto          numeric(8,4)";
-                          cad2+=")";
-                          ejecutar(cad2,base);
+void basedatos::copiatabla_lin_fac(QString nombreBaseDestino)
+{
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+        QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
+
+        QSqlQuery queryOrigen(dbOrigen);
+        // 16 campos exactos según tu esquema de Postgres
+        queryOrigen.prepare("SELECT linea, clave, codigo, descripcion, cantidad, precio, "
+                            "clave_iva, tipo_iva, tipo_re, dto, notas, ci, pedido, "
+                            "albaran, expediente, contrato FROM lin_fact");
+
+        if (!queryOrigen.exec()) {
+            qDebug() << "Error leyendo lin_fact:" << queryOrigen.lastError().text();
+            return;
         }
-       }
-    if ( cualControlador(base) != SQLITE )
-       ejecutar("alter table facturas drop column oldclave",base);
+
+        QSqlQuery queryInsert(dbDestino);
+        QStringList placeholders;
+        for(int i = 0; i < 16; ++i) placeholders << "?";
+
+        queryInsert.prepare(QString("INSERT INTO lin_fact (linea, clave, codigo, descripcion, "
+                            "cantidad, precio, clave_iva, tipo_iva, tipo_re, dto, notas, "
+                            "ci, pedido, albaran, expediente, contrato) "
+                            "VALUES (%1)").arg(placeholders.join(",")));
+
+        dbDestino.transaction();
+
+        while (queryOrigen.next()) {
+            queryInsert.addBindValue(queryOrigen.value(0).toInt());    // linea (PK)
+            queryInsert.addBindValue(queryOrigen.value(1));            // clave (FK a facturas)
+            queryInsert.addBindValue(queryOrigen.value(2).toString()); // codigo
+            queryInsert.addBindValue(queryOrigen.value(3).toString()); // descripcion
+            queryInsert.addBindValue(queryOrigen.value(4));            // cantidad (19,3)
+            queryInsert.addBindValue(queryOrigen.value(5));            // precio (19,4)
+            queryInsert.addBindValue(queryOrigen.value(6).toString()); // clave_iva
+            queryInsert.addBindValue(queryOrigen.value(7));            // tipo_iva (8,4)
+            queryInsert.addBindValue(queryOrigen.value(8));            // tipo_re (8,4)
+            queryInsert.addBindValue(queryOrigen.value(9));            // dto (8,4)
+
+            // El campo notas (text) admite retornos de carro y tabuladores sin problemas
+            queryInsert.addBindValue(queryOrigen.value(10).toString());
+
+            queryInsert.addBindValue(queryOrigen.value(11).toString()); // ci
+            queryInsert.addBindValue(queryOrigen.value(12).toString()); // pedido
+            queryInsert.addBindValue(queryOrigen.value(13).toString()); // albaran
+            queryInsert.addBindValue(queryOrigen.value(14).toString()); // expediente
+            queryInsert.addBindValue(queryOrigen.value(15).toString()); // contrato
+
+            if (!queryInsert.exec()) {
+                qDebug() << "Error en lin_fact (Linea:" << queryOrigen.value(0).toInt() << "):"
+                         << queryInsert.lastError().text();
+                dbDestino.rollback();
+                return;
+            }
+        }
+
+    if (dbDestino.commit()) {
+        // Sincronizamos la secuencia del campo 'linea'
+        QSqlQuery querySeq(dbDestino);
+        if (querySeq.exec("SELECT setval('lin_fact_linea_seq', (SELECT MAX(linea) FROM lin_fact))")) {
+            qDebug() << "Secuencia 'lin_fact_linea_seq' sincronizada.";
+        }
+        qDebug() << "Tabla 'lin_fact' (detalles) copiada con éxito.";
+    }
 }
 
-/*
-create table lin_fact ( ";
-    if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE) {
-        cadena += "linea integer primary key autoincrement,";
+// void basedatos::copiatabla_lin_fac(QString base) {
+//     // 1º averiguamos equivalencias entre clave de facturas generada y la original
+//     QSqlQuery q=ejecutar("select clave, oldclave from facturas",base);
+//     QList<int> clave, oldclave;
+//     while (q.next()) {
+//         clave << q.value(0).toInt();
+//         oldclave << q.value(1).toInt();
+//     }
+//     QString cad = "select "
+//     "clave, codigo, descripcion, pedido, albaran, expediente, contrato, notas, cantidad, precio, clave_iva,"
+//     "ci, tipo_iva, tipo_re, dto from lin_fact";
+//     QSqlQuery query=ejecutar(cad);
+//     if (query.isActive())
+//        while (query.next()) {
+//         int numclave=query.value(0).toInt();
+//         int pos=oldclave.indexOf(numclave);
+//         int nuevaclave=-1;
+//         if (pos>-1) nuevaclave=clave.at(pos);
+//         if (nuevaclave>-1) {
+//             // insertamos el registro
+//             QString cadclave; cadclave.setNum(nuevaclave);
+//             QString cad2="insert into lin_fact ("
+//                          "clave, codigo, descripcion, pedido, albaran, expediente, contrato, notas, cantidad, precio, clave_iva,"
+//                          "ci, tipo_iva, tipo_re, dto) "
+//                          "values (";
+//                           cad2+= cadclave; // "clave bigint, " por este campo se relaciona con cabecera
+//                           cad2+=", '";
+//                           cad2+= query.value(1).toString(); // "codigo       varchar(80),"
+//                           cad2+="', '";
+//                           cad2+= query.value(2).toString(); //"descripcion  varchar(254),"
+//                           cad2+="', '";
+//                           cad2+= query.value(3).toString(); //"pedido       varchar(254),"
+//                           cad2+="', '";
+//                           cad2+= query.value(4).toString(); //"albaran      varchar(254),"
+//                           cad2+="', '";
+//                           cad2+= query.value(5).toString(); //"expediente   varchar(254),"
+//                           cad2+="', '";
+//                           cad2+= query.value(6).toString(); //"contrato     varchar(254),"
+//                           cad2+="', '";
+//                           cad2+= query.value(7).toString(); //"notas        text,"
+//                           cad2+="', ";
+//                           cad2+= query.value(8).toString(); //"cantidad     numeric(19,3),"
+//                           cad2+=", ";
+//                           cad2+= query.value(9).toString(); //"precio       numeric(19,4),"
+//                           cad2+=", '";
+//                           cad2+= query.value(10).toString(); //"clave_iva    varchar(40),"
+//                           cad2+="', '";
+//                           cad2+= query.value(11).toString(); //"ci           varchar(254),"
+//                           cad2+="', ";
+//                           cad2+= query.value(12).toString(); //"tipo_iva     numeric(8,4),"
+//                           cad2+=", ";
+//                           cad2+= query.value(13).toString(); //"tipo_re      numeric(8,4),"
+//                           cad2+=", ";
+//                           cad2+= query.value(14).toString(); //"dto          numeric(8,4)";
+//                           cad2+=")";
+//                           ejecutar(cad2,base);
+//         }
+//        }
+//     if ( cualControlador(base) != SQLITE )
+//        ejecutar("alter table facturas drop column oldclave",base);
+// }
+
+
+void basedatos::copiatabla_facturas_predef(QString nombreBaseDestino)
+{
+    // 1. Identificar las conexiones
+    QSqlDatabase dbOrigen = QSqlDatabase::database(); // Conexión actual/default
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
+
+    // 2. Preparar la lectura
+    QSqlQuery queryOrigen(dbOrigen);
+    // Seleccionamos los 12 campos en el orden exacto de tu esquema
+    queryOrigen.prepare("SELECT codigo, descrip, serie, contabilizable, con_ret, con_re, "
+                        "tipo_ret, tipo_doc, notas, pie1, pie2, concepto_sii "
+                        "FROM facturas_predef");
+
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error leyendo origen (facturas_predef):" << queryOrigen.lastError().text();
+        return;
     }
-    else {
-        cadena += "linea   serial,"; }
-    cadena += "clave bigint, "  // por este campo se relaciona con cabecera
-              "codigo       varchar(80),"
-              "descripcion  varchar(254),"
-              "pedido       varchar(254),"
-              "albaran      varchar(254),"
-              "expediente   varchar(254),"
-              "contrato     varchar(254),"
-              "notas        text,"
-              "cantidad     numeric(19,3),"
-              "precio       numeric(19,4),"
-              "clave_iva    varchar(40),"
-              "ci           varchar(254),"
-              "tipo_iva     numeric(8,4),"
-              "tipo_re      numeric(8,4),"
-              "dto          numeric(8,4)";
-    if (( segunda ? cualControlador(qbase) : cualControlador())!=SQLITE)
-        cadena+=",PRIMARY KEY (linea) )";
- */
+
+    // 3. Preparar la inserción (usando 12 placeholders '?')
+    QSqlQuery queryInsert(dbDestino);
+    queryInsert.prepare("INSERT INTO facturas_predef (codigo, descrip, serie, contabilizable, "
+                        "con_ret, con_re, tipo_ret, tipo_doc, notas, pie1, pie2, concepto_sii) "
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 
+    while (queryOrigen.next()) {
+        queryInsert.addBindValue(queryOrigen.value(0)); // codigo
+        queryInsert.addBindValue(queryOrigen.value(1)); // descrip
+        queryInsert.addBindValue(queryOrigen.value(2)); // serie
+
+        // Los booleanos se fuerzan a bool para que Qt los traduzca según el motor (1/0 o T/F)
+        queryInsert.addBindValue(queryOrigen.value(3).toBool()); // contabilizable
+        queryInsert.addBindValue(queryOrigen.value(4).toBool()); // con_ret
+        queryInsert.addBindValue(queryOrigen.value(5).toBool()); // con_re
+
+        queryInsert.addBindValue(queryOrigen.value(6));  // tipo_ret (numeric)
+        queryInsert.addBindValue(queryOrigen.value(7));  // tipo_doc
+        queryInsert.addBindValue(queryOrigen.value(8));  // notas (text)
+        queryInsert.addBindValue(queryOrigen.value(9));  // pie1
+        queryInsert.addBindValue(queryOrigen.value(10)); // pie2
+        queryInsert.addBindValue(queryOrigen.value(11)); // concepto_sii
+
+        if (!queryInsert.exec()) {
+            qDebug() << "Error en fila:" << queryOrigen.value(0).toString()
+                     << " -> " << queryInsert.lastError().text();
+            dbDestino.rollback();
+            return;
+        }
+    }
+}
+
+void basedatos::copiatabla_lin_fact_predef(QString nombreBaseDestino)
+{
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
+
+    // 1. Lectura: Seleccionamos los 12 campos
+    QSqlQuery queryOrigen(dbOrigen);
+    queryOrigen.prepare("SELECT linea, cod_fact, codigo, descripcion, cantidad, precio, "
+                        "clave_iva, tipo_iva, tipo_re, dto, notas, ci "
+                        "FROM lin_fact_predef");
+
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error lectura lin_fact_predef:" << queryOrigen.lastError().text();
+        return;
+    }
+
+    // 2. Inserción: Preparamos los 12 placeholders
+    QSqlQuery queryInsert(dbDestino);
+    queryInsert.prepare("INSERT INTO lin_fact_predef (linea, cod_fact, codigo, descripcion, "
+                        "cantidad, precio, clave_iva, tipo_iva, tipo_re, dto, notas, ci) "
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+
+    while (queryOrigen.next()) {
+        // Usamos directamente QVariant (queryOrigen.value).
+        // Qt mantendrá la precisión numérica de los campos numeric(19,4)
+        queryInsert.addBindValue(queryOrigen.value(0));  // linea (importante para mantener IDs)
+        queryInsert.addBindValue(queryOrigen.value(1));  // cod_fact
+        queryInsert.addBindValue(queryOrigen.value(2));  // codigo
+        queryInsert.addBindValue(queryOrigen.value(3));  // descripcion
+        queryInsert.addBindValue(queryOrigen.value(4));  // cantidad
+        queryInsert.addBindValue(queryOrigen.value(5));  // precio
+        queryInsert.addBindValue(queryOrigen.value(6));  // clave_iva
+        queryInsert.addBindValue(queryOrigen.value(7));  // tipo_iva
+        queryInsert.addBindValue(queryOrigen.value(8));  // tipo_re
+        queryInsert.addBindValue(queryOrigen.value(9));  // dto
+        queryInsert.addBindValue(queryOrigen.value(10)); // notas
+        queryInsert.addBindValue(queryOrigen.value(11)); // ci
+
+        if (!queryInsert.exec()) {
+            qDebug() << "Error en línea ID" << queryOrigen.value(0).toString()
+                     << ":" << queryInsert.lastError().text();
+            return;
+        }
+    }
+
+    QSqlQuery querySeq(dbDestino);
+    if (querySeq.exec("SELECT setval('lin_fact_predef_linea_seq', (SELECT MAX(linea) FROM lin_fact_predef))")) {
+        qDebug() << "Secuencia 'lin_fact_predef_linea_seq' sincronizada.";
+    }
+    qDebug() << "Tabla 'lin_fact_predf' (detalles) copiada con éxito.";
+
+}
+
+void basedatos::copiatabla_lote_fact(QString nombreBaseDestino)
+{
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
+
+    // 1. Lectura de los 5 campos de lote_fact
+    QSqlQuery queryOrigen(dbOrigen);
+    queryOrigen.prepare("SELECT codigo, descripcion, cuotas, cod_factura_predef, presupuesto "
+                        "FROM lote_fact");
+
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error al leer lote_fact:" << queryOrigen.lastError().text();
+        return;
+    }
+
+    // 2. Inserción en destino
+    QSqlQuery queryInsert(dbDestino);
+    queryInsert.prepare("INSERT INTO lote_fact (codigo, descripcion, cuotas, "
+                        "cod_factura_predef, presupuesto) "
+                        "VALUES (?, ?, ?, ?, ?)");
+
+
+    while (queryOrigen.next()) {
+        queryInsert.addBindValue(queryOrigen.value(0)); // codigo
+        queryInsert.addBindValue(queryOrigen.value(1)); // descripcion
+
+        // Manejo de booleano para compatibilidad entre motores
+        queryInsert.addBindValue(queryOrigen.value(2).toBool()); // cuotas
+
+        queryInsert.addBindValue(queryOrigen.value(3)); // cod_factura_predef
+
+        // Manejo del numeric(19,2)
+        queryInsert.addBindValue(queryOrigen.value(4)); // presupuesto
+
+        if (!queryInsert.exec()) {
+            qDebug() << "Error en lote_fact (codigo " << queryOrigen.value(0).toString() << "): "
+                     << queryInsert.lastError().text();
+            return;
+        }
+    }
+
+}
+
+void basedatos::copiatabla_lin_lote_predef(QString nombreBaseDestino)
+{
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
+
+    // 1. Preparar lectura de los 6 campos
+    QSqlQuery queryOrigen(dbOrigen);
+    queryOrigen.prepare("SELECT linea, codigo, cuenta, importe, cuota, externo "
+                        "FROM lin_lote_predef");
+
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error al leer lin_lote_predef:" << queryOrigen.lastError().text();
+        return;
+    }
+
+    // 2. Preparar inserción en destino
+    QSqlQuery queryInsert(dbDestino);
+    queryInsert.prepare("INSERT INTO lin_lote_predef (linea, codigo, cuenta, "
+                        "importe, cuota, externo) "
+                        "VALUES (?, ?, ?, ?, ?, ?)");
+
+
+    while (queryOrigen.next()) {
+        queryInsert.addBindValue(queryOrigen.value(0)); // linea (int)
+        queryInsert.addBindValue(queryOrigen.value(1)); // codigo (varchar)
+        queryInsert.addBindValue(queryOrigen.value(2)); // cuenta (varchar)
+        queryInsert.addBindValue(queryOrigen.value(3)); // importe (varchar)
+        queryInsert.addBindValue(queryOrigen.value(4)); // cuota (varchar)
+        queryInsert.addBindValue(queryOrigen.value(5)); // externo (varchar)
+
+        if (!queryInsert.exec()) {
+            qDebug() << "Error insertando línea ID" << queryOrigen.value(0).toInt()
+                     << ":" << queryInsert.lastError().text();
+            return;
+        }
+    }
+
+    QSqlQuery querySeq(dbDestino);
+    if (querySeq.exec("SELECT setval('lin_lote_predef_linea_seq', (SELECT MAX(linea) FROM lin_lote_predef))")) {
+        qDebug() << "Secuencia 'lin_lote_predef_linea_seq' sincronizada.";
+    }
+    qDebug() << "Tabla 'lin_lote_predef' (detalles) copiada con éxito.";
+
+}
+
+void basedatos::copiatabla_usuarios(QString nombreBaseDestino)
+{
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
+
+    // 1. Consulta de lectura (14 campos)
+    QSqlQuery queryOrigen(dbOrigen);
+    queryOrigen.prepare("SELECT codigo, nombre, clave, nif, domicilio, poblacion, "
+                        "codigopostal, provincia, pais, tfno, email, observaciones, "
+                        "privilegios, imagen FROM usuarios");
+
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error leyendo usuarios:" << queryOrigen.lastError().text();
+        return;
+    }
+
+    QSqlQuery q(dbDestino);
+    q.exec("delete from usuarios");
+    // 2. Consulta de inserción en el destino
+    QSqlQuery queryInsert(dbDestino);
+    queryInsert.prepare("INSERT INTO usuarios (codigo, nombre, clave, nif, domicilio, "
+                        "poblacion, codigopostal, provincia, pais, tfno, email, "
+                        "observaciones, privilegios, imagen) "
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+
+    while (queryOrigen.next()) {
+        // En esta tabla todos los campos se pueden tratar como QVariant directos
+        // ya que son Varchar o Text.
+        queryInsert.addBindValue(queryOrigen.value(0));  // codigo
+        queryInsert.addBindValue(queryOrigen.value(1));  // nombre
+        queryInsert.addBindValue(queryOrigen.value(2));  // clave
+        queryInsert.addBindValue(queryOrigen.value(3));  // nif
+        queryInsert.addBindValue(queryOrigen.value(4));  // domicilio
+        queryInsert.addBindValue(queryOrigen.value(5));  // poblacion
+        queryInsert.addBindValue(queryOrigen.value(6));  // codigopostal
+        queryInsert.addBindValue(queryOrigen.value(7));  // provincia
+        queryInsert.addBindValue(queryOrigen.value(8));  // pais
+        queryInsert.addBindValue(queryOrigen.value(9));  // tfno
+        queryInsert.addBindValue(queryOrigen.value(10)); // email
+        queryInsert.addBindValue(queryOrigen.value(11)); // observaciones
+        queryInsert.addBindValue(queryOrigen.value(12)); // privilegios
+        queryInsert.addBindValue(queryOrigen.value(13)); // imagen (text)
+
+        if (!queryInsert.exec()) {
+            qDebug() << "Error insertando usuario:" << queryOrigen.value(0).toString()
+                     << " -> " << queryInsert.lastError().text();
+            // return;
+        }
+    }
+}
+
+
+void basedatos::copiatabla_cab_as_modelo(QString nombreBaseDestino)
+{
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
+
+    QSqlQuery queryOrigen(dbOrigen);
+    // 12 campos según tu esquema
+    queryOrigen.prepare("SELECT asientomodelo, fecha, aib, autofactura_ue, autofactura_no_ue, "
+                        "eib, eib_servicios, isp_op_interiores, importacion, exportacion, "
+                        "diario, tipo FROM cab_as_modelo");
+
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error leyendo cab_as_modelo:" << queryOrigen.lastError().text();
+        return;
+    }
+
+    QSqlQuery queryInsert(dbDestino);
+    queryInsert.prepare("INSERT INTO cab_as_modelo (asientomodelo, fecha, aib, autofactura_ue, "
+                        "autofactura_no_ue, eib, eib_servicios, isp_op_interiores, "
+                        "importacion, exportacion, diario, tipo) "
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+    dbDestino.transaction();
+
+    while (queryOrigen.next()) {
+        // Campos de texto (0, 1)
+        queryInsert.addBindValue(queryOrigen.value(0).toString()); // asientomodelo
+        queryInsert.addBindValue(queryOrigen.value(1).toString()); // fecha (es varchar en tu esquema)
+
+        // BLOQUE BOOLEANO (2 al 9)
+        // Forzamos .toBool() para que Postgres no reciba enteros de MySQL
+        for (int i = 2; i <= 9; ++i) {
+            queryInsert.addBindValue(queryOrigen.value(i).toBool());
+        }
+
+        // Resto de campos de texto (10, 11)
+        queryInsert.addBindValue(queryOrigen.value(10).toString()); // diario
+        queryInsert.addBindValue(queryOrigen.value(11).toString()); // tipo
+
+        if (!queryInsert.exec()) {
+            qDebug() << "Error en cab_as_modelo (" << queryOrigen.value(0).toString() << "):"
+                     << queryInsert.lastError().text();
+            dbDestino.rollback();
+            return;
+        }
+    }
+
+    if (dbDestino.commit()) {
+        qDebug() << "Tabla 'cab_as_modelo' copiada con éxito.";
+    }
+}
+
+void basedatos::copiatabla_det_as_modelo(QString nombreBaseDestino)
+{
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
+
+    QSqlQuery queryOrigen(dbOrigen);
+    // 38 campos según tu esquema (0 al 37)
+    queryOrigen.prepare("SELECT asientomodelo, cuenta, concepto, expresion, d_h, ci, baseiva, "
+                        "cuentafra, cuentabaseiva, claveiva, documento, fecha_factura, "
+                        "prorrata_e, rectificativa, fecha_op, clave_op, bicoste, "
+                        "rectificada, numfacts, facini, facfinal, afecto, bien_inversion, "
+                        "agrario, nombre, cif, cta_retenido, arrendamiento, clave, "
+                        "base_ret, tipo_ret, retencion, ing_a_cta, ing_a_cta_rep, "
+                        "nombre_ret, cif_ret, provincia, orden FROM det_as_modelo");
+
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error leyendo det_as_modelo:" << queryOrigen.lastError().text();
+        return;
+    }
+
+    QSqlQuery queryInsert(dbDestino);
+    QStringList placeholders;
+    for(int i = 0; i < 38; ++i) placeholders << "?";
+
+    queryInsert.prepare(QString("INSERT INTO det_as_modelo (asientomodelo, cuenta, concepto, "
+                        "expresion, d_h, ci, baseiva, cuentafra, cuentabaseiva, claveiva, "
+                        "documento, fecha_factura, prorrata_e, rectificativa, fecha_op, "
+                        "clave_op, bicoste, rectificada, numfacts, facini, facfinal, "
+                        "afecto, bien_inversion, agrario, nombre, cif, cta_retenido, "
+                        "arrendamiento, clave, base_ret, tipo_ret, retencion, ing_a_cta, "
+                        "ing_a_cta_rep, nombre_ret, cif_ret, provincia, orden) "
+                        "VALUES (%1)").arg(placeholders.join(",")));
+
+    dbDestino.transaction();
+
+    while (queryOrigen.next()) {
+        for (int i = 0; i < 38; ++i) {
+            QVariant valor = queryOrigen.value(i);
+
+            // Tratamiento de Booleanos específicos (según los índices del SELECT)
+            // 13: rectificativa
+            // 22: bien_inversion
+            // 23: agrario
+            // 27: arrendamiento
+            if (i == 13 || i == 22 || i == 23 || i == 27) {
+                queryInsert.addBindValue(valor.toBool());
+            }
+            // Campo 'orden' (es integer, índice 37)
+            else if (i == 37) {
+                queryInsert.addBindValue(valor.toInt());
+            }
+            // Todo lo demás es character varying (strings)
+            else {
+                queryInsert.addBindValue(valor.toString());
+            }
+        }
+
+        if (!queryInsert.exec()) {
+            qDebug() << "Error en det_as_modelo (Modelo:" << queryOrigen.value(0).toString()
+                     << " Línea:" << queryOrigen.value(37).toInt() << "):"
+                     << queryInsert.lastError().text();
+            dbDestino.rollback();
+            return;
+        }
+    }
+
+    if (dbDestino.commit()) {
+        qDebug() << "Tabla 'det_as_modelo' copiada con éxito.";
+    }
+}
+
+void basedatos::copiatabla_var_as_modelo(QString nombreBaseDestino)
+{
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
+
+    QSqlQuery queryOrigen(dbOrigen);
+    // 7 campos según tu esquema
+    queryOrigen.prepare("SELECT asientomodelo, variable, tipo, descripcion, valor, orden, guardar "
+                        "FROM var_as_modelo");
+
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error leyendo var_as_modelo:" << queryOrigen.lastError().text();
+        return;
+    }
+
+    QSqlQuery queryInsert(dbDestino);
+    queryInsert.prepare("INSERT INTO var_as_modelo (asientomodelo, variable, tipo, descripcion, "
+                        "valor, orden, guardar) "
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+    dbDestino.transaction();
+
+    while (queryOrigen.next()) {
+        // Campos de texto (0 al 4)
+        queryInsert.addBindValue(queryOrigen.value(0).toString()); // asientomodelo
+        queryInsert.addBindValue(queryOrigen.value(1).toString()); // variable
+        queryInsert.addBindValue(queryOrigen.value(2).toString()); // tipo
+        queryInsert.addBindValue(queryOrigen.value(3).toString()); // descripcion
+        queryInsert.addBindValue(queryOrigen.value(4).toString()); // valor
+
+        // Campo numérico (5)
+        queryInsert.addBindValue(queryOrigen.value(5).toInt());    // orden (integer)
+
+        // Campo Booleano (6) - CRÍTICO para evitar el error de Postgres
+        queryInsert.addBindValue(queryOrigen.value(6).toBool());   // guardar (boolean)
+
+        if (!queryInsert.exec()) {
+            qDebug() << "Error en var_as_modelo (Modelo:" << queryOrigen.value(0).toString()
+                     << " Var:" << queryOrigen.value(1).toString() << "):"
+                     << queryInsert.lastError().text();
+            dbDestino.rollback();
+            return;
+        }
+    }
+
+    if (dbDestino.commit()) {
+        qDebug() << "Tabla 'var_as_modelo' copiada con éxito.";
+    }
+}
+
+void basedatos::copiatabla_cabeceraestados(QString nombreBaseDestino)
+{
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
+
+    QSqlQuery queryOrigen(dbOrigen);
+    // 24 campos según tu esquema
+    queryOrigen.prepare("SELECT titulo, cabecera, parte1, parte2, observaciones, formulabasepor, "
+                        "fechacalculo, horacalculo, ejercicio1, ejercicio2, analitica, grafico, "
+                        "haycolref, desglose_ctas, colref, ci, desglose, des_cabecera, des_pie, "
+                        "diarios, estadosmedios, valorbasepor1, valorbasepor2, hoja_ci "
+                        "FROM cabeceraestados");
+
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error leyendo cabeceraestados:" << queryOrigen.lastError().text();
+        return;
+    }
+
+    QSqlQuery queryInsert(dbDestino);
+    QStringList placeholders;
+    for(int i = 0; i < 24; ++i) placeholders << "?";
+
+    queryInsert.prepare(QString("INSERT INTO cabeceraestados (titulo, cabecera, parte1, parte2, "
+                        "observaciones, formulabasepor, fechacalculo, horacalculo, ejercicio1, "
+                        "ejercicio2, analitica, grafico, haycolref, desglose_ctas, colref, ci, "
+                        "desglose, des_cabecera, des_pie, diarios, estadosmedios, "
+                        "valorbasepor1, valorbasepor2, hoja_ci) "
+                        "VALUES (%1)").arg(placeholders.join(",")));
+
+    dbDestino.transaction();
+
+    while (queryOrigen.next()) {
+        for (int i = 0; i < 24; ++i) {
+            QVariant valor = queryOrigen.value(i);
+
+            // 1. Tratamiento de Booleanos (Indices: 10, 11, 12, 13, 16, 20)
+            if (i == 10 || i == 11 || i == 12 || i == 13 || i == 16 || i == 20) {
+                queryInsert.addBindValue(valor.toBool());
+            }
+            // 2. Tratamiento de Fecha (Indice: 6)
+            else if (i == 6) {
+                queryInsert.addBindValue(valor.toDate());
+            }
+            // 3. Tratamiento de Numéricos (Indices: 21, 22)
+            else if (i == 21 || i == 22) {
+                queryInsert.addBindValue(valor.toDouble());
+            }
+            // 4. Todo lo demás como String
+            else {
+                queryInsert.addBindValue(valor.toString());
+            }
+        }
+
+        if (!queryInsert.exec()) {
+            qDebug() << "Error en cabeceraestados (Título:" << queryOrigen.value(0).toString() << "):"
+                     << queryInsert.lastError().text();
+            dbDestino.rollback();
+            return;
+        }
+    }
+
+    if (dbDestino.commit()) {
+        qDebug() << "Tabla 'cabeceraestados' copiada con éxito.";
+    }
+}
+
+void basedatos::copiatabla_estados(QString nombreBaseDestino)
+{
+    QSqlDatabase dbOrigen = QSqlDatabase::database();
+    QSqlDatabase dbDestino = QSqlDatabase::database(nombreBaseDestino);
+
+    QSqlQuery queryOrigen(dbOrigen);
+    // 22 campos en total
+    queryOrigen.prepare("SELECT titulo, apartado, parte1, clave, nodo, formula, referencia, "
+                        "importe1, importe2, calculado, m1, m2, m3, m4, m5, m6, m7, m8, "
+                        "m9, m10, m11, m12 FROM estados");
+
+    if (!queryOrigen.exec()) {
+        qDebug() << "Error leyendo estados:" << queryOrigen.lastError().text();
+        return;
+    }
+
+    QSqlQuery queryInsert(dbDestino);
+    QStringList placeholders;
+    for(int i = 0; i < 22; ++i) placeholders << "?";
+
+    queryInsert.prepare(QString("INSERT INTO estados (titulo, apartado, parte1, clave, nodo, "
+                        "formula, referencia, importe1, importe2, calculado, m1, m2, m3, "
+                        "m4, m5, m6, m7, m8, m9, m10, m11, m12) "
+                        "VALUES (%1)").arg(placeholders.join(",")));
+
+    dbDestino.transaction();
+
+    while (queryOrigen.next()) {
+        for (int i = 0; i < 22; ++i) {
+            QVariant valor = queryOrigen.value(i);
+
+            // 1. Booleanos CRÍTICOS (Indices: 2:parte1, 9:calculado)
+            // parte1 es not null y parte de la PKEY, debe ser booleano puro.
+            if (i == 2 || i == 9) {
+                queryInsert.addBindValue(valor.toBool());
+            }
+            // 2. Numéricos (Indices: 7, 8 y del 10 al 21)
+            else if (i == 7 || i == 8 || (i >= 10 && i <= 21)) {
+                // Usamos double para asegurar compatibilidad con numeric(14,2)
+                queryInsert.addBindValue(valor.toDouble());
+            }
+            // 3. Strings (Indices: 0, 1, 3, 4, 5, 6)
+            else {
+                queryInsert.addBindValue(valor.toString());
+            }
+        }
+
+        if (!queryInsert.exec()) {
+            qDebug() << "Error en estados (Título:" << queryOrigen.value(0).toString()
+                     << " Nodo:" << queryOrigen.value(4).toString() << "):"
+                     << queryInsert.lastError().text();
+            dbDestino.rollback();
+            return;
+        }
+    }
+
+    if (dbDestino.commit()) {
+        qDebug() << "Tabla 'estados' copiada con éxito.";
+    }
+}
 
 QString basedatos::mensajes_iniciales_347()
 {
@@ -19598,7 +20607,6 @@ void basedatos::actualizade21 ()
     QObject::tr("Se van a actualizar las tablas para la versión 2.2"));
 
 
-    QSqlQuery query;
     ejecutar("update configuracion set version='2.2'");
 
     ejecutar("alter table plancontable add column auxiliar bool default false");

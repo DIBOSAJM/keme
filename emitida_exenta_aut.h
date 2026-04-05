@@ -61,10 +61,13 @@ private slots:
 
     void on_borraasdocpushButton_clicked();
 
+    void on_documento_lineEdit_textChanged(const QString &arg1);
+
 private:
     Ui::Emitida_exenta_aut *ui;
     void cargacombooperaciones();
     CustomQLabel *etiqueta;
+    void actualizar_concepto();
 
 };
 

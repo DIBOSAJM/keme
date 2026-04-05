@@ -148,6 +148,7 @@ void Emitida_exenta_aut::on_externo_pushButton_clicked()
 
 void Emitida_exenta_aut::on_CtabaselineEdit_textChanged(const QString &arg1)
 {
+    Q_UNUSED(arg1);
     QMessageBox msgBox;
     QPushButton *aceptarButton = msgBox.addButton(tr("Sí"), QMessageBox::ActionRole);
     msgBox.addButton(tr("No"), QMessageBox::ActionRole);
@@ -220,6 +221,8 @@ void Emitida_exenta_aut::on_CtabaselineEdit_editingFinished()
 void Emitida_exenta_aut::on_FechafradateEdit_dateChanged(const QDate &date)
 {
     ui->fechaoperaciondateEdit->setDate(date);
+    ui->fecha_cont_dateEdit->setDate(date);
+    actualizar_concepto();
 }
 
 
@@ -256,6 +259,7 @@ void Emitida_exenta_aut::on_CtafralineEdit_textChanged(const QString &arg1)
     if (esauxiliar(ui->CtafralineEdit->text()))
         ui->fratextLabel->setText(descripcioncuenta(ui->CtafralineEdit->text()));
     else ui->fratextLabel->setText("");
+    actualizar_concepto();
 
 }
 
@@ -293,19 +297,20 @@ void Emitida_exenta_aut::on_CtafralineEdit_editingFinished()
             ui->fratextLabel->setText(descripcioncuenta(ui->CtafralineEdit->text()));
         else ui->fratextLabel->clear();
     }
-
 }
 
 
 void Emitida_exenta_aut::on_externo_lineEdit_textChanged(const QString &arg1)
 {
+    Q_UNUSED(arg1);
     if (!ui->externo_lineEdit->text().isEmpty())
     {
         ui->externo_label->setText(basedatos::instancia()->razon_externo(ui->externo_lineEdit->text()));
         QString cod=basedatos::instancia()->cuenta_externo(ui->externo_lineEdit->text());
         if (!cod.isEmpty())
             ui->CtafralineEdit->setText(cod);
-    }
+    } else ui->externo_label->clear();
+    actualizar_concepto();
 
 }
 
@@ -429,6 +434,18 @@ void Emitida_exenta_aut::cargacombooperaciones()
 
 }
 
+void Emitida_exenta_aut::actualizar_concepto()
+{
+    QString concepto="S/FRA ";
+    concepto.append(ui->documento_lineEdit->text());
+    concepto.append(" - ");
+    if (!ui->externo_lineEdit->text().isEmpty()) concepto.append(ui->externo_label->text());
+    if (!ui->CtafralineEdit->text().isEmpty() && ui->externo_lineEdit->text().isEmpty()) concepto.append(ui->fratextLabel->text());
+    concepto.append(" - ");
+    concepto.append(ui->FechafradateEdit->date().toString("dd-MM-yyyy"));
+    ui->concepto_lineEdit->setText(concepto);
+}
+
 
 void Emitida_exenta_aut::on_exportacionheckBox_toggled(bool checked)
 {
@@ -537,5 +554,12 @@ void Emitida_exenta_aut::on_visdocpushButton_clicked()
 void Emitida_exenta_aut::on_borraasdocpushButton_clicked()
 {
   ui->fichdoclineEdit->clear();
+}
+
+
+void Emitida_exenta_aut::on_documento_lineEdit_textChanged(const QString &arg1)
+{
+    Q_UNUSED(arg1);
+    actualizar_concepto();
 }
 
