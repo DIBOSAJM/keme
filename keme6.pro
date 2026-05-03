@@ -40,9 +40,12 @@ SOURCES += main.cpp\
     busca_cta_diario.cpp \
     cambia_actividad.cpp \
     check_herramientas.cpp \
+    configuracion_ia.cpp \
     datos_accesorios_export.cpp \
     emitida_exenta_aut.cpp \
+    geminiclient.cpp \
     hoja_cols_ci.cpp \
+    loadingdialog.cpp \
         mainwindow.cpp\
         arbol.cpp \
         aritmetica.cpp\
@@ -243,11 +246,14 @@ HEADERS  += mainwindow.h\
     busca_cta_diario.h \
     cambia_actividad.h \
     check_herramientas.h \
+    configuracion_ia.h \
     datos_accesorios_export.h \
     emitida_exenta_aut.h \
          funciones.h\
          basedatos.h\
+    geminiclient.h \
     hoja_cols_ci.h \
+    loadingdialog.h \
          privilegios.h \
          conexion.h\
          diario.h \
@@ -444,6 +450,7 @@ FORMS    += mainwindow.ui\
     cambia_actividad.ui \
     check_herramientas.ui \
           conexion.ui\
+    configuracion_ia.ui \
     datos_accesorios_export.ui \
           diario.ui \
     emitida_exenta_aut.ui \

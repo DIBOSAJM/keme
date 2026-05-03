@@ -23,7 +23,7 @@
 
 #include "funciones.h"
 
-#define VERSION "4.0.5.0"
+#define VERSION "4.0.6.0"
 
 #include <QMessageBox>
 #include <QApplication>
@@ -682,6 +682,10 @@ void basedatos::solotablas(bool segunda, QString qbase)
     cadena+="email_subject varchar(255) default '', ";
     cadena+="email_content text,";
 
+    cadena+="api_url varchar(255) default '',";
+    cadena+="api_key varchar(255) default '',";
+    cadena+="prompt_factura text,";
+
     cadena+="moneda varchar(20) default '',";
     cadena+="fecha_monedas date,";
     if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
@@ -699,6 +703,10 @@ void basedatos::solotablas(bool segunda, QString qbase)
 
     if (segunda) ejecutar("update configuracion set email_content=''",qbase);
       else ejecutar("update configuracion set email_content=''");
+
+    if (segunda) ejecutar("update configuracion set prompt_factura=''",qbase);
+      else ejecutar("update configuracion set prompt_factura=''");
+
 
     progreso.setValue(progreso.value()+1);
     QApplication::processEvents();
@@ -3033,6 +3041,29 @@ void basedatos::copiatablas(QString base)
 
  //QMessageBox::information( 0, QObject::tr("COPIAR EMPRESA"),
  //                       QObject::tr("El proceso ha concluido"));
+}
+
+void basedatos::copia_tablas_lin_fact()
+{
+    // 1. Crear la conexión asignándole el nombre "SEGUNDA"
+    QSqlDatabase dbSegunda = QSqlDatabase::addDatabase("QPSQL", "SEGUNDA");
+
+    // 2. Pasar los parámetros de conexión
+    dbSegunda.setHostName("127.0.0.1");       // O la IP del servidor
+    dbSegunda.setDatabaseName("sepix");   // Nombre de la base de datos en Postgres
+    dbSegunda.setUserName("anidebeyond");
+    dbSegunda.setPassword("revROM202209.");
+    dbSegunda.setPort(5433);                  // Puerto por defecto de Postgres
+
+    // 3. Intentar abrir
+    if (!dbSegunda.open()) {
+        qDebug() << "Error conectando a Postgres:" << dbSegunda.lastError().text();
+        return;
+    } else {
+        qDebug() << "Conexión a SEGUNDA (Postgres) exitosa!";
+    }
+
+    copiatabla_lin_fac("SEGUNDA");
 }
 
 
@@ -6254,7 +6285,7 @@ void basedatos::copiatabla_lin_fac(QString nombreBaseDestino)
                             "ci, pedido, albaran, expediente, contrato) "
                             "VALUES (%1)").arg(placeholders.join(",")));
 
-        dbDestino.transaction();
+        // dbDestino.transaction();
 
         while (queryOrigen.next()) {
             queryInsert.addBindValue(queryOrigen.value(0).toInt());    // linea (PK)
@@ -6280,19 +6311,19 @@ void basedatos::copiatabla_lin_fac(QString nombreBaseDestino)
             if (!queryInsert.exec()) {
                 qDebug() << "Error en lin_fact (Linea:" << queryOrigen.value(0).toInt() << "):"
                          << queryInsert.lastError().text();
-                dbDestino.rollback();
-                return;
+                //dbDestino.rollback();
+               //return;
             }
         }
 
-    if (dbDestino.commit()) {
-        // Sincronizamos la secuencia del campo 'linea'
-        QSqlQuery querySeq(dbDestino);
-        if (querySeq.exec("SELECT setval('lin_fact_linea_seq', (SELECT MAX(linea) FROM lin_fact))")) {
-            qDebug() << "Secuencia 'lin_fact_linea_seq' sincronizada.";
-        }
-        qDebug() << "Tabla 'lin_fact' (detalles) copiada con éxito.";
-    }
+    // if (dbDestino.commit()) {
+    //     // Sincronizamos la secuencia del campo 'linea'
+    //     QSqlQuery querySeq(dbDestino);
+    //     if (querySeq.exec("SELECT setval('lin_fact_linea_seq', (SELECT MAX(linea) FROM lin_fact))")) {
+    //         qDebug() << "Secuencia 'lin_fact_linea_seq' sincronizada.";
+    //     }
+    //     qDebug() << "Tabla 'lin_fact' (detalles) copiada con éxito.";
+    // }
 }
 
 // void basedatos::copiatabla_lin_fac(QString base) {
@@ -23654,6 +23685,17 @@ void basedatos::actualizade4040()
 }
 
 
+void basedatos::actualizade4050() {
+
+    ejecutar("alter table configuracion add column api_url varchar(255) default ''");
+    ejecutar("alter table configuracion add column api_key varchar(255) default ''");
+    ejecutar("alter table configuracion add column prompt_factura text");
+    ejecutar("update configuracion set prompt_factura=''");
+
+    ejecutar("update configuracion set version='4.0.6.0'");
+}
+
+
 void basedatos::actualizade2977()
 {
     ejecutar("alter table configuracion add column cuenta_tesoreria  varchar(40) default ''");
@@ -25722,7 +25764,8 @@ bool basedatos::comprobarVersion () {
                 && laversion !="3.2.2.5" && laversion !="3.2.2.6"
                 && laversion !="4.0.0.0" && laversion !="4.0.0.2"
                 && laversion !="4.0.1.0" && laversion !="4.0.2.0"
-                && laversion !="4.0.3.0" && laversion !="4.0.4.0"){
+                && laversion !="4.0.3.0" && laversion !="4.0.4.0"
+                && laversion !="4.0.5.0"){
             if (!(splash==NULL))
              {
               splash->finish( 0 );
@@ -25839,7 +25882,8 @@ bool basedatos::comprobarVersion () {
                 if (versionbd()=="4.0.1.0") actualizade4010();
                 if (versionbd()=="4.0.2.0") actualizade4020();
                 if (versionbd()=="4.0.3.0") actualizade4030();
-                actualizade4040();
+                if (versionbd()=="4.0.4.0") actualizade4040();
+                actualizade4050();
 
               }
             else {
@@ -26005,6 +26049,29 @@ int basedatos::anchocuentas(QString db)
     }
     return 0;
 }
+
+void basedatos::parametrosIA(QString *api_url, QString *api_key, QString *prompt_factura)
+{
+    QSqlQuery q = ejecutar("select api_url, api_key, prompt_factura from configuracion");
+    if (q.isActive() && q.first()) {
+        *api_url=q.value(0).toString();
+        *api_key=q.value(1).toString();
+        *prompt_factura=q.value(2).toString();
+    }
+}
+
+bool basedatos::guarda_parametrosIA(QString api_url, QString api_key, QString prompt_factura)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE configuracion SET api_url = :url, api_key = :key, prompt_factura = :prompt");
+    query.bindValue(":url", api_url);
+    query.bindValue(":key", api_key);
+    query.bindValue(":prompt", prompt_factura);
+    if (query.exec()) return true;
+    return false;
+}
+
+
 
 bool basedatos::cod_longitud_variable(QString db)
 {

@@ -75,6 +75,7 @@
     <addaction name="actionCopiar_Empresa"/>
     <addaction name="actionBorrar_Empresa"/>
     <addaction name="menuEditar_tablas_AEAT_Mercantiles"/>
+    <addaction name="actionConfiguraci_n_IA"/>
     <addaction name="action_Salir"/>
    </widget>
    <widget class="QMenu" name="menuUtilidades">
@@ -1497,6 +1498,11 @@
   <action name="actionExportar_Ex_ternos">
    <property name="text">
     <string>Exportar Ex&amp;ternos</string>
+   </property>
+  </action>
+  <action name="actionConfiguraci_n_IA">
+   <property name="text">
+    <string>Configuración &amp;IA</string>
    </property>
   </action>
  </widget>

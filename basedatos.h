@@ -144,6 +144,7 @@ class basedatos {
 
         // Copia tablas a segunda base de datos
         void copiatablas(QString qbase);
+        void copia_tablas_lin_fact();
 
         // Crea las tablas iniciales de la base de datos
         // Recibe los datos de si es de longitud variable y el número de dígitos de las cuentas
@@ -2447,6 +2448,8 @@ class basedatos {
 
         void actualizade4040();
 
+        void actualizade4050();
+
         void introclave_op_retenciones();
 
         void intro_provincias();
@@ -2467,6 +2470,10 @@ class basedatos {
         QStringList drivers();
 
         int anchocuentas(QString db);
+
+        void parametrosIA(QString *api_url, QString *api_key, QString *prompt_factura);
+
+        bool guarda_parametrosIA(QString api_url, QString api_key, QString prompt_factura);
 
         int anchocuentas();
 

@@ -131,6 +131,9 @@
 #include "tipos_cambio.h"
 #include "check_herramientas.h"
 #include "cambia_actividad.h"
+#include "configuracion_ia.h"
+#include "geminiclient.h"
+#include "loadingdialog.h"
 
 #include <QSplashScreen>
 #include <QPdfDocument>
@@ -469,6 +472,15 @@ QApplication::processEvents();
     connect(ui->actionTipos_de_proveedor,SIGNAL(triggered(bool)),SLOT(tabla_tipo_proveedor()));
     connect(ui->actionHomologacin,SIGNAL(triggered(bool)),SLOT(tabla_homologacion()));
     connect(ui->actionActividades,SIGNAL(triggered(bool)),SLOT(tabla_actividades()));
+
+    // Inicializar una sola vez
+    m_geminiClient = new GeminiClient(this);
+
+    // Conectar las señales una sola vez en el constructor
+    connect(m_geminiClient, &GeminiClient::finished, this, &MainWindow::handleGeminiResponse);
+    connect(m_geminiClient, &GeminiClient::error, this, &MainWindow::handleGeminiError);
+
+    m_loadingDlg = new LoadingDialog(this);
 
 QApplication::processEvents();
     procesar_inicio();  // carga preferencias y usuario
@@ -6093,11 +6105,11 @@ void MainWindow::importasientos()
   if (cadfich.isEmpty()) return;
   if (importarfichasientos(cadfich))
       {
-       refrescardiario();
 
        QMessageBox::information( this, tr("DIARIO"),
                     tr("El archivo seleccionado se ha importado correctamente"));
-       punterodiario->irfinal();
+       refrescardiario();
+       // punterodiario->irfinal();
       }
 
 
@@ -7277,7 +7289,8 @@ void MainWindow::fichero_soltado_en_diario()
 {
   fichero_soltado_diario=punterodiario->file_droped();
   //QMessageBox::information(this, tr("KEME-Contabilidad"),fichero_soltado_diario);
-  procesa_fichero_pdf();
+  //procesa_fichero_pdf();
+  procesa_fichero_ia();
 }
 
 void MainWindow::procesa_fichero_pdf() {
@@ -7351,6 +7364,54 @@ void MainWindow::procesa_fichero_pdf() {
 
     //} else QMessageBox::information(this, tr("KEME-Contabilidad"),tr("Error al cargar el fichero"));
     //delete (pdf);
+}
+
+void MainWindow::handleGeminiResponse(const QJsonObject &json)
+{
+    if (m_loadingDlg) m_loadingDlg->hide();
+    statusBar()->showMessage(json["nombre"].toString(), 3000);
+        // ui->lineEditNombre->setText(json["nombre"].toString());
+        // ui->lineEditNif->setText(json["nif"].toString());
+    notas *n = new notas(false);
+    n->activa_modoconsulta();
+    n->cambia_titulo(tr("RESPUESTA IA"));
+    n->esconde_tex_imprimir();
+    QJsonDocument doc(json);
+    QString strJson = doc.toJson(QJsonDocument::Indented);
+    n->pasa_contenido(strJson);
+    n->exec();
+    delete(n);
+
+
+}
+
+void MainWindow::handleGeminiError(const QString &err)
+{
+    if (m_loadingDlg) m_loadingDlg->hide();
+    statusBar()->showMessage("Error en IA");
+    QMessageBox::critical(this, "Error de red", err);
+}
+
+void MainWindow::procesa_fichero_ia()
+{
+    QFile file(fichero_soltado_diario);
+        if(file.open(QIODevice::ReadOnly)) {
+            m_loadingDlg->show();
+            QString api_url, api_key, prompt_factura;
+            basedatos::instancia()->parametrosIA(&api_url, &api_key, &prompt_factura);
+            m_geminiClient->get_url(api_url);
+            m_geminiClient->get_apiKey(api_key);
+            m_geminiClient->get_prompt(prompt_factura);
+            // Mostramos un feedback al usuario (opcional)
+            statusBar()->showMessage("Procesando con IA...");
+            QMimeDatabase db;
+            // Obtenemos el tipo MIME a partir del nombre del fichero o su contenido
+            QMimeType mime = db.mimeTypeForFile(fichero_soltado_diario);
+            QString mimeString = mime.name(); // Esto devolverá "image/jpeg", "application/pdf", etc.
+            m_geminiClient->requestJson(file.readAll(), mimeString);
+            file.close();
+        }
+        // El método termina aquí, pero la red sigue trabajando
 }
 
 void MainWindow::on_actionModelo_182_registro_donaciones_triggered()
@@ -7566,5 +7627,19 @@ void MainWindow::on_actionExportar_Ex_ternos_triggered()
     d->carga_externos();
     d->exec();
     delete(d);
+}
+
+
+// void MainWindow::on_actionCopia_linfact_triggered()
+// {
+//     basedatos::instancia()->copia_tablas_lin_fact();
+// }
+
+
+void MainWindow::on_actionConfiguraci_n_IA_triggered()
+{
+  Configuracion_IA *c = new Configuracion_IA();
+  c->exec();
+  delete (c);
 }
 

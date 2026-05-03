@@ -6,6 +6,8 @@
 #include <qlistwidget.h>
 #include <qtreeview.h>
 #include <QTreeWidget>
+#include "geminiclient.h"
+#include "loadingdialog.h"
 #include "subcuentas.h"
 #include "consmayor.h"
 #include "bss.h"
@@ -123,6 +125,11 @@ private:
     void refresh_diario2();
     void icono_papelera();
     void procesa_fichero_pdf();
+    GeminiClient *m_geminiClient; // Miembro de la clase
+    void handleGeminiResponse(const QJsonObject &json);
+    void handleGeminiError(const QString &err);
+    void procesa_fichero_ia();
+    LoadingDialog *m_loadingDlg = nullptr;
 
 private slots:
     void conex();
@@ -345,6 +352,8 @@ private slots:
     void on_actionFacturas_Emitidas_E_xentas_triggered();
     void on_actionE_xportar_Datos_Accesorios_de_cuentas_triggered();
     void on_actionExportar_Ex_ternos_triggered();
+    // void on_actionCopia_linfact_triggered();
+    void on_actionConfiguraci_n_IA_triggered();
 };
 
 #endif // MAINWINDOW_H
