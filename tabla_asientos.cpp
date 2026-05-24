@@ -3834,7 +3834,7 @@ void tabla_asientos::soportadoautonomo()
       }
    if (aut_sop_parametros_inicio) qIVAsoportado->pasa_datos_ini(aut_sop_externo, aut_sop_cuenta_proveedor, aut_sop_cuenta_gasto,
                                                                 aut_sop_cuenta_iva_soportado, aut_sop_cuenta_ret_irpf, aut_sop_fecha,
-                                                                out_sop_importes, aut_sop_factura, aut_ruta_fichero);
+                                                                out_sop_importes, aut_sop_factura, aut_ruta_fichero, out_desglose_iva); // añadimos out_desglose_iva
    // qDebug() << aut_sop_cuenta_iva_soportado;
    int resultado=qIVAsoportado->exec();
    if (resultado==QDialog::Rejected) 
@@ -4316,9 +4316,30 @@ void tabla_asientos::pasa_info_sop_autonomo(QDate fecha, QString externo, QStrin
 
 }
 
+void tabla_asientos::pasa_info_ISP(QString qisp_cuenta_base, QString qisp_base_imponible, QString qisp_externo,
+                                   QString qisp_cuenta_fra, QDate qisp_fecha_fra, QString qisp_documento, QString qisp_fichero_doc, bool qisp_aib, bool qisp_ais, bool qisp_no_ue)
+{
+ isp_datos_externos=true;
+ isp_cuenta_base=qisp_cuenta_base;
+ isp_base_imponible=qisp_base_imponible;
+ isp_externo=qisp_externo;
+ isp_cuenta_fra=qisp_cuenta_fra;
+ isp_fecha_fra=qisp_fecha_fra;
+ isp_documento=qisp_documento;
+ isp_fichero_doc=qisp_fichero_doc;
+ isp_aib=qisp_aib;
+ isp_ais=qisp_ais;
+ isp_no_ue=qisp_no_ue;
+}
+
 void tabla_asientos::pasa_importes_sop_autonomo(QJsonObject info)
 {
     out_sop_importes=info;
+}
+
+void tabla_asientos::pasa_desglose_iva(QJsonArray info)
+{
+   out_desglose_iva=info;
 }
 
 
@@ -4809,6 +4830,12 @@ void tabla_asientos::aibautonomo()
    ivadatosadic *datos = new (ivadatosadic);
 
    a->hazbaseoblig();
+
+   if (isp_datos_externos) {
+     a->pasa_datos_externos(isp_cuenta_base,isp_base_imponible, isp_externo, isp_cuenta_fra,
+                            isp_fecha_fra, isp_aib, isp_ais, isp_no_ue);
+     datos->pasa_datos_externos(isp_documento, isp_fichero_doc);
+   }
 
    QString qclaveiva,qtipoiva,qctafra,qctaivasop,
                       qcuentaivarep,qcuentabase,qbase,

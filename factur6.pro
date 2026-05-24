@@ -112,7 +112,8 @@ HEADERS += factur/main_factur.h \
     periodos.h \
     editconfig.h \
     edtabla.h \
-    actividad_edicion.h
+    actividad_edicion.h \
+    emitida_exenta_aut.h
 
 SOURCES += factur/amain.cpp \
     factur/config_verifactu.cpp \
@@ -203,7 +204,8 @@ SOURCES += factur/amain.cpp \
     periodos.cpp \
     editconfig.cpp \
     edtabla.cpp \
-    actividad_edicion.cpp
+    actividad_edicion.cpp \
+    emitida_exenta_aut.cpp
 
 FORMS += factur/main_factur.ui \
     factur/config_verifactu.ui \
@@ -286,5 +288,6 @@ FORMS += factur/main_factur.ui \
     periodos.ui \
     editconfig.ui \
     edtabla.ui \
-    actividad_edicion.ui
+    actividad_edicion.ui \
+    emitida_exenta_aut.ui
 

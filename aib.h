@@ -50,6 +50,13 @@ class aib : public QDialog {
                 void selec_autofactura_no_ue();
                 void selec_isp_op_interiores();
                 void modoconsulta();
+                void pasa_datos_externos(QString cuenta_gasto, QString isp_base_imponible,
+                                         QString isp_externo,
+                                         QString isp_cuenta_fra,
+                                         QDate isp_fecha_fra,
+                                         bool isp_aib,
+                                         bool isp_ais,
+                                         bool isp_no_ue);
 
         private:
                 Ui::aib ui;

@@ -1655,11 +1655,11 @@ void ivasop_aut::pasa_fecha(QDate fecha)
 }
 
 void ivasop_aut::pasa_datos_ini(QString externo, QString cuenta_proveedor, QString cuenta_gasto, QString cuenta_iva_soportado, QString cuenta_ret_irpf,
-                                QDate fecha, QJsonObject importes_info, QString factura, QString fichero)
+                                QDate fecha, QJsonObject importes_info, QString factura, QString fichero, QJsonArray out_desglose_iva)
 {
     ui.externo_lineEdit->setText(externo);
     ui.CtafralineEdit->setText(cuenta_proveedor);
-    if (cuenta_iva_soportado.isEmpty()) { ui.groupBox->setChecked(false); ui.Ctabase_exenta_lineEdit->setText(cuenta_gasto); ui.exento_checkBox->setChecked(true);}
+    if (cuenta_iva_soportado.isEmpty() && out_desglose_iva.empty()) { ui.groupBox->setChecked(false); ui.Ctabase_exenta_lineEdit->setText(cuenta_gasto); ui.exento_checkBox->setChecked(true);}
       else {ui.CtabaselineEdit->setText(cuenta_gasto); ui.CtaivalineEdit->setText(cuenta_iva_soportado); }
     ui.cuentaretlineEdit->setText(cuenta_ret_irpf);
     if (!cuenta_ret_irpf.isEmpty()) ctaretfinedic();
@@ -1668,6 +1668,45 @@ void ivasop_aut::pasa_datos_ini(QString externo, QString cuenta_proveedor, QStri
     ui.fechacontdateEdit->setDate(fecha);
     ui.fechaoperaciondateEdit->setDate(fecha);
     ui.fichdoclineEdit->setText(fichero);
+
+    if (!out_desglose_iva.isEmpty()) {
+        for (int i=0;i<out_desglose_iva.count();i++) {
+            QJsonObject elemento_iva_js=out_desglose_iva[i].toObject();
+            QString clave_iva=basedatos::instancia()->cod_iva(elemento_iva_js["tipo_porcentaje"].toDouble());
+            if (elemento_iva_js["naturaleza"].toString()=="EXENTO") {
+                ui.base_exentalineEdit->setText(formateanumero(elemento_iva_js["base_imponible"].toDouble(),comadecimal, decimales));
+                ui.Ctabase_exenta_lineEdit->setText(cuenta_gasto);
+                ui.exento_checkBox->setChecked(true);
+                if (i==out_desglose_iva.count()-1) ui.groupBox->setChecked(false);
+                continue;
+            }
+            if (ui.baselineEdit->text().isEmpty()) {
+                ui.CtabaselineEdit->setText(cuenta_gasto);
+                ui.ClaveivacomboBox->setCurrentText(clave_iva);
+                ui.baselineEdit->setText(formateanumero(elemento_iva_js["base_imponible"].toDouble(),comadecimal,decimales));
+                comboivacambiado();
+                continue;
+            }
+            if (ui.baselineEdit2->text().isEmpty()) {
+                ui.groupBox2->setChecked(true);
+                ui.CtabaselineEdit_2->setText(cuenta_gasto);
+                ui.ClaveivacomboBox2->setCurrentText(clave_iva);
+                ui.baselineEdit2->setText(formateanumero(elemento_iva_js["base_imponible"].toDouble(),comadecimal,decimales));
+                comboivacambiado2();
+                continue;
+            }
+            if (ui.baselineEdit3->text().isEmpty()) {
+                ui.groupBox3->setChecked(true);
+                ui.CtabaselineEdit_3->setText(cuenta_gasto);
+                ui.ClaveivacomboBox3->setCurrentText(clave_iva);
+                ui.baselineEdit3->setText(formateanumero(elemento_iva_js["base_imponible"].toDouble(),comadecimal,decimales));
+                comboivacambiado3();
+                continue;
+            }
+        }
+        return;
+    }
+
     if (importes_info["base21"].toDouble()>0.001 || importes_info["base21"].toDouble()<-0.001) {
         // buscamos en el combo de tipos de IVA el correspondiente
         double base21=importes_info["base21"].toDouble();

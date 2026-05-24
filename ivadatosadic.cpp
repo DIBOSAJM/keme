@@ -188,3 +188,9 @@ bool ivadatosadic::navegar_anterior() {
     anterior=false;
     return devolver;
 }
+
+void ivadatosadic::pasa_datos_externos(QString isp_documento, QString isp_fichero_doc)
+{
+    ui.documentolineEdit->setText(isp_documento);
+    ui.fichdoclineEdit->setText(isp_fichero_doc);
+}

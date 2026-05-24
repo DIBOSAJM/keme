@@ -686,6 +686,12 @@ void basedatos::solotablas(bool segunda, QString qbase)
     cadena+="api_key varchar(255) default '',";
     cadena+="prompt_factura text,";
 
+    if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE ) cadena += "ia_no_gestion_iva bool default 0,";
+       else cadena += "ia_no_gestion_iva bool default false, ";
+    if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE ) cadena += "ia_no_gestion_isp bool default 0,";
+       else cadena += "ia_no_gestion_isp bool default false, ";
+
+
     cadena+="moneda varchar(20) default '',";
     cadena+="fecha_monedas date,";
     if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE )
@@ -10822,6 +10828,18 @@ QString basedatos::selectCifdatossubcuentacuenta (QString codigo) {
 QString basedatos::selectCuentaCifDatossubcuenta (QString codigo) {
     QString cadquery = "SELECT cuenta from datossubcuenta where cif='";
     cadquery += codigo.left(-1).replace("'","''") +"'";
+    QSqlQuery query = ejecutar(cadquery);
+    if ( (query.isActive()) && (query.first()) )
+    {
+        return query.value(0).toString();
+    }
+    return QString();
+}
+
+QString basedatos::selectCuentaEmailDatossubcuenta(QString email)
+{
+    QString cadquery = "SELECT cuenta from datossubcuenta where email='";
+    cadquery += email.left(-1).replace("'","''") +"'";
     QSqlQuery query = ejecutar(cadquery);
     if ( (query.isActive()) && (query.first()) )
     {
@@ -23692,6 +23710,12 @@ void basedatos::actualizade4050() {
     ejecutar("alter table configuracion add column prompt_factura text");
     ejecutar("update configuracion set prompt_factura=''");
 
+    if ( cualControlador() == SQLITE ) ejecutar("alter table configuracion add column ia_no_gestion_iva bool default 0");
+       else ejecutar("alter table configuracion add column ia_no_gestion_iva bool default false");
+    if (cualControlador() == SQLITE ) ejecutar("alter table configuracion add column ia_no_gestion_isp bool default 0");
+       else ejecutar("alter table configuracion add column ia_no_gestion_isp bool default false");
+
+
     ejecutar("update configuracion set version='4.0.6.0'");
 }
 
@@ -26050,23 +26074,28 @@ int basedatos::anchocuentas(QString db)
     return 0;
 }
 
-void basedatos::parametrosIA(QString *api_url, QString *api_key, QString *prompt_factura)
+void basedatos::parametrosIA(QString *api_url, QString *api_key, QString *prompt_factura, bool *ia_no_gestion_iva, bool *ia_no_gestion_isp)
 {
-    QSqlQuery q = ejecutar("select api_url, api_key, prompt_factura from configuracion");
+    QSqlQuery q = ejecutar("select api_url, api_key, prompt_factura, ia_no_gestion_iva, ia_no_gestion_isp from configuracion");
     if (q.isActive() && q.first()) {
         *api_url=q.value(0).toString();
         *api_key=q.value(1).toString();
         *prompt_factura=q.value(2).toString();
+        *ia_no_gestion_iva=q.value(3).toBool();
+        *ia_no_gestion_isp=q.value(4).toBool();
     }
 }
 
-bool basedatos::guarda_parametrosIA(QString api_url, QString api_key, QString prompt_factura)
+bool basedatos::guarda_parametrosIA(QString api_url, QString api_key, QString prompt_factura, bool ia_no_gestion_iva, bool ia_no_gestion_isp)
 {
     QSqlQuery query;
-    query.prepare("UPDATE configuracion SET api_url = :url, api_key = :key, prompt_factura = :prompt");
+    query.prepare("UPDATE configuracion SET api_url = :url, api_key = :key, prompt_factura = :prompt"
+                  ", ia_no_gestion_iva = :ia_no_gestion_iva, ia_no_gestion_isp= :ia_no_gestion_isp");
     query.bindValue(":url", api_url);
     query.bindValue(":key", api_key);
     query.bindValue(":prompt", prompt_factura);
+    query.bindValue(":ia_no_gestion_iva", ia_no_gestion_iva);
+    query.bindValue(":ia_no_gestion_isp", ia_no_gestion_isp);
     if (query.exec()) return true;
     return false;
 }
@@ -26710,6 +26739,25 @@ QSqlQuery basedatos::ejecuta (QSqlQuery query) {
     }
     return query;
 }
+
+
+void basedatos::ejecuta_publica (QSqlQuery *query) {
+    if ( !query->exec() ) {
+        if (QSqlDatabase::database().open()) {
+           if (query->exec()) return;
+        }
+        QMessageBox::critical ( 0 , QObject::tr("Base de datos") ,
+         QObject::tr("Error al ejecutar la sentencia:\n") + query->lastQuery ()  + "\n" +
+         query->lastError().databaseText() +"\n"+ QObject::tr("Controlador: ") +
+         QSqlDatabase::database().driverName() );
+         error_consulta=true;
+    }
+    return;
+}
+
+
+
+
 
 QSqlQuery basedatos::carga_regul_sec(QString codigo)
 {

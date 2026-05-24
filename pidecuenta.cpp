@@ -40,7 +40,8 @@ void pidecuenta::ctacambiada()
 
    QString cadena;
     if (ui.auxiliarlineEdit->text().length()==anchocuentas() && !cod_longitud_variable()) {
-	if (!existecodigoplan(ui.auxiliarlineEdit->text(),&cadena)) 
+      if (no_existente && !existecodigoplan(ui.auxiliarlineEdit->text(),&cadena)) {ui.aceptarpushButton->setEnabled(true); return;};
+      if (!existecodigoplan(ui.auxiliarlineEdit->text(),&cadena))
 	  {
 	   // preguntar si se desea añadir la cuenta, si no o si se cancela lo anterior dejar en blanco
            if (QMessageBox::question(
@@ -58,13 +59,14 @@ void pidecuenta::ctacambiada()
 	            ui.auxiliarlineEdit->clear();
 	  }
         }
-    // chequeabotonaceptar();
-    if (esauxiliar(ui.auxiliarlineEdit->text()))
+     // chequeabotonaceptar();
+     if (esauxiliar(ui.auxiliarlineEdit->text()))
        {
-	ui.auxiliarlabel->setText(descripcioncuenta(ui.auxiliarlineEdit->text()));
+        ui.auxiliarlabel->setText(descripcioncuenta(ui.auxiliarlineEdit->text()));
         ui.aceptarpushButton->setEnabled(true);
+        if (no_existente) ui.aceptarpushButton->setEnabled(false);
        }
-    else 
+     else
         {
          ui.auxiliarlabel->setText("- -");
          ui.aceptarpushButton->setEnabled(false);
@@ -76,7 +78,8 @@ void pidecuenta::ctafinedicion()
    ui.auxiliarlineEdit->setText(expandepunto(ui.auxiliarlineEdit->text(),anchocuentas()));
     QString cadena;
     if (ui.auxiliarlineEdit->text().length()>3 && cod_longitud_variable()) {
-	if (!existecodigoplan(ui.auxiliarlineEdit->text(),&cadena)) 
+     if (no_existente && !existecodigoplan(ui.auxiliarlineEdit->text(),&cadena)) { ui.aceptarpushButton->setEnabled(true) ; return;}
+     if (!existecodigoplan(ui.auxiliarlineEdit->text(),&cadena))
 	  {
 	 // preguntar si se desea añadir la cuenta, si no o si se cancela lo anterior dejar en blanco
            if (QMessageBox::question(
@@ -95,13 +98,15 @@ void pidecuenta::ctafinedicion()
 	   }
          if (esauxiliar(ui.auxiliarlineEdit->text())) 
             {
-	     ui.auxiliarlabel->setText(descripcioncuenta(ui.auxiliarlineEdit->text()));
+             ui.auxiliarlabel->setText(descripcioncuenta(ui.auxiliarlineEdit->text()));
              ui.aceptarpushButton->setEnabled(true);
+             if (no_existente) ui.aceptarpushButton->setEnabled(false);
             }
           else 
             {
              ui.auxiliarlabel->setText("- -");
              ui.aceptarpushButton->setEnabled(false);
+             if (no_existente) ui.aceptarpushButton->setEnabled(true);
             }
         }
 
@@ -133,4 +138,9 @@ void pidecuenta::cambia_titulo(QString titulo)
 void pidecuenta::pasa_cuenta(QString cuenta)
 {
  ui.auxiliarlineEdit->setText(cuenta);
+}
+
+void pidecuenta::selec_no_existente()
+{
+    no_existente=true;
 }

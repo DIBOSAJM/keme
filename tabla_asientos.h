@@ -87,7 +87,17 @@ class tabla_asientos  : public QDialog {
                                             QString cuenta_iva_soportado,
                                             QString cuenta_ret_irpf, QString factura,
                                             QString fichero);
+                void pasa_info_ISP(QString qisp_cuenta_base,
+                                            QString qisp_base_imponible,
+                                            QString qisp_externo,
+                                            QString qisp_cuenta_fra,
+                                            QDate qisp_fecha_fra, QString qisp_documento,
+                                            QString qisp_fichero_doc,
+                                   bool qisp_aib,
+                                   bool qisp_ais,
+                                   bool qisp_no_ue);
                 void pasa_importes_sop_autonomo(QJsonObject info);
+                void pasa_desglose_iva(QJsonArray info);
                 void repercutidoautonomo();
                 void emitida_exenta_autonomo();
                 void activa_aibautonomo();
@@ -256,7 +266,21 @@ class tabla_asientos  : public QDialog {
                 QString aut_sop_factura;
                 QString aut_ruta_fichero;
                 QJsonObject out_sop_importes;
+                QJsonArray out_desglose_iva;
                 bool aut_sop_parametros_inicio=false;
+                // -------------------------------------------------------------
+                // Parámetros isp autónomo
+                bool isp_datos_externos=false;
+                QString isp_cuenta_base;
+                QString isp_base_imponible;
+                QString isp_externo;
+                QString isp_cuenta_fra;
+                QDate isp_fecha_fra;
+                QString isp_documento;
+                QString isp_fichero_doc;
+                bool isp_aib;
+                bool isp_ais;
+                bool isp_no_ue;
                 // -------------------------------------------------------------
 
                 void procesaivasoportado(int fila,int columna);

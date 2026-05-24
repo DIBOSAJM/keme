@@ -131,6 +131,8 @@ private:
     void procesa_fichero_ia();
     LoadingDialog *m_loadingDlg = nullptr;
 
+    void trata_proveedor_json(QJsonObject proveedor_js);
+
 private slots:
     void conex();
     void qordendiario(bool numero);

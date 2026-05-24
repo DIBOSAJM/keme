@@ -746,6 +746,9 @@ class basedatos {
         // Devuelve cuenta auxiliar a parti de un cif
         QString selectCuentaCifDatossubcuenta (QString codigo);
 
+        // Devuelve cuenta auxiliar a parti de un email
+        QString selectCuentaEmailDatossubcuenta (QString email);
+
         // Seleccina los datos de cabecera estados con una fecha especial
         QSqlQuery selectTodoespecialcabeceraestadostitulo(QString estado);
 
@@ -2471,9 +2474,9 @@ class basedatos {
 
         int anchocuentas(QString db);
 
-        void parametrosIA(QString *api_url, QString *api_key, QString *prompt_factura);
+        void parametrosIA(QString *api_url, QString *api_key, QString *prompt_factura, bool *ia_no_gestion_iva, bool *ia_no_gestion_isp);
 
-        bool guarda_parametrosIA(QString api_url, QString api_key, QString prompt_factura);
+        bool guarda_parametrosIA(QString api_url, QString api_key, QString prompt_factura, bool ia_no_gestion_iva, bool ia_no_gestion_isp);
 
         int anchocuentas();
 
@@ -3739,15 +3742,18 @@ class basedatos {
 
         QSqlQuery selec_diario_extract(QString concepto, QString documento, bool hay_fecha, QDate fecha, QString debe, QString haber);
 
+
+        void ejecuta_publica (QSqlQuery *query);
+
     private:
 
         // Constructor de la clase
         basedatos();
 
+        QSqlQuery ejecutar(QString cadena);
+
         // ejecuta query (no cadena)
         QSqlQuery ejecuta (QSqlQuery query);
-
-        QSqlQuery ejecutar(QString cadena);
 
         // ejecuta sentencia en la base de datos designada por db
         QSqlQuery ejecutar(QString cadena, QString db);

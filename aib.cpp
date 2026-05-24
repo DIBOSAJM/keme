@@ -957,6 +957,22 @@ void aib::modoconsulta()
     ui.oro_inversion_checkBox->setEnabled(false);
 }
 
+void aib::pasa_datos_externos(QString cuenta_gasto, QString isp_base_imponible, QString isp_externo, QString isp_cuenta_fra,
+                              QDate isp_fecha_fra, bool isp_aib, bool isp_ais, bool isp_no_ue)
+{
+    ui.CtabaselineEdit->setText(cuenta_gasto);
+    ui.baselineEdit->setText(isp_base_imponible);
+    ui.externo_lineEdit->setText(isp_externo);
+    ui.CtafralineEdit->setText(isp_cuenta_fra);
+    ui.FechafradateEdit->setDate(isp_fecha_fra);
+    ui.fechaoperaciondateEdit->setDate(isp_fecha_fra);
+    ui.aibcheckBox->setChecked(isp_aib);
+    ui.autofacturacheckBox->setChecked(isp_ais);
+    ui.autofacturaNoUecheckBox->setChecked(isp_no_ue);
+    ctaivacambiada();
+    cuentarepcambiada();
+}
+
 QString aib::externo()
 {
    return ui.externo_lineEdit->text();

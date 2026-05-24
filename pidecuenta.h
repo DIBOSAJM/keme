@@ -34,8 +34,10 @@ class pidecuenta : public QDialog {
                QString cuenta();
                void cambia_titulo(QString titulo);
                void pasa_cuenta(QString cuenta);
+               void selec_no_existente();
       private:
                 Ui::pidecuenta ui;
+                bool no_existente=false;
       private slots :
                void ctacambiada();
                void ctafinedicion();

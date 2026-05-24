@@ -40,6 +40,8 @@ class ivadatosadic : public QDialog {
                 QString recuperaconcepto();
                 QString actividad();
                 bool navegar_anterior();
+                void pasa_datos_externos(QString isp_documento,
+                                         QString isp_fichero_doc);
 
          private slots:
                 void buscacopiadoc();
