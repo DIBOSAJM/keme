@@ -3836,6 +3836,7 @@ void tabla_asientos::soportadoautonomo()
                                                                 aut_sop_cuenta_iva_soportado, aut_sop_cuenta_ret_irpf, aut_sop_fecha,
                                                                 out_sop_importes, aut_sop_factura, aut_ruta_fichero, out_desglose_iva); // añadimos out_desglose_iva
    // qDebug() << aut_sop_cuenta_iva_soportado;
+
    int resultado=qIVAsoportado->exec();
    if (resultado==QDialog::Rejected) 
             {
@@ -4290,6 +4291,7 @@ void tabla_asientos::soportadoautonomo()
 	    // si botón aceptar activado pasar, si no edición
 	    // contenidocambiado(0,0);
 	    chequeatotales();
+
 	    if (verifica || !ui.BotonIncorporar->isEnabled()
 		|| (fechadejerciciocerrado(ui.FechaApunte->date()))
 		|| !fechacorrespondeaejercicio(ui.FechaApunte->date()) || conanalitica()
@@ -6807,6 +6809,11 @@ void tabla_asientos::visdoc()
 void tabla_asientos::pasafichdoc(QString cadena)
 {
     ui.docasignadolineEdit->setText(cadena);
+}
+
+void tabla_asientos::pasafichdoclineedit(QString cadena)
+{
+  ui.fichdoclineEdit->setText(cadena);
 }
 
 

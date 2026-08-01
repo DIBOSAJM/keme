@@ -764,6 +764,8 @@ void busca_info_nif(QString nif, QString *qexterno, QString *qcuenta_proveedor, 
 void busca_info_nif_rep(QString nif, QString *qexterno, QString *qcuenta_cliente, QString *qcuenta_ingreso,
                         QString *qcuenta_iva_rep);
 
+int pdf_paginas(QString nfichero);
+
 QString pdf_a_qstring(QString nfichero);
 
 bool pdf_contiene_texto(QString nfichero);

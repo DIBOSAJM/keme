@@ -104,6 +104,7 @@ class ivasop_aut : public QDialog {
                 void buscactaret();
                 void ctaretfinedic();
                 void chequeabotonaceptar();
+                void grboxcambiado0();
                 void grboxcambiado1();
                 void grboxcambiado2();
                 void fechafracambiada();
@@ -119,6 +120,7 @@ class ivasop_aut : public QDialog {
                 void buscar_externo();
                 void externo_cambiado();
                 void fichero_soltado();
+
 };
 
 

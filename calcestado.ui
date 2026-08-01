@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>714</width>
-    <height>607</height>
+    <height>635</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -222,6 +222,13 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="analitica_fecha_op_checkBox">
+         <property name="text">
+          <string>Imputar analítica por fecha de operación</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QGroupBox" name="analiticagroupBox">

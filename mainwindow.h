@@ -99,6 +99,8 @@ private:
 
     bool activa_msj_tabla;
 
+    bool ia_emitidas=false;
+
     void procesar_inicio();
     bool abrebasedatos(QString vpghost,QString vpgdbname,QString vpguser,
                          QString vpgpassword,QString vcontrolador,QString vpuerto);
@@ -127,11 +129,12 @@ private:
     void procesa_fichero_pdf();
     GeminiClient *m_geminiClient; // Miembro de la clase
     void handleGeminiResponse(const QJsonObject &json);
+    void ia_reponse_emitidas(const QJsonObject &json);
     void handleGeminiError(const QString &err);
     void procesa_fichero_ia();
     LoadingDialog *m_loadingDlg = nullptr;
 
-    void trata_proveedor_json(QJsonObject proveedor_js);
+    void trata_proveedor_cli_json(QJsonObject datos_js);
 
 private slots:
     void conex();
@@ -356,6 +359,7 @@ private slots:
     void on_actionExportar_Ex_ternos_triggered();
     // void on_actionCopia_linfact_triggered();
     void on_actionConfiguraci_n_IA_triggered();
+    void on_actionEmitidas_IA_toggled(bool arg1);
 };
 
 #endif // MAINWINDOW_H

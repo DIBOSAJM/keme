@@ -30,7 +30,7 @@
 ivasop_aut::ivasop_aut(bool concomadecimal, bool condecimales) : QDialog() {
     ui.setupUi(this);
 
-
+    this->setWindowOpacity(0.85);
     etiqueta = new CustomQLabel;
     etiqueta->setHidden(false);
     etiqueta->setMinimumWidth(150);
@@ -168,6 +168,7 @@ connect(ui.fichdocpushButton ,SIGNAL(clicked()),SLOT(buscacopiadoc()));
 connect(ui.visdocpushButton ,SIGNAL(clicked()),SLOT(visdoc()));
 connect(ui.borraasdocpushButton ,SIGNAL(clicked()),SLOT(borraasignaciondoc()));
 
+connect(ui.groupBox,SIGNAL(toggled(bool)),this,SLOT(grboxcambiado0()));
 connect(ui.groupBox2,SIGNAL(toggled(bool)),this,SLOT(grboxcambiado1()));
  connect(ui.groupBox3,SIGNAL(toggled(bool)),this,SLOT(grboxcambiado2()));
 
@@ -217,7 +218,6 @@ connect(ui.groupBox2,SIGNAL(toggled(bool)),this,SLOT(grboxcambiado1()));
   ui.externo_pushButton->hide();
   ui.descrip_externo_label->hide();
  }
-
 }
 
 
@@ -482,12 +482,13 @@ void ivasop_aut::ctabase_exenta_cambiada()
              }
              else
                 ui.Ctabase_exenta_lineEdit->setText("");
-            chequeabotonaceptar();
-       }
+            // chequeabotonaceptar();
+         }
         }
    if (esauxiliar(ui.Ctabase_exenta_lineEdit->text()))
        ui.base_exenta_textLabel->setText(descripcioncuenta(ui.Ctabase_exenta_lineEdit->text()));
      else ui.base_exenta_textLabel->setText("");
+     chequeabotonaceptar();
 }
 
 
@@ -632,6 +633,7 @@ void ivasop_aut::ctabase_exenta_finedicion()
          {
           ui.base_exenta_textLabel->setText(descripcioncuenta(ui.Ctabase_exenta_lineEdit->text()));
           // if (!ui.CtaivalineEdit->text().isEmpty()) ui.baselineEdit->setFocus();
+          chequeabotonaceptar();
          }
          else ui.base_exenta_textLabel->setText("");
       }
@@ -865,7 +867,7 @@ void ivasop_aut::ctafracambiada()
 		 }
 		  else
 	            ui.CtafralineEdit->setText("");
-            chequeabotonaceptar();
+            // chequeabotonaceptar();
 	  }
         }
     // chequeabotonaceptar();
@@ -877,6 +879,8 @@ void ivasop_aut::ctafracambiada()
        }
     else ui.fratextLabel->setText("");
     formaconcepto();
+    chequeabotonaceptar();
+
 }
 
 void ivasop_aut::concepto_cambiado()
@@ -913,11 +917,12 @@ void ivasop_aut::ctafrafinedicion()
 	            ui.CtafralineEdit->setText("");
             chequeabotonaceptar();
 	  }
-        if (esauxiliar(ui.CtafralineEdit->text()))
-	   ui.fratextLabel->setText(descripcioncuenta(ui.CtafralineEdit->text()));
+     if (esauxiliar(ui.CtafralineEdit->text()))
+      { ui.fratextLabel->setText(descripcioncuenta(ui.CtafralineEdit->text()));}
           else ui.fratextLabel->setText("");
+
         }
-    // chequeabotonaceptar();
+    chequeabotonaceptar();
 }
 
 
@@ -1254,6 +1259,7 @@ if (ui.rectificativacheckBox->isChecked())
 *nfacturas=ui.nfacturaslineEdit->text();
 *finicial=ui.iniciallineEdit->text();
 *ffinal=ui.finallineEdit->text();
+
 if (ui.groupBox2->isChecked())
   {
    *cuentabase2=ui.CtabaselineEdit_2->text();
@@ -1338,8 +1344,8 @@ if (convapunto(ui.retencionlineEdit->text()).toDouble()>0.001)
 
 void ivasop_aut::chequeabotonaceptar()
 {
-
-     if (!escuentadeivasoportado(ui.CtaivalineEdit->text()) && !ui.exento_checkBox->isChecked())
+    // qDebug() << "CONTROL 1";
+    if (!escuentadeivasoportado(ui.CtaivalineEdit->text()) && ui.groupBox->isChecked()) // !ui.exento_checkBox->isChecked())
         { ui.AceptarButton->setEnabled(false); return; }
 
      if (!escuentadeivasoportado(ui.CtaivalineEdit2->text()) && ui.groupBox2->isChecked())
@@ -1348,21 +1354,24 @@ void ivasop_aut::chequeabotonaceptar()
      if (!escuentadeivasoportado(ui.CtaivalineEdit3->text()) && ui.groupBox3->isChecked())
         { ui.AceptarButton->setEnabled(false); return; }
 
-    if (ui.CtabaselineEdit->text().length()==0 ||
-	!esauxiliar(ui.CtabaselineEdit->text()))
+    if ((ui.CtabaselineEdit->text().length()==0 ||
+          !esauxiliar(ui.CtabaselineEdit->text())) && ui.groupBox->isChecked())
         {
-         if (!ui.exento_checkBox->isChecked())
-            {
-             ui.AceptarButton->setEnabled(false);
-             return;
-            }
-         if (ui.exento_checkBox->isChecked() && !ui.CtabaselineEdit->text().isEmpty() &&
-                 !esauxiliar(ui.CtabaselineEdit->text()))
-            {
-             ui.AceptarButton->setEnabled(false);
-             return;
-            }
+         ui.AceptarButton->setEnabled(false); return;
+         // if (!ui.exento_checkBox->isChecked())
+         //    {
+         //     ui.AceptarButton->setEnabled(false);
+         //     return;
+         //    }
+         // if (ui.exento_checkBox->isChecked() && !ui.CtabaselineEdit->text().isEmpty() &&
+         //         !esauxiliar(ui.CtabaselineEdit->text()))
+         //    {
+         //     ui.AceptarButton->setEnabled(false);
+         //     return;
+         //    }
         }
+
+    // qDebug() << "CONTROL 2";
 
     if ((ui.groupBox2->isChecked()) && (ui.CtabaselineEdit_2->text().length()==0 ||
 	!esauxiliar(ui.CtabaselineEdit_2->text())) )
@@ -1385,14 +1394,17 @@ void ivasop_aut::chequeabotonaceptar()
         return;
       }
 
-    if (!esauxiliar(ui.CtaivalineEdit->text()) || !escuentadeivasoportado(ui.CtaivalineEdit->text()))
+    if ((!esauxiliar(ui.CtaivalineEdit->text()) || !escuentadeivasoportado(ui.CtaivalineEdit->text())) &&  ui.groupBox->isChecked())
         {
-         if (!ui.exento_checkBox->isChecked())
-           {
-            ui.AceptarButton->setEnabled(false);
-            return;
-           }
+          ui.AceptarButton->setEnabled(false); return;
+         // if (!ui.exento_checkBox->isChecked())
+         //   {
+         //    ui.AceptarButton->setEnabled(false);
+         //    return;
+         //   }
         }
+
+    // qDebug() << "CONTROL 3";
 
     if ((ui.groupBox2->isChecked()) &&
        (!esauxiliar(ui.CtaivalineEdit2->text()) || !escuentadeivasoportado(ui.CtaivalineEdit2->text())))
@@ -1401,9 +1413,14 @@ void ivasop_aut::chequeabotonaceptar()
     if ((ui.groupBox3->isChecked()) &&
        (!esauxiliar(ui.CtaivalineEdit3->text()) || !escuentadeivasoportado(ui.CtaivalineEdit3->text())))
         { ui.AceptarButton->setEnabled(false); return; }
+    // qDebug() << "CONTROL 4";
 
     if (!esauxiliar(ui.CtafralineEdit->text()))
         { ui.AceptarButton->setEnabled(false); return; }
+
+    if (!ui.groupBox->isChecked() && !ui.groupBox2->isChecked() &&!ui.groupBox3->isChecked() && !ui.exento_checkBox->isChecked())
+        { ui.AceptarButton->setEnabled(false); return; }
+    //qDebug() << "CONTROL 5";
 
     ui.AceptarButton->setEnabled(true);
 
@@ -1603,6 +1620,19 @@ void ivasop_aut::tiporetfinedic()
   actutotalfra();
 }
 
+void ivasop_aut::grboxcambiado0() {
+    if (!ui.groupBox->isChecked())
+    {
+        ui.CtabaselineEdit->clear();
+        ui.CtaivalineEdit->clear();
+        ui.baselineEdit->clear();
+        // ui.TipolineEdit2->clear();
+        ui.CuotalineEdit->clear();
+    }
+    chequeabotonaceptar();
+
+}
+
 void ivasop_aut::grboxcambiado1()
 {
   if (!ui.groupBox2->isChecked())
@@ -1677,7 +1707,7 @@ void ivasop_aut::pasa_datos_ini(QString externo, QString cuenta_proveedor, QStri
                 ui.base_exentalineEdit->setText(formateanumero(elemento_iva_js["base_imponible"].toDouble(),comadecimal, decimales));
                 ui.Ctabase_exenta_lineEdit->setText(cuenta_gasto);
                 ui.exento_checkBox->setChecked(true);
-                if (i==out_desglose_iva.count()-1) ui.groupBox->setChecked(false);
+                if (out_desglose_iva.count()==1) ui.groupBox->setChecked(false);
                 continue;
             }
             if (ui.baselineEdit->text().isEmpty()) {
@@ -1685,6 +1715,7 @@ void ivasop_aut::pasa_datos_ini(QString externo, QString cuenta_proveedor, QStri
                 ui.ClaveivacomboBox->setCurrentText(clave_iva);
                 ui.baselineEdit->setText(formateanumero(elemento_iva_js["base_imponible"].toDouble(),comadecimal,decimales));
                 comboivacambiado();
+                ui.groupBox->setChecked(true);
                 continue;
             }
             if (ui.baselineEdit2->text().isEmpty()) {

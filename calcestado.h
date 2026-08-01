@@ -93,6 +93,22 @@ class calcestado : public QDialog {
                                                    bool acotacion,
                                                  QDate const & fecha1, QDate const & fecha2);
                 void calc_estado_ci(QString ci);
+                void carga_pases_analitica_fecha_op();
+                void calcula_saldos_mes_fecha_op(int mes, QDate fechaini, QDate fechafin);
+                QStringList op_cuenta;
+                QList <int> op_asiento;
+                QList<QDate> op_fecha;
+                QList<QDate> op_fecha_op;
+                QList<double> op_saldo;
+
+                // QList<int>liva_asiento;
+                // QList<QDate> liva_fecha_op;
+
+                QStringList op_cuenta2;
+                QList <int> op_asiento2;
+                QList<QDate> op_fecha2;
+                QList<QDate> op_fecha_op2;
+                QList<double> op_saldo2;
 
 
         private slots:

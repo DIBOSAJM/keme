@@ -194,6 +194,7 @@
     <addaction name="menuFin_de_ejercicio"/>
     <addaction name="actionTipos_de_Diario"/>
     <addaction name="menuRegularizaciones"/>
+    <addaction name="actionEmitidas_IA"/>
    </widget>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
@@ -1503,6 +1504,14 @@
   <action name="actionConfiguraci_n_IA">
    <property name="text">
     <string>Configuración &amp;IA</string>
+   </property>
+  </action>
+  <action name="actionEmitidas_IA">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Emitidas IA</string>
    </property>
   </action>
  </widget>

@@ -7289,8 +7289,13 @@ void MainWindow::fichero_soltado_en_diario()
 {
   fichero_soltado_diario=punterodiario->file_droped();
   //QMessageBox::information(this, tr("KEME-Contabilidad"),fichero_soltado_diario);
-  //procesa_fichero_pdf();
-  procesa_fichero_ia();
+  QString api_url, api_key, prompt_factura,prompt_fact_emitida, prompt_prov_cli;
+  bool ia_no_gestion_iva, ia_no_gestion_isp, mostrar_respuesta_ia;
+  basedatos::instancia()->parametrosIA(&api_url, &api_key, &prompt_factura, &prompt_fact_emitida, &prompt_prov_cli, &ia_no_gestion_iva, &ia_no_gestion_isp, &mostrar_respuesta_ia);
+  if (api_url.isEmpty())
+    procesa_fichero_pdf();
+  else
+    procesa_fichero_ia();
 }
 
 void MainWindow::procesa_fichero_pdf() {
@@ -7372,23 +7377,30 @@ void MainWindow::handleGeminiResponse(const QJsonObject &json)
     statusBar()->showMessage(json["nombre"].toString(), 3000);
         // ui->lineEditNombre->setText(json["nombre"].toString());
         // ui->lineEditNif->setText(json["nif"].toString());
-    notas *n = new notas(false);
-    n->activa_modoconsulta();
-    n->cambia_titulo(tr("RESPUESTA IA"));
+    if (ia_emitidas) {
+       ia_reponse_emitidas(json);
+       return;
+    }
+    QString api_url, api_key, prompt_factura,prompt_fact_emitida, prompt_prov_cli;
+    bool ia_no_gestion_iva, ia_no_gestion_isp, mostrar_respuesta_ia;
+    basedatos::instancia()->parametrosIA(&api_url, &api_key, &prompt_factura, &prompt_fact_emitida, &prompt_prov_cli, &ia_no_gestion_iva, &ia_no_gestion_isp,&mostrar_respuesta_ia);
+
+    if (mostrar_respuesta_ia) {
+      notas *n = new notas(false);
+      n->activa_modoconsulta();
+      n->cambia_titulo(tr("RESPUESTA IA"));
     n->esconde_tex_imprimir();
     QJsonDocument doc(json);
     QString strJson = doc.toJson(QJsonDocument::Indented);
     n->pasa_contenido(strJson);
     n->exec();
     delete(n);
+    }
 
-    QString api_url, api_key, prompt_factura;
-    bool ia_no_gestion_iva, ia_no_gestion_isp;
-    basedatos::instancia()->parametrosIA(&api_url, &api_key, &prompt_factura,&ia_no_gestion_iva, &ia_no_gestion_isp);
 
     // comenzamos por averiguar si existe el nif - si no hay nif localizamos código de externo por email
     QJsonObject proveedor_json=json["proveedor"].toObject();
-    trata_proveedor_json(proveedor_json);
+    trata_proveedor_cli_json(proveedor_json);
     QJsonObject factura_json=json["factura"].toObject();
     // intentamos averiguar cuenta de gasto investigando apuntes pasados
     // si no sugerimos la cuenta principal
@@ -7399,9 +7411,10 @@ void MainWindow::handleGeminiResponse(const QJsonObject &json)
     if (!busca_nif.startsWith(proveedor_json["iso"].toString())) if (paises_eur.contains(proveedor_json["iso"].toString())) busca_nif.prepend(proveedor_json["iso"].toString());
     if (!proveedor_json["nif"].toString().isEmpty()) externo=basedatos::instancia()->select_codigo_cif_externo(busca_nif);
        else if (basedatos::instancia()->existe_externo(proveedor_json["email"].toString())) externo=proveedor_json["email"].toString();
-    if (!externo.startsWith(proveedor_json["iso"].toString())) {
+    if (!externo.startsWith(proveedor_json["iso"].toString()) && !externo.isEmpty()) {
         if (paises_eur.contains(proveedor_json["iso"].toString())) externo.prepend(proveedor_json["iso"].toString());
     }
+    qDebug() << "Externo: " << externo;
     QString cuenta_gasto, cuenta_prov;
     QStringList cuentas_a_pagar=basedatos::instancia()->selectCuentasapagarconfiguracion().split(u',');
     if (!externo.isEmpty()) {
@@ -7439,15 +7452,19 @@ void MainWindow::handleGeminiResponse(const QJsonObject &json)
         if (!nif.startsWith(proveedor_json["iso"].toString())) {
             if (paises_eur.contains(proveedor_json["iso"].toString())) nif.prepend(proveedor_json["iso"].toString());
         }
+        qDebug() << "NIF" << nif;
         cuenta_prov=basedatos::instancia()->selectCuentaCifDatossubcuenta(nif);
-        if (cuenta_prov.isEmpty()) cuenta_prov=basedatos::instancia()->selectCuentaEmailDatossubcuenta(proveedor_json["email"].toString());
+        if (cuenta_prov.isEmpty() && !proveedor_json["email"].toString().isEmpty()) cuenta_prov=basedatos::instancia()->selectCuentaEmailDatossubcuenta(proveedor_json["email"].toString());
         QSqlQuery q;
-        q.prepare("select asiento, fecha from diario where cuenta= :cuenta and haber>0 order by fecha desc");
+        q.prepare("select asiento, fecha, cuenta from diario where cuenta= :cuenta and haber>0 order by fecha desc");
         q.bindValue(":cuenta",cuenta_prov);
         QString asiento;
         basedatos::instancia()->ejecuta_publica(&q);
         if (q.isActive())
-            if (q.next()) asiento=q.value(0).toString();
+            if (q.next()) {
+                if (q.value(2).toString()==cuenta_prov && !cuenta_prov.isEmpty())
+                   asiento=q.value(0).toString();
+            }
         if (!asiento.isEmpty()) {
            q.prepare("select cuenta from diario where asiento= :asiento");
            q.bindValue(":asiento",asiento);
@@ -7463,8 +7480,14 @@ void MainWindow::handleGeminiResponse(const QJsonObject &json)
     // localizamos cuenta retención irpf
     QString cuenta_ret, tipo_operacion_ret_asig;
     QSqlQuery q;
-    q.prepare("select cuenta,tipo_oper_ret_asig from datossubcuenta where (tipo_ret> :tipo_ret_a and tipo_ret< :tipo_ret_p) "
+    if (basedatos::instancia()->cualControlador() == basedatos::SQLITE)
+        q.prepare("select cuenta, tipo_oper_ret_asig from datossubcuenta "
+                  "where (tipo_ret > :tipo_ret_a and tipo_ret < :tipo_ret_p) "
+                  "and (instr(tipo_operacion_ret, 'G') = 1 and instr(cuenta, :cuenta_ret) = 1 or ret_arrendamiento)");
+      else
+         q.prepare("select cuenta,tipo_oper_ret_asig from datossubcuenta where (tipo_ret> :tipo_ret_a and tipo_ret< :tipo_ret_p) "
               "and (position('G' in tipo_operacion_ret)=1 and position( :cuenta_ret in cuenta)=1 or ret_arrendamiento)");
+
     q.bindValue(":tipo_ret_a",info_ret_json["tipo_porcentaje"].toDouble()-0.01);
     q.bindValue(":tipo_ret_p",info_ret_json["tipo_porcentaje"].toDouble()+0.01);
     // QString basedatos::cuenta_ret_ing()
@@ -7487,22 +7510,24 @@ void MainWindow::handleGeminiResponse(const QJsonObject &json)
       // metemos los datos en una tabla de asientos - solo gasto y proveedor con total factura y retención si procede
         tabla_asientos *t = new tabla_asientos(haycomadecimal(),haydecimales(),usuario);
         t->set_borrador();
-        t->pasafichdoc(fichero_soltado_diario);
+        t->pasafichdoclineedit(fichero_soltado_diario);
         if (!externo.isEmpty()) t->pasa_externo(externo);
+        t->pasafechaasiento(QDate().fromString(factura_json["fecha"].toString(),"yyyy-MM-dd"));
         double total_gasto=factura_json["total_factura"].toDouble()+info_ret_json["cuota_retencion"].toDouble();
         QString cad_gasto; cad_gasto.setNum(total_gasto,'f',2);
-        t->pasadatos1(0,cuenta_gasto,tr("S/FACTURA: ")+factura_json["serie_numero"].toString()+proveedor_json["nombre"].toString(),
+        QString cad_tot_factura; cad_tot_factura.setNum(factura_json["total_factura"].toDouble(),'f',2);
+        t->pasadatos1(0,cuenta_gasto,tr("S/FACTURA: ")+factura_json["serie_numero"].toString()+" "+proveedor_json["nombre"].toString(),
                                                        cad_gasto,
                                                        "",
                                                        factura_json["serie_numero"].toString(),
                                                        "");
-        t->pasadatos1(1,cuenta_prov,tr("S/FACTURA: ")+factura_json["serie_numero"].toString()+proveedor_json["nombre"].toString(),
+        t->pasadatos1(1,cuenta_prov,tr("S/FACTURA: ")+factura_json["serie_numero"].toString()+" "+proveedor_json["nombre"].toString(),
                                                        "",
-                                                       factura_json["total_factura"].toString(),
+                                                       cad_tot_factura,
                                                        factura_json["serie_numero"].toString(),
                                                        "");
         if (info_ret_json["base_retencion"].toDouble()>0.001 || info_ret_json["base_retencion"].toDouble()<-0.001) {
-            t->pasadatos1(2,cuenta_ret,tr("S/FACTURA: ")+factura_json["serie_numero"].toString()+proveedor_json["nombre"].toString(),
+            t->pasadatos1(2,cuenta_ret,tr("S/FACTURA: ")+factura_json["serie_numero"].toString()+" "+proveedor_json["nombre"].toString(),
                                                            "",
                                                            info_ret_json["cuota_retencion"].toString(),
                                                            factura_json["serie_numero"].toString(),
@@ -7526,6 +7551,7 @@ void MainWindow::handleGeminiResponse(const QJsonObject &json)
                           nombre_ret, cif_ret,
                           provincia);
         }
+        t->chequeatotales();
         t->exec();
         delete(t);
         return;
@@ -7572,6 +7598,155 @@ void MainWindow::handleGeminiResponse(const QJsonObject &json)
 }
 
 
+void MainWindow::ia_reponse_emitidas(const QJsonObject &json)
+{
+    QString api_url, api_key, prompt_factura,prompt_fact_emitida, prompt_prov_cli;
+    bool ia_no_gestion_iva, ia_no_gestion_isp, mostrar_respuesta_ia;
+    basedatos::instancia()->parametrosIA(&api_url, &api_key, &prompt_factura, &prompt_fact_emitida, &prompt_prov_cli, &ia_no_gestion_iva, &ia_no_gestion_isp,&mostrar_respuesta_ia);
+
+    if (mostrar_respuesta_ia) {
+      notas *n = new notas(false);
+      n->activa_modoconsulta();
+      n->cambia_titulo(tr("RESPUESTA IA"));
+    n->esconde_tex_imprimir();
+    QJsonDocument doc(json);
+    QString strJson = doc.toJson(QJsonDocument::Indented);
+    n->pasa_contenido(strJson);
+    n->exec();
+    delete(n);
+    }
+
+
+    // comenzamos por averiguar si existe el nif - si no hay nif localizamos código de externo por email
+    QJsonObject proveedor_cli_json=json["cliente"].toObject();
+    trata_proveedor_cli_json(proveedor_cli_json);
+    QJsonObject factura_json=json["factura"].toObject();
+    // intentamos averiguar cuenta de gasto investigando apuntes pasados
+    // si no sugerimos la cuenta principal
+    // hay externo ?
+    QString externo;
+    QString paises_eur="AT BE BG CY CZ DE DK EE EL FI FR HR HU IE IT LT LU LV MT NL PL PT RO SE SI SK GR";
+    QString busca_nif=proveedor_cli_json["nif"].toString();
+    if (!busca_nif.startsWith(proveedor_cli_json["iso"].toString())) if (paises_eur.contains(proveedor_cli_json["iso"].toString())) busca_nif.prepend(proveedor_cli_json["iso"].toString());
+    if (!proveedor_cli_json["nif"].toString().isEmpty()) externo=basedatos::instancia()->select_codigo_cif_externo(busca_nif);
+       else if (basedatos::instancia()->existe_externo(proveedor_cli_json["email"].toString())) externo=proveedor_cli_json["email"].toString();
+    if (!externo.startsWith(proveedor_cli_json["iso"].toString()) && !externo.isEmpty()) {
+        if (paises_eur.contains(proveedor_cli_json["iso"].toString())) externo.prepend(proveedor_cli_json["iso"].toString());
+    }
+
+    qDebug() << "Externo: " << externo;
+
+    QString cuenta_ingreso, cuenta_cli;
+    QStringList cuentas_a_cobrar=basedatos::instancia()->selectCuentasacobrarconfiguracion().split(u',');
+    if (!externo.isEmpty()) {
+        cuenta_cli=basedatos::instancia()->cuenta_externo(externo);
+        QSqlQuery q;
+        q.prepare("select asiento, fecha, cuenta, concepto, debe, haber, externo from diario where externo =:externo order by fecha DESC");
+        q.bindValue(":externo",externo);
+        QStringList cuentas;
+        basedatos::instancia()->ejecuta_publica(&q);
+        if (q.isActive()) {
+            while (q.next()) {
+                cuentas << q.value(2).toString();
+                if (q.value(2).toString().startsWith(factura_json["cuenta_ingreso_sugerida"].toObject()["codigo"].toString()) && cuenta_ingreso.isEmpty()
+                        && !factura_json["cuenta_ingreso_sugerida"].toObject()["codigo"].toString().isEmpty())
+                    cuenta_ingreso=q.value(2).toString();
+                if (cuenta_cli.isEmpty()) {
+                    for (int i=0; i< cuentas_a_cobrar.size();++i) {
+                        if (q.value(2).toString().startsWith(cuentas_a_cobrar.at(i))) cuenta_cli=q.value(2).toString();
+                    }
+                }
+            }
+        }
+        if (cuenta_ingreso.isEmpty()) {
+            for (int i=0; i<cuentas.size(); i++)
+                if (basedatos::instancia()->escuentadeingreso(cuentas.at(i))) {
+                    cuenta_ingreso=cuentas.at(i);
+                    break;
+                }
+        }
+    }
+    else {
+        // localizamos asientos con una cuenta que contenga el nif o el email
+        QString nif=proveedor_cli_json["nif"].toString();
+        QString paises_eur="AT BE BG CY CZ DE DK EE EL FI FR HR HU IE IT LT LU LV MT NL PL PT RO SE SI SK GR";
+        if (!nif.startsWith(proveedor_cli_json["iso"].toString())) {
+            if (paises_eur.contains(proveedor_cli_json["iso"].toString())) nif.prepend(proveedor_cli_json["iso"].toString());
+        }
+        qDebug() << "NIF" << nif;
+        cuenta_cli=basedatos::instancia()->selectCuentaCifDatossubcuenta(nif);
+        if (cuenta_cli.isEmpty() && !proveedor_cli_json["email"].toString().isEmpty()) cuenta_cli=basedatos::instancia()->selectCuentaEmailDatossubcuenta(proveedor_cli_json["email"].toString());
+        QSqlQuery q;
+        q.prepare("select asiento, fecha, cuenta from diario where cuenta= :cuenta and haber>0 order by fecha desc");
+        q.bindValue(":cuenta",cuenta_cli);
+        QString asiento;
+        basedatos::instancia()->ejecuta_publica(&q);
+        if (q.isActive())
+            if (q.next()) {
+                if (q.value(2).toString()==cuenta_cli && !cuenta_cli.isEmpty())
+                   asiento=q.value(0).toString();
+            }
+        if (!asiento.isEmpty()) {
+           q.prepare("select cuenta from diario where asiento= :asiento");
+           q.bindValue(":asiento",asiento);
+           basedatos::instancia()->ejecuta_publica(&q);
+           if (q.isActive())
+            while (q.next()) {
+                if (q.value(0).toString().startsWith(basedatos::instancia()->claveingresos())) cuenta_ingreso=q.value(0).toString();
+            }
+        }
+    }
+
+
+    QJsonObject info_ret_json=factura_json["retencion_irpf"].toObject();
+    // localizamos cuenta retención irpf
+    QString cuenta_ret=basedatos::instancia()->cuenta_ret_irpf();
+    if (cuenta_ingreso.isEmpty()) cuenta_ingreso=factura_json["cuenta_ingreso_sugerida"].toObject()["codigo"].toString();
+
+   // "INTRACOMUNITARIA_BIENES"
+   // "INTRACOMUNITARIA_SERVICIOS"
+   // "PRESTACION_SERVICIOS_EXT"
+   // "ISP_INTERIORES"
+   // "EXPORT_BIENES"
+   //  "EXENTA_NO_DEDUC"
+
+    // analizamos la operación
+    if (ia_no_gestion_iva )
+    {
+      // metemos los datos en una tabla de asientos - solo cliente e ingreso con total factura y retención si procede
+        tabla_asientos *t = new tabla_asientos(haycomadecimal(),haydecimales(),usuario);
+        t->set_borrador();
+        t->pasafichdoclineedit(fichero_soltado_diario);
+        if (!externo.isEmpty()) t->pasa_externo(externo);
+        t->pasafechaasiento(QDate().fromString(factura_json["fecha"].toString(),"yyyy-MM-dd"));
+        double total_ingreso=factura_json["total_factura"].toDouble()+info_ret_json["cuota_retencion"].toDouble();
+        QString cad_ingreso; cad_ingreso.setNum(total_ingreso,'f',2);
+        QString cad_tot_factura; cad_tot_factura.setNum(factura_json["total_factura"].toDouble(),'f',2);
+        t->pasadatos1(0,cuenta_cli,tr("N/FACTURA: ")+factura_json["serie_numero"].toString()+" "+proveedor_cli_json["nombre"].toString(),
+                                                       cad_tot_factura,
+                                                       "",
+                                                       factura_json["serie_numero"].toString(),
+                                                       "");
+        t->pasadatos1(1,cuenta_ingreso,tr("N/FACTURA: ")+factura_json["serie_numero"].toString()+" "+proveedor_cli_json["nombre"].toString(),
+                                                       "",
+                                                       cad_ingreso,
+                                                       factura_json["serie_numero"].toString(),
+                                                       "");
+        if (info_ret_json["base_retencion"].toDouble()>0.001 || info_ret_json["base_retencion"].toDouble()<-0.001) {
+            t->pasadatos1(2,cuenta_ret,tr("N/FACTURA: ")+factura_json["serie_numero"].toString()+" "+proveedor_cli_json["nombre"].toString(),
+                                                           info_ret_json["cuota_retencion"].toString(),
+                                                           "",
+                                                           factura_json["serie_numero"].toString(),
+                                                           "");
+        }
+        t->chequeatotales();
+        t->exec();
+        delete(t);
+        return;
+    }
+
+
+}
 
 
 void MainWindow::handleGeminiError(const QString &err)
@@ -7583,14 +7758,27 @@ void MainWindow::handleGeminiError(const QString &err)
 
 void MainWindow::procesa_fichero_ia()
 {
+    bool espdf=false;
+    QString fichero_soltado_U=fichero_soltado_diario.toUpper();
+    if (fichero_soltado_U.endsWith("PDF")) espdf=true;
+
+    if (espdf && pdf_paginas(fichero_soltado_diario)>5 &&
+        (QMessageBox::question(this,
+              tr("PROCESAR IA"),
+              tr("El fichero tiene más de 5 páginas "
+                 "¿ Desea procesarlo ?"))
+                == QMessageBox::No ))
+            return ;
+
     QFile file(fichero_soltado_diario);
+
         if(file.open(QIODevice::ReadOnly)) {
             QString nombre_empresa=basedatos::instancia()->selectEmpresaconfiguracion();
             QString nif=basedatos::instancia()->cif();
             m_loadingDlg->show();
-            QString api_url, api_key, prompt_factura;
-            bool ia_no_gestion_iva, ia_no_gestion_isp;
-            basedatos::instancia()->parametrosIA(&api_url, &api_key, &prompt_factura,&ia_no_gestion_iva, &ia_no_gestion_isp);
+            QString api_url, api_key, prompt_factura, prompt_fact_emitida, prompt_prov_cli;
+            bool ia_no_gestion_iva, ia_no_gestion_isp, mostrar_respuesta_ia;
+            basedatos::instancia()->parametrosIA(&api_url, &api_key, &prompt_factura, &prompt_fact_emitida, &prompt_prov_cli,&ia_no_gestion_iva, &ia_no_gestion_isp, &mostrar_respuesta_ia);
             prompt_factura=prompt_factura.replace("${MI_NOMBRE}",nombre_empresa);
             prompt_factura=prompt_factura.replace("${MI_NIF}",nif);
             m_geminiClient->get_url(api_url);
@@ -7609,12 +7797,12 @@ void MainWindow::procesa_fichero_ia()
 }
 
 
-void MainWindow::trata_proveedor_json(QJsonObject proveedor_js)
+void MainWindow::trata_proveedor_cli_json(QJsonObject datos_js)
 {
-    QString nif=proveedor_js["nif"].toString();
+    QString nif=datos_js["nif"].toString();
     QString paises_eur="AT BE BG CY CZ DE DK EE EL FI FR HR HU IE IT LT LU LV MT NL PL PT RO SE SI SK GR";
-    if (paises_eur.contains(proveedor_js["iso"].toString()) && !nif.startsWith(proveedor_js["iso"].toString())) nif.prepend(proveedor_js["iso"].toString());
-    QString email=proveedor_js["email"].toString();
+    if (paises_eur.contains(datos_js["iso"].toString()) && !nif.startsWith(datos_js["iso"].toString())) nif.prepend(datos_js["iso"].toString());
+    QString email=datos_js["email"].toString();
     QString cuenta_proveedor;
     QString externo;
     if (!nif.isEmpty()) externo=basedatos::instancia()->select_codigo_cif_externo(nif);
@@ -7629,14 +7817,14 @@ void MainWindow::trata_proveedor_json(QJsonObject proveedor_js)
         if (basedatos::instancia()->hay_externos()) {
             if (QMessageBox::question(this,tr("ALTA EXTERNO"),tr("El codigo %1 no existe, ¿ damos de alta el externo ?").arg(nif.isEmpty() ? email : nif))!=QMessageBox::No )
             {
-               basedatos::instancia()->guarda_datos_externo (nif.isEmpty() ? email : nif, "", proveedor_js["nombre"].toString(), "",nif,
-               "", "", "", proveedor_js["domicilio"].toString(), proveedor_js["poblacion"].toString(),
-               proveedor_js["cp"].toString(), proveedor_js["provincia"].toString(),proveedor_js["iso"].toString(),
-               "", "", proveedor_js["email"].toString(), "",
+               basedatos::instancia()->guarda_datos_externo (nif.isEmpty() ? email : nif, "", datos_js["nombre"].toString(), "",nif,
+               "", "", "", datos_js["domicilio"].toString(), datos_js["poblacion"].toString(),
+               datos_js["cp"].toString(), datos_js["provincia"].toString(),datos_js["iso"].toString(),
+               "", "", datos_js["email"].toString(), "",
                "", "", false, "", "", "",
                false, "", "", "",
                "", "1", false,
-               proveedor_js["pais"].toString(), 0,
+               datos_js["pais"].toString(), 0,
                "", false,
                "", "",
                false, "", "", "", "",
@@ -7659,16 +7847,16 @@ void MainWindow::trata_proveedor_json(QJsonObject proveedor_js)
                   int result=p->exec();
                   QString cuenta=p->cuenta();
                   delete (p);
-                  if (result!=QDialog::Accepted) {
-                    basedatos::instancia()->insertPlancontable(cuenta, proveedor_js["nombre"].toString(), true);
-                    basedatos::instancia()->guardadatosaccesorios (cuenta, proveedor_js["nombre"].toString(), "",nif,
-                    "", proveedor_js["domicilio"].toString(), proveedor_js["poblacion"].toString(),
-                    proveedor_js["cp"].toString(), proveedor_js["provincia"].toString(), proveedor_js["pais"].toString(),
-                    "", "", proveedor_js["email"].toString(), "",
+                  if (result==QDialog::Accepted) {
+                    basedatos::instancia()->insertPlancontable(cuenta, datos_js["nombre"].toString(), true);
+                    basedatos::instancia()->guardadatosaccesorios (cuenta, datos_js["nombre"].toString(), "",nif,
+                    "", datos_js["domicilio"].toString(), datos_js["poblacion"].toString(),
+                    datos_js["cp"].toString(), datos_js["provincia"].toString(), datos_js["iso"].toString(),
+                    "", "", datos_js["email"].toString(), "",
                     "", "", false, "", "", "",
                     false, "", "", "",
                     "", "", false,
-                    proveedor_js["iso"].toString(), "", false, "",
+                    datos_js["pais"].toString(), "", false, "",
                     0,
                     "", false,
                     "", "",
@@ -7915,5 +8103,14 @@ void MainWindow::on_actionConfiguraci_n_IA_triggered()
   Configuracion_IA *c = new Configuracion_IA();
   c->exec();
   delete (c);
+}
+
+
+
+
+void MainWindow::on_actionEmitidas_IA_toggled(bool arg1)
+{
+    if (arg1) ia_emitidas=true;
+       else ia_emitidas=false;
 }
 

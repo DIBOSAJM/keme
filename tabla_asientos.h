@@ -131,6 +131,7 @@ class tabla_asientos  : public QDialog {
                 void pasainfoeib(QString cbase, QString bi,QString cuenta_fra, QDate fecha_fra,
                                  QDate fechaop, QString claveop);
                 void pasafichdoc(QString cadena);
+                void pasafichdoclineedit(QString cadena);
                 void pasafichprov(QString cadena);
                 void selec_nosujeta();
                 void activa_modoconsulta();

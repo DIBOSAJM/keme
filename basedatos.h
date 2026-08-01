@@ -910,6 +910,11 @@ class basedatos {
                                            QDate fechafin, QString subcadena,
                                                        QString ci);
 
+        QSqlQuery apuntes_diario_ci (QDate fechaini,
+                                           QDate fechafin, QString subcadena,
+                                           QString ci);
+
+
         QSqlQuery cuentas_saldo_estados (QDate fechaini, QDate fechafin,
                                          QString subcadena, QString ci);
 
@@ -2453,6 +2458,8 @@ class basedatos {
 
         void actualizade4050();
 
+        void actualizade4060();
+
         void introclave_op_retenciones();
 
         void intro_provincias();
@@ -2474,9 +2481,11 @@ class basedatos {
 
         int anchocuentas(QString db);
 
-        void parametrosIA(QString *api_url, QString *api_key, QString *prompt_factura, bool *ia_no_gestion_iva, bool *ia_no_gestion_isp);
+        void parametrosIA(QString *api_url, QString *api_key, QString *prompt_factura,
+                          QString *prompt_fact_emitida, QString *prompt_prov_cli, bool *ia_no_gestion_iva, bool *ia_no_gestion_isp, bool *mostrar_respuesta_ia);
 
-        bool guarda_parametrosIA(QString api_url, QString api_key, QString prompt_factura, bool ia_no_gestion_iva, bool ia_no_gestion_isp);
+        bool guarda_parametrosIA(QString api_url, QString api_key, QString prompt_factura,
+                                 QString prompt_fact_emitida, QString prompt_prov_cli, bool ia_no_gestion_iva, bool ia_no_gestion_isp, bool mostrar_respuesta_ia);
 
         int anchocuentas();
 

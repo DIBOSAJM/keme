@@ -8706,7 +8706,16 @@ void busca_info_nif_rep(QString nif, QString *qexterno, QString *qcuenta_cliente
 }
 
 
-
+int pdf_paginas(QString nfichero) {
+    int paginas=0;
+    QPdfDocument *pdf = new QPdfDocument(0);
+    if (pdf->load(nfichero)==QPdfDocument::Error::None) {
+        paginas=pdf->pageCount();
+      }
+    else paginas=0;
+    delete(pdf);
+    return paginas;
+}
 
 
 

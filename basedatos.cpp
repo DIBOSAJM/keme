@@ -23,7 +23,7 @@
 
 #include "funciones.h"
 
-#define VERSION "4.0.6.0"
+#define VERSION "4.0.7.0"
 
 #include <QMessageBox>
 #include <QApplication>
@@ -685,6 +685,11 @@ void basedatos::solotablas(bool segunda, QString qbase)
     cadena+="api_url varchar(255) default '',";
     cadena+="api_key varchar(255) default '',";
     cadena+="prompt_factura text,";
+    cadena+="prompt_fact_emitida text,";
+    cadena+="prompt_prov_cli text,";
+    cadena+="akh varchar(255) default '',";
+    if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE ) cadena += "mostrar_respuesta_ia bool default 0,";
+       else cadena += "mostrar_respuesta_ia bool default false, ";
 
     if ( ( segunda ? cualControlador(qbase) : cualControlador()) == SQLITE ) cadena += "ia_no_gestion_iva bool default 0,";
        else cadena += "ia_no_gestion_iva bool default false, ";
@@ -10826,24 +10831,26 @@ QString basedatos::selectCifdatossubcuentacuenta (QString codigo) {
 
 // Devuelve la cuenta del cif de la subcuenta especificada
 QString basedatos::selectCuentaCifDatossubcuenta (QString codigo) {
-    QString cadquery = "SELECT cuenta from datossubcuenta where cif='";
+    QString cadquery = "SELECT cuenta,cif from datossubcuenta where cif='";
     cadquery += codigo.left(-1).replace("'","''") +"'";
     QSqlQuery query = ejecutar(cadquery);
     if ( (query.isActive()) && (query.first()) )
     {
-        return query.value(0).toString();
+        if (query.value(1).toString()==codigo)
+           return query.value(0).toString();
     }
     return QString();
 }
 
 QString basedatos::selectCuentaEmailDatossubcuenta(QString email)
 {
-    QString cadquery = "SELECT cuenta from datossubcuenta where email='";
+    QString cadquery = "SELECT cuenta,email from datossubcuenta where email='";
     cadquery += email.left(-1).replace("'","''") +"'";
     QSqlQuery query = ejecutar(cadquery);
     if ( (query.isActive()) && (query.first()) )
     {
-        return query.value(0).toString();
+        if (query.value(1).toString()==email)
+          return query.value(0).toString();
     }
     return QString();
 }
@@ -11553,6 +11560,30 @@ QSqlQuery basedatos::cuentas_saldo_estados_ci (QDate fechaini,
     }
 
     cadena+=" group by cuenta";
+
+    return ejecutar(cadena);
+}
+
+QSqlQuery basedatos::apuntes_diario_ci(QDate fechaini, QDate fechafin, QString subcadena, QString ci)
+{
+    QString cadena = "select diario.cuenta, diario.asiento, diario.fecha, "
+                     "diario.debe/abs(diario.debe+diario.haber)*diario_ci.importe - "
+                     "diario.haber/abs(diario.debe+diario.haber)*diario_ci.importe"
+                     " from diario, diario_ci where "
+                     "diario_ci.clave_ci = diario.clave_ci and ";
+    cadena += "fecha>='";
+    cadena += fechaini.toString("yyyy-MM-dd");
+    cadena += "' and fecha<='";
+    cadena += fechafin.toString("yyyy-MM-dd");
+    cadena += "'";
+
+    cadena += subcadena;
+
+    if (ci.length() > 0)
+    {
+        cadena += " and ";
+        cadena += filtroci(ci,true);
+    }
 
     return ejecutar(cadena);
 }
@@ -23719,6 +23750,18 @@ void basedatos::actualizade4050() {
     ejecutar("update configuracion set version='4.0.6.0'");
 }
 
+void basedatos::actualizade4060()
+{
+    ejecutar("alter table configuracion add column prompt_fact_emitida text");
+    ejecutar("alter table configuracion add column prompt_prov_cli text");
+    ejecutar("alter table configuracion add column akh varchar(255) default ''");
+    if ( cualControlador() == SQLITE ) ejecutar("alter table configuracion add column mostrar_respuesta_ia bool default 0");
+       else ejecutar("alter table configuracion add column mostrar_respuesta_ia bool default false");
+    ejecutar("update configuracion set version='4.0.7.0'");
+
+
+}
+
 
 void basedatos::actualizade2977()
 {
@@ -25789,7 +25832,7 @@ bool basedatos::comprobarVersion () {
                 && laversion !="4.0.0.0" && laversion !="4.0.0.2"
                 && laversion !="4.0.1.0" && laversion !="4.0.2.0"
                 && laversion !="4.0.3.0" && laversion !="4.0.4.0"
-                && laversion !="4.0.5.0"){
+                && laversion !="4.0.5.0" && laversion !="4.0.6.0"){
             if (!(splash==NULL))
              {
               splash->finish( 0 );
@@ -25907,7 +25950,8 @@ bool basedatos::comprobarVersion () {
                 if (versionbd()=="4.0.2.0") actualizade4020();
                 if (versionbd()=="4.0.3.0") actualizade4030();
                 if (versionbd()=="4.0.4.0") actualizade4040();
-                actualizade4050();
+                if (versionbd()=="4.0.5.0") actualizade4050();
+                actualizade4060();
 
               }
             else {
@@ -26074,30 +26118,42 @@ int basedatos::anchocuentas(QString db)
     return 0;
 }
 
-void basedatos::parametrosIA(QString *api_url, QString *api_key, QString *prompt_factura, bool *ia_no_gestion_iva, bool *ia_no_gestion_isp)
+void basedatos::parametrosIA(QString *api_url, QString *api_key, QString *prompt_factura, QString *prompt_fact_emitida, QString *prompt_prov_cli,
+                             bool *ia_no_gestion_iva, bool *ia_no_gestion_isp, bool *mostrar_respuesta_ia)
 {
-    QSqlQuery q = ejecutar("select api_url, api_key, prompt_factura, ia_no_gestion_iva, ia_no_gestion_isp from configuracion");
+    QSqlQuery q = ejecutar("select api_url, api_key, prompt_factura, prompt_fact_emitida, prompt_prov_cli, "
+                           "ia_no_gestion_iva, ia_no_gestion_isp, mostrar_respuesta_ia from configuracion");
     if (q.isActive() && q.first()) {
         *api_url=q.value(0).toString();
         *api_key=q.value(1).toString();
         *prompt_factura=q.value(2).toString();
-        *ia_no_gestion_iva=q.value(3).toBool();
-        *ia_no_gestion_isp=q.value(4).toBool();
+        *prompt_fact_emitida=q.value(3).toString();
+        *prompt_prov_cli=q.value(4).toString();
+        *ia_no_gestion_iva=q.value(5).toBool();
+        *ia_no_gestion_isp=q.value(6).toBool();
+        *mostrar_respuesta_ia=q.value(7).toBool();
     }
 }
 
-bool basedatos::guarda_parametrosIA(QString api_url, QString api_key, QString prompt_factura, bool ia_no_gestion_iva, bool ia_no_gestion_isp)
+bool basedatos::guarda_parametrosIA(QString api_url, QString api_key, QString prompt_factura, QString prompt_fact_emitida, QString prompt_prov_cli,
+                                    bool ia_no_gestion_iva, bool ia_no_gestion_isp, bool mostrar_respuesta_ia)
 {
     QSqlQuery query;
     query.prepare("UPDATE configuracion SET api_url = :url, api_key = :key, prompt_factura = :prompt"
-                  ", ia_no_gestion_iva = :ia_no_gestion_iva, ia_no_gestion_isp= :ia_no_gestion_isp");
+                  ", prompt_fact_emitida = :prompt_fact_emitida, prompt_prov_cli = :prompt_prov_cli"
+                  ", ia_no_gestion_iva = :ia_no_gestion_iva, ia_no_gestion_isp= :ia_no_gestion_isp, mostrar_respuesta_ia= :mostrar_respuesta_ia");
     query.bindValue(":url", api_url);
     query.bindValue(":key", api_key);
     query.bindValue(":prompt", prompt_factura);
+    query.bindValue(":prompt_fact_emitida", prompt_fact_emitida);
+    query.bindValue(":prompt_prov_cli", prompt_prov_cli);
     query.bindValue(":ia_no_gestion_iva", ia_no_gestion_iva);
     query.bindValue(":ia_no_gestion_isp", ia_no_gestion_isp);
-    if (query.exec()) return true;
-    return false;
+    query.bindValue(":mostrar_respuesta_ia", mostrar_respuesta_ia);
+    reset_error_consulta();
+    ejecuta(query);
+    if (error_consulta) return false;
+    return true;
 }
 
 

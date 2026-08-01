@@ -62,6 +62,7 @@ calcestado::calcestado() : QDialog() {
   condesglose=false;
   condesglosectas=false;
   hay_analitica_tabla=basedatos::instancia()->analitica_tabla();
+  ui.analitica_fecha_op_checkBox->hide();
 
   connect(ui.buscapushButton,SIGNAL(clicked()),this,SLOT(buscapulsado()));
   connect(ui.referenciaspushButton,SIGNAL(clicked()), this, SLOT(procesareferencias()));
@@ -264,6 +265,7 @@ void calcestado::cargaestado( QString titulo )
               {
                ui.analiticagroupBox->setEnabled(true);
                ui.cilineEdit->setText(query.value(7).toString());
+               if (hay_analitica_tabla) ui.analitica_fecha_op_checkBox->show();
               }
               else ui.analiticagroupBox->setDisabled(true);
            if (!query.value(8).toBool()) ui.referenciaspushButton->setEnabled(false);
@@ -985,6 +987,8 @@ double calcestado::calculapartado( QString formula, QString ejercicio, bool *cal
 
 void calcestado::cargarinfo()
 {
+    if (ui.analitica_fecha_op_checkBox->isChecked()) { carga_pases_analitica_fecha_op(); return;}
+
     // cargamos samadebe y sumahaber
     // ejercicio1
     auxiliares.clear();
@@ -4519,6 +4523,279 @@ void calcestado::calc_estado_ci(QString ci)
   calculaestado();
   ui.cilineEdit->setText(guarda_ci);
 }
+
+void calcestado::carga_pases_analitica_fecha_op()
+{
+    op_cuenta.clear();
+    op_asiento.clear();
+    op_fecha.clear();
+    op_fecha_op.clear();
+    op_saldo.clear();
+
+    op_cuenta2.clear();
+    op_asiento2.clear();
+    op_fecha2.clear();
+    op_fecha_op2.clear();
+    op_saldo2.clear();
+
+
+    QDate fechaini,fechafin;
+
+    fechaini = basedatos::instancia()->selectAperturaejercicios(ui.Ejercicio1comboBox->currentText());
+    fechafin = basedatos::instancia()->selectCierreejercicios(ui.Ejercicio1comboBox->currentText());
+    QString ej=ui.Ejercicio1comboBox->currentText();
+
+    if (ui.fechas_ej1_groupBox->isChecked())
+       {
+        ej=ejerciciodelafecha(ui.ini_ej1_dateEdit->date());
+        fechaini=basedatos::instancia()->selectAperturaejercicios(ej);
+        fechafin=basedatos::instancia()->selectCierreejercicios(ej);
+       }
+
+    QString subcadena="";
+    // ESPECIFICAMOS DIARIOS SEGÚN CONTENIDO DE LA LISTA
+    int numdiarios=ui.diariolistWidget->count();
+    QString primer_diario;
+    for (int veces=0;veces<numdiarios;veces++)
+       {
+        if (subcadena=="") subcadena=subcadena+" and (";
+          else subcadena=subcadena+" or ";
+        subcadena+="diario='";
+        ui.diariolistWidget->setCurrentRow(veces);
+        QString caddia=ui.diariolistWidget->currentItem()->text();
+        if (veces==0) primer_diario=ui.diariolistWidget->currentItem()->text();
+        if (caddia!=diario_no_asignado())
+           subcadena+=caddia;
+        subcadena+="'";
+       }
+    if (subcadena.length()>0) subcadena+=")";
+
+    QSqlQuery q;
+    q=basedatos::instancia()->apuntes_diario_ci (fechaini, fechafin, subcadena, ui.cilineEdit->text());
+    if (q.isActive())
+        while (q.next()) {
+            // select diario.cuenta, diario.asiento, diario.fecha, "
+            // "diario.debe/abs(diario.debe+diario.haber)*diario_ci.importe - "
+            // "diario.haber/abs(diario.debe+diario.haber)*diario_ci.importe"
+            // " from diario, diario_ci
+            op_cuenta << q.value(0).toString();
+            op_asiento << q.value(1).toInt();
+            op_fecha << q.value(2).toDate();
+            op_fecha_op << q.value(2).toDate();
+            op_saldo << q.value(3).toDouble();
+        }
+
+    // buscamos asiento en libroiva y asignamos fecha de operacion
+    QSqlQuery q2;
+    q2.prepare("select d.asiento, l.fecha_operacion from diario d, libroiva l "
+               "where d.pase=l.pase and d.ejercicio= :ej");
+    q2.bindValue(":ej",ej);
+    basedatos::instancia()->ejecuta_publica(&q2);
+    if (q2.isActive())
+        while (q2.next()) {
+            int nasiento=q2.value(0).toInt();
+            QDate fop=q2.value(1).toDate();
+            int nreg=op_asiento.count();
+            for (int i=0;i<nreg;i++) {
+                if (op_asiento.at(i)==nasiento) {op_fecha_op[i]=fop;}
+            }
+        }
+
+    // Hacemos lo propio para el segundo periodo
+    if (ui.Ejercicio2comboBox->currentText()!=noejercicio() ||ui.fechas_ej2_groupBox->isChecked() ) {
+    fechaini = basedatos::instancia()->selectAperturaejercicios(ui.Ejercicio2comboBox->currentText());
+    fechafin = basedatos::instancia()->selectCierreejercicios(ui.Ejercicio2comboBox->currentText());
+    QString ej2=ui.Ejercicio2comboBox->currentText();
+
+    if (ui.fechas_ej2_groupBox->isChecked())
+       {
+        ej2=ejerciciodelafecha(ui.ini_ej2_dateEdit->date());
+        fechaini=basedatos::instancia()->selectAperturaejercicios(ej2);
+        fechafin=basedatos::instancia()->selectCierreejercicios(ej2);
+       }
+    q=basedatos::instancia()->apuntes_diario_ci (fechaini, fechafin, subcadena, ui.cilineEdit->text());
+    if (q.isActive())
+        while (q.next()) {
+            // select diario.cuenta, diario.asiento, diario.fecha, "
+            // "diario.debe/abs(diario.debe+diario.haber)*diario_ci.importe - "
+            // "diario.haber/abs(diario.debe+diario.haber)*diario_ci.importe"
+            // " from diario, diario_ci
+            op_cuenta2 << q.value(0).toString();
+            op_asiento2 << q.value(1).toInt();
+            op_fecha2 << q.value(2).toDate();
+            op_fecha_op2 << q.value(2).toDate();
+            op_saldo2 << q.value(3).toDouble();
+        }
+    // buscamos asiento en libroiva y asignamos fecha de operacion
+    q2.prepare("select d.asiento, l.fecha_operacion from diario d, libroiva l "
+               "where d.pase=l.pase and d.ejercicio= :ej");
+    q2.bindValue(":ej",ej2);
+    basedatos::instancia()->ejecuta_publica(&q2);
+    if (q2.isActive())
+        while (q2.next()) {
+            int nasiento=q2.value(0).toInt();
+            QDate fop=q2.value(1).toDate();
+            int nreg=op_asiento2.count();
+            for (int i=0;i<nreg;i++) {
+                if (op_asiento2.at(i)==nasiento) {op_fecha_op2[i]=fop;}
+            }
+        }
+    }
+
+    // cargamos samadebe y sumahaber
+    // ejercicio1
+    auxiliares.clear();
+    saldos.clear();
+    auxiliares2.clear();
+    saldos2.clear();
+
+    fechaini = basedatos::instancia()->selectAperturaejercicios(ui.Ejercicio1comboBox->currentText());
+    fechafin = basedatos::instancia()->selectCierreejercicios(ui.Ejercicio1comboBox->currentText());
+
+    if (ui.fechas_ej1_groupBox->isChecked())
+       {
+        fechaini=ui.ini_ej1_dateEdit->date();
+        fechafin=ui.fin_ej1_dateEdit->date();
+       }
+
+    // op_cuenta << q.value(0).toString();
+    // op_asiento << q.value(1).toInt();
+    // op_fecha << q.value(2).toDate();
+    // op_fecha_op << q.value(2).toDate();
+    // op_saldo <
+    int regs=op_cuenta.count();
+    for (int i=0;i<regs;i++) {
+        // continuar si el apunte no está entre fecha
+        if (op_fecha_op.at(i)<fechaini || op_fecha_op.at(i)>fechafin) continue;
+        qsizetype indice = auxiliares.indexOf(op_cuenta.at(i));
+        if (indice == -1) {
+            auxiliares << op_cuenta.at(i);
+            saldos  << op_saldo.at(i);
+        }
+        else {
+            saldos[indice]=saldos[indice]+op_saldo.at(i);
+        }
+    }
+
+    // segundo ejercicio
+    if (ui.Ejercicio2comboBox->currentText()!=noejercicio() ||ui.fechas_ej2_groupBox->isChecked() )
+     {
+     // cargamos listas de segundo ejercicio
+     fechaini = basedatos::instancia()->selectAperturaejercicios(ui.Ejercicio2comboBox->currentText());
+     fechafin = basedatos::instancia()->selectCierreejercicios(ui.Ejercicio2comboBox->currentText());
+
+     if (ui.fechas_ej2_groupBox->isChecked())
+        {
+         fechaini=ui.ini_ej2_dateEdit->date();
+         fechafin=ui.fin_ej2_dateEdit->date();
+        }
+     int regs=op_cuenta2.count();
+     for (int i=0;i<regs;i++) {
+         // continuar si el apunte no está entre fecha
+         if (op_fecha_op2.at(i)<fechaini || op_fecha_op2.at(i)>fechafin) continue;
+         qsizetype indice = auxiliares2.indexOf(op_cuenta2.at(i));
+         if (indice == -1) {
+             auxiliares2 << op_cuenta2.at(i);
+             saldos2  << op_saldo2.at(i);
+         }
+         else {
+             saldos2[indice]=saldos2[indice]+op_saldo2.at(i);
+         }
+     }
+
+    }
+
+    // saldos mensuales
+    // cargamos saldos mensuales si procede
+    if (!ui.desglose_mes_checkBox->isChecked()) return;
+
+    for (int veces=0;veces<12;veces++)
+       {
+        auxm[veces].clear();
+        saldosm[veces].clear();
+       }
+    int anyo=inicioejercicio(ui.Ejercicio1comboBox->currentText()).year();
+    fechaini.setDate(anyo,1,1);
+    fechafin.setDate(anyo,1,31);
+
+    calcula_saldos_mes_fecha_op(0, fechaini, fechafin);
+
+    fechaini.setDate(anyo,2,1);
+    fechafin.setDate(anyo,3,1);
+    fechafin=fechafin.addDays(-1);
+
+    calcula_saldos_mes_fecha_op(1, fechaini, fechafin);
+
+    fechaini.setDate(anyo,3,1);
+    fechafin.setDate(anyo,3,31);
+
+    calcula_saldos_mes_fecha_op(2, fechaini, fechafin);
+
+    fechaini.setDate(anyo,4,1);
+    fechafin.setDate(anyo,4,30);
+
+    calcula_saldos_mes_fecha_op(3, fechaini, fechafin);
+
+    fechaini.setDate(anyo,5,1);
+    fechafin.setDate(anyo,5,31);
+
+    calcula_saldos_mes_fecha_op(4, fechaini, fechafin);
+
+    fechaini.setDate(anyo,6,1);
+    fechafin.setDate(anyo,6,30);
+
+    calcula_saldos_mes_fecha_op(5, fechaini, fechafin);
+
+    fechaini.setDate(anyo,7,1);
+    fechafin.setDate(anyo,7,31);
+
+    calcula_saldos_mes_fecha_op(6, fechaini, fechafin);
+
+    fechaini.setDate(anyo,8,1);
+    fechafin.setDate(anyo,8,31);
+
+    calcula_saldos_mes_fecha_op(7, fechaini, fechafin);
+
+    fechaini.setDate(anyo,9,1);
+    fechafin.setDate(anyo,9,30);
+
+    calcula_saldos_mes_fecha_op(8, fechaini, fechafin);
+
+    fechaini.setDate(anyo,10,1);
+    fechafin.setDate(anyo,10,30);
+
+    calcula_saldos_mes_fecha_op(9, fechaini, fechafin);
+
+    fechaini.setDate(anyo,11,1);
+    fechafin.setDate(anyo,11,30);
+
+    calcula_saldos_mes_fecha_op(10, fechaini, fechafin);
+
+    fechaini.setDate(anyo,12,1);
+    fechafin.setDate(anyo,12,31);
+
+    calcula_saldos_mes_fecha_op(11, fechaini, fechafin);
+
+}
+
+
+void calcestado::calcula_saldos_mes_fecha_op(int mes, QDate fechaini, QDate fechafin)
+{
+     int regs=op_cuenta.count();
+     for (int i=0;i<regs;i++) {
+         // continuar si el apunte no está entre fecha
+         if (op_fecha_op.at(i)<fechaini || op_fecha_op.at(i)>fechafin) continue;
+         qsizetype indice = auxm[mes].indexOf(op_cuenta.at(i));
+         if (indice == -1) {
+             auxm[mes] << op_cuenta.at(i);
+             saldosm[mes]  << op_saldo.at(i);
+         }
+         else {
+             saldosm[mes][indice]=saldosm[mes][indice]+op_saldo.at(i);
+         }
+     }
+}
+
 
 
 void calcestado::genera_xml()
