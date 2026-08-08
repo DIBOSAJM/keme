@@ -96,6 +96,29 @@ class tabla_asientos  : public QDialog {
                                    bool qisp_aib,
                                    bool qisp_ais,
                                    bool qisp_no_ue);
+                void pasa_info_eib_eis(QString qisp_cuenta_base,
+                                   QString qisp_base_imponible,
+                                   QString qisp_externo,
+                                   QString qisp_cuenta_fra,
+                                   QDate qisp_fecha_fra, QString qisp_documento,
+                                   QString qisp_fichero_doc,
+                                   bool qisp_eib,
+                                   bool qisp_eis);
+
+                void pasa_info_rep_autonomo(QDate fecha, QString externo,
+                                            QString cuenta_cliente,
+                                            QString cuenta_ingreso,
+                                            QString importe_ret_irpf,
+                                            QString factura, QJsonArray info_desglose_iva,
+                                            QString fichero);
+                void pasa_info_emitida_exenta_autonomo(QDate fecha, QString externo,
+                                                       QString cuenta_cliente,
+                                                       QString cuenta_ingreso, QString cad_importe_factura,
+                                                       QString importe_ret_irpf,
+                                                       QString factura,
+                                                       QString fichero, bool qexenta_prestacion_servicios_ext,
+                                                       bool qemitida_exenta_isp_interiores, bool qexport_bienes,
+                                                       bool qemitida_exenta_no_deduc);
                 void pasa_importes_sop_autonomo(QJsonObject info);
                 void pasa_desglose_iva(QJsonArray info);
                 void repercutidoautonomo();
@@ -269,6 +292,22 @@ class tabla_asientos  : public QDialog {
                 QJsonObject out_sop_importes;
                 QJsonArray out_desglose_iva;
                 bool aut_sop_parametros_inicio=false;
+
+                QDate aut_rep_fecha;
+                QString aut_rep_externo, aut_rep_cuenta_cliente,
+                    aut_rep_cuenta_ingreso, aut_rep_importe_ret_irpf,
+                    aut_rep_factura;
+                QString aut_emitida_exenta_tot_factura;
+                bool aut_rep_parametros_inicio=false;
+
+                bool aut_exenta_parametros_inicio=false;
+                bool exenta_prestacion_servicios_ext=false;
+                bool emitida_exenta_isp_interiores=false;
+                bool export_bienes=false;
+                bool emitida_exenta_no_deduc=false;
+
+
+
                 // -------------------------------------------------------------
                 // Parámetros isp autónomo
                 bool isp_datos_externos=false;
@@ -282,6 +321,8 @@ class tabla_asientos  : public QDialog {
                 bool isp_aib;
                 bool isp_ais;
                 bool isp_no_ue;
+                bool isp_eib;
+                bool isp_eis;
                 // -------------------------------------------------------------
 
                 void procesaivasoportado(int fila,int columna);

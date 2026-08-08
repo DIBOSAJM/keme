@@ -41,6 +41,8 @@ class eib : public QDialog {
                 void esconde_externo();
                 QString externo();
                 void desactiva_base();
+                void pasa_datos_ini(QString cuenta_ingreso, QString base_imponible, bool eis,
+                                    QString externo, QString cuenta_factura, QDate fecha_fra);
 
         private:
                 Ui::eib ui;

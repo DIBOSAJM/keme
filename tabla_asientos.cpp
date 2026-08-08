@@ -4334,6 +4334,60 @@ void tabla_asientos::pasa_info_ISP(QString qisp_cuenta_base, QString qisp_base_i
  isp_no_ue=qisp_no_ue;
 }
 
+void tabla_asientos::pasa_info_eib_eis(QString qisp_cuenta_base, QString qisp_base_imponible, QString qisp_externo,
+                                       QString qisp_cuenta_fra, QDate qisp_fecha_fra, QString qisp_documento, QString qisp_fichero_doc, bool qisp_eib, bool qisp_eis)
+{
+    isp_datos_externos=true;
+    isp_cuenta_base=qisp_cuenta_base;
+    isp_base_imponible=qisp_base_imponible;
+    isp_externo=qisp_externo;
+    isp_cuenta_fra=qisp_cuenta_fra;
+    isp_fecha_fra=qisp_fecha_fra;
+    isp_documento=qisp_documento;
+    isp_fichero_doc=qisp_fichero_doc;
+    isp_eib=qisp_eib;
+    isp_eis=qisp_eis;
+}
+
+void tabla_asientos::pasa_info_rep_autonomo(QDate fecha, QString externo, QString cuenta_cliente, QString cuenta_ingreso,
+                                            QString importe_ret_irpf, QString factura,
+                                            QJsonArray info_desglose_iva, QString fichero)
+{
+    aut_rep_fecha=fecha;
+    aut_rep_externo=externo;
+    aut_rep_cuenta_cliente=cuenta_cliente;
+    aut_rep_cuenta_ingreso=cuenta_ingreso;
+    aut_rep_importe_ret_irpf=importe_ret_irpf;
+    aut_rep_factura=factura;
+    out_desglose_iva=info_desglose_iva;
+    aut_ruta_fichero=fichero;
+    aut_rep_parametros_inicio=true;
+}
+
+void tabla_asientos::pasa_info_emitida_exenta_autonomo(QDate fecha, QString externo, QString cuenta_cliente, QString cuenta_ingreso,
+                                                       QString cad_importe_factura,
+                                                       QString importe_ret_irpf, QString factura,
+                                                       QString fichero, bool qexenta_prestacion_servicios_ext,
+                                                       bool qemitida_exenta_isp_interiores, bool qexport_bienes, bool qemitida_exenta_no_deduc)
+{
+    aut_exenta_parametros_inicio=true;
+    aut_rep_fecha=fecha;
+    aut_rep_externo=externo;
+    aut_rep_cuenta_cliente=cuenta_cliente;
+    aut_rep_cuenta_ingreso=cuenta_ingreso;
+    aut_emitida_exenta_tot_factura=cad_importe_factura;
+    aut_rep_importe_ret_irpf=importe_ret_irpf;
+    aut_rep_factura=factura;
+    aut_ruta_fichero=fichero;
+    aut_rep_parametros_inicio=true;
+
+    exenta_prestacion_servicios_ext=qexenta_prestacion_servicios_ext;
+    emitida_exenta_isp_interiores=qemitida_exenta_isp_interiores;
+    export_bienes=qexport_bienes;
+    emitida_exenta_no_deduc=qemitida_exenta_no_deduc;
+
+}
+
 void tabla_asientos::pasa_importes_sop_autonomo(QJsonObject info)
 {
     out_sop_importes=info;
@@ -4352,6 +4406,10 @@ void tabla_asientos::repercutidoautonomo()
        {
         qIVArepercutido->pasa_fecha(fecha_iva_aut);
        }
+
+    if (aut_rep_parametros_inicio) qIVArepercutido->pasa_datos_ini(aut_rep_externo, aut_rep_cuenta_cliente, aut_rep_cuenta_ingreso,
+                                                                   aut_rep_fecha, aut_rep_factura, out_desglose_iva, aut_ruta_fichero);
+
    int resultado=qIVArepercutido->exec();
    if (resultado==QDialog::Rejected) 
             {
@@ -4563,7 +4621,8 @@ void tabla_asientos::repercutidoautonomo()
              ui.Tablaapuntes->item(lineaactual,50)->setText(cajaiva ? "1" : "0");
             }
          // --------------------------------------------------------------------------------------------------
-        // actualizamos línea siguiente con ctafra 
+         double retenido=aut_rep_importe_ret_irpf.toDouble();
+        // actualizamos línea siguiente con ctafra --> FALTA TRATAR EL TEMA DE LA RETENCIÓN
          lineaactual++;
          for (int veces=0;veces<=COLUMNAS;veces++)
                 if (ui.Tablaapuntes->item(lineaactual,veces)==0)
@@ -4578,6 +4637,7 @@ void tabla_asientos::repercutidoautonomo()
         vtotal=convapunto(qbase).toDouble()+convapunto(qcuota).toDouble();
         if (qcuota2.length()>0) vtotal+=convapunto(qbase2).toDouble()+convapunto(qcuota2).toDouble();
         if (qcuota3.length()>0) vtotal+=convapunto(qbase3).toDouble()+convapunto(qcuota3).toDouble();
+        if (retenido>0.0044) vtotal=vtotal-retenido;
         ui.Tablaapuntes->item(lineaactual,2)->setText(formateanumero(vtotal,comadecimal,decimales));
         if (qdoc.length()>0)
            {
@@ -4587,6 +4647,30 @@ void tabla_asientos::repercutidoautonomo()
                 ui.Tablaapuntes->item(veces,4)->setText(qdoc);
                }
            }
+        if (retenido>0.0044) {
+            // añadimos línea con el importe de la retención
+            // averiguamos la cuenta de retención practicada: basedatos::instancia()->cuenta_ret_irpf();
+            lineaactual++;
+            for (int veces=0;veces<=COLUMNAS;veces++)
+                   if (ui.Tablaapuntes->item(lineaactual,veces)==0)
+                      {
+                       QTableWidgetItem *newItem = new QTableWidgetItem("");
+                       if (veces==2 || veces==3) newItem->setTextAlignment (Qt::AlignRight | Qt::AlignVCenter);
+                       ui.Tablaapuntes->setItem(lineaactual,veces,newItem);
+                      }
+           ui.Tablaapuntes->item(lineaactual,0)->setText(basedatos::instancia()->cuenta_ret_irpf());
+           ui.Tablaapuntes->item(lineaactual,1)->setText(concepto);
+           ui.Tablaapuntes->item(lineaactual,2)->setText(formateanumero(retenido,comadecimal,decimales));
+           if (qdoc.length()>0)
+              {
+               for (int veces=0;veces<=lineaactual;veces++)
+                  {
+                   if (concepto_plantilla.isEmpty()) ui.Tablaapuntes->item(veces,1)->setText(concepto+" Fra. "+qdoc);
+                   ui.Tablaapuntes->item(veces,4)->setText(qdoc);
+                  }
+              }
+
+        }
         ui.FechaApunte->setDate(qfechacont);
        // si botón aceptar activado pasar, si no edición
        chequeatotales();
@@ -4601,6 +4685,30 @@ void tabla_asientos::repercutidoautonomo()
 void tabla_asientos::emitida_exenta_autonomo()
 {
     Emitida_exenta_aut *e = new Emitida_exenta_aut();
+
+    // pasamos información
+    if (aut_exenta_parametros_inicio) {
+    //     aut_rep_fecha=fecha;
+    //     aut_rep_externo=externo;
+    //     aut_rep_cuenta_cliente=cuenta_cliente;
+    //     aut_rep_cuenta_ingreso=cuenta_ingreso;
+    //     aut_emitida_exenta_tot_factura=cad_importe_factura;
+    //     aut_rep_importe_ret_irpf=importe_ret_irpf;
+    //     aut_rep_factura=factura;
+    //     aut_ruta_fichero=fichero;
+    //     aut_rep_parametros_inicio=true;
+
+    //     exenta_prestacion_servicios_ext=qexenta_prestacion_servicios_ext;
+    //     emitida_exenta_isp_interiores=qemitida_exenta_isp_interiores;
+    //     export_bienes=qexport_bienes;
+    //     emitida_exenta_no_deduc=qemitida_exenta_no_deduc;
+
+
+        e->pasa_info(aut_rep_fecha, aut_rep_externo, aut_rep_cuenta_cliente, aut_rep_cuenta_ingreso,
+                     aut_emitida_exenta_tot_factura, aut_rep_importe_ret_irpf, aut_rep_factura,
+                     aut_ruta_fichero, exenta_prestacion_servicios_ext,
+                     emitida_exenta_isp_interiores, export_bienes, emitida_exenta_no_deduc);
+    }
    int resultado=e->exec();
    bool verifica_as=e->verifica();
    QJsonObject info=e->info_export();
@@ -5133,6 +5241,22 @@ void tabla_asientos::eibautonomo()
    eib *e = new eib(comadecimal,decimales);
    e->hazbaseoblig();
    ivadatosadic *datos = new (ivadatosadic);
+
+
+   // isp_datos_externos=true;
+   // isp_cuenta_base=qisp_cuenta_base;
+   // isp_base_imponible=qisp_base_imponible;
+   // isp_externo=qisp_externo;
+   // isp_cuenta_fra=qisp_cuenta_fra;
+   // isp_fecha_fra=qisp_fecha_fra;
+   // isp_documento=qisp_documento;
+   // isp_fichero_doc=qisp_fichero_doc;
+   // isp_eib=qisp_eib;
+   // isp_eis=qisp_eis;
+   if (isp_datos_externos) {
+      e->pasa_datos_ini(isp_cuenta_base, isp_base_imponible, isp_eis, isp_externo, isp_cuenta_fra, isp_fecha_fra);
+      datos->pasa_datos_externos(isp_documento, isp_fichero_doc);
+   }
    QString qcuentabase,qbase,qctafra,qclave,qpreservicios;
    QDate qfechafact,qfechaop;
    QString concepto;

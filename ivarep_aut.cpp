@@ -1464,6 +1464,52 @@ void ivarep_aut::formaconcepto()
    ui.conceptolineEdit->setText(concepto);
 }
 
+void ivarep_aut::pasa_datos_ini(QString externo, QString cuenta_cliente, QString cuenta_ingreso, QDate fecha,
+                                QString factura,  QJsonArray out_desglose_iva, QString fichero)
+{
+    ui.externo_lineEdit->setText(externo);
+    ui.CtafralineEdit->setText(cuenta_cliente);
+    ui.CtabaselineEdit->setText(cuenta_ingreso);
+    ui.FechafradateEdit->setDate(fecha);
+    ui.documentolineEdit->setText(factura);
+    ui.fechacontdateEdit->setDate(fecha);
+    ui.fechaoperaciondateEdit->setDate(fecha);
+    ui.fichdoclineEdit->setText(fichero);
+
+    if (!out_desglose_iva.isEmpty()) {
+        for (int i=0;i<out_desglose_iva.count();i++) {
+            QJsonObject elemento_iva_js=out_desglose_iva[i].toObject();
+            QString clave_iva=basedatos::instancia()->cod_iva(elemento_iva_js["tipo_porcentaje"].toDouble());
+            if (ui.baselineEdit->text().isEmpty()) {
+                ui.CtabaselineEdit->setText(cuenta_ingreso);
+                ui.ClaveivacomboBox->setCurrentText(clave_iva);
+                ui.baselineEdit->setText(formateanumero(elemento_iva_js["base_imponible"].toDouble(),comadecimal,decimales));
+                comboivacambiado();
+                ui.groupBox->setChecked(true);
+                continue;
+            }
+            if (ui.baselineEdit_2->text().isEmpty()) {
+                ui.groupBox_2->setChecked(true);
+                ui.CtabaselineEdit_2->setText(cuenta_ingreso);
+                ui.ClaveivacomboBox_2->setCurrentText(clave_iva);
+                ui.baselineEdit_2->setText(formateanumero(elemento_iva_js["base_imponible"].toDouble(),comadecimal,decimales));
+                comboivacambiado2();
+                continue;
+            }
+            if (ui.baselineEdit_3->text().isEmpty()) {
+                ui.groupBox_3->setChecked(true);
+                ui.CtabaselineEdit_3->setText(cuenta_ingreso);
+                ui.ClaveivacomboBox_3->setCurrentText(clave_iva);
+                ui.baselineEdit_3->setText(formateanumero(elemento_iva_js["base_imponible"].toDouble(),comadecimal,decimales));
+                comboivacambiado3();
+                continue;
+            }
+        }
+        return;
+    }
+
+}
+
 
 QString ivarep_aut::concepto()
 {

@@ -1146,9 +1146,9 @@ void facturas::exectrasp()
              if (basedatos::instancia()->doc_cerrado(model->datagen(listaserie.at(i),Qt::DisplayRole).toString(),
                                                      model->datagen(listanumero.at(i),Qt::DisplayRole).toString()))
              {
-               QMessageBox::warning( this, tr("Traspasos"),tr("ERROR: "
+               QMessageBox::warning( this, tr("Traspasos"),tr("ADVERTENCIA: "
                                     "alguno/s de los documentos seleccionados está cerrado"));
-               return;
+               // return;
 
              }
             }

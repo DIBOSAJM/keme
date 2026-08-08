@@ -42,6 +42,8 @@ class ivarep_aut : public QDialog {
                 CustomQLabel *etiqueta;
 
         public:
+                void pasa_datos_ini(QString externo, QString cuenta_cliente, QString cuenta_ingreso,
+                           QDate fecha, QString factura, QJsonArray out_desglose_iva, QString fichero);
                 void recuperadatos(QString *cuentabase, QString *baseimponible, QString *qclaveiva, QString *qtipoiva,
                                    QString *qtipore, QString *cuentaiva, QString *cuotaiva,
 

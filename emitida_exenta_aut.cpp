@@ -87,6 +87,33 @@ bool Emitida_exenta_aut::verifica()
     return ui->verificar_checkBox->isChecked();
 }
 
+void Emitida_exenta_aut::pasa_info(QDate fecha, QString externo, QString cuenta_cliente, QString cuenta_ingreso,
+                                   QString cad_importe_factura, QString importe_ret_irpf, QString factura,
+                                   QString fichero, bool qexenta_prestacion_servicios_ext,
+                                   bool qemitida_exenta_isp_interiores, bool qexport_bienes, bool qemitida_exenta_no_deduc)
+{
+    ui->FechafradateEdit->setDate(fecha);
+    ui->fecha_cont_dateEdit->setDate(fecha);
+    ui->fechaoperaciondateEdit->setDate(fecha);
+    ui->externo_lineEdit->setText(externo);
+    ui->CtafralineEdit->setText(cuenta_cliente);
+    ui->CtabaselineEdit->setText(cuenta_ingreso);
+    ui->baselineEdit->setText(cad_importe_factura);
+    if (importe_ret_irpf.toDouble()>0.004) {
+        ui->retenido_lineEdit->setText(importe_ret_irpf);
+        ui->cta_ret_lineEdit->setText(basedatos::instancia()->cuenta_ret_irpf());
+    }
+    ui->documento_lineEdit->setText(factura);
+    ui->fichdoclineEdit->setText(fichero);
+    if (qexenta_prestacion_servicios_ext) {
+        ui->nosujetacheckBox->setChecked(true);
+        ui->exportacionheckBox->setChecked(true);
+    }
+    if (qemitida_exenta_isp_interiores) ui->expedida_isp_checkBox->setChecked(true);
+    if (qexport_bienes) ui->exportacionheckBox->setChecked(true);
+    if (qemitida_exenta_no_deduc) ui->exenta_no_deduccheckBox->setChecked(true);
+}
+
 void Emitida_exenta_aut::on_ctabasepushButton_clicked()
 {
     QString cadena2;

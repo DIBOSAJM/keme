@@ -383,6 +383,17 @@ void eib::desactiva_base()
     ui.baselineEdit->setReadOnly(true);
 }
 
+void eib::pasa_datos_ini(QString cuenta_ingreso, QString base_imponible, bool eis, QString externo, QString cuenta_factura, QDate fecha_fra)
+{
+    ui.CtabaselineEdit->setText(cuenta_ingreso);
+    ui.baselineEdit->setText(base_imponible);
+    ui.prservicioscheckBox->setChecked(eis);
+    ui.externo_lineEdit->setText(externo);
+    ui.CtafralineEdit->setText(cuenta_factura);
+    ui.FechafradateEdit->setDate(fecha_fra);
+    ui.fechaoperaciondateEdit->setDate(fecha_fra);
+}
+
 void eib::esconde_externo()
 {
     ui.externo_lineEdit->hide();

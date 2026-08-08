@@ -7554,6 +7554,7 @@ void MainWindow::handleGeminiResponse(const QJsonObject &json)
         t->chequeatotales();
         t->exec();
         delete(t);
+        refrescardiario();
         return;
     }
 
@@ -7701,14 +7702,18 @@ void MainWindow::ia_reponse_emitidas(const QJsonObject &json)
     QJsonObject info_ret_json=factura_json["retencion_irpf"].toObject();
     // localizamos cuenta retención irpf
     QString cuenta_ret=basedatos::instancia()->cuenta_ret_irpf();
+    double val_importe_retencion=info_ret_json["cuota_retencion"].toDouble();
+    QString importe_retencion; importe_retencion.setNum(val_importe_retencion,'f',2);
+    qDebug() << "IMPORTE RETENCIÓN: " << importe_retencion;
     if (cuenta_ingreso.isEmpty()) cuenta_ingreso=factura_json["cuenta_ingreso_sugerida"].toObject()["codigo"].toString();
 
+   // "VENTA_NACIONAL_SUJETA"
    // "INTRACOMUNITARIA_BIENES"
    // "INTRACOMUNITARIA_SERVICIOS"
-   // "PRESTACION_SERVICIOS_EXT"
-   // "ISP_INTERIORES"
-   // "EXPORT_BIENES"
-   //  "EXENTA_NO_DEDUC"
+   // "PRESTACION_SERVICIOS_FUERA_UE"
+   // "IVERSION_SUJETO_PASIVO_INTERIORES"
+   // "EXPORTACION_BIENES"
+   // "EXENTA_NO_DEDUCIBLE"
 
     // analizamos la operación
     if (ia_no_gestion_iva )
@@ -7732,7 +7737,7 @@ void MainWindow::ia_reponse_emitidas(const QJsonObject &json)
                                                        cad_ingreso,
                                                        factura_json["serie_numero"].toString(),
                                                        "");
-        if (info_ret_json["base_retencion"].toDouble()>0.001 || info_ret_json["base_retencion"].toDouble()<-0.001) {
+        if (info_ret_json["cuota_retencion"].toDouble()>0.001 || info_ret_json["cuota_retencion"].toDouble()<-0.001) {
             t->pasadatos1(2,cuenta_ret,tr("N/FACTURA: ")+factura_json["serie_numero"].toString()+" "+proveedor_cli_json["nombre"].toString(),
                                                            info_ret_json["cuota_retencion"].toString(),
                                                            "",
@@ -7742,9 +7747,71 @@ void MainWindow::ia_reponse_emitidas(const QJsonObject &json)
         t->chequeatotales();
         t->exec();
         delete(t);
+        refrescardiario();
         return;
     }
 
+    if (factura_json["tipo_operacion"]=="VENTA_NACIONAL_SUJETA") {
+        tabla_asientos *t = new tabla_asientos(estilonumerico,!sindecimales,usuario);
+        t->set_borrador(); // siempre a borrador
+        if (activa_msj_tabla) t->pasanocerrar(true);
+        QDate fecha_fra=QDate().fromString(factura_json["fecha"].toString(),"yyyy-MM-dd");
+        t->pasa_info_rep_autonomo(fecha_fra, externo, cuenta_cli, cuenta_ingreso,importe_retencion,factura_json["serie_numero"].toString(),
+                                  factura_json["desglose_iva"].toArray(), fichero_soltado_diario);
+        t->repercutidoautonomo();
+        delete(t);
+        refrescardiario();
+        return;
+    }
+
+    // procesamos EIB/EIS
+    if (factura_json["tipo_operacion"]=="INTRACOMUNITARIA_BIENES" || factura_json["tipo_operacion"]=="INTRACOMUNITARIA_SERVICIOS") {
+        tabla_asientos *t = new tabla_asientos(estilonumerico,!sindecimales, usuario);
+        if (activa_msj_tabla) t->pasanocerrar(true);
+        if (punterodiario->borrador()) t->set_borrador();
+        QString cad_total_fac=formateanumero(factura_json["total_factura"].toDouble(),estilonumerico,!sindecimales);
+
+        t->pasa_info_eib_eis(cuenta_ingreso,cad_total_fac,
+                              externo,
+                              cuenta_cli,
+                              QDate().fromString(factura_json["fecha"].toString(),"yyyy-MM-dd"),
+                             factura_json["serie_numero"].toString(),
+                             fichero_soltado_diario,
+                             factura_json["tipo_operacion"]=="INTRACOMUNITARIA_BIENES",
+                             factura_json["tipo_operacion"]=="INTRACOMUNITARIA_SERVICIOS");
+
+        t->eibautonomo();
+        delete(t);
+        refrescardiario();
+        return;
+    }
+
+    // procesamos operación emitida exenta
+    // "PRESTACION_SERVICIOS_EXT"
+    // "ISP_INTERIORES"
+    // "EXPORT_BIENES"
+    // "EXENTA_NO_DEDUC"
+
+    if (factura_json["tipo_operacion"]=="PRESTACION_SERVICIOS_FUERA_UE" || factura_json["tipo_operacion"]=="INVERSION_SUJETO_PASIVO_INTERIORES" ||
+        factura_json["tipo_operacion"]=="EXPORTACION_BIENES" || factura_json["tipo_operacion"]=="EXENTA_NO_DEDUCIBLE" ) {
+
+        tabla_asientos *t = new tabla_asientos(estilonumerico,!sindecimales, usuario);
+        if (activa_msj_tabla) t->pasanocerrar(true);
+        if (punterodiario->borrador()) t->set_borrador();
+        QString cad_total_fac=formateanumero(factura_json["total_factura"].toDouble(),estilonumerico,!sindecimales);
+        QDate fecha_fra=QDate().fromString(factura_json["fecha"].toString(),"yyyy-MM-dd");
+        t->pasa_info_emitida_exenta_autonomo(fecha_fra, externo, cuenta_cli, cuenta_ingreso,cad_total_fac,importe_retencion,factura_json["serie_numero"].toString(),
+                                             fichero_soltado_diario,
+                                             factura_json["tipo_operacion"]=="PRESTACION_SERVICIOS_FUERA_UE",
+                                             factura_json["tipo_operacion"]=="INVERSION_SUJETO_PASIVO_INTERIORES",
+                                             factura_json["tipo_operacion"]=="EXPORTACION_BIENES",
+                                             factura_json["tipo_operacion"]=="EXENTA_NO_DEDUCIBLE");
+
+        t->emitida_exenta_autonomo();
+        delete(t);
+        refrescardiario();
+        return;
+    }
 
 }
 
@@ -7783,7 +7850,7 @@ void MainWindow::procesa_fichero_ia()
             prompt_factura=prompt_factura.replace("${MI_NIF}",nif);
             m_geminiClient->get_url(api_url);
             m_geminiClient->get_apiKey(api_key);
-            m_geminiClient->get_prompt(prompt_factura);
+            m_geminiClient->get_prompt(ia_emitidas ? prompt_fact_emitida : prompt_factura);
             // Mostramos un feedback al usuario (opcional)
             statusBar()->showMessage("Procesando con IA...");
             QMimeDatabase db;

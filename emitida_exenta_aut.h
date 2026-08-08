@@ -17,6 +17,11 @@ public:
     ~Emitida_exenta_aut();
     QJsonObject info_export();
     bool verifica();
+    void pasa_info(QDate fecha, QString externo, QString cuenta_cliente, QString cuenta_ingreso,
+                                      QString cad_importe_factura,
+                                      QString importe_ret_irpf, QString factura,
+                                      QString fichero, bool qexenta_prestacion_servicios_ext,
+                                      bool qemitida_exenta_isp_interiores, bool qexport_bienes, bool qemitida_exenta_no_deduc);
 
 private slots:
     void on_ctabasepushButton_clicked();
