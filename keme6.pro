@@ -53,6 +53,7 @@ SOURCES += main.cpp\
         basedatos.cpp\
         conexion.cpp\
         diario.cpp \
+    modelo130.cpp \
         preferencias.cpp \
         directorio.cpp \
         acercade.cpp \
@@ -254,6 +255,7 @@ HEADERS  += mainwindow.h\
     geminiclient.h \
     hoja_cols_ci.h \
     loadingdialog.h \
+    modelo130.h \
          privilegios.h \
          conexion.h\
          diario.h \
@@ -455,6 +457,7 @@ FORMS    += mainwindow.ui\
           diario.ui \
     emitida_exenta_aut.ui \
     hoja_cols_ci.ui \
+    modelo130.ui \
           preferencias.ui\
           directorio.ui \
           acercade.ui \

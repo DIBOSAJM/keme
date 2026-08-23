@@ -34,12 +34,15 @@ class asigna_fichdoc : public QDialog {
                 ~asigna_fichdoc();
                 void pasafichdoc(QString cadena);
                 QString ruta_docs();
+                QString fichero_label();
+                void modo_capta_plan();
       private:
                 Ui::asigna_fichdoc ui;
                 QString asiento;
                 QString documento;
                 QString directorio_doc;
                 CustomQLabel *etiqueta;
+                bool captaplan=false;
                 void guarda_doc();
       private slots:
                 void visdocdef();

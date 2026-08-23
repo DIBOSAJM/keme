@@ -1180,6 +1180,8 @@ void MainWindow::activaTodo()
     ui->actionCuentas_inversion_SP->setEnabled(true);
     ui->actionModelo_349->setEnabled(true);
     ui->actionAsignar_E_xterno->setEnabled(true);
+    ui->actionEjercicio_Actual->setEnabled(true);
+    ui->actionEjercicio_Previo->setEnabled(true);
 
 }
 
@@ -1331,6 +1333,9 @@ void MainWindow::activa_sinconexion()
  ui->actionCuentas_inversion_SP->setEnabled(false);
  ui->actionModelo_349->setEnabled(false);
  ui->actionAsignar_E_xterno->setEnabled(false);
+
+ ui->actionEjercicio_Actual->setEnabled(false);
+ ui->actionEjercicio_Previo->setEnabled(false);
 
 }
 
@@ -7377,10 +7382,18 @@ void MainWindow::handleGeminiResponse(const QJsonObject &json)
     statusBar()->showMessage(json["nombre"].toString(), 3000);
         // ui->lineEditNombre->setText(json["nombre"].toString());
         // ui->lineEditNif->setText(json["nif"].toString());
+
+    if (ia_scan_externo) {
+       ia_scan_info(json);
+       ia_scan_externo=false;
+       return;
+    }
+
     if (ia_emitidas) {
        ia_reponse_emitidas(json);
        return;
     }
+
     QString api_url, api_key, prompt_factura,prompt_fact_emitida, prompt_prov_cli;
     bool ia_no_gestion_iva, ia_no_gestion_isp, mostrar_respuesta_ia;
     basedatos::instancia()->parametrosIA(&api_url, &api_key, &prompt_factura, &prompt_fact_emitida, &prompt_prov_cli, &ia_no_gestion_iva, &ia_no_gestion_isp,&mostrar_respuesta_ia);
@@ -7815,6 +7828,44 @@ void MainWindow::ia_reponse_emitidas(const QJsonObject &json)
 
 }
 
+void MainWindow::ia_scan_info(const QJsonObject &json)
+{
+    QString api_url, api_key, prompt_factura,prompt_fact_emitida, prompt_prov_cli;
+    bool ia_no_gestion_iva, ia_no_gestion_isp, mostrar_respuesta_ia;
+    basedatos::instancia()->parametrosIA(&api_url, &api_key, &prompt_factura, &prompt_fact_emitida, &prompt_prov_cli, &ia_no_gestion_iva, &ia_no_gestion_isp,&mostrar_respuesta_ia);
+
+    if (mostrar_respuesta_ia) {
+      notas *n = new notas(false);
+      n->activa_modoconsulta();
+      n->cambia_titulo(tr("RESPUESTA IA"));
+    n->esconde_tex_imprimir();
+    QJsonDocument doc(json);
+    QString strJson = doc.toJson(QJsonDocument::Indented);
+    n->pasa_contenido(strJson);
+    n->exec();
+    delete(n);
+    }
+
+    // comenzamos por averiguar si existe el nif - si no hay nif localizamos código de externo por email
+    QJsonObject proveedor_cli_json=json["cliente_proveedor"].toObject();
+    trata_proveedor_cli_json(proveedor_cli_json);
+    // intentamos averiguar cuenta de gasto investigando apuntes pasados
+    // si no sugerimos la cuenta principal
+    // hay externo ?
+    QString externo;
+    QString paises_eur="AT BE BG CY CZ DE DK EE EL FI FR HR HU IE IT LT LU LV MT NL PL PT RO SE SI SK GR";
+    QString busca_nif=proveedor_cli_json["nif"].toString();
+    if (!busca_nif.startsWith(proveedor_cli_json["iso"].toString())) if (paises_eur.contains(proveedor_cli_json["iso"].toString())) busca_nif.prepend(proveedor_cli_json["iso"].toString());
+    if (!proveedor_cli_json["nif"].toString().isEmpty()) externo=basedatos::instancia()->select_codigo_cif_externo(busca_nif);
+       else if (basedatos::instancia()->existe_externo(proveedor_cli_json["email"].toString())) externo=proveedor_cli_json["email"].toString();
+    if (!externo.startsWith(proveedor_cli_json["iso"].toString()) && !externo.isEmpty()) {
+        if (paises_eur.contains(proveedor_cli_json["iso"].toString())) externo.prepend(proveedor_cli_json["iso"].toString());
+    }
+
+    qDebug() << "Externo: " << externo;
+    return;
+}
+
 
 void MainWindow::handleGeminiError(const QString &err)
 {
@@ -8179,5 +8230,57 @@ void MainWindow::on_actionEmitidas_IA_toggled(bool arg1)
 {
     if (arg1) ia_emitidas=true;
        else ia_emitidas=false;
+}
+
+
+void MainWindow::on_actionReconocer_Imagen_triggered()
+{
+    ia_scan_externo=true;
+    asigna_fichdoc *a = new asigna_fichdoc("","",
+                                           "");
+    a->modo_capta_plan();
+    a->exec();
+    QString fich=a->fichero_label();
+    delete(a);
+    qDebug() << "FICHERO:" << fich;
+    if (!fich.isEmpty())
+       {
+        bool espdf=false;
+        QString fichero_soltado_U=fich.toUpper();
+        if (fichero_soltado_U.endsWith("PDF")) espdf=true;
+
+        if (espdf && pdf_paginas(fich)>5 &&
+            (QMessageBox::question(this,
+                  tr("PROCESAR IA"),
+                  tr("El fichero tiene más de 5 páginas "
+                     "¿ Desea procesarlo ?"))
+                    == QMessageBox::No ))
+                return ;
+
+        QFile file(fich);
+
+            if(file.open(QIODevice::ReadOnly)) {
+                QString nombre_empresa=basedatos::instancia()->selectEmpresaconfiguracion();
+                QString nif=basedatos::instancia()->cif();
+                m_loadingDlg->show();
+                QString api_url, api_key, prompt_factura, prompt_fact_emitida, prompt_prov_cli;
+                bool ia_no_gestion_iva, ia_no_gestion_isp, mostrar_respuesta_ia;
+                basedatos::instancia()->parametrosIA(&api_url, &api_key, &prompt_factura, &prompt_fact_emitida, &prompt_prov_cli,&ia_no_gestion_iva, &ia_no_gestion_isp, &mostrar_respuesta_ia);
+                prompt_prov_cli=prompt_prov_cli.replace("${MI_NOMBRE}",nombre_empresa);
+                prompt_prov_cli=prompt_prov_cli.replace("${MI_NIF}",nif);
+                m_geminiClient->get_url(api_url);
+                m_geminiClient->get_apiKey(api_key);
+                m_geminiClient->get_prompt(prompt_prov_cli);
+                // Mostramos un feedback al usuario (opcional)
+                statusBar()->showMessage("Procesando con IA...");
+                QMimeDatabase db;
+                // Obtenemos el tipo MIME a partir del nombre del fichero o su contenido
+                QMimeType mime = db.mimeTypeForFile(fich);
+                QString mimeString = mime.name(); // Esto devolverá "image/jpeg", "application/pdf", etc.
+                m_geminiClient->requestJson(file.readAll(), mimeString);
+                file.close();
+            }
+       }
+    // ia_scan_externo=false;
 }
 

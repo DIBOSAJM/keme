@@ -100,6 +100,7 @@ private:
     bool activa_msj_tabla;
 
     bool ia_emitidas=false;
+    bool ia_scan_externo=false;
 
     void procesar_inicio();
     bool abrebasedatos(QString vpghost,QString vpgdbname,QString vpguser,
@@ -130,6 +131,7 @@ private:
     GeminiClient *m_geminiClient; // Miembro de la clase
     void handleGeminiResponse(const QJsonObject &json);
     void ia_reponse_emitidas(const QJsonObject &json);
+    void ia_scan_info(const QJsonObject &json);
     void handleGeminiError(const QString &err);
     void procesa_fichero_ia();
     LoadingDialog *m_loadingDlg = nullptr;
@@ -360,6 +362,7 @@ private slots:
     // void on_actionCopia_linfact_triggered();
     void on_actionConfiguraci_n_IA_triggered();
     void on_actionEmitidas_IA_toggled(bool arg1);
+    void on_actionReconocer_Imagen_triggered();
 };
 
 #endif // MAINWINDOW_H

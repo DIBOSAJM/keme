@@ -29,7 +29,7 @@
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <qtrpt.h>
-
+#include "modelo130.h"
 
 bss::bss(QString qusuario) : QDialog() {
     ui.setupUi(this);
@@ -1175,10 +1175,10 @@ void bss::informe_bss() {
         if (paramName == "totalsaldoacreedor") paramValue = formateanumero(totalsaldoacreedor,false,decimales);
 
         if (totaldebe>totalhaber)
-         if (paramName == "difdebe") paramValue = formateanumerosep(totaldebe-totalhaber,comadecimal,decimales);
+         if (paramName == "difdebe") paramValue = formateanumero(totaldebe-totalhaber,comadecimal,decimales);
 
         if (totalhaber>totaldebe)
-            if (paramName == "difhaber") paramValue = formateanumerosep(totalhaber-totaldebe,comadecimal,decimales);
+            if (paramName == "difhaber") paramValue = formateanumero(totalhaber-totaldebe,comadecimal,decimales);
 
         if (paramName == "sumasdebe2") paramValue = sumasdebe2.at(recNo);
         if (paramName == "sumashaber2") paramValue = sumashaber2.at(recNo);
@@ -1865,6 +1865,7 @@ bool bss::noinfovisible()
   return true;
 }
 
+
 void bss::imprimir()
 {
    if (ui.table->rowCount()==0 || noinfovisible())
@@ -1922,7 +1923,7 @@ void bss::fijadescripciones()
 {
   activaactualiza();
   QString codigo=ui.cilineEdit->text();
-  QString cadena,descripcion;
+  QString descripcion;
   QString qnivel=0;
   ui.nivel1lineEdit->setText("");
   ui.nivel2lineEdit->setText("");
@@ -2166,13 +2167,13 @@ void bss::actualiza_totales() {
 
       pos++;
      }
-    ui.sd1_lineEdit->setText(formatea_redondeado_sep(sumadebe,comadecimal, decimales));
-    ui.sh1_lineEdit->setText(formatea_redondeado_sep(sumahaber,comadecimal, decimales));
-    ui.ss1_lineEdit->setText(formatea_redondeado_sep(sumasaldodebe-sumasaldohaber,comadecimal, decimales));
+    ui.sd1_lineEdit->setText(formatea_redondeado(sumadebe,comadecimal, decimales));
+    ui.sh1_lineEdit->setText(formatea_redondeado(sumahaber,comadecimal, decimales));
+    ui.ss1_lineEdit->setText(formatea_redondeado(sumasaldodebe-sumasaldohaber,comadecimal, decimales));
 
-    ui.sd2_lineEdit->setText(formatea_redondeado_sep(sumadebe2,comadecimal, decimales));
-    ui.sh2_lineEdit->setText(formatea_redondeado_sep(sumahaber2,comadecimal, decimales));
-    ui.ss2_lineEdit->setText(formatea_redondeado_sep(sumasaldodebe2-sumasaldohaber2,comadecimal, decimales));
+    ui.sd2_lineEdit->setText(formatea_redondeado(sumadebe2,comadecimal, decimales));
+    ui.sh2_lineEdit->setText(formatea_redondeado(sumahaber2,comadecimal, decimales));
+    ui.ss2_lineEdit->setText(formatea_redondeado(sumasaldodebe2-sumasaldohaber2,comadecimal, decimales));
 
 }
 
@@ -2283,15 +2284,15 @@ void bss::actualiza_totales_si() {
           }
        pos++;
      }
-    ui.si1_lineEdit->setText(formatea_redondeado_sep(sumsaldoini,comadecimal, decimales));
-    ui.sd1_lineEdit->setText(formatea_redondeado_sep(sumadebe,comadecimal, decimales));
-    ui.sh1_lineEdit->setText(formatea_redondeado_sep(sumahaber,comadecimal, decimales));
-    ui.ss1_lineEdit->setText(formatea_redondeado_sep(sumsaldofinal,comadecimal, decimales));
+    ui.si1_lineEdit->setText(formatea_redondeado(sumsaldoini,comadecimal, decimales));
+    ui.sd1_lineEdit->setText(formatea_redondeado(sumadebe,comadecimal, decimales));
+    ui.sh1_lineEdit->setText(formatea_redondeado(sumahaber,comadecimal, decimales));
+    ui.ss1_lineEdit->setText(formatea_redondeado(sumsaldofinal,comadecimal, decimales));
 
-    ui.si2_lineEdit->setText(formatea_redondeado_sep(sumsaldoini2,comadecimal, decimales));
-    ui.sd2_lineEdit->setText(formatea_redondeado_sep(sumadebe2,comadecimal, decimales));
-    ui.sh2_lineEdit->setText(formatea_redondeado_sep(sumahaber2,comadecimal, decimales));
-    ui.ss2_lineEdit->setText(formatea_redondeado_sep(sumsaldofinal2,comadecimal, decimales));
+    ui.si2_lineEdit->setText(formatea_redondeado(sumsaldoini2,comadecimal, decimales));
+    ui.sd2_lineEdit->setText(formatea_redondeado(sumadebe2,comadecimal, decimales));
+    ui.sh2_lineEdit->setText(formatea_redondeado(sumahaber2,comadecimal, decimales));
+    ui.ss2_lineEdit->setText(formatea_redondeado(sumsaldofinal2,comadecimal, decimales));
 
 }
 
@@ -3210,3 +3211,120 @@ void bss::on_externos_pushButton_clicked()
     }
     ui.actualizapushButton->setEnabled(true);
 }
+
+
+void bss::actualiza_130()
+{
+    ui.desdelineEdit->setText("6");
+    ui.hastalineEdit->setText("79999999");
+    ui.conmovcheckBox->setChecked(true);
+    int year=ui.desdedateEdit->date().year();
+    if (ui.T1_radioButton->isChecked()) {
+        ui.desdedateEdit->setDate(QDate(year,1,1));
+        ui.hastadateEdit->setDate(QDate(year,3,31));
+    }
+    if (ui.T2_radioButton->isChecked()) {
+        ui.desdedateEdit->setDate(QDate(year,1,1));
+        ui.hastadateEdit->setDate(QDate(year,6,30));
+    }
+    if (ui.T3_radioButton->isChecked()) {
+        ui.desdedateEdit->setDate(QDate(year,1,1));
+        ui.hastadateEdit->setDate(QDate(year,9,30));
+    }
+    if (ui.T4_radioButton->isChecked()) {
+        ui.desdedateEdit->setDate(QDate(year,1,1));
+        ui.hastadateEdit->setDate(QDate(year,12,31));
+    }
+}
+
+
+void bss::on_mod_130_groupBox_toggled(bool arg1)
+{
+    // hacemos check en radiobutton trimestre para modelo 130
+    if (arg1) {
+      int mes = QDate().currentDate().month();
+      if (mes < 4) ui.T4_radioButton->setChecked(true);
+      else if (mes < 7) ui.T1_radioButton->setChecked(true);
+         else if (mes <10) ui.T2_radioButton->setChecked(true);
+            else if (mes <=12) ui.T3_radioButton->setChecked(true);
+    actualiza_130();
+    }
+}
+
+
+void bss::on_T1_radioButton_toggled(bool checked)
+{
+    if (checked) actualiza_130();
+}
+
+
+void bss::on_T2_radioButton_toggled(bool checked)
+{
+    if (checked) actualiza_130();
+}
+
+
+void bss::on_T3_radioButton_toggled(bool checked)
+{
+    if (checked) actualiza_130();
+}
+
+
+void bss::on_T4_radioButton_toggled(bool checked)
+{
+    if (checked) actualiza_130();
+}
+
+
+void bss::on_mod_130_pushButton_clicked()
+{
+    Modelo130 *m = new Modelo130;
+    QString periodo;
+    if (ui.T1_radioButton->isChecked()) periodo="1T";
+    if (ui.T2_radioButton->isChecked()) periodo="2T";
+    if (ui.T3_radioButton->isChecked()) periodo="3T";
+    if (ui.T4_radioButton->isChecked()) periodo="4T";
+    QString acumulado130;
+    QString retenciones;
+    QString cuenta_ret=basedatos::instancia()->cuenta_ret_irpf();
+    QString filtro="cuenta='";
+    filtro.append(cuenta_ret);
+    filtro.append("' and fecha>='");
+    filtro.append(ui.desdedateEdit->date().toString("yyyy-MM-dd"));
+    filtro.append("' and fecha<='");
+    filtro.append(ui.hastadateEdit->date().toString("yyyy-MM-dd"));
+    filtro.append("' and diario!='");
+    filtro.append(diario_apertura());
+    filtro.append("' and diario!='");
+    filtro.append(diario_cierre());
+    filtro.append("'");
+    double sumadebe=0;
+    QSqlQuery q = basedatos::instancia()->select_cuenta_sumadebe_sumahaber_diario(filtro);
+    if (q.isActive())
+        if (q.next()) sumadebe=q.value(1).toDouble();
+    retenciones=formateanumero(sumadebe,comadecimal,decimales);
+
+    QString cuenta_130=basedatos::instancia()->cuenta_pago_a_cuenta();
+    filtro="cuenta='";
+    filtro.append(cuenta_130);
+    filtro.append("' and fecha>='");
+    filtro.append(ui.desdedateEdit->date().toString("yyyy-MM-dd"));
+    filtro.append("' and fecha<='");
+    filtro.append(ui.hastadateEdit->date().toString("yyyy-MM-dd"));
+    filtro.append("' and diario!='");
+    filtro.append(diario_apertura());
+    filtro.append("' and diario!='");
+    filtro.append(diario_cierre());
+    filtro.append("'");
+    sumadebe=0;
+    q = basedatos::instancia()->select_cuenta_sumadebe_sumahaber_diario(filtro);
+    if (q.isActive())
+        if (q.next()) sumadebe=q.value(1).toDouble();
+    acumulado130=formateanumero(sumadebe,comadecimal,decimales);
+
+    m->pasa_datos(comadecimal, decimales,ejerciciodelafecha(ui.desdedateEdit->date()),
+                  periodo,ui.sh1_lineEdit->text(),ui.sd1_lineEdit->text(),acumulado130,retenciones);
+    m->exec();
+    delete (m);
+}
+

@@ -87,17 +87,17 @@ Actividad_edicion::Actividad_edicion(QWidget *parent)
             tipo_actividad_5.append(fields[0].trimmed()+" - "+ fields[1].trimmed());
     }
 
-    QFile fich_cnae2009(":/fich/fich/codigos_cnae2009.csv");
-    if (!fich_cnae2009.open(QIODevice::ReadOnly | QIODevice::Text)) return;
-    QTextStream in8(&fich_cnae2009);
-    lista_cnae_2009.append(" - - ");
+    QFile fich_cnae2025(":/fich/fich/codigos_cnae2025.csv");
+    if (!fich_cnae2025.open(QIODevice::ReadOnly | QIODevice::Text)) return;
+    QTextStream in8(&fich_cnae2025);
+    lista_cnae_2025.append(" - - ");
     while (!in8.atEnd()) {
         QString line = in8.readLine();
         QStringList fields = line.split('\t'); // Dividir por tabulador
         if (fields.size() >= 2)
-            lista_cnae_2009.append(fields[0].trimmed()+" - "+ fields[1].trimmed());
+            lista_cnae_2025.append(fields[0].trimmed()+" - "+ fields[1].trimmed());
     }
-    ui->cnae_comboBox->addItems(lista_cnae_2009);
+    ui->cnae_comboBox->addItems(lista_cnae_2025);
 
 }
 

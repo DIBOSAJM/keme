@@ -257,6 +257,18 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_5">
                <item>
+                <widget class="QCheckBox" name="imprime_desglose_externos_checkBox">
+                 <property name="font">
+                  <font>
+                   <pointsize>7</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Imprime desglose Externos</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <spacer name="horizontalSpacer_3">
                  <property name="orientation">
                   <enum>Qt::Orientation::Horizontal</enum>

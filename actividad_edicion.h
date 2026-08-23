@@ -33,7 +33,7 @@ private:
     QStringList tipo_actividad_3;
     QStringList tipo_actividad_4;
     QStringList tipo_actividad_5;
-    QStringList lista_cnae_2009;
+    QStringList lista_cnae_2025;
 };
 
 #endif // ACTIVIDAD_EDICION_H

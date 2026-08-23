@@ -89,6 +89,8 @@ class bss : public QDialog {
                 void generalatex();
                 void generalatex2();
                 bool noinfovisible();
+
+                void actualiza_130();
         private slots:
                 void actualizar();
                 void varsinmovs();
@@ -108,6 +110,12 @@ class bss : public QDialog {
                 void comparativo_check();
 
                 void on_externos_pushButton_clicked();
+                void on_mod_130_groupBox_toggled(bool arg1);
+                void on_T1_radioButton_toggled(bool checked);
+                void on_T2_radioButton_toggled(bool checked);
+                void on_T3_radioButton_toggled(bool checked);
+                void on_T4_radioButton_toggled(bool checked);
+                void on_mod_130_pushButton_clicked();
 };
 
 

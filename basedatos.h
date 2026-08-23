@@ -1094,7 +1094,8 @@ class basedatos {
         QSqlQuery select5Diariofechascuentaorderfechapase(QDate inicial, QDate final, QString cuenta);
         QSqlQuery selectDiariofechascuentaorderfechapaseExterno (QDate inicial, QDate final, QString cuenta, QString externo);
 
-        // 
+        QSqlQuery consulta_mayor_orden_externo (QDate inicial, QDate final, QString cuenta);
+        //
         QSqlQuery selectCodigoperiodoejercicioorderinicioasc(QString ejercicio);
 
         // 
@@ -2072,7 +2073,7 @@ class basedatos {
         QString cuentadeivarepercutido();
 
         QString cuenta_ret_irpf();
-
+        QString cuenta_pago_a_cuenta();
         QString cuenta_ret_ing();
 
         // Indica si un ci existe en el diario

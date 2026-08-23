@@ -171,6 +171,7 @@ consmayor::consmayor(bool concomadecimal, bool condecimales, QString qusuario) :
      ui.cons_externo_pushButton->hide();
      ui.quita_externo_pushButton->hide();
      ui.descrip_externo_lineEdit->hide();
+     ui.imprime_desglose_externos_checkBox->hide();
     }
 }
 
@@ -1411,6 +1412,11 @@ void consmayor::informe()
         informe_intervalo();
         return;
     }
+    if (ui.imprime_desglose_externos_checkBox->isChecked()) {
+        informe_desglose_externos();
+        return;
+    }
+
     QString ejercicio=ejerciciodelafecha(ui.inicialdateEdit->date());
     QDate fechainiejercicio=inicioejercicio(ejercicio);
     QDate fechaejercicioanterior=fechainiejercicio.addDays(-1);
@@ -1419,16 +1425,16 @@ void consmayor::informe()
     QString subctaactual=ui.subcuentalineEdit->text();
     QDate fechainicial=ui.inicialdateEdit->date();
     QDate fechafinal=ui.finaldateEdit->date();
-    if (ejerciciocerrado(ejercicioanterior) || escuentadegasto(subctaactual) ||
-        escuentadeingreso(subctaactual))
+    if ((ejerciciocerrado(ejercicioanterior) || escuentadegasto(subctaactual) ||
+        escuentadeingreso(subctaactual)) && ui.externolineEdit->text().isEmpty())
      {
          query = basedatos::instancia()->selectSumdebesumhaberdiariofechascuenta(fechainiejercicio, fechainicial, subctaactual,ui.externolineEdit->text());
      }
     else query = basedatos::instancia()->selectSumdebesumhaberdiariofechacuenta(fechainicial, subctaactual,ui.externolineEdit->text());
 
     double saldoin=0;
-    double sumadebe=0;
-    double sumahaber=0;
+    // double sumadebe=0;
+    // double sumahaber=0;
     double sumadebeextracto=0;
     double sumahaberextracto=0;
 
@@ -1439,8 +1445,8 @@ void consmayor::informe()
         saldoin=query.value(0).toDouble()-query.value(1).toDouble();
         //sumadebe=query.value(0).toDouble();
         //sumahaber=query.value(1).toDouble();
-        if (saldoin>0) sumadebe=saldoin;
-        if (saldoin<0) sumahaber=-1*saldoin;
+        // if (saldoin>0) sumadebe=saldoin;
+        // if (saldoin<0) sumahaber=saldoin; // sumahaber=-1*saldoin
        }
 
 
@@ -1500,7 +1506,7 @@ void consmayor::informe()
                                     tr("NO SE HA ENCONTRADO EL FICHERO DE INFORME") );
           return;
       }
-      QObject::connect(report, &QtRPT::setDSInfo,
+      QObject::connect(report, &QtRPT::setDSInfo,this,
                        [&](DataSetInfo &dsInfo) {
           dsInfo.recordCount=asientol.count();
       });
@@ -1517,6 +1523,117 @@ void consmayor::informe()
              qfichero=qfichero+tr("mayor.pdf");
              report->printPDF(qfichero);
       }
+}
+
+void consmayor::informe_desglose_externos()
+{
+    QString ejercicio=ejerciciodelafecha(ui.inicialdateEdit->date());
+    QDate fechainiejercicio=inicioejercicio(ejercicio);
+    QDate fechaejercicioanterior=fechainiejercicio.addDays(-1);
+    QString ejercicioanterior=ejerciciodelafecha(fechaejercicioanterior);
+    QSqlQuery query;
+    QString subctaactual=ui.subcuentalineEdit->text();
+    QDate fechainicial=ui.inicialdateEdit->date();
+    QDate fechafinal=ui.finaldateEdit->date();
+    query = basedatos::instancia()->consulta_mayor_orden_externo(fechainicial, fechafinal, subctaactual);
+    fechal.clear();
+    asientol.clear();
+    conceptol.clear();
+    debel.clear();
+    haberl.clear();
+    documentol.clear();
+    externol.clear();
+    saldol.clear();
+
+
+    double sumadebeextracto=0;
+    double sumahaberextracto=0;
+
+    double saldo=0;
+    double saldo_externo=0;
+
+    bool primero=true;
+    QString guarda_externo;
+    if (query.isActive())
+        while (query.next()) {
+            // fecha, asiento, concepto, debe, haber, documento, externo
+            if (query.value(7).toString()==diario_apertura() || query.value(7).toString()==diario_cierre() ||
+                query.value(7).toString()==diario_regularizacion())
+                continue;
+            if (primero || guarda_externo != query.value(6).toString()) {
+                guarda_externo=query.value(6).toString();
+                QSqlQuery q = basedatos::instancia()->selectSumdebesumhaberdiariofechacuenta(fechainicial, subctaactual,guarda_externo);
+                double saldoin=0;
+                if ( (q.isActive()) && (q.first()) ) saldoin=q.value(0).toDouble()-q.value(1).toDouble();
+                saldo+=saldoin;
+                saldo_externo=saldoin;
+                if (!primero) { // ponemos línea en blanco
+                    fechal <<"";
+                    asientol << "";
+                    conceptol << "";
+                    documentol << "";
+                    externol << "";
+                    saldol << "";
+                    debel << "";
+                    haberl << "";
+                }
+                primero = false;
+                QString cadsaldo; cadsaldo.setNum(fabs(saldoin),'f',2);
+                fechal <<guarda_externo;
+                asientol << "";
+                conceptol << basedatos::instancia()->razon_externo(guarda_externo);
+                if (saldoin>0) debel << cadsaldo; else debel <<"";
+                if (saldoin<0) haberl << cadsaldo; else haberl << "";
+                documentol << tr(" Saldo inicial ..");
+                externol << "";
+                saldol<<formatea_redondeado(saldoin,false, 2);
+            }
+            fechal<<query.value(0).toDate().toString("dd/MM/yyyy");
+            asientol<<query.value(1).toString();
+            conceptol<<query.value(2).toString();
+            debel<<query.value(3).toString();
+            saldo+=query.value(3).toDouble();
+            saldo_externo+=query.value(3).toDouble();
+            sumadebeextracto+=query.value(3).toDouble();
+            haberl<<query.value(4).toString();
+            saldo-=query.value(4).toDouble();
+            saldo_externo-=query.value(4).toDouble();
+            sumahaberextracto+=query.value(4).toDouble();
+            documentol<<query.value(5).toString();
+            externol<<query.value(6).toString();
+            saldol<<formatea_redondeado(saldo_externo,false, 2);
+        }
+
+    cadsumadebeextracto=formatea_redondeado(sumadebeextracto,false, 2);
+    cadsumahaberextracto=formatea_redondeado(sumahaberextracto,false, 2);
+
+    QString fileName = ":/informes/mayor.xml";
+    QtRPT *report = new QtRPT(this);
+    //report->recordCount << asientol.count();
+    if (report->loadReport(fileName) == false)
+    {
+        QMessageBox::information( this, tr("Imprimir mayor"),
+                                 tr("NO SE HA ENCONTRADO EL FICHERO DE INFORME") );
+        return;
+    }
+    QObject::connect(report, &QtRPT::setDSInfo,this,
+                     [&](DataSetInfo &dsInfo) {
+                         dsInfo.recordCount=asientol.count();
+                     });
+
+    QObject::connect(report, SIGNAL(setValueImage(const int, const QString, QImage&, const int)),
+                     this, SLOT(setValueImage(const int, const QString, QImage&, const int)));
+
+    QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
+                     this, SLOT(setValue(const int, const QString, QVariant&, const int)));
+    if (hay_visualizador_extendido) report->printExec(true);
+    else {
+        QString qfichero=dirtrabajo();
+        qfichero.append(QDir::separator());
+        qfichero=qfichero+tr("mayor_externos.pdf");
+        report->printPDF(qfichero);
+    }
+
 }
 
 void consmayor::setValueImage(const int recNo, const QString paramName, QImage &paramValue, const int reportPage) {

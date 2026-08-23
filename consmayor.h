@@ -78,6 +78,7 @@ class consmayor : public QDialog {
                 void cod_externo_fin_edic();
                 void cod_externo_cambiado();
                 void informe();
+                void informe_desglose_externos();
                 void concilia_ext() ;
                 void importa_c43 ();
                 void importa_csv ();

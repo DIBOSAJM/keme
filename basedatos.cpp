@@ -12583,6 +12583,18 @@ QSqlQuery basedatos::selectDiariofechascuentaorderfechapaseExterno (QDate inicia
     return ejecutar(cadena);
 }
 
+QSqlQuery basedatos::consulta_mayor_orden_externo(QDate inicial, QDate final, QString cuenta)
+{
+  QSqlQuery query;
+  query.prepare("select fecha, asiento, concepto, debe, haber, documento, externo, diario from diario where "
+                "fecha>= :inicial and fecha<= :final and cuenta= :cuenta "
+                "order by externo, fecha, pase");
+  query.bindValue(":inicial",inicial);
+  query.bindValue(":final",final);
+  query.bindValue(":cuenta",cuenta);
+  return (ejecuta(std::move(query)));
+}
+
 
 // 
 QSqlQuery basedatos::selectCodigoperiodoejercicioorderinicioasc (QString ejercicio) {
@@ -19129,6 +19141,18 @@ QString basedatos::cuenta_ret_irpf() {
         return query.value(0).toString();
     }
     return "";
+}
+
+QString basedatos::cuenta_pago_a_cuenta()
+{
+    QSqlQuery query = ejecutar("SELECT cuenta_pago_a_cuenta from configuracion");
+
+    if ( (query.isActive()) && (query.first()) )
+    {
+        return query.value(0).toString();
+    }
+    return QString();
+
 }
 
 

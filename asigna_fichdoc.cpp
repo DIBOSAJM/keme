@@ -23,7 +23,6 @@
 #include "basedatos.h"
 #include "funciones.h"
 
-#include "directorio.h"
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QProgressDialog>
@@ -150,30 +149,6 @@ void asigna_fichdoc::suprimedocdef()
 
 void asigna_fichdoc::buscacopiadoc()
 {
-#ifdef NOMACHINE
-  QString rutacarga=rutacargadocs().isEmpty() ? dirtrabajo():rutacargadocs());
-  QDir direc(rutacarga);
-  if (!direc.exists(rutacarga))
-     {
-       QMessageBox::warning( this, tr("Cargar documento"),
-                             tr("ERROR: la ruta para cargar documentos no es correcta") );
-       return;
-
-     }
-  directorio *dir = new directorio(this);
-  dir->pasa_directorio(rutacarga);
-
-  if (dir->exec() == QDialog::Accepted)
-    {
-      // QMessageBox::information( this, tr("selección"),
-      //                         dir->selec_actual() );
-      // QMessageBox::information( this, tr("selección"),
-      //                         dir->ruta_actual() );
-      ui.fichdoclineEdit->setText(dir->ruta_actual());
-    }
-  delete(dir);
-#else
-
   // QString fileName = QFileDialog::getOpenFileName(this, tr("Open a file"), "/public/files", tr("Teks File (*.txt)"));
   QFileDialog dialogofich(this);
   dialogofich.setFileMode(QFileDialog::ExistingFile);
@@ -216,7 +191,6 @@ void asigna_fichdoc::buscacopiadoc()
            etiqueta->pasa_nombre_fich(ruta);
           }
      }
-#endif
 }
 
 
@@ -245,14 +219,33 @@ QString asigna_fichdoc::ruta_docs()
   return directorio_doc;
 }
 
+QString asigna_fichdoc::fichero_label()
+{
+    return etiqueta->nombre_fich();
+}
+
+void asigna_fichdoc::modo_capta_plan()
+{
+    ui.label_2->hide();
+    ui.ejerciciolineEdit->hide();
+    ui.label->hide();
+    ui.docasignadolineEdit->hide();
+    ui.visdocdefpushButton->hide();
+    ui.borravisdocpushButton->hide();
+    ui.line->hide();
+    setWindowTitle(tr("Reconoce fichero"));
+    captaplan=true;
+    connect(etiqueta, &CustomQLabel::filedroped,this, &asigna_fichdoc::terminar_droped,Qt::QueuedConnection);
+}
+
 void asigna_fichdoc::botonaceptar() {
-  guarda_doc();
+  if (!captaplan) guarda_doc();
   accept();
 }
 
 
 void asigna_fichdoc::terminar_droped() {
-  guarda_doc();
+  if (!captaplan) guarda_doc();
   accept();
 }
 

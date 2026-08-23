@@ -188,6 +188,7 @@
         <file>fich/TIPO_ACTIVIDAD_4.csv</file>
         <file>fich/TIPO_ACTIVIDAD_5.csv</file>
         <file>fich/codigos_cnae2009.csv</file>
+        <file>fich/codigos_cnae2025.csv</file>
     </qresource>
     <qresource prefix="/planes">
         <file>planes/pgc_pymes_RD1515-2007.pln</file>

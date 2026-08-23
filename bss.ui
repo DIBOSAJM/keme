@@ -14,11 +14,17 @@
   <property name="windowTitle">
    <string>Balance de sumas y saldos</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_9">
    <item>
-    <layout class="QHBoxLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QGroupBox" name="groupBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string>DETALLE</string>
        </property>
@@ -81,6 +87,12 @@
      </item>
      <item>
       <widget class="QGroupBox" name="groupBox_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string>INTERVALO</string>
        </property>
@@ -124,6 +136,12 @@
      </item>
      <item>
       <widget class="QGroupBox" name="compa_groupBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string>CO&amp;MPARACIÓN</string>
        </property>
@@ -140,7 +158,6 @@
            <widget class="QLabel" name="label_2">
             <property name="font">
              <font>
-              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -160,7 +177,6 @@
            <widget class="QLabel" name="label_3">
             <property name="font">
              <font>
-              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -178,106 +194,213 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="cuentasgroupBox">
-       <property name="title">
-        <string>INTER&amp;VALO DE CUENTAS</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <layout class="QVBoxLayout">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <property name="leftMargin">
-         <number>9</number>
-        </property>
-        <property name="topMargin">
-         <number>9</number>
-        </property>
-        <property name="rightMargin">
-         <number>9</number>
-        </property>
-        <property name="bottomMargin">
-         <number>9</number>
-        </property>
-        <item>
-         <layout class="QHBoxLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <widget class="QGroupBox" name="cuentasgroupBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>INTER&amp;VALO DE CUENTAS</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <layout class="QVBoxLayout">
           <property name="spacing">
            <number>6</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>9</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>9</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>9</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>9</number>
           </property>
           <item>
-           <widget class="QLabel" name="textLabel4">
-            <property name="text">
-             <string>&lt;b&gt;DESDE:&lt;/b&gt;</string>
+           <layout class="QHBoxLayout">
+            <property name="spacing">
+             <number>6</number>
             </property>
-            <property name="wordWrap">
-             <bool>false</bool>
+            <property name="leftMargin">
+             <number>0</number>
             </property>
-           </widget>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="textLabel4">
+              <property name="text">
+               <string>&lt;b&gt;DESDE:&lt;/b&gt;</string>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="desdelineEdit">
+              <property name="maxLength">
+               <number>40</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QLineEdit" name="desdelineEdit">
-            <property name="maxLength">
-             <number>40</number>
+           <layout class="QHBoxLayout">
+            <property name="spacing">
+             <number>6</number>
             </property>
-           </widget>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="textLabel6">
+              <property name="text">
+               <string>&lt;b&gt;HASTA:&lt;/b&gt;</string>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="hastalineEdit">
+              <property name="maxLength">
+               <number>40</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout">
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="mod_130_groupBox">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Modelo 130</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
           <property name="spacing">
            <number>6</number>
           </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
           <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <item>
-           <widget class="QLabel" name="textLabel6">
-            <property name="text">
-             <string>&lt;b&gt;HASTA:&lt;/b&gt;</string>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <property name="spacing">
+             <number>1</number>
             </property>
-            <property name="wordWrap">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="hastalineEdit">
-            <property name="maxLength">
-             <number>40</number>
-            </property>
-           </widget>
+            <item>
+             <widget class="QRadioButton" name="T1_radioButton">
+              <property name="text">
+               <string>1T</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="T2_radioButton">
+              <property name="text">
+               <string>2T</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="T3_radioButton">
+              <property name="text">
+               <string>3T</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="T4_radioButton">
+              <property name="text">
+               <string>4T</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="mod_130_pushButton">
+              <property name="maximumSize">
+               <size>
+                <width>30</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="keme.qrc">
+                <normaloff>:/iconos/graf/aeat.png</normaloff>:/iconos/graf/aeat.png</iconset>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
-        </item>
-       </layout>
-      </widget>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="QGroupBox" name="groupBox_3">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
@@ -305,6 +428,12 @@
         </property>
         <item>
          <widget class="QTableWidget" name="diariostableWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="maximumSize">
            <size>
             <width>170</width>
@@ -322,6 +451,12 @@
      </item>
      <item>
       <widget class="QGroupBox" name="analiticagroupBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string>Anal&amp;ítica</string>
        </property>
@@ -508,7 +643,7 @@
         <number>0</number>
        </property>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
       </widget>
      </item>
@@ -537,7 +672,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -559,7 +694,7 @@
        <item row="0" column="1">
         <widget class="QLineEdit" name="si1_lineEdit">
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -576,7 +711,7 @@
        <item row="0" column="3">
         <widget class="QLineEdit" name="sd1_lineEdit">
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -593,7 +728,7 @@
        <item row="0" column="5">
         <widget class="QLineEdit" name="sh1_lineEdit">
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -610,7 +745,7 @@
        <item row="0" column="7">
         <widget class="QLineEdit" name="ss1_lineEdit">
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -627,7 +762,7 @@
        <item row="1" column="1">
         <widget class="QLineEdit" name="si2_lineEdit">
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -644,7 +779,7 @@
        <item row="1" column="3">
         <widget class="QLineEdit" name="sd2_lineEdit">
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -661,7 +796,7 @@
        <item row="1" column="5">
         <widget class="QLineEdit" name="sh2_lineEdit">
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -678,7 +813,7 @@
        <item row="1" column="7">
         <widget class="QLineEdit" name="ss2_lineEdit">
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -694,7 +829,7 @@
      <item>
       <spacer>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -826,6 +961,12 @@
   <tabstop>cuentasgroupBox</tabstop>
   <tabstop>desdelineEdit</tabstop>
   <tabstop>hastalineEdit</tabstop>
+  <tabstop>mod_130_groupBox</tabstop>
+  <tabstop>T1_radioButton</tabstop>
+  <tabstop>T2_radioButton</tabstop>
+  <tabstop>T3_radioButton</tabstop>
+  <tabstop>T4_radioButton</tabstop>
+  <tabstop>mod_130_pushButton</tabstop>
   <tabstop>diariostableWidget</tabstop>
   <tabstop>analiticagroupBox</tabstop>
   <tabstop>cilineEdit</tabstop>
