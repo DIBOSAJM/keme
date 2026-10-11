@@ -481,7 +481,10 @@
   </action>
   <action name="actionConfiguraci_n">
    <property name="text">
-    <string>&amp;Datos Empresa Base Datos</string>
+    <string>&amp;Configuracion Empresa</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
    </property>
   </action>
   <action name="actionEjercicios">

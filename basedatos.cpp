@@ -33946,6 +33946,20 @@ bool basedatos::asiento_contabilizado(QString asiento, QString ejercicio)
     return true; // true por defecto
 }
 
+bool basedatos::asiento_enviado_sii(QString asiento, QString ejercicio)
+{
+ QSqlQuery q;
+ q.prepare("select l.pase, l.enviado_sii from diario d, libroiva l "
+           "where d.asiento= :asiento and d.ejercicio= :ejercicio "
+           "and l.pase=d.pase");
+ q.bindValue(":asiento",asiento.toInt());
+ q.bindValue(":ejercicio",ejercicio);
+ q=ejecuta(std::move(q));
+ if (q.isActive() && q.first())
+     return q.value(1).toBool();
+ return false;
+}
+
 
 bool basedatos::asientos_borrador(QString ejercicio)
 {

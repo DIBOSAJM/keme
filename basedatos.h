@@ -3728,6 +3728,8 @@ class basedatos {
 
         bool asiento_contabilizado(QString asiento, QString ejercicio);
 
+        bool asiento_enviado_sii(QString asiento, QString ejercicio);
+
         bool asientos_borrador(QString ejercicio);
 
         bool borrador_con_contenido();

@@ -1183,6 +1183,15 @@ void MainWindow::activaTodo()
     ui->actionEjercicio_Actual->setEnabled(true);
     ui->actionEjercicio_Previo->setEnabled(true);
 
+    ui->actionConfiguraci_n_IA->setEnabled(true);
+    ui->actionEmitidas_IA->setEnabled(true);
+    ui->actionReconocer_Imagen->setEnabled(true);
+    ui->actionCambiar_Actividad_a_apunte->setEnabled(true);
+    ui->actionFacturas_Emitidas_E_xentas->setEnabled(true);
+    ui->actionSII_Facturas_Recibidas->setEnabled(true);
+    ui->actionSII_Facturas_Emitidas->setEnabled(true);
+    ui->actionDirecciones_Servidor_SOAP->setEnabled(true);
+
 }
 
 void MainWindow::activa_sinconexion()
@@ -1336,6 +1345,15 @@ void MainWindow::activa_sinconexion()
 
  ui->actionEjercicio_Actual->setEnabled(false);
  ui->actionEjercicio_Previo->setEnabled(false);
+
+ ui->actionConfiguraci_n_IA->setEnabled(false);
+ ui->actionEmitidas_IA->setEnabled(false);
+ ui->actionReconocer_Imagen->setEnabled(false);
+ ui->actionCambiar_Actividad_a_apunte->setEnabled(false);
+ ui->actionFacturas_Emitidas_E_xentas->setEnabled(false);
+ ui->actionSII_Facturas_Recibidas->setEnabled(false);
+ ui->actionSII_Facturas_Emitidas->setEnabled(false);
+ ui->actionDirecciones_Servidor_SOAP->setEnabled(false);
 
 }
 
@@ -1605,6 +1623,12 @@ void MainWindow::actuprivilegios()
 
     ui->menuUtilidades->setEnabled(privilegios[utiles]);
     ui->menuSII->setEnabled(privilegios[activa_sii]);
+
+    ui->actionConfiguraci_n_IA->setEnabled(privilegios[p_configuracion]);
+    ui->actionEmitidas_IA->setEnabled(privilegios[edi_asiento]);
+    ui->actionReconocer_Imagen->setEnabled(privilegios[cuentas_auxiliares]);
+    ui->actionCambiar_Actividad_a_apunte->setEnabled(privilegios[edi_asiento]);
+    ui->actionFacturas_Emitidas_E_xentas->setEnabled(privilegios[nuev_asiento]);
 
     if (punterodiario!=NULL)
         punterodiario->actu_usuario();

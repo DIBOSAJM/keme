@@ -86,7 +86,7 @@
   </action>
   <action name="actionSeries">
    <property name="text">
-    <string>Series</string>
+    <string>S&amp;eries</string>
    </property>
   </action>
   <action name="actionRecurrentes">
@@ -143,7 +143,7 @@
      <normaloff>:/iconos/graf/connect_no.png</normaloff>:/iconos/graf/connect_no.png</iconset>
    </property>
    <property name="text">
-    <string>Conexión base de datos</string>
+    <string>Co&amp;nexión base de datos</string>
    </property>
    <property name="toolTip">
     <string>Conexión a la base de datos</string>
@@ -151,7 +151,7 @@
   </action>
   <action name="actionTipos_documento">
    <property name="text">
-    <string>Tipos documento</string>
+    <string>&amp;Tipos documento</string>
    </property>
   </action>
   <action name="actionIrpf">
@@ -165,7 +165,7 @@
      <normaloff>:/iconos/graf/application-exit.png</normaloff>:/iconos/graf/application-exit.png</iconset>
    </property>
    <property name="text">
-    <string>Salir</string>
+    <string>&amp;Salir</string>
    </property>
   </action>
   <action name="actionFacturacion_predefinida">
@@ -200,6 +200,9 @@
    <property name="text">
     <string>Configuración Veri*Factu</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
   </action>
   <action name="actionContenido_Email_Facturas">
    <property name="text">
@@ -208,12 +211,15 @@
   </action>
   <action name="actionEjercicios">
    <property name="text">
-    <string>Ejercicios</string>
+    <string>E&amp;jercicios</string>
    </property>
   </action>
   <action name="actionDatos_empresa">
    <property name="text">
-    <string>Datos empresa</string>
+    <string>&amp;Configuración empresa</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
    </property>
   </action>
  </widget>

@@ -2007,6 +2007,13 @@ void tabla_asientos::incorporar()
         // para el modo consulta
 {
    int numfilas=ultimafila();
+   for (int v=0;v<numfilas;v++){
+       if (ui.Tablaapuntes->item(v,0)==0) continue;
+       if (!existesubcuenta(ui.Tablaapuntes->item(v,0)->text())) {
+           QMessageBox::warning(this,tr("Tabla de asintos"),tr("ERROR: Algunos de los códigos suministrados no son cuentas auxiliares"));
+           return;
+       }
+   }
    // comprobamos que la cuenta de factura en campos de IVA esté representada en el primer campo
    // de la tabla
    QString compro_cuenta;

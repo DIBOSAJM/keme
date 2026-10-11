@@ -182,24 +182,33 @@ void planamortizaciones::nuevoelemento()
 
 void planamortizaciones::refrescar()
 {
-    delete (model);
-    CustomSqlModel2 *elmodelo = new CustomSqlModel2;
-    model = elmodelo;
+    if (ui.no_baja_checkBox->isChecked()) {
+        model->setFilter("not baja");
+        model->select();
+    } else {
+        model->setFilter("");
+        model->select();
+    }
 
-     // model->setQuery( basedatos::instancia()->select10Planamortizacionesordercuenta_activo() );
-     model->setTable("planamortizaciones");
-     model->setHeaderData(0, Qt::Horizontal, tr("Cuenta activo"));
-     model->setHeaderData(1, Qt::Horizontal, tr("Fecha p.func."));  // Fecha
-     model->setHeaderData(2, Qt::Horizontal, tr("Código activo"));
-     model->setHeaderData(3, Qt::Horizontal, tr("Cuenta A.Acum."));
-     model->setHeaderData(4, Qt::Horizontal, tr("Cuenta Am."));
-     model->setHeaderData(5, Qt::Horizontal, tr("Valor residual"));  // Número
-     model->setHeaderData(6, Qt::Horizontal, tr("Tabla am. person."));  // lógico
-     model->setHeaderData(7, Qt::Horizontal, tr("Coef.amort.contable")); // Número
-     model->setHeaderData(8, Qt::Horizontal, tr("Coef.amort.fiscal")); // Número
-     model->setHeaderData(9, Qt::Horizontal, tr("Am.fiscal 1 ejer."));  // lógico
-     model->select();
-     ui.plantableView->setModel(model);
+
+    // delete (model);
+    // CustomSqlModel2 *elmodelo = new CustomSqlModel2;
+    // model = elmodelo;
+
+    //  // model->setQuery( basedatos::instancia()->select10Planamortizacionesordercuenta_activo() );
+    //  model->setTable("planamortizaciones");
+    //  model->setHeaderData(0, Qt::Horizontal, tr("Cuenta activo"));
+    //  model->setHeaderData(1, Qt::Horizontal, tr("Fecha p.func."));  // Fecha
+    //  model->setHeaderData(2, Qt::Horizontal, tr("Código activo"));
+    //  model->setHeaderData(3, Qt::Horizontal, tr("Cuenta A.Acum."));
+    //  model->setHeaderData(4, Qt::Horizontal, tr("Cuenta Am."));
+    //  model->setHeaderData(5, Qt::Horizontal, tr("Valor residual"));  // Número
+    //  model->setHeaderData(6, Qt::Horizontal, tr("Tabla am. person."));  // lógico
+    //  model->setHeaderData(7, Qt::Horizontal, tr("Coef.amort.contable")); // Número
+    //  model->setHeaderData(8, Qt::Horizontal, tr("Coef.amort.fiscal")); // Número
+    //  model->setHeaderData(9, Qt::Horizontal, tr("Am.fiscal 1 ejer."));  // lógico
+    //  model->select();
+    //  ui.plantableView->setModel(model);
 
 
  //QSqlQuery p=model->query(); 
@@ -408,3 +417,16 @@ planamortizaciones::~planamortizaciones()
  delete ui.plantableView;
  delete model;
 }
+
+void planamortizaciones::on_no_baja_checkBox_stateChanged(int arg1)
+{
+    Q_UNUSED(arg1);
+    if (ui.no_baja_checkBox->isChecked()) {
+       model->setFilter("not baja");
+       model->select();
+    } else {
+        model->setFilter("");
+        model->select();
+    }
+}
+

@@ -296,6 +296,12 @@ void cheq_libroiva::edit_asiento()
          return;
        }
 
+    if (basedatos::instancia()->asiento_contabilizado(asiento, ejercicio)) {
+           QMessageBox::warning( this, tr("Chequeo libro facturas"),
+                                tr("ERROR: El asiento seleccionado no se puede editar"));
+           return;
+    }
+
  editarasiento(asiento,usuario,ejercicio);
 }
 

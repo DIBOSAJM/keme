@@ -58,6 +58,7 @@ class planamortizaciones : public QDialog {
                 void editarelemento();
                 void eliminarelemento();
                 void imprimir();
+                void on_no_baja_checkBox_stateChanged(int arg1);
 };
 
 

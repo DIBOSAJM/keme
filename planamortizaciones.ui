@@ -34,6 +34,13 @@
     <widget class="QTableView" name="plantableView"/>
    </item>
    <item>
+    <widget class="QCheckBox" name="no_baja_checkBox">
+     <property name="text">
+      <string>Sólo elementos en alta</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout">
      <property name="spacing">
       <number>6</number>

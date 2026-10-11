@@ -119,6 +119,18 @@ bool edasiento(QString elasiento, QString usuario, bool modoconsulta, QString ej
 
       return true;
      }
+
+  if (!modoconsulta)
+         if (basedatos::instancia()->asiento_enviado_sii(elasiento,ejercicio)) {
+          if (QMessageBox::question(
+                  0, QObject::tr("Edición de asiento"),
+                  QObject::tr("El asiento a editar posee apuntes enviados al SII,\n"
+                              "si lo edita se crearán nuevos apuntes y quedarán registrados\n"
+                              "como no enviados,\n"
+                              "¿ Desea continuar ?")) == QMessageBox::No )
+              return false;
+         }
+
   //comprobamos si los pases del asiento están asignados a vencimientos
   if (basedatos::instancia()->asiento_con_pases_vencimientos_realizados(elasiento,ejercicio) && !modoconsulta)
      {
