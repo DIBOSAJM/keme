@@ -32,6 +32,8 @@ class pidecuentafecha : public QDialog {
       public:
                pidecuentafecha();
                void quita_calendario();
+               void pasa_cuenta(QString cuenta);
+               void pasa_fecha(QDate fecha);
                QString cuenta();
                QDate fecha();
       private:

@@ -99,6 +99,7 @@ class concilia : public QDialog {
                 void edcondoc();
                 void cambiacuentaapunte();
                 void on_contabtableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+                void on_export_pushButton_clicked();
 };
 
 

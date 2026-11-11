@@ -3616,9 +3616,16 @@ void MainWindow::editanumasiento()
     ej->asignaetiqueta(tr("Código de ejercicio:"));
     ej->exec();
     QString ejercicio=ej->contenido();
+    delete(ej);
     // qlonglong absoluto=primerasiento(elejercicio)+elasiento.toLongLong()-1;
     // elasiento.setNum(absoluto);
 
+
+    if (basedatos::instancia()->asiento_contabilizado(elasiento,ejercicio)) {
+        QMessageBox::warning( this, tr("EDICIÓN DE ASIENTOS"),
+                  tr("ERROR: El asiento no está en borrador"));
+        return;
+    }
 
       if (!existeasiento(elasiento,ejercicio))
         {
@@ -8306,5 +8313,242 @@ void MainWindow::on_actionReconocer_Imagen_triggered()
             }
        }
     // ia_scan_externo=false;
+}
+
+
+void MainWindow::on_action_Mover_deducci_n_IVA_triggered()
+{
+    QString elasiento;
+    qlonglong numasiento=punterodiario->asientoactual();
+    QDate fechapase=punterodiario->fechapaseactual();
+    qlonglong apunte=punterodiario->paseactual();
+    QString cad_apunte;
+    cad_apunte.setNum(apunte);
+    if (numasiento!=0) elasiento.setNum(numasiento);
+    if (elasiento=="")
+       {
+         QMessageBox::warning( this, tr("APLAZAR DEDUCIBILIDAD"),
+         tr("Para procesar un asiento debe de seleccionar un apunte del mismo en el diario"));
+         return;
+       }
+    QString ejercicio=ejerciciodelafecha(fechapase);
+    // fechapase=punterodiario->fechapaseactual();
+
+    if (ejerciciocerrado(ejercicio) || ejerciciocerrando(ejercicio))
+     {
+        QMessageBox::warning( this, tr("APLAZAR DEDUCIBILIDAD"),
+        tr("ERROR: ejercicio cerrado"));
+        return;
+     }
+
+    QString auxiliar_actual;
+    auxiliar_actual=punterodiario->subcuentaactual();
+    if (!basedatos::instancia()->escuentadeivasoportado(auxiliar_actual)) {
+        QMessageBox::warning( this, tr("APLAZAR DEDUCIBILIDAD"),
+        tr("ERROR: la cuenta seleccionada no es de IVA SOPORTADO"));
+        return;
+    }
+
+    pidecuentafecha *p = new pidecuentafecha();
+    p->pasa_cuenta(global_cuenta_iva_reemplazo);
+    p->pasa_fecha(global_fecha_asiento_nuevo);
+    p->exec();
+    QString cuenta_iva_reemplazo=p->cuenta();
+    QDate fecha_asiento_nuevo=p->fecha();
+    delete (p);
+
+    QString eldiario=diariodeasiento(elasiento,ejercicio);
+    if (eldiario==diario_apertura())
+      {
+        QMessageBox::warning( 0, QObject::tr("EDICIÓN DE ASIENTOS"),
+                              QObject::tr("ERROR: El asiento de apertura no es editable"));
+        return;
+
+      }
+    if (ejerciciocerrado(ejercicio) || ejerciciocerrando(ejercicio))
+     {
+       QMessageBox::warning( 0, QObject::tr("EDICIÓN DE ASIENTOS"),
+                             QObject::tr("ERROR: El pase seleccionado corresponde a un ejercicio cerrado"));
+       return;
+     }
+
+    if (basedatos::instancia()->asiento_en_periodo_bloqueado(elasiento,ejercicio))
+     {
+       QMessageBox::warning( 0, QObject::tr("EDICIÓN DE ASIENTOS"),
+                             QObject::tr("ERROR: El asiento seleccionado corresponde a un periodo bloqueado"));
+       return;
+     }
+
+    if (basedatos::instancia()->ejercicio_bloqueado(ejercicio))
+     {
+       QMessageBox::warning( 0, QObject::tr("EDICIÓN DE ASIENTOS"),
+                             QObject::tr("ERROR: El asiento seleccionado corresponde a un ejercicio bloqueado"));
+       return;
+     }
+
+
+    if (basedatos::instancia()->asiento_con_cuentas_bloqueadas(elasiento,ejercicio))
+     {
+       QMessageBox::warning( 0, QObject::tr("EDICIÓN DE ASIENTOS"),
+                             QObject::tr("ERROR: El asiento seleccionado posee cuentas bloqueadas"));
+       return;
+     }
+
+    if (basedatos::instancia()->asiento_enviado_sii(elasiento,ejercicio)) {
+        QMessageBox::warning(
+             0, QObject::tr("Edición de asiento"),
+             QObject::tr("ERROR: El asiento a editar posee apuntes enviados al SII"));
+         return;
+    }
+
+    if (basedatos::instancia()->asientoenautofactura(elasiento,ejercicio))
+       {
+        QMessageBox::warning( 0, QObject::tr("EDICIÓN DE ASIENTOS"),
+                                 QObject::tr("ERROR: operación no permitida")); // operaciones intracomunitarias
+       }
+    if (basedatos::instancia()->asiento_isp_op_interiores(elasiento,ejercicio))
+       {
+        QMessageBox::warning( 0, QObject::tr("EDICIÓN DE ASIENTOS"),
+                                 QObject::tr("ERROR: operación no permitida"));;
+       }
+
+    if (basedatos::instancia()->asientoenautofactura_no_ue (elasiento,ejercicio))
+      {
+        // -----------------------------
+        QMessageBox::warning( 0, QObject::tr("EDICIÓN DE ASIENTOS"),
+                                 QObject::tr("ERROR: operación no permitida"));;
+      }
+
+
+    tabla_asientos *t = new tabla_asientos(haycomadecimal(),haydecimales(),usuario);
+    t->set_borrador();
+    t->pasafichdoc(basedatos::instancia()->copia_docdiario (elasiento,ejercicio));
+
+    // t->activaparaedicion(); // Hacer posible verificar aquí el cambio de ejercicio
+
+    int fila=0;
+    QString concepto_asiento;
+    QString documento_asiento;
+    QString caddebe_asiento;
+
+    QString cadasiento;
+    QString cadpase;
+    QString caddebe;
+    QString cadhaber;
+    QString qdiario;
+    bool pasado=false;
+    QSqlQuery query2;
+
+    QSqlQuery query = basedatos::instancia()->select10Diariodiarioasientoorderpase (
+                     elasiento, ejercicio );
+        if ( query.isActive() ) {
+         while ( query.next() ) {
+          if (!escuentadeivasoportado(query.value(0).toString())) continue;
+          if (!pasado)
+            {
+                qdiario=query.value(9).toString();
+                if (qdiario.length()==0) qdiario=diario_no_asignado();
+                t->pasadiario(qdiario);
+                pasado=true;
+            }
+         t->pasa_externo(query.value(12).toString());
+         t->pasa_concepto_sii(query.value(13).toString());
+         t->pasa_cod_actividad(query.value(14).toString());
+         cadpase=query.value(7).toString();
+         if (query.value(2).toDouble()>-0.0001 && query.value(2).toDouble()<0.0001)
+             caddebe=""; else caddebe=query.value(2).toString();
+         if (query.value(3).toDouble()>-0.0001 && query.value(3).toDouble()<0.0001)
+             cadhaber=""; else cadhaber=query.value(3).toString();
+         concepto_asiento=query.value(1).toString();
+         caddebe_asiento=query.value(2).toString();
+         documento_asiento=query.value(4).toString();
+         t->pasadatos1(fila,query.value(0).toString() ,
+                                                       query.value(1).toString(),
+                                                       caddebe,
+                                                       cadhaber,
+                                                       query.value(4).toString(),
+                                                       query.value(8).toString());
+         // cadasiento=query.value(5).toString();
+         t->pasafechaasiento(fecha_asiento_nuevo);
+         query2 = basedatos::instancia()->select14Libroivapase(cadpase);
+         if (query2.isActive())
+           if (query2.next()) {
+             QString cadsoportado="0";
+             if (query2.value(10).toBool()==true )
+             cadsoportado="1";
+             QString cadrectif,cadautofact,cadagrario;
+             if (query2.value(12).toBool()==true )
+             cadrectif="1";
+             if (query2.value(13).toBool()==true )
+             cadautofact="1";
+             if (query2.value(24).toBool()==true )
+                 cadagrario="1";
+             if (escuentadeivasoportado(query.value(0).toString()))
+                t->pasadatos2(fila,query2.value(0).toString(),
+                          query2.value(1).toString(),// base iva
+                          query2.value(2).toString(),
+                          query2.value(3).toString(),
+                          query2.value(4).toString(),
+                          query2.value(5).toString(),
+                          query2.value(6).toString(),
+                          query2.value(7).toString(),
+                          query2.value(8).toString(),
+                          query2.value(9).toString(),
+                          cadsoportado,
+                          query2.value(11).toString(),
+                          cadrectif,
+                          cadautofact,
+                          query2.value(15).toDate().toString("yyyy-MM-dd"),
+                          query2.value(16).toString(),
+                          query2.value(17).toString(),
+                          query2.value(18).toString(),
+                          query2.value(19).toString(),
+                          query2.value(20).toString(),
+                          query2.value(21).toString(),
+                          query2.value(22).toBool() ? "1" : "",
+                          query2.value(23).toString(),
+                          cadagrario,
+                          query2.value(25).toString(),
+                          query2.value(26).toString(),
+                          query2.value(29).toBool() ? "1" : "",
+                          query2.value(30).toBool() ? "1" : "",
+                          query2.value(27).toBool() ? "" : "1",
+                          query2.value(28).toBool() ? "1" : "",
+                          query2.value(31).toBool() ? "1" : "",
+                          query2.value(32).toBool(),
+                          query2.value(35).toBool(),
+                          query2.value(36).toBool(),
+                          query2.value(37).toString()
+                                                     );
+         }
+
+         fila++;
+       }
+     }
+     if (fila>0) {
+         // int fila, QString col0, QString col1, QString col2,
+         //                                  QString col3, QString col4, QString col16
+         // --->col16 es ci
+         t->pasadatos1(fila, cuenta_iva_reemplazo, concepto_asiento,"",
+                                                       caddebe_asiento,
+                                                       documento_asiento,
+                                                       "");
+     }
+     t->chequeatotales();
+     int resultado=t->exec();
+     delete(t);
+     bool aceptado=resultado==QDialog::Accepted;
+
+     if (aceptado) {
+       // borramos apunte de iva soportado original
+       basedatos::instancia()->borra_reg_libroiva(cad_apunte);
+       // sustituimos cuenta de iva soportado por cuenta de iva soportado diferido
+       basedatos::instancia()->updateDiariocuentapase(cuenta_iva_reemplazo , cad_apunte);
+
+       global_cuenta_iva_reemplazo=cuenta_iva_reemplazo;
+       global_fecha_asiento_nuevo=fecha_asiento_nuevo;
+     }
+
+    refrescardiario();
 }
 

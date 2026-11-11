@@ -3754,6 +3754,9 @@ class basedatos {
 
         QSqlQuery selec_diario_extract(QString concepto, QString documento, bool hay_fecha, QDate fecha, QString debe, QString haber);
 
+        QSqlQuery asientos_cuenta_fechas(QString cuenta, QDate inicial, QDate final);
+
+        QSqlQuery auxiliares_codigo_descrip();
 
         void ejecuta_publica (QSqlQuery *query);
 

@@ -56,6 +56,10 @@ extern bool curl_sii;
 extern QString global_url_actu;
 extern QString global_msj_url_actu;
 
+extern QString global_cuenta_iva_reemplazo;
+extern QDate global_fecha_asiento_nuevo;
+
+
 void setAlternateRowColor(QTableView *view, bool darkMode);
 QColor background_alt(bool darkMode);
 

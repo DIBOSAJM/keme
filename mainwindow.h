@@ -363,6 +363,7 @@ private slots:
     void on_actionConfiguraci_n_IA_triggered();
     void on_actionEmitidas_IA_toggled(bool arg1);
     void on_actionReconocer_Imagen_triggered();
+    void on_action_Mover_deducci_n_IVA_triggered();
 };
 
 #endif // MAINWINDOW_H

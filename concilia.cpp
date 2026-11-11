@@ -35,6 +35,7 @@
 #include "consmayor.h"
 #include "cambiacuentapase.h"
 #include "edit_conc_doc.h"
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QProgressDialog>
 
@@ -2501,6 +2502,121 @@ void concilia::check_botones_edicion()
         }
     }
     activa_botones_edicion(false);
+
+}
+
+
+void concilia::on_export_pushButton_clicked()
+{
+    // 1º Sacamos todos los asientos de este ejercicio y el anterior que contengan la cuenta del banco
+    QString contenido;
+    // cuenta = variable privada de la clase
+    contenido="asiento\tfecha (dd-MM-yyyy)\tcuenta\tdebe\thaber\tconcepto\tdocumento\tpase\tejercicio\n";
+    QString ejercicio=ejerciciodelafecha(ui.inicialdateEdit->date().addYears(-1));
+    if (ejercicio.isEmpty()) ejercicio=ejerciciodelafecha(ui.inicialdateEdit->date());
+    QDate fecha_inicial=basedatos::instancia()->selectAperturaejercicios(ejercicio);
+    ejercicio=ejerciciodelafecha(ui.inicialdateEdit->date());
+    QDate fecha_final=basedatos::instancia()->selectCierreejercicios(ejercicio);
+    QSqlQuery q = basedatos::instancia()->asientos_cuenta_fechas(cuenta, fecha_inicial, fecha_final);
+    if (q.isActive())
+        while (q.next())
+        {
+            contenido+=q.value(0).toString();
+            contenido+="\t";
+            contenido+=q.value(1).toDate().toString("yyyy-MM-dd");
+            contenido+="\t";
+            contenido+=q.value(2).toString();
+            contenido+="\t";
+            contenido+=q.value(3).toString();
+            contenido+="\t";
+            contenido+=q.value(4).toString();
+            contenido+="\t";
+            contenido+=q.value(5).toString();
+            contenido+="\t";
+            contenido+=q.value(6).toString();
+            contenido+="\t";
+            contenido+=q.value(7).toString();
+            contenido+="\t";
+            contenido+=q.value(8).toString();
+            contenido+="\n";
+        }
+
+    QString plan_contable;
+    plan_contable="codigo\tdescripción\n";
+    q = basedatos::instancia()->auxiliares_codigo_descrip();
+    if (q.isActive())
+        while (q.next()) {
+            plan_contable+=q.value(0).toString();
+            plan_contable+="\t";
+            plan_contable+=q.value(1).toString();
+            plan_contable+="\n";
+        }
+
+    // queda generar contenido de cuenta bancaria, apuntes no conciliados
+    // select fecha,concepto,debe,haber,conciliado,dif_conciliacion from ajustes_conci where cuenta='
+    QString cuenta_banco="fecha\tconcepto\tdebe\thaber\n";
+    q = basedatos::instancia()->select8Cuenta_ext_concicuentafechasordernumero (cuenta, ui.inicialdateEdit->date(), ui.finaldateEdit->date());
+    if (q.isActive())
+        while (q.next()) {
+            if (q.value(4).toBool()) continue;
+            cuenta_banco+=q.value(0).toDate().toString("yyyy-MM-dd");
+            cuenta_banco+="\t";
+            cuenta_banco+=q.value(1).toString();
+            cuenta_banco+="\t";
+            cuenta_banco+=q.value(2).toString();
+            cuenta_banco+="\t";
+            cuenta_banco+=q.value(3).toString();
+            cuenta_banco+="\n";
+        }
+
+    // buscamos directorio
+    QString selectedDirectory = QFileDialog::getExistingDirectory(
+        this,
+        "Seleccionar un directorio",
+        dirtrabajo(), // Directorio inicial
+        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks
+        );
+
+
+    if (selectedDirectory.isEmpty()) {
+        QMessageBox::warning(this, tr("FICHEROS CONCILIACIÓN"),tr("No se ha seleccionado ningún directorio"));
+        return;
+    }
+
+    // GRABAMOS LOS TRES ARCHIVOS EN EL DIRECTORIO SELECCIONADO
+
+    QString qfichero=selectedDirectory;
+    qfichero.append(QDir::separator());
+    qfichero+=tr("asientos_cuenta.csv");
+    QFile fichero(adapta(qfichero));
+    if (! fichero.open( QIODevice::WriteOnly ) ) return;
+    QTextStream stream( &fichero );
+    stream.setEncoding(QStringConverter::Utf8);
+    stream << contenido;
+    fichero.close();
+
+    qfichero=selectedDirectory;
+    qfichero.append(QDir::separator());
+    qfichero+=tr("auxiliares.csv");
+    QFile fichero2(adapta(qfichero));
+    if (! fichero2.open( QIODevice::WriteOnly ) ) return;
+    QTextStream stream2( &fichero2 );
+    stream2.setEncoding(QStringConverter::Utf8);
+    stream2 << plan_contable;
+    fichero2.close();
+
+    qfichero=selectedDirectory;
+    qfichero.append(QDir::separator());
+    qfichero+=tr("banco.csv");
+    QFile fichero3(adapta(qfichero));
+    if (! fichero3.open( QIODevice::WriteOnly ) ) return;
+    QTextStream stream3( &fichero3 );
+    stream3.setEncoding(QStringConverter::Utf8);
+    stream3 << cuenta_banco;
+    fichero3.close();
+
+    QMessageBox::information( this, tr("Generación de archivos"),
+                             tr("SE HA GENERADO LOS ARCHIVOS"));
 
 }
 

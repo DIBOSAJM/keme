@@ -632,6 +632,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="export_pushButton">
+       <property name="text">
+        <string>Ex&amp;port</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="consultainfpushButton">
        <property name="text">
         <string>Con&amp;sulta Informe</string>
@@ -705,10 +712,12 @@
   <tabstop>eliminapushButton</tabstop>
   <tabstop>automatpushButton</tabstop>
   <tabstop>imprimeinfpushButton</tabstop>
+  <tabstop>export_pushButton</tabstop>
   <tabstop>consultainfpushButton</tabstop>
   <tabstop>latexpushButton</tabstop>
   <tabstop>cancelarpushButton</tabstop>
   <tabstop>aceptarpushButton</tabstop>
+  <tabstop>descrip_equiv_checkBox</tabstop>
  </tabstops>
  <resources>
   <include location="keme.qrc"/>

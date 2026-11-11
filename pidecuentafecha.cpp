@@ -136,3 +136,14 @@ void pidecuentafecha::quita_calendario()
     ui.apartir_label->hide();
 
 }
+
+void pidecuentafecha::pasa_cuenta(QString cuenta)
+{
+    ui.auxiliarlineEdit->setText(cuenta);
+}
+
+void pidecuentafecha::pasa_fecha(QDate fecha)
+{
+   ui.desdecalendarWidget->setSelectedDate(fecha);
+   ui.desdecalendarWidget->showToday();
+}

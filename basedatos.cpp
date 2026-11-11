@@ -34146,3 +34146,62 @@ QSqlQuery basedatos::selec_diario_extract(QString concepto, QString documento, b
   return ejecutar(cad+cad2);
 }
 
+QSqlQuery basedatos::asientos_cuenta_fechas(QString cuenta, QDate inicial, QDate final)
+{
+  QSqlQuery q;
+  q.prepare("WITH asientos_filtrados AS ("
+            "SELECT DISTINCT ejercicio, asiento "
+            "FROM diario "
+            "WHERE cuenta = :cuenta "
+              "AND diario != :apertura "
+              "AND diario != :cierre "
+              "AND fecha BETWEEN :finicial AND :ffinal) "
+        "SELECT "
+            "d.asiento, "
+            "d.fecha, "
+            "d.cuenta, "
+            "d.debe, "
+            "d.haber, "
+            "d.concepto, "
+            "d.documento, "
+            "d.pase, "
+            "d.ejercicio "
+        "FROM diario d "
+        "JOIN asientos_filtrados af "
+          "ON d.ejercicio = af.ejercicio "
+         "AND d.asiento = af.asiento "
+        "ORDER BY "
+            "d.ejercicio, "
+            "d.asiento, "
+            "d.pase;");
+  q.bindValue(":cuenta",cuenta);
+  q.bindValue(":finicial",inicial);
+  q.bindValue(":ffinal",final);
+  q.bindValue(":apertura",diario_apertura());
+  q.bindValue(":cierre",diario_cierre());
+
+ return ejecuta(std::move(q));
+
+}
+
+QSqlQuery basedatos::auxiliares_codigo_descrip()
+{
+    QString cadnum;
+    QString cadena="select codigo, descripcion from plancontable where ";
+    cadnum.setNum(anchocuentas());
+    if (!cod_longitud_variable())
+    {
+        if (cualControlador() == SQLITE) cadena += "length(codigo)=";
+        else cadena += "char_length(codigo)=";
+        cadena += cadnum;
+    }
+    else
+            cadena += "auxiliar";
+    cadena+=" order by codigo";
+    QSqlQuery q;
+    q.prepare(cadena);
+
+     return ejecuta(std::move(q));
+
+}
+

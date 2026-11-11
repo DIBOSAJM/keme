@@ -309,6 +309,7 @@
     <addaction name="actionFacturas_Emitidas_E_xentas"/>
     <addaction name="actionAIB_Inversi_n_sujeto_pasivo"/>
     <addaction name="actionEIB_Prestaci_n_servicos_UE"/>
+    <addaction name="action_Mover_deducci_n_IVA"/>
     <addaction name="actionTipos_de_IVA"/>
     <addaction name="menuAsignar_Cuentas_a_Tipos_de_Iva"/>
     <addaction name="menuChequeo_Registros_de_IVA"/>
@@ -1521,6 +1522,11 @@
   <action name="actionReconocer_Imagen">
    <property name="text">
     <string>Rec&amp;onocer Imagen</string>
+   </property>
+  </action>
+  <action name="action_Mover_deducci_n_IVA">
+   <property name="text">
+    <string>&amp;Mover deducción IVA </string>
    </property>
   </action>
  </widget>

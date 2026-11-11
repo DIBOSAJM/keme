@@ -97,6 +97,9 @@ QNetworkAccessManager *mNetMan=nullptr;
 
 bool curl_sii=false;
 
+QString global_cuenta_iva_reemplazo;
+QDate global_fecha_asiento_nuevo=QDate().currentDate();
+
 QString convacoma(QString cad)
 {
   QString origen;

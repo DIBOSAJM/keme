@@ -3882,6 +3882,11 @@ void tabla_asientos::soportadoautonomo()
                       &verifica, &binversion, &afectacion, &agrario, &nombre, &cif, &import,
                       &cajaiva, &cuenta_ret, &tipo_ret, &qretencion, &clave_ret,&ret_arrendamiento,
                         &iva_exento, &cta_base_exento, &base_imponible_exento, &externo, &cod_actividad);
+            if (!verifica) {
+                if (!qctaiva.isEmpty() && basedatos::instancia()->existe_bloqueo_cta(qctaiva,qfechacontable)) verifica=true;
+                if (!qctaiva2.isEmpty() && basedatos::instancia()->existe_bloqueo_cta(qctaiva2,qfechacontable)) verifica=true;
+                if (!qctaiva3.isEmpty() && basedatos::instancia()->existe_bloqueo_cta(qctaiva3,qfechacontable)) verifica=true;
+            }
              hay_fecha_factura=true;
              fecha_factura=qfechafra;
              ui.fichdoclineEdit->setText(qIVAsoportado->fichdocumento());
